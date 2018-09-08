@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.xmf.service.dict.dao.DictDao">
+
+    <sql id="dictColumns">
+        str_to_date(a.CREATE_TIME, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
+        str_to_date(a.UPDATE_TIME, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
+        a.ID AS "id",
+        a.DICT_KEY AS "dictKey",
+        a.DICT_VALUE AS "dictValue",
+        a.FID AS "fid",
+        a.CREATE_TIME AS "createTime",
+        a.UPDATE_TIME AS "updateTime",
+        a.FLAG AS "flag",
+        a.REMARK AS "remark",
+        a.SORT AS "sort",
+        a.TYPE AS "type"
+    </sql>
+
+    <sql id="dictJoins">
+    </sql>
+
+    <select id="getDictById" resultType="com.cn.xmf.common.model.common.Dict">
+        SELECT
+        <include refid="dictColumns"/>
+        FROM t_sys_dict_new a
+        <include refid="dictJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getTotalCount" resultType="Integer" parameterType="java.util.Map">
+        SELECT
+        count(0) as count
+        FROM t_sys_dict_new a
+        <include refid="dictJoins"/>
+        <where>
+            a.flag = #{flag}
+            <if test="dictKey != null and dictKey != ''">
+                AND a.DICT_KEY = #{dictKey}
+            </if>
+            <if test="flag != null and flag != ''">
+                AND a.FLAG = #{flag}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.TYPE = #{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="getList" resultType="com.cn.xmf.common.model.common.Dict" parameterType="java.util.Map">
+        SELECT
+        <include refid="dictColumns"/>
+        FROM t_sys_dict_new a inner join
+        (SELECT id from t_sys_dict_new a
+        <where>
+            a.flag = #{flag}
+            <if test="dictKey != null and dictKey != ''">
+                AND a.DICT_KEY = #{dictKey}
+            </if>
+            <if test="flag != null and flag != ''">
+                AND a.FLAG = #{flag}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.TYPE = #{type}
+            </if>
+        </where>
+        <choose>
+            <otherwise>
+                ORDER BY a.UPDATE_TIME desc
+            </otherwise>
+        </choose>
+        <if test="startIndex != null and startIndex != '' and pageSize != null and pageSize != ''">
+            limit #{startIndex},#{pageSize}
+        </if>
+        ) b on b.id=a.id
+        <include refid="dictJoins"/>
+    </select>
+
+    <select id="getDictList" resultType="com.cn.xmf.common.model.common.Dict" parameterType="com.cn.xmf.common.model.common.Dict">
+        SELECT
+        <include refid="dictColumns"/>
+        FROM t_sys_dict_new a
+        <include refid="dictJoins"/>
+        <where>
+            a.flag = #{flag}
+            <if test="dictKey != null and dictKey != ''">
+                AND a.DICT_KEY = #{dictKey}
+            </if>
+            <if test="flag != null and flag != ''">
+                AND a.FLAG = #{flag}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.TYPE = #{type}
+            </if>
+        </where>
+        <choose>
+            <otherwise>
+                ORDER BY a.UPDATE_TIME desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_sys_dict_new (
+            ID,
+            DICT_KEY,
+            DICT_VALUE,
+            FID,
+            CREATE_TIME,
+            UPDATE_TIME,
+            FLAG,
+            REMARK,
+            SORT,
+            TYPE
+        ) VALUES (
+            #{id},
+            #{dictKey},
+            #{dictValue},
+            #{fid},
+            #{createTime},
+            #{updateTime},
+            #{flag},
+            #{remark},
+            #{sort},
+            #{type}
+        )
+    </insert>
+
+
+    <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_sys_dict_new(
+        ID,
+        DICT_KEY,
+        DICT_VALUE,
+        FID,
+        CREATE_TIME,
+        UPDATE_TIME,
+        FLAG,
+        REMARK,
+        SORT,
+        TYPE
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.dictKey},
+            #{item.dictValue},
+            #{item.fid},
+            #{item.createTime},
+            #{item.updateTime},
+            #{item.flag},
+            #{item.remark},
+            #{item.sort},
+            #{item.type}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateById">
+        UPDATE t_sys_dict_new SET
+        <if test="id != null and id != '' ">
+            ID = #{id},
+        </if>
+        <if test="dictKey != null and dictKey != '' ">
+            DICT_KEY = #{dictKey},
+        </if>
+        <if test="dictValue != null and dictValue != '' ">
+            DICT_VALUE = #{dictValue},
+        </if>
+        <if test="fid != null and fid != '' ">
+            FID = #{fid},
+        </if>
+        <if test="createTime != null and createTime != '' ">
+            CREATE_TIME = #{createTime},
+        </if>
+        <if test="updateTime != null and updateTime != '' ">
+            UPDATE_TIME = #{updateTime},
+        </if>
+        <if test="flag != null and flag != '' ">
+            FLAG = #{flag},
+        </if>
+        <if test="remark != null and remark != '' ">
+            REMARK = #{remark},
+        </if>
+        <if test="sort != null and sort != '' ">
+            SORT = #{sort},
+        </if>
+        <if test="type != null and type != '' ">
+            TYPE = #{type},
+        </if>
+        update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+        UPDATE t_sys_dict_new
+        SET
+            flag = 1
+        WHERE id = #{id}
+    </update>
+
+</mapper>

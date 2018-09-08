@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="xmf" basedir=".">
+
+	<!-- Initialization -->
+	<property name="project.name" value="xmf"/>
+	<import file="/home/conf/dev/base.xml"/>
+
+</project>
