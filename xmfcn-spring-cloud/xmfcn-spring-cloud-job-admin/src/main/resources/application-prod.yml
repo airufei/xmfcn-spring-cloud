@@ -13,15 +13,15 @@ server:
   # 链接 base-service 的用户名和密码
 base-service:
   sys-service: sys-service
-  name: admin
-  password: ssjdJJSDUDs887
+  name: serviceadmin
+  password: service987423Ds887
 eureka:
   # 链接eureka的用户名密码
-  name: admin
-  password: admin-JJDDAsnns
+  name: xmfadmin
+  password: eureka-xmfp23dw
   client:
     serviceUrl:
-      defaultZone:  http://${eureka.name}:${eureka.password}localhost:8081/eureka/
+      defaultZone: http://${eureka.name}:${eureka.password}@localhost:8081/eureka/
     healthcheck:
       enabled: true                           # 开启健康检查（依赖spring-boot-starter-actuator）
     registry-fetch-interval-seconds: 1   # 表示eureka client间隔多久去拉取服务注册信息，刷新本地缓存时间 默认为30秒
@@ -41,14 +41,14 @@ spring:
         enabled: true
   # 数据源
   datasource:
-    name: cooxin
+    name: xmfjob
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
     # 测试库
-    url: jdbc:mysql://127.0.0.1:3306/cooxin
+    url: jdbc:mysql://127.0.0.1:3306/xmfjob
     username: root
-    password:abc123
+    password: abc123
     initialSize: 10 #连接池初始化大小
     minIdle: 5 #连接池最小值
     maxActive: 1000 #连接池最大值
