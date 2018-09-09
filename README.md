@@ -28,4 +28,4 @@
 7、xmfcn-spring-cloud-job-admin 作为任务调度中心，也是由xxl-job-admin 演化而来，原版是MVC项目，我为了项目统一架构，全部改成了微服务系统。
    启动所需要的数据库文件在src\main\resources\db\tables_xxl_job.sql 启动之后经过zuul访问的路径是http://localhost:8085/jobadmin
 
-8、xmfcn-spring-cloud-job-handler 作为任务执行器，执行具体的任务。
+8、xmfcn-spring-cloud-job-handler 作为任务执行器，执行具体的任务，比如定时任务等等。
