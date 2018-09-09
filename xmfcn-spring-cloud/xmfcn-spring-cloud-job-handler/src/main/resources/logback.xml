@@ -11,7 +11,7 @@
 	</appender>
 
 	<!-- 自定义日志写入方式和格式 -->
-	<appender name="miLog" class="com.cn.xmf.config.MiLogAppender">
+	<appender name="miLog" class="com.cn.xmf.common.config.XmfLogAppender">
 		<subSysName>job-handler</subSysName><!-- 系统名称 -->
 	</appender>
 	<!-- 按照每天生成日志文件 --> 

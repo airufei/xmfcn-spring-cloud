@@ -10,10 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 /**
  * web 配置
- * @author quyuanchao
+ * @author airufei
  * @date 2018-8-23 17:47
  * <p>Title: com.xxl.job.admin.config</p>
- * <p>Description: $DESCRIPTION</p>
+ * <p></p>
  */
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {

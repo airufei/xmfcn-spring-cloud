@@ -14,10 +14,10 @@ import java.util.List;
 /**
  * 初始化bean配置
  *
- * @author quyuanchao
+ * @author airufei
  * @date 2017-12-7 17:31
  * <p>Title: com.cn.xmf.lcapi.config</p>
- * <p>Description: $DESCRIPTION</p>
+ * <p></p>
  */
 @Configuration
 public class BeanConfig {

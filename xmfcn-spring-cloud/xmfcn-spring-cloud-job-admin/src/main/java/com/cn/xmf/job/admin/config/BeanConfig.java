@@ -15,10 +15,10 @@ import javax.sql.DataSource;
 
 /**
  * 初始化bean
- * @author quyuanchao
+ * @author airufei
  * @date 2018-8-23 17:30
  * <p>Title: com.xxl.job.admin.config</p>
- * <p>Description: $DESCRIPTION</p>
+ * <p></p>
  */
 @Configuration
 public class BeanConfig {
