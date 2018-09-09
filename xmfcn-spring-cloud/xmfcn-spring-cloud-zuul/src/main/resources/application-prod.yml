@@ -70,7 +70,7 @@ ribbon:
   OkToRetryOnAllOperations: false  # 是否所有操作都进行重试
   retryable: true #是否开启重试功能
   MaxAutoRetries: 0 #同一个Server重试的次数(除去首次)
-  MaxAutoRetriesNextServer: 2 #切换相同Server的次数
+  MaxAutoRetriesNextServer: 1 #切换相同Server的次数
   MaxHttpConnectionsPerHost: 200 #每个节点Http的最大连接数 默认值50
   MaxConnectionsPerHost: 200 #每个节点的最大连接数 默认值50
   MaxTotalHttpConnections: 2000  #http总连接数 默认值200
@@ -94,7 +94,7 @@ hystrix:
           enabled: true # 开启hystrix 熔断。ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
         isolation:
           thread:
-            timeoutInMilliseconds: 120000 #zuul 配置的hystrix 熔断时间，返回时间超过这个时间并不会立即返回，而是等到请求返回或超过ribbon的返回时间时触发熔断器。  # 即使请求数据返回，但是超过熔断超时时间依然是触发熔断，而不是返回数据。
+            timeoutInMilliseconds: 130000 #zuul 配置的hystrix 熔断时间，返回时间超过这个时间并不会立即返回，而是等到请求返回或超过ribbon的返回时间时触发熔断器。  # 即使请求数据返回，但是超过熔断超时时间依然是触发熔断，而不是返回数据。
 
 # LOGGING
 logging:
