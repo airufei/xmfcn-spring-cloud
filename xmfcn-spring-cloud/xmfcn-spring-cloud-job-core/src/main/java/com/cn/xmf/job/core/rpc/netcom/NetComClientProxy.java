@@ -40,6 +40,8 @@ public class NetComClientProxy implements FactoryBean<Object> {
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
+						logger.error(">>>>>>>>>>> xxl-rpc proxy class-method not support [{}.{}]", method.getDeclaringClass().getName(), method.getName());
+
 						// filter method like "Object.toString()"
 						if (Object.class.getName().equals(method.getDeclaringClass().getName())) {
 							logger.error(">>>>>>>>>>> xxl-rpc proxy class-method not support [{}.{}]", method.getDeclaringClass().getName(), method.getName());

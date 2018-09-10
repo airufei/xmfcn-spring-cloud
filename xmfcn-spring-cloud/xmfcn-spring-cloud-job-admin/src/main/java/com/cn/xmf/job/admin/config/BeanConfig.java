@@ -12,12 +12,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * 初始化bean
  * @author airufei
  * @date 2018-8-23 17:30
- * <p>Title: com.xxl.job.admin.config</p>
+ * <p>Title: com.cn.xmf.job.admin.config</p>
  * <p></p>
  */
 @Configuration
@@ -47,9 +48,12 @@ public class BeanConfig {
         quartzScheduler.setAutoStartup(true);
         quartzScheduler.setStartupDelay(20);
         quartzScheduler.setOverwriteExistingJobs(true);
+        Properties properties=new Properties();
+        properties.setProperty("org.quartz.jobStore.tablePrefix","XXL_JOB_QRTZ_");
+        quartzScheduler.setQuartzProperties(properties);
         quartzScheduler.setApplicationContextSchedulerContextKey("applicationContextKey");
-        Resource resource = new ClassPathResource("quartz.properties");
-        quartzScheduler.setConfigLocation(resource);
+       // Resource resource = new ClassPathResource("quartz.properties");
+        //quartzScheduler.setConfigLocation(resource);
         return quartzScheduler;
     }
 

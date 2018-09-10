@@ -10,6 +10,7 @@ server:
       enabled: true
       directory: /opt/mnt_file/logs/zuul/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D(ms)'
+    basedir: /opt/tomcat/
 
 # 链接 base-service 的用户名和密码
 base-service:

@@ -6,11 +6,14 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import feign.auth.BasicAuthRequestInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
+import javax.servlet.MultipartConfigElement;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,5 +58,4 @@ public class HttpBasicAuthConfig {
         return new HttpMessageConverters((HttpMessageConverter<?>) fastJsonHttpMessageConverter);
 
     }
-
 }

@@ -38,7 +38,7 @@ spring:
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/cooxin
+    url: jdbc:mysql://127.0.0.1:3306/cooxin?useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: abc123
     initialSize: 10 #连接池初始化大小
@@ -53,8 +53,8 @@ spring:
     testOnReturn: false  #归还连接时执行validationQuery检测连接是否有效 建议为false
   security:   # 可连接 service 的用户和密码
     user:
-      password: service987423Ds887
       name: serviceadmin
+      password: service987423Ds887
       roles: admin
 # myBatis配置
 mybatis:

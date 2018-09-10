@@ -50,7 +50,7 @@ public class SysCommonService {
             dingMessage.setParms(parms);
             dingMessage.setExceptionMessage(msg);
             dingMessage.setRetData(retData);
-            dingTalkService.sendMessageToDingTalk(dingMessage);
+            //dingTalkService.sendMessageToDingTalk(dingMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
