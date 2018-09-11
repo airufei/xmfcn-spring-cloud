@@ -3,7 +3,7 @@ package com.cn.xmf.job.admin.core.model;
 import java.util.Date;
 
 /**
- * xxl-job log, used to track trigger process
+ * xxl-job user, used to track trigger process
  * @author xuxueli  2015-12-19 23:19:09
  */
 public class XxlJobLog {

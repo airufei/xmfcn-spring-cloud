@@ -109,10 +109,10 @@ $(function() {
 								} else if ('PAUSED' == row.jobStatus){
 									pause_resume = '<button class="btn btn-primary btn-xs job_operate" _type="job_resume" type="button">'+ I18n.jobinfo_opt_resume +'</button>  ';
 								}
-	                			// log url
+	                			// user url
 	                			var logUrl = base_url +'/joblog?jobId='+ row.id;
 	                			
-	                			// log url
+	                			// user url
 	                			var codeBtn = "";
                                 if ('BEAN' != row.glueType) {
 									var codeUrl = base_url +'/jobcode?jobId='+ row.id;

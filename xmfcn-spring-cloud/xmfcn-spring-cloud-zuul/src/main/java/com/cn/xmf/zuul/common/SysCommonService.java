@@ -1,9 +1,9 @@
 package com.cn.xmf.zuul.common;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.common.enums.DingMessageType;
-import com.cn.xmf.common.model.common.DingMessage;
-import com.cn.xmf.common.util.StringUtil;
+import com.cn.xmf.enums.DingMessageType;
+import com.cn.xmf.model.ding.DingMessage;
+import com.cn.xmf.util.StringUtil;
 import com.cn.xmf.zuul.sys.DingTalkService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

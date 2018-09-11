@@ -34,7 +34,7 @@ public interface ExecutorBiz {
     public ReturnT<String> kill(int jobId);
 
     /**
-     * log（获取Rolling Log）
+     * user（获取Rolling Log）
      *
      * @param logDateTim
      * @param logId

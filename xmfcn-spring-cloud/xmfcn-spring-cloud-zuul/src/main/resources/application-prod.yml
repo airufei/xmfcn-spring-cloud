@@ -17,7 +17,7 @@ base-service:
   name: serviceadmin
   password: service987423Ds887
 api:
-  application: log-api
+  application: user-api
   name: apiadmin
   password: api987423Ds887
 
@@ -57,10 +57,17 @@ zuul:
   MaxAutoRetries: 0 #同一个Server重试的次数(除去首次)
   MaxAutoRetriesNextServer: 2 #切换相同Server的次数
   OkToRetryOnAllOperations: false  # 是否所有操作都进行重试
+
   routes:
-    log-api:
-      path: /eslog/**
-      serviceId: log-api
+    user-api:
+      path: /user/**
+      serviceId: user-api
+    job-admin:
+      path: /jobadmin/**
+      serviceId: job-admin
+    job-handler:
+      path: /job/**
+      serviceId: job-handler
 
 
 # 配置ribbon 配置下列值并非ribbon get set 属性，因此鼠标点击无用，但是ribbon会自动加载以下信息

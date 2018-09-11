@@ -2,9 +2,8 @@ package com.cn.xmf.zuul.sys;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.common.model.common.DingMessage;
-import com.cn.xmf.common.model.common.RetData;
-import com.cn.xmf.zuul.common.HttpBasicAuthConfig;
+import com.cn.xmf.model.ding.DingMessage;
+import com.cn.xmf.base.model.RetData;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;

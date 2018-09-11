@@ -1,10 +1,12 @@
 package com.cn.xmf.service.dingtalk;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.common.enums.DingMessageType;
-import com.cn.xmf.common.model.common.*;
-import com.cn.xmf.common.util.DingTalkUtil;
-import com.cn.xmf.common.util.StringUtil;
+import com.cn.xmf.base.model.RetCode;
+import com.cn.xmf.base.model.RetData;
+import com.cn.xmf.enums.DingMessageType;
+import com.cn.xmf.model.ding.*;
+import com.cn.xmf.util.DingTalkUtil;
+import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

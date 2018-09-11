@@ -18,7 +18,7 @@ public class XxlJobLogger {
     private static Logger logger = LoggerFactory.getLogger("xxl-job logger");
 
     /**
-     * append log
+     * append user
      *
      * @param callInfo
      * @param appendLog
@@ -26,7 +26,7 @@ public class XxlJobLogger {
     private static void logDetail(StackTraceElement callInfo, String appendLog) {
 
 
-        /*// "yyyy-MM-dd HH:mm:ss [ClassName]-[MethodName]-[LineNumber]-[ThreadName] log";
+        /*// "yyyy-MM-dd HH:mm:ss [ClassName]-[MethodName]-[LineNumber]-[ThreadName] user";
         StackTraceElement[] stackTraceElements = new Throwable().getStackTrace();
         StackTraceElement callInfo = stackTraceElements[1];*/
 
@@ -46,7 +46,7 @@ public class XxlJobLogger {
     }
 
     /**
-     * append log with pattern
+     * append user with pattern
      *
      * @param appendLogPattern  like "aaa {} bbb {} ccc"
      * @param appendLogArguments    like "111, true"

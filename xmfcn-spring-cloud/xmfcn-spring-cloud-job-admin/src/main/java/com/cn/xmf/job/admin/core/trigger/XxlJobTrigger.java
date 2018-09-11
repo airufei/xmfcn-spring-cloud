@@ -63,7 +63,7 @@ public class XxlJobTrigger {
             for (int i = 0; i < addressList.size(); i++) {
                 String address = addressList.get(i);
 
-                // 1、save log-id
+                // 1、save user-id
                 XxlJobLog jobLog = new XxlJobLog();
                 jobLog.setJobGroup(jobInfo.getJobGroup());
                 jobLog.setJobId(jobInfo.getId());
@@ -122,7 +122,7 @@ public class XxlJobTrigger {
             }
 
         } else {
-            // 1、save log-id
+            // 1、save user-id
             XxlJobLog jobLog = new XxlJobLog();
             jobLog.setJobGroup(jobInfo.getJobGroup());
             jobLog.setJobId(jobInfo.getId());

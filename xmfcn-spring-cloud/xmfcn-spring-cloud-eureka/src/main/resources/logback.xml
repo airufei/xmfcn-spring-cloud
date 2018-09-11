@@ -31,7 +31,7 @@
 			<charset class="java.nio.charset.Charset">UTF-8</charset>
 		</encoder>
 	</appender>
-	<!--myibatis log configure-->
+	<!--myibatis user configure-->
 	<logger name="com.ibatis" level="DEBUG" />
     <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG" />
     <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG" />

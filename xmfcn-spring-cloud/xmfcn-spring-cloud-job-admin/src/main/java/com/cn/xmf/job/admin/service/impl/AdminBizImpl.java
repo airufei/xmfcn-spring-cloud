@@ -52,13 +52,13 @@ public class AdminBizImpl implements AdminBiz {
     }
 
     private ReturnT<String> callback(HandleCallbackParam handleCallbackParam) {
-        // valid log item
+        // valid user item
         XxlJobLog log = xxlJobLogDao.load(handleCallbackParam.getLogId());
         if (log == null) {
-            return new ReturnT<String>(ReturnT.FAIL_CODE, "log item not found.");
+            return new ReturnT<String>(ReturnT.FAIL_CODE, "user item not found.");
         }
         if (log.getHandleCode() > 0) {
-            return new ReturnT<String>(ReturnT.FAIL_CODE, "log repeate callback.");     // avoid repeat callback, trigger child job etc
+            return new ReturnT<String>(ReturnT.FAIL_CODE, "user repeate callback.");     // avoid repeat callback, trigger child job etc
         }
 
         // trigger success, to trigger child job
@@ -106,7 +106,7 @@ public class AdminBizImpl implements AdminBiz {
             handleMsg.append(callbackMsg);
         }
 
-        // success, save log
+        // success, save user
         log.setHandleTime(new Date());
         log.setHandleCode(handleCallbackParam.getExecuteResult().getCode());
         log.setHandleMsg(handleMsg.toString());

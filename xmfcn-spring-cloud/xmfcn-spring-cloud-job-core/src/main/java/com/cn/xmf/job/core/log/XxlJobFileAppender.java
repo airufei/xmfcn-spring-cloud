@@ -9,19 +9,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * store trigger log in each log-file
+ * store trigger user in each user-file
  * @author xuxueli 2016-3-12 19:25:12
  */
 public class XxlJobFileAppender {
 	private static Logger logger = LoggerFactory.getLogger(XxlJobFileAppender.class);
 	
-	// for JobThread (support log for child thread of job handler)
+	// for JobThread (support user for child thread of job handler)
 	//public static ThreadLocal<String> contextHolder = new ThreadLocal<String>();
 	public static final InheritableThreadLocal<String> contextHolder = new InheritableThreadLocal<String>();
 
 
 	/**
-	 * log base path
+	 * user base path
 	 *
 	 * strut like:
 	 * 	---/
@@ -29,8 +29,8 @@ public class XxlJobFileAppender {
 	 * 	---/gluesource/10_1514171108000.js
 	 * 	---/gluesource/10_1514171108000.js
 	 * 	---/2017-12-25/
-	 * 	---/2017-12-25/639.log
-	 * 	---/2017-12-25/821.log
+	 * 	---/2017-12-25/639.user
+	 * 	---/2017-12-25/821.user
 	 *
 	 */
 	private static String logBasePath = "/data/applogs/xxl-job/jobhandler";
@@ -62,7 +62,7 @@ public class XxlJobFileAppender {
 	}
 
 	/**
-	 * log filename, like "logPath/yyyy-MM-dd/9999.log"
+	 * user filename, like "logPath/yyyy-MM-dd/9999.user"
 	 *
 	 * @param triggerDate
 	 * @param logId
@@ -77,22 +77,22 @@ public class XxlJobFileAppender {
 			logFilePath.mkdir();
 		}
 
-		// filePath/yyyy-MM-dd/9999.log
+		// filePath/yyyy-MM-dd/9999.user
 		return logFilePath.getPath()
 				.concat(File.separator)
 				.concat(String.valueOf(logId))
-				.concat(".log");
+				.concat(".user");
 	}
 
 	/**
-	 * append log
+	 * append user
 	 *
 	 * @param logFileName
 	 * @param appendLog
 	 */
 	public static void appendLog(String logFileName, String appendLog) {
 
-		// log file
+		// user file
 		if (logFileName==null || logFileName.trim().length()==0) {
 			return;
 		}
@@ -107,7 +107,7 @@ public class XxlJobFileAppender {
 			}
 		}
 
-		// log
+		// user
 		if (appendLog == null) {
 			appendLog = "";
 		}
@@ -134,14 +134,14 @@ public class XxlJobFileAppender {
 	}
 
 	/**
-	 * support read log-file
+	 * support read user-file
 	 *
 	 * @param logFileName
-	 * @return log content
+	 * @return user content
 	 */
 	public static LogResult readLog(String logFileName, int fromLineNum){
 
-		// valid log file
+		// valid user file
 		if (logFileName==null || logFileName.trim().length()==0) {
             return new LogResult(fromLineNum, 0, "readLog fail, logFile not found", true);
 		}
@@ -191,9 +191,9 @@ public class XxlJobFileAppender {
 	}
 
 	/**
-	 * read log data
+	 * read user data
 	 * @param logFile
-	 * @return log line content
+	 * @return user line content
 	 */
 	public static String readLines(File logFile){
 		BufferedReader reader = null;

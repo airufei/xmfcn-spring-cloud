@@ -1,6 +1,5 @@
 package com.cn.xmf.job.admin.core.thread;
 
-import com.cn.xmf.common.util.DingTalkUtil;
 import com.cn.xmf.job.admin.core.model.XxlJobGroup;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.admin.core.model.XxlJobLog;
@@ -61,9 +60,9 @@ public class JobFailMonitorHelper {
 								} else if (IJobHandler.SUCCESS.getCode() == log.getHandleCode()) {
 									// job success, pass
 									logger.info(">>>>>>>>>>> job monitor, job success, JobLogId:{}", jobLogId);
-								} else /*if (IJobHandler.FAIL.getCode() == log.getTriggerCode()
-										|| IJobHandler.FAIL.getCode() == log.getHandleCode()
-										|| IJobHandler.FAIL_RETRY.getCode() == log.getHandleCode() )*/ {
+								} else /*if (IJobHandler.FAIL.getCode() == user.getTriggerCode()
+										|| IJobHandler.FAIL.getCode() == user.getHandleCode()
+										|| IJobHandler.FAIL_RETRY.getCode() == user.getHandleCode() )*/ {
 
 									// job fail,
 

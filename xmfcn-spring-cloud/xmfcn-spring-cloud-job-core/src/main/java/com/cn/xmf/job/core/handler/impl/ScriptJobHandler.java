@@ -57,7 +57,7 @@ public class ScriptJobHandler extends IJobHandler {
                 .concat(glueType.getSuffix());
         ScriptUtil.markScriptFile(scriptFileName, gluesource);
 
-        // log file
+        // user file
         String logFileName = XxlJobFileAppender.contextHolder.get();
 
         // script params：0=param、1=分片序号、2=分片总数

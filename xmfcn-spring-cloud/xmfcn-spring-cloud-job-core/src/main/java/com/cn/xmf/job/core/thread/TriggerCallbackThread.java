@@ -168,7 +168,7 @@ public class TriggerCallbackThread {
     }
 
     /**
-     * callback log
+     * callback user
      */
     private void callbackLog(List<HandleCallbackParam> callbackParamList, String logContent){
         for (HandleCallbackParam callbackParam: callbackParamList) {
@@ -181,7 +181,7 @@ public class TriggerCallbackThread {
 
     // ---------------------- fial-callback file TODO ----------------------
 
-    private static String failCallbackFileName = XxlJobFileAppender.getLogPath().concat(File.separator).concat("xxl-job-callback").concat(".log");
+    private static String failCallbackFileName = XxlJobFileAppender.getLogPath().concat(File.separator).concat("xxl-job-callback").concat(".user");
 
     private void appendFailCallbackFile(List<HandleCallbackParam> callbackParamList){
         // append file

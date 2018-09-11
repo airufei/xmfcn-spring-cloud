@@ -11,7 +11,7 @@
 	</appender>
 
 	<!-- 自定义日志写入方式和格式 -->
-	<appender name="esLog" class="com.cn.xmf.common.config.XmfLogAppender">
+	<appender name="esLog" class="com.cn.xmf.config.XmfLogAppender">
 		<subSysName>base-zuul</subSysName><!-- 系统名称 -->
 	</appender>
 	<!-- 按照每天生成日志文件 -->
@@ -35,7 +35,7 @@
 			<charset class="java.nio.charset.Charset">UTF-8</charset>
 		</encoder>
 	</appender>
-	<!--myibatis log configure-->
+	<!--myibatis user configure-->
 	<logger name="com.ibatis" level="DEBUG" />
     <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG" />
     <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG" />

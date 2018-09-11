@@ -263,7 +263,7 @@ console.log("${I18n.jobinfo_field_executorparam}: " + arguments[2])
 console.log("${I18n.jobinfo_shard_index}: " + arguments[3])
 console.log("${I18n.jobinfo_shard_total}: " + arguments[4])
 <#--for (var i = 2; i < arguments.length; i++){
-	console.log("参数 %s = %s", (i-1), arguments[i]);
+	console.user("参数 %s = %s", (i-1), arguments[i]);
 }-->
 
 console.log("Good bye!")

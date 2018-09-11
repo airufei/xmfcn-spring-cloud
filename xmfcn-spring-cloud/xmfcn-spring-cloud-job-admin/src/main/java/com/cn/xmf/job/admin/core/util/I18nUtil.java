@@ -1,6 +1,6 @@
 package com.cn.xmf.job.admin.core.util;
 
-import com.cn.xmf.common.util.FisleReadUtil;
+import com.cn.xmf.util.FisleReadUtil;
 import com.cn.xmf.job.admin.config.XxlJobAdminConfig;
 import com.cn.xmf.job.core.util.JacksonUtil;
 import org.apache.commons.lang3.StringUtils;

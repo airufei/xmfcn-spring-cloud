@@ -3,10 +3,9 @@ package com.cn.xmf.zuul.filter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.cn.xmf.common.model.common.RetCode;
-import com.cn.xmf.common.model.common.RetData;
-import com.cn.xmf.common.util.StringUtil;
-import com.cn.xmf.zuul.sys.DictService;
+import com.cn.xmf.base.model.RetCode;
+import com.cn.xmf.base.model.RetData;
+import com.cn.xmf.util.StringUtil;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.apache.commons.lang.StringUtils;
@@ -30,8 +29,6 @@ public class AppTokenFilter extends ZuulFilter {
 
     private Logger logger = LoggerFactory.getLogger(AppTokenFilter.class);
 
-    @Autowired
-    private DictService dictService;
 
     /**
      * 下游服务之前进行处理

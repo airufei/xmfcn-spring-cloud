@@ -1,10 +1,10 @@
 package com.cn.xmf.zuul.exception;
 
-import com.cn.xmf.common.enums.DingMessageType;
-import com.cn.xmf.common.model.common.DingMessage;
-import com.cn.xmf.common.model.common.RetCode;
-import com.cn.xmf.common.model.common.RetData;
-import com.cn.xmf.common.util.StringUtil;
+import com.cn.xmf.enums.DingMessageType;
+import com.cn.xmf.model.ding.DingMessage;
+import com.cn.xmf.base.model.RetCode;
+import com.cn.xmf.base.model.RetData;
+import com.cn.xmf.util.StringUtil;
 import com.cn.xmf.zuul.sys.DingTalkService;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;

@@ -1,8 +1,8 @@
 package com.cn.xmf.job.exception;
 
-import com.cn.xmf.common.model.common.RetCode;
-import com.cn.xmf.common.model.common.RetData;
-import com.cn.xmf.common.util.StringUtil;
+import com.cn.xmf.base.model.RetCode;
+import com.cn.xmf.base.model.RetData;
+import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

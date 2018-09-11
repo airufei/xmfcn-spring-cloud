@@ -72,7 +72,7 @@ public class JobCodeController {
 		existsJobinfo.setGlueUpdatetime(new Date());
 		xxlJobInfoDao.update(existsJobinfo);
 
-		// log old code
+		// user old code
 		XxlJobLogGlue xxlJobLogGlue = new XxlJobLogGlue();
 		xxlJobLogGlue.setJobId(existsJobinfo.getId());
 		xxlJobLogGlue.setGlueType(existsJobinfo.getGlueType());
