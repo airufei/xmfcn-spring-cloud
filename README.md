@@ -9,7 +9,11 @@
 
 5、加入spring security，当前安全校验存在问题。
 
-6、整体系统还在调试中，并不能直接使用！
+6、当前版本api层服务和service层服务已经打通，去除了Spring Security权限验证。在spring boot2.x版本中，Security权限验证存在很多问题
+暂时未能解决，再研究研究，争取把权限验证加入到每层服务中，当前服务仅保留eurka使用了权限验证，并且可用。
+
+7、调度器job-admin 和job-handler执行器已经可用。执行任务只需要访问http://localhost:8082/jobadmin/ 添加相应任务，并且在job-handler的jobhandler包下写入具体的任务执行方法即可执行相应任务。
+
 
 # 工程简介
 
