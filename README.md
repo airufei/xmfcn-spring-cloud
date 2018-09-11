@@ -12,6 +12,7 @@
 
 6、调度器job-admin 和job-handler执行器已经可用。执行任务只需要访问http://localhost:8082/jobadmin/ 添加相应任务，并且在job-handler的jobhandler包下写入具体的任务执行方法即可执行相应任务。
 
+7、user-api 和user-service 和条线暂时不通。
 
 # 工程简介
 
