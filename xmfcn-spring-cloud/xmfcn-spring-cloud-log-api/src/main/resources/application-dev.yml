@@ -40,11 +40,11 @@ spring:
     loadbalancer:
       retry:
         enabled: true
-  security:   # 可连接 api 的用户和密码
-    user:
-      name: apiadmin
-      password: api987423Ds887
-      roles: admin
+#  security:   # 可连接 api 的用户和密码
+#    user:
+#      name: apiadmin
+#      password: api987423Ds887
+#      roles: admin
 # LOGGING
 logging:
     config: classpath:logback.xml

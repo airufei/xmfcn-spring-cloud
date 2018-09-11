@@ -5,7 +5,6 @@ import com.cn.xmf.common.enums.DingMessageType;
 import com.cn.xmf.common.model.common.*;
 import com.cn.xmf.common.util.DingTalkUtil;
 import com.cn.xmf.common.util.StringUtil;
-import com.cn.xmf.service.dict.service.DictService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,6 @@ import java.io.IOException;
 public class DingTalkService {
 
     private static Logger logger = LoggerFactory.getLogger(DingTalkService.class);
-    @Autowired
-    private DictService dictService;
     @Autowired
     private DingTalkHelperService dingTalkHelperService;
     @Value("${dingTalk.type}")

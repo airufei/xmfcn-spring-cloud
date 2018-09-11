@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(value = "${base-service.sys-service}", configuration = HttpBasicAuthConfig.class)
+@FeignClient(value = "${base-service.sys-service}")
 @RequestMapping("/server/dict/")
 public interface DictService {
 

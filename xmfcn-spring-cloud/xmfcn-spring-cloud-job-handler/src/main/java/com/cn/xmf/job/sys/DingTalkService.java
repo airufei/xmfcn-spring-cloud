@@ -3,7 +3,6 @@ package com.cn.xmf.job.sys;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.common.model.common.DingMessage;
-import com.cn.xmf.job.common.HttpBasicAuthConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @SuppressWarnings("all")
 
-@FeignClient(value = "${base-service.sys-service}", configuration = HttpBasicAuthConfig.class)// 配置远程服务名以及自定义权限验证配置
+@FeignClient(value = "${base-service.sys-service}")// 配置远程服务名以及自定义权限验证配置
 @RequestMapping("/server/dingTalk/")// 配置远程服务路径
 public interface DingTalkService {
 
