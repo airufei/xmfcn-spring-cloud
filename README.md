@@ -12,7 +12,7 @@
 
 6、调度器job-admin 和job-handler执行器已经可用。执行任务只需要访问http://localhost:8082/jobadmin/ 添加相应任务，并且在job-handler的jobhandler包下写入具体的任务执行方法即可执行相应任务。
 
-7、user-api 和user-service 和条线暂时不通。
+7、user-api和user-service，当前两个服务已经可用。
 
 # 工程简介
 
@@ -22,13 +22,16 @@
 
 3、xmfcn-spring-cloud-zuul 作为统一网关，提供统一入口，安全校验、路由等。
 
-4、xmfcn-spring-cloud-log-api 作为日志服务api接口，提供日志搜索等基础功能，提供个性化的对外开放能力。
+4、xmfcn-spring-cloud-user-api 提供对外用户信息功能接口，用户基础信息查询，用户注册、登录等，提供个性化的对外开放能力。
+如：分页查询用户信息接口：http://localhost:8082/user/getList?parms={"pageNo":1,"pageSize":20}
 
-5、xmfcn-spring-cloud-sys-service 作为日志基础服务，提供包括日志、缓存、队列、字典等系统相关的基础服务，不对外开放，只对微服务体系内开放。
+5、xmfcn-spring-cloud-user-service 提供对外用户信息功能接口，用户基础信息查询，用户注册、登录等，不对外开放，只对微服务体系内开放。
 
-6、xmfcn-spring-cloud-job-core 是xxl-job的基础核心工具类工程，修改工程名称和包路径是为了整体统一，内部实现还是基于xxl-job
+6、xmfcn-spring-cloud-sys-service 作为日志基础服务，提供包括日志、缓存、队列、字典等系统相关的基础服务，不对外开放，只对微服务体系内开放。
 
-7、xmfcn-spring-cloud-job-admin 作为任务调度中心，也是由xxl-job-admin 演化而来，原版是MVC项目，我为了项目统一架构，全部改成了微服务系统。
+7、xmfcn-spring-cloud-job-core 是xxl-job的基础核心工具类工程，修改工程名称和包路径是为了整体统一，内部实现还是基于xxl-job
+
+8、xmfcn-spring-cloud-job-admin 作为任务调度中心，也是由xxl-job-admin 演化而来，原版是MVC项目，我为了项目统一架构，全部改成了微服务系统。
    启动所需要的数据库文件在src\main\resources\db\tables_xxl_job.sql 启动之后经过zuul访问的路径是http://localhost:8085/jobadmin
-
-8、xmfcn-spring-cloud-job-handler 作为任务执行器，执行具体的任务，比如定时任务等等。
+   
+9、xmfcn-spring-cloud-job-handler 作为任务执行器，执行具体的任务，比如定时任务等等。
