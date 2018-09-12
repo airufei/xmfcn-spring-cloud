@@ -1,4 +1,4 @@
-package com.cn.xmf.job.admin.service;
+package com.cn.xmf.job.admin.job.service;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import java.util.Date;

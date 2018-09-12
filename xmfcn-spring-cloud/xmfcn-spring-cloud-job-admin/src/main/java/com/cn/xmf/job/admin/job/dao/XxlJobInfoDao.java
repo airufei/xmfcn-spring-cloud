@@ -1,4 +1,4 @@
-package com.cn.xmf.job.admin.dao;
+package com.cn.xmf.job.admin.job.dao;
 
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import org.apache.ibatis.annotations.Param;

@@ -1,21 +1,18 @@
 package com.cn.xmf.job.admin.core.trigger;
 
 import com.cn.xmf.job.admin.core.thread.JobFailMonitorHelper;
-import com.cn.xmf.job.admin.dao.XxlJobInfoDao;
 import com.cn.xmf.job.admin.core.model.XxlJobGroup;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.admin.core.model.XxlJobLog;
 import com.cn.xmf.job.admin.core.route.ExecutorRouteStrategyEnum;
 import com.cn.xmf.job.admin.core.schedule.XxlJobDynamicScheduler;
-import com.cn.xmf.job.admin.core.thread.JobFailMonitorHelper;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
-import com.cn.xmf.job.admin.dao.XxlJobInfoDao;
+import com.cn.xmf.job.admin.job.dao.XxlJobInfoDao;
 import com.cn.xmf.job.core.biz.ExecutorBiz;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.job.core.biz.model.TriggerParam;
 import com.cn.xmf.job.core.enums.ExecutorBlockStrategyEnum;
 import com.cn.xmf.job.core.util.IpUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

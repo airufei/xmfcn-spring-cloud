@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableTransactionManagement// 开启事务
-@MapperScan(basePackages="com.cn.xmf.job.*.dao")// 扫面mybatis Mapper包
+@MapperScan(basePackages="com.cn.xmf.job.admin.*.dao")// 扫面mybatis Mapper包
 @EnableFeignClients
 public class JobAdminApplication {
 

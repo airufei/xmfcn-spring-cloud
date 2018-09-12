@@ -13,6 +13,7 @@ server:
   # 链接 base-service 的用户名和密码
 base-service:
   sys-service: sys-service
+  user-service: user-service
   name: serviceadmin
   password: service987423Ds887
 eureka:

@@ -1,13 +1,21 @@
 package com.cn.xmf.job.admin.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.cn.xmf.base.model.RetCode;
+import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.admin.controller.annotation.PermessionLimit;
 import com.cn.xmf.job.admin.controller.interceptor.PermissionInterceptor;
-import com.cn.xmf.job.admin.controller.annotation.PermessionLimit;
-import com.cn.xmf.job.admin.controller.interceptor.PermissionInterceptor;
+import com.cn.xmf.job.admin.core.util.CookieUtil;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
-import com.cn.xmf.job.admin.service.XxlJobService;
+import com.cn.xmf.job.admin.job.service.XxlJobService;
+import com.cn.xmf.job.admin.user.service.UserHelperService;
+import com.cn.xmf.job.admin.user.service.UserService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
+import com.cn.xmf.model.user.User;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -30,9 +39,11 @@ import java.util.Map;
  */
 @Controller
 public class IndexController {
-
-	@Resource
+	private static Logger logger = LoggerFactory.getLogger(UserService.class);
+	@Autowired
 	private XxlJobService xxlJobService;
+	@Autowired
+	private UserHelperService userHelperService;
 
 	@RequestMapping("/")
 	public String index(Model model) {
@@ -52,8 +63,11 @@ public class IndexController {
 	@RequestMapping("/toLogin")
 	@PermessionLimit(limit=false)
 	public String toLogin(Model model, HttpServletRequest request) {
-		if (PermissionInterceptor.ifLogin(request)) {
-			return "jobadmin/";
+		HttpSession session = request.getSession();
+		Object us = session.getAttribute("user");
+		if(us!=null)
+		{
+			return "redirect:/jobadmin/";
 		}
 		return "login";
 	}
@@ -62,22 +76,28 @@ public class IndexController {
 	@ResponseBody
 	@PermessionLimit(limit=false)
 	public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String userName, String password, String ifRemember){
-		// valid
-		if (PermissionInterceptor.ifLogin(request)) {
-			return ReturnT.SUCCESS;
-		}
-
 		// param
 		if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)){
 			return new ReturnT<String>(500, I18nUtil.getString("login_param_empty"));
 		}
-		boolean ifRem = StringUtils.isNotBlank(ifRemember) && "on".equals(ifRemember);
-
+		HttpSession session = request.getSession();
+		Object us = session.getAttribute("user");
+		if(us!=null)
+		{
+			return ReturnT.SUCCESS;
+		}
 		// do login
-		boolean loginRet = PermissionInterceptor.login(response, userName, password, ifRem);
-		if (!loginRet) {
+		RetData retData = userHelperService.login(userName, password);
+		int code = retData.getCode();
+		Object data = retData.getData();
+		if (code== RetCode.FAILURE) {
 			return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
 		}
+		User user= (User) data;
+		if (user==null) {
+			return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
+		}
+		request.getSession().setAttribute("user",user);
 		return ReturnT.SUCCESS;
 	}
 	

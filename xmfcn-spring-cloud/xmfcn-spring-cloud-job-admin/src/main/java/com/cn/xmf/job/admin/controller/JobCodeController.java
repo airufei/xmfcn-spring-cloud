@@ -1,12 +1,10 @@
 package com.cn.xmf.job.admin.controller;
 
-import com.cn.xmf.job.admin.dao.XxlJobInfoDao;
-import com.cn.xmf.job.admin.dao.XxlJobLogGlueDao;
+import com.cn.xmf.job.admin.job.dao.XxlJobInfoDao;
+import com.cn.xmf.job.admin.job.dao.XxlJobLogGlueDao;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.admin.core.model.XxlJobLogGlue;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
-import com.cn.xmf.job.admin.dao.XxlJobInfoDao;
-import com.cn.xmf.job.admin.dao.XxlJobLogGlueDao;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.job.core.glue.GlueTypeEnum;
 import org.springframework.stereotype.Controller;

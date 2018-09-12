@@ -1,8 +1,8 @@
 package com.cn.xmf.job.admin.controller;
 
-import com.cn.xmf.job.admin.dao.XxlJobGroupDao;
-import com.cn.xmf.job.admin.dao.XxlJobInfoDao;
-import com.cn.xmf.job.admin.dao.XxlJobLogDao;
+import com.cn.xmf.job.admin.job.dao.XxlJobGroupDao;
+import com.cn.xmf.job.admin.job.dao.XxlJobInfoDao;
+import com.cn.xmf.job.admin.job.dao.XxlJobLogDao;
 import com.cn.xmf.util.StringUtil;
 import com.cn.xmf.job.admin.core.model.XxlJobGroup;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
@@ -21,7 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.util.Date;

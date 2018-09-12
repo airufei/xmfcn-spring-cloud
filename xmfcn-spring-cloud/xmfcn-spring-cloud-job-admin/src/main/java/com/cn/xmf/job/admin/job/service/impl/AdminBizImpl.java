@@ -1,15 +1,12 @@
-package com.cn.xmf.job.admin.service.impl;
+package com.cn.xmf.job.admin.job.service.impl;
 
-import com.cn.xmf.job.admin.dao.XxlJobInfoDao;
-import com.cn.xmf.job.admin.dao.XxlJobLogDao;
-import com.cn.xmf.job.admin.dao.XxlJobRegistryDao;
+import com.cn.xmf.job.admin.job.dao.XxlJobRegistryDao;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.admin.core.model.XxlJobLog;
 import com.cn.xmf.job.admin.core.thread.JobTriggerPoolHelper;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
-import com.cn.xmf.job.admin.dao.XxlJobInfoDao;
-import com.cn.xmf.job.admin.dao.XxlJobLogDao;
-import com.cn.xmf.job.admin.dao.XxlJobRegistryDao;
+import com.cn.xmf.job.admin.job.dao.XxlJobInfoDao;
+import com.cn.xmf.job.admin.job.dao.XxlJobLogDao;
 import com.cn.xmf.job.core.biz.AdminBiz;
 import com.cn.xmf.job.core.biz.model.HandleCallbackParam;
 import com.cn.xmf.job.core.biz.model.RegistryParam;
