@@ -43,3 +43,5 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
    启动所需要的数据库文件在src\main\resources\db\tables_xxl_job.sql 启动之后经过zuul访问的路径是http://localhost:8085/jobadmin
    
 9、xmfcn-spring-cloud-job-handler 作为任务执行器，执行具体的任务，比如定时任务等等。
+
+10、欢迎留言讨论：https://github.com/airufei/xmfcn-spring-cloud/issues/1
