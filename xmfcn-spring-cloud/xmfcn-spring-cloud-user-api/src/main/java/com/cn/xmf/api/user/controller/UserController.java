@@ -24,7 +24,6 @@ import java.util.List;
  * @version 2018-09-11
  */
 @RestController
-@RequestMapping("/user/")
 @SuppressWarnings("all")
 public class UserController {
 
@@ -40,7 +39,7 @@ public class UserController {
      * @return
      * @Author airufei
      */
-    @RequestMapping("getList")
+    @RequestMapping("/getList")
     public RetData getList(HttpServletRequest request, String parms) {
         RetData retData = new RetData();
         try {
@@ -89,7 +88,7 @@ public class UserController {
      * @return
      * @Author airufei
      */
-    @RequestMapping("getUserList")
+    @RequestMapping("/getUserList")
     public RetData getUserList(HttpServletRequest request, String parms) {
         RetData retData = new RetData();
         try {
@@ -131,7 +130,7 @@ public class UserController {
      * @return
      * @Author airufei
      */
-    @RequestMapping("getUser")
+    @RequestMapping("/getUser")
     public RetData getUserByNo(HttpServletRequest request, String parms) {
         RetData retData = new RetData();
         try {
@@ -173,7 +172,7 @@ public class UserController {
      * @return
      * @Author airufei
      */
-    @RequestMapping("delete")
+    @RequestMapping("/delete")
     public RetData delete(HttpServletRequest request, String parms) {
         RetData retData = new RetData();
         retData.setCode(RetCode.FAILURE);
