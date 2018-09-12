@@ -17,6 +17,11 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
 
 7、user-api和user-service，当前两个服务已经可用。
 
+8、配合开源代码生成工具更能提高开发效率。地址：https://github.com/airufei/xCode
+   根据数据库表生成基本功能代码，包含Mybatis文件，dao、servic、entity、controller以及查询页面、增加编辑页。
+   springcloud生成模型是特定为springcloud体系开发的代码生成模型、可以同时生成model、api层的接口代码和调用user-service的接口代码
+   service层的接口代码、数据库SQL语句等。
+
 # 工程简介
 
 1、xmfcn-spring-cloud-common 提供基础工具类相关的，如：字符串处理、常量类、http请求、文件处理等相关工具，被其他工程引用，本身不提供服务能力。
@@ -26,9 +31,9 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
 3、xmfcn-spring-cloud-zuul 作为统一网关，提供统一入口，安全校验、路由等。
 
 4、xmfcn-spring-cloud-user-api 提供对外用户信息功能接口，用户基础信息查询，用户注册、登录等，提供个性化的对外开放能力。
-如：分页查询用户信息接口：http://localhost:8082/user/getList 参数：parms={"pageNo":1,"pageSize":20}
+如：分页查询用户信息接口：http://localhost:8082/user/getList 参数：parms={"pageNo":1,"pageSize":20}，当前代码由https://github.com/airufei/xCode 生成
 
-5、xmfcn-spring-cloud-user-service 提供对外用户信息功能接口，用户基础信息查询，用户注册、登录等，不对外开放，只对微服务体系内开放。
+5、xmfcn-spring-cloud-user-service 提供对外用户信息功能接口，用户基础信息查询，用户注册、登录等，不对外开放，只对微服务体系内开放。当前代码由 https://github.com/airufei/xCode 生成
 
 6、xmfcn-spring-cloud-sys-service 作为日志基础服务，提供包括日志、缓存、队列、字典等系统相关的基础服务，不对外开放，只对微服务体系内开放。
 
