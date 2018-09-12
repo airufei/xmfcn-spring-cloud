@@ -1,5 +1,5 @@
 # xmfcn-spring-cloud 简介
-1、springcloud 微服务，基于spring-cloud Finchley.SR1。
+1、springcloud 微服务，基于spring-cloud Finchley.SR1,spring boot 2.0.1.RELEASE。
 
 2、使用eurka作为注册中心，提供服务发现与注册功能。
 
@@ -11,6 +11,9 @@
 暂时未能解决，再研究研究，争取把权限验证加入到每层服务中，当前服务仅保留eurka使用了权限验证，并且可用。
 
 6、调度器job-admin 和job-handler执行器已经可用。执行任务只需要访问http://localhost:8082/jobadmin/ 添加相应任务，并且在job-handler的jobhandler包下写入具体的任务执行方法即可执行相应任务。
+
+7、服务系统拆分采用垂直+水平，水平方向拆分如user-api、order-api等等、垂直方向划分如：user-api和user-service。这样划分的好处是分层更清晰，每层的职责边界更清楚。
+api层更专注于业务逻辑或者api的多样性，service层更加倾向于数据能力和服务稳定能力。
 
 7、user-api和user-service，当前两个服务已经可用。
 
