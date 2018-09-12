@@ -53,7 +53,7 @@ public class IndexController {
 	@PermessionLimit(limit=false)
 	public String toLogin(Model model, HttpServletRequest request) {
 		if (PermissionInterceptor.ifLogin(request)) {
-			return "redirect:/jobadmin/";
+			return "jobadmin/";
 		}
 		return "login";
 	}
