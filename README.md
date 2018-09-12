@@ -23,7 +23,7 @@
 3、xmfcn-spring-cloud-zuul 作为统一网关，提供统一入口，安全校验、路由等。
 
 4、xmfcn-spring-cloud-user-api 提供对外用户信息功能接口，用户基础信息查询，用户注册、登录等，提供个性化的对外开放能力。
-如：分页查询用户信息接口：http://localhost:8082/user/getList?parms={"pageNo":1,"pageSize":20}
+如：分页查询用户信息接口：http://localhost:8082/user/getList 参数：parms={"pageNo":1,"pageSize":20}
 
 5、xmfcn-spring-cloud-user-service 提供对外用户信息功能接口，用户基础信息查询，用户注册、登录等，不对外开放，只对微服务体系内开放。
 
