@@ -7,6 +7,7 @@ import com.cn.xmf.base.request.WrapperedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import java.io.IOException;
 public class UserFilter implements Filter {
 
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
+
     /**
      * 执行过滤操作
      */
@@ -33,22 +35,16 @@ public class UserFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse response1 = (HttpServletResponse) response;
         String strUrl = req.getRequestURI();
-        logger.info("===============================strUrl============================"+strUrl);
-        if (1==1) {
-            logger.info("===============================进入埋点功能============================"+strUrl);
-            chain.doFilter(request, wrapResponse);
-            JSONObject json = ResponeUtil.getParms(req);
-            logger.info("===============================请求参数============================"+json);
-            byte[] data = wrapResponse.getResponseData();
-            String responseBodyMw = new String(data, "utf-8");
-            logger.info("===============================返回参数============================"+responseBodyMw);
-            ResponeUtil.writeResponse(response, responseBodyMw);
-        } else {
-            chain.doFilter(request, response1);
-        }
+        logger.info("请求地址============================" + strUrl);
+        chain.doFilter(request, wrapResponse);
+        JSONObject json = ResponeUtil.getParms(req);
+        logger.info("请求参数============================" + json);
+        byte[] data = wrapResponse.getResponseData();
+        String responseBodyMw = new String(data, "utf-8");
+        logger.info("返回参数============================" + responseBodyMw);
+        ResponeUtil.writeResponse(response, responseBodyMw);
         logger.info("执行过滤操作。。。");
     }
-
 
 
     /**
