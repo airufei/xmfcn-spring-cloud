@@ -33,7 +33,7 @@ public class CookieInterceptor extends HandlerInterceptorAdapter {
 
         // static method
         if (modelAndView != null) {
-            modelAndView.addObject("webRoot","http://localhost:8082");
+            //modelAndView.addObject("webRoot","http://localhost:8082");
             modelAndView.addObject("I18nUtil", FtlUtil.generateStaticModel(I18nUtil.class.getName()));
         }
 
