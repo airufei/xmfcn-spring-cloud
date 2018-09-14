@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -45,6 +46,7 @@ public class StringUtil extends StringUtils {
         }
         return StringUtils.isNotEmpty(cs);
     }
+
     /**
      * stringToFloat:(String转float 默认值0)
      *
@@ -407,10 +409,10 @@ public class StringUtil extends StringUtils {
         int localPort = request.getServerPort();
         String scheme = request.getScheme();
         String serverName = request.getServerName();
-        System.out.println("ip/domname:" + scheme + "://" + serverName + ":" + localPort + request.getContextPath());
+        logger.info("ip/domname:" + scheme + "://" + serverName + ":" + localPort + request.getContextPath());
         String url = "";
         if (!scheme.contains("https")) {
-            scheme = scheme.replace("http", "https");
+           // scheme = scheme.replace("http", "https");
         }
         if (localPort == 80) {
             url = scheme + "://" + serverName + request.getContextPath();
@@ -435,7 +437,6 @@ public class StringUtil extends StringUtils {
         str = str.substring(0, n) + "...";
         return str;
     }
-
 
 
     /**
@@ -687,6 +688,7 @@ public class StringUtil extends StringUtils {
         map.put("flag", 1);
         return map;
     }
+
     /**
      * getPageMap:(当前页转化为MYSQL所需要的分页参数--默认每页10条)
      *
@@ -715,6 +717,7 @@ public class StringUtil extends StringUtils {
 
     /**
      * 输入流转化成字符串
+     *
      * @param is
      * @return
      * @throws IOException

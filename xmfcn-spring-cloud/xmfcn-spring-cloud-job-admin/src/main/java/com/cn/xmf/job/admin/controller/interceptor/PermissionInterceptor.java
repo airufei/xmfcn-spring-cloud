@@ -33,9 +33,6 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
 		LOGIN_IDENTITY_TOKEN = tokenTmp;
     }
-
-
-
 	public static boolean login(HttpServletResponse response, String username, String password, boolean ifRemember){
 
     	// login token
@@ -45,7 +42,6 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 		if (!LOGIN_IDENTITY_TOKEN.equals(tokenTmp)){
 			return false;
 		}
-
 		// do login
 		CookieUtil.set(response, LOGIN_IDENTITY_KEY, LOGIN_IDENTITY_TOKEN, ifRemember);
 		return true;
@@ -66,17 +62,6 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 		if (!(handler instanceof HandlerMethod)) {
 			return super.preHandle(request, response, handler);
 		}
-		
-		if (!ifLogin(request)) {
-			HandlerMethod method = (HandlerMethod)handler;
-			PermessionLimit permission = method.getMethodAnnotation(PermessionLimit.class);
-			if (permission == null || permission.limit()) {
-				response.sendRedirect(request.getContextPath() + "/jobadmin/toLogin");
-				//request.getRequestDispatcher("/toLogin").forward(request, response);
-				return false;
-			}
-		}
-		
 		return super.preHandle(request, response, handler);
 	}
 	
