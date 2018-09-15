@@ -1,10 +1,10 @@
 package com.cn.xmf.zuul.fallback;
 
 import com.alibaba.fastjson.JSON;
-import com.cn.xmf.enums.DingMessageType;
-import com.cn.xmf.model.ding.DingMessage;
 import com.cn.xmf.base.model.RetCode;
 import com.cn.xmf.base.model.RetData;
+import com.cn.xmf.enums.DingMessageType;
+import com.cn.xmf.model.ding.DingMessage;
 import com.cn.xmf.zuul.sys.DingTalkService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,11 +28,11 @@ import java.io.InputStream;
  */
 @Component
 @SuppressWarnings("all")
-public class UserApiFullbackProvider implements FallbackProvider {
+public class JobAdminFullbackProvider implements FallbackProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserApiFullbackProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(JobAdminFullbackProvider.class);
 
-    @Value("${zuul.routes.user-api.serviceId}")
+    @Value("${zuul.routes.job-admin.serviceId}")
     String serviceName;
 
     @Autowired

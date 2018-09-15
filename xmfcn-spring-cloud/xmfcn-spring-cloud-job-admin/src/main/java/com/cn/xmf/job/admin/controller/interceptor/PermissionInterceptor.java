@@ -17,7 +17,7 @@ import java.math.BigInteger;
  *
  * @author xuxueli 2015-12-12 18:09:04
  */
-public class PermissionInterceptor extends HandlerInterceptorAdapter {
+public class PermissionInterceptor {
 
 
 	private static final String LOGIN_IDENTITY_KEY = "XXL_JOB_LOGIN_IDENTITY";
@@ -54,15 +54,5 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 		return indentityInfo != null && LOGIN_IDENTITY_TOKEN.equals(indentityInfo.trim());
 	}
 
-
-
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		
-		if (!(handler instanceof HandlerMethod)) {
-			return super.preHandle(request, response, handler);
-		}
-		return super.preHandle(request, response, handler);
-	}
 	
 }

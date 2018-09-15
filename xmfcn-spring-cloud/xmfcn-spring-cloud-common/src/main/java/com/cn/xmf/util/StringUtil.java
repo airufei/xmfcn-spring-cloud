@@ -5,6 +5,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.model.ding.EsLogMessage;
+import com.cn.xmf.model.ding.MarkdownMessage;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -178,45 +179,7 @@ public class StringUtil extends StringUtils {
 
     }
 
-    /*
-     * getEsLogData(组织日志信息)
-     * @param loggingEvent 日志信息
-     * @param subSysName 子系统名称
-     * @author airufei
-     * @date 2018/2/27 11:21
-     */
-    public static String getEsLogData(LoggingEvent loggingEvent, String subSysName) {
-        String message = loggingEvent.getMessage();
-        Level level = loggingEvent.getLevel();
-        String loggerName = loggingEvent.getLoggerName();
-        StackTraceElement[] callerData = loggingEvent.getCallerData();
-        StringBuilder stackMessage = null;//堆栈信息
-        String methodName = "";
-        if (callerData != null && callerData.length > 0) {
-            methodName = callerData[0].getMethodName();
-            if (level != null && level == Level.ERROR) {
-                stackMessage = new StringBuilder();//堆栈信息
-                for (int i = 0; i < callerData.length; i++) {
-                    if (i > 10) {
-                        break;
-                    }
-                    stackMessage.append(callerData[i] + "\n");
-                }
-            }
 
-        }
-        EsLogMessage esLog = new EsLogMessage();
-        esLog.setSubSysName(subSysName);
-        esLog.setModuleName(loggerName);
-        esLog.setLevel(level.toString());
-        esLog.setMethodName(methodName);
-        esLog.setMessage(message);
-        if (stackMessage != null && stackMessage.toString().length() > 0) {
-            esLog.setStackMessage(stackMessage.toString());
-        }
-        String jsonString = JSON.toJSONString(esLog);
-        return jsonString;
-    }
 
     /**
      * getFileExt:(获取文件名后缀 默认值 "")
@@ -298,23 +261,6 @@ public class StringUtil extends StringUtils {
             output = c + output;
         }
         return output;
-    }
-
-
-    /**
-     * getExceptionInfo:(异常信息输出转换)
-     *
-     * @param
-     * @return
-     * @author airufei
-     * @Date 2017/11/23 15:45
-     **/
-    public static String getExceptionInfo(Throwable t) {
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-        t.printStackTrace(writer);
-        StringBuffer buffer = stringWriter.getBuffer();
-        return buffer.toString();
     }
 
 
@@ -411,9 +357,6 @@ public class StringUtil extends StringUtils {
         String serverName = request.getServerName();
         logger.info("ip/domname:" + scheme + "://" + serverName + ":" + localPort + request.getContextPath());
         String url = "";
-        if (!scheme.contains("https")) {
-           // scheme = scheme.replace("http", "https");
-        }
         if (localPort == 80) {
             url = scheme + "://" + serverName + request.getContextPath();
         } else {
@@ -498,28 +441,6 @@ public class StringUtil extends StringUtils {
         map.put("sortField", "update_time");
         map.put("flag", 1);
         return map;
-    }
-
-    /**
-     * StrToBigDecimal:(字符转金钱金额)
-     *
-     * @param amount
-     * @return
-     * @Author airufei
-     */
-    public static BigDecimal StrToBigDecimal(String amount) {
-        BigDecimal result = new BigDecimal(0.00);
-        try {
-            if (StringUtil.isBlank(amount)) {
-                return result;
-            }
-            result = new BigDecimal(amount);
-        } catch (Exception e) {
-            logger.error("StrToBigDecimal：服务端异常" + e);
-            e.printStackTrace();
-
-        }
-        return result;
     }
 
     /**
@@ -739,17 +660,75 @@ public class StringUtil extends StringUtils {
      * @Author airufei
      */
     public static String getExceptionMsg(Throwable throwable) {
-        String stackMessage = "";
+        StringBuilder stackMessage = new StringBuilder();
         StackTraceElement[] stackTrace = throwable.getStackTrace();
-        String moduleName = "pc-ApiExceptionResolver";
-        if (stackTrace.length > 0) {
-            moduleName = stackTrace[0].getClassName();
-            String methodName = stackTrace[0].getMethodName();
-            int lineNumber = stackTrace[0].getLineNumber();
-            stackMessage = " 类名：" + moduleName + " 方法名：" + methodName + " 行号:" + lineNumber + " 错误信息：" + throwable.getMessage();
+        if (stackTrace == null || stackTrace.length < 1) {
+            return null;
         }
-        return stackMessage;
+        int len = stackTrace.length;
+        for (int i = 0; i < len; i++) {
+            if (i > 6) {
+                break;
+            }
+            String moduleName = moduleName = stackTrace[i].getClassName();
+            String methodName = stackTrace[i].getMethodName();
+            Class<?> aClass = null;
+            try {
+                aClass = Class.forName(moduleName);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            int lineNumber = stackTrace[i].getLineNumber();
+            String simpleName = null;
+            if (aClass != null) {
+                simpleName = MarkdownMessage.getLinkText("(" + aClass.getSimpleName() + ".java " + lineNumber + ")", null);
+            }
+            stackMessage.append(moduleName).append(" ").append(methodName).append(simpleName).append("\n\n");
+            if (i == 0) {
+                stackMessage.append(MarkdownMessage.getBoldText("错误信息:" + throwable.getMessage())).append("\n\n");
+            }
+        }
+        return stackMessage.toString();
     }
 
+    /*
+     * getEsLogData(组织日志信息)
+     * @param loggingEvent 日志信息
+     * @param subSysName 子系统名称
+     * @author airufei
+     * @date 2018/2/27 11:21
+     */
+    public static String getEsLogData(LoggingEvent loggingEvent, String subSysName) {
+        String message = loggingEvent.getMessage();
+        Level level = loggingEvent.getLevel();
+        String loggerName = loggingEvent.getLoggerName();
+        StackTraceElement[] callerData = loggingEvent.getCallerData();
+        StringBuilder stackMessage = null;//堆栈信息
+        String methodName = "";
+        if (callerData != null && callerData.length > 0) {
+            methodName = callerData[0].getMethodName();
+            if (level != null && level == Level.ERROR) {
+                stackMessage = new StringBuilder();//堆栈信息
+                for (int i = 0; i < callerData.length; i++) {
+                    if (i > 10) {
+                        break;
+                    }
+                    stackMessage.append(callerData[i] + "\n");
+                }
+            }
+
+        }
+        EsLogMessage esLog = new EsLogMessage();
+        esLog.setSubSysName(subSysName);
+        esLog.setModuleName(loggerName);
+        esLog.setLevel(level.toString());
+        esLog.setMethodName(methodName);
+        esLog.setMessage(message);
+        if (stackMessage != null && stackMessage.toString().length() > 0) {
+            esLog.setStackMessage(stackMessage.toString());
+        }
+        String jsonString = JSON.toJSONString(esLog);
+        return jsonString;
+    }
 
 }

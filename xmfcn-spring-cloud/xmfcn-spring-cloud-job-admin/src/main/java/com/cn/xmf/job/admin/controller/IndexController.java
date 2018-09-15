@@ -65,6 +65,8 @@ public class IndexController {
     public String toLogin(Model model, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Object us = session.getAttribute("user");
+        String loginUrl = StringUtil.getSystemUrl(request) + "/jobadmin/toLogin";
+        logger.info("loginDo_loginUrl============================" + loginUrl);
        if (us != null) {
            return "redirect:/jobadmin/";
         }
@@ -76,7 +78,7 @@ public class IndexController {
     @PermessionLimit(limit = false)
     public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String userName, String password, String ifRemember) {
         // param
-        logger.info("-----------------------------------4");
+
         if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
             return new ReturnT<String>(500, I18nUtil.getString("login_param_empty"));
         }

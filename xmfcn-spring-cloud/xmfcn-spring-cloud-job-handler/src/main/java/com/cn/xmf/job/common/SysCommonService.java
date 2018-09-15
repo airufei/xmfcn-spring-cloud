@@ -77,7 +77,7 @@ public class SysCommonService {
         try {
             // ssdbService.setStrByKey(ssdbJsonObject);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionInfo(e));
+            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
     }
@@ -102,7 +102,7 @@ public class SysCommonService {
         try {
             //ssdbService.setStrByKey(ssdbJsonObject);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionInfo(e));
+            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
     }
@@ -120,7 +120,7 @@ public class SysCommonService {
         try {
             //cache=ssdbService.getStrByKey(key);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionInfo(e));
+            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
         return cache;
@@ -138,7 +138,7 @@ public class SysCommonService {
             }
             //ssdbService.delStrByKey(key);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionInfo(e));
+            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
     }

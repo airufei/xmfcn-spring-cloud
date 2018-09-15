@@ -11,6 +11,7 @@ import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.post.SendErrorFilter;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,9 @@ import java.util.Enumeration;
 @Component
 public class ErrorExtFilter extends SendErrorFilter {
     private Logger logger = LoggerFactory.getLogger(ErrorExtFilter.class);
+
+    @Value("${zuul.routes.user-api.serviceId}")
+    String serviceName;
 
     @Autowired
     private DingTalkService dingTalkService;
@@ -88,8 +92,8 @@ public class ErrorExtFilter extends SendErrorFilter {
         String stackMessage = StringUtil.getExceptionMsg(throwable);
         DingMessage dingMessage = new DingMessage();
         dingMessage.setDingMessageType(DingMessageType.MARKDWON);
-        dingMessage.setSysName("base-zuul");
-        dingMessage.setModuleName("ErrorExtFilter");
+        dingMessage.setSysName(serviceName);
+        dingMessage.setModuleName(this.getClass().getSimpleName());
         dingMessage.setMethodName(url);
         dingMessage.setParms(sb.toString());
         dingMessage.setExceptionMessage(stackMessage);

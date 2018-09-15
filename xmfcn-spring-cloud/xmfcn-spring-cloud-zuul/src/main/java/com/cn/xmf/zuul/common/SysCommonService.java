@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
  * <p>公共处理方法模块 $DESCRIPTION</p>
  */
 @Service
+@SuppressWarnings("all")
 public class SysCommonService {
 
 
@@ -77,7 +78,7 @@ public class SysCommonService {
         try {
             // ssdbService.setStrByKey(ssdbJsonObject);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionInfo(e));
+            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
     }
@@ -102,7 +103,7 @@ public class SysCommonService {
         try {
             //ssdbService.setStrByKey(ssdbJsonObject);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionInfo(e));
+            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
     }
@@ -120,7 +121,7 @@ public class SysCommonService {
         try {
             //cache=ssdbService.getStrByKey(key);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionInfo(e));
+            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
         return cache;
@@ -138,7 +139,7 @@ public class SysCommonService {
             }
             //ssdbService.delStrByKey(key);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionInfo(e));
+            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
     }
