@@ -85,7 +85,3 @@ ribbon:
     enabled: true
   eager-load:
     enabled: true
-
-#钉钉提醒配置
-dingTalk:
-  type: dev_dingtalk #开发群
