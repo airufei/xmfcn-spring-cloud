@@ -16,7 +16,7 @@ import java.util.List;
  * @version 2018-09-16
  */
 @SuppressWarnings("all")
-@FeignClient(value = "${base-service.application}")// 配置远程服务名以及自定义权限验证配置
+@FeignClient(value = "${base-service.user-service}")// 配置远程服务名以及自定义权限验证配置
 @RequestMapping("/server/user/")// 配置远程服务路径
 
 public interface UserService  {
