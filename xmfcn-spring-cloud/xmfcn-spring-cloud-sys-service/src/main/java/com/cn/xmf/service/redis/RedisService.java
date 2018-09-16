@@ -1,19 +1,18 @@
 package com.cn.xmf.service.redis;
 
+import com.cn.xmf.util.StringUtil;
 import org.apache.commons.httpclient.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import redis.clients.jedis.Jedis;
+
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
-import redis.clients.jedis.Jedis;
-import com.cn.xmf.util.*;
-
 @SuppressWarnings("all")
 @RestController
 @RequestMapping("/server/redis/")
