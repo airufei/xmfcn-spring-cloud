@@ -11,7 +11,7 @@
 	</parent>
 
     <artifactId>xmfcn-spring-cloud-job-handler</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
 
     <name>xmfcn-spring-cloud-job-handler</name>
@@ -26,18 +26,7 @@
         <dependency>
             <groupId>com.cn.xmf</groupId>
             <artifactId>xmfcn-spring-cloud-job-core</artifactId>
-            <version>1.1.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.json-lib</groupId>
-            <artifactId>json-lib</artifactId>
-            <version>2.2.1</version>
-            <classifier>jdk15</classifier>
-        </dependency>
-        <dependency>
-            <groupId>com.io7m.xom</groupId>
-            <artifactId>xom</artifactId>
-            <version>1.2.10</version>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 

@@ -10,7 +10,7 @@
 
     <artifactId>xmfcn-spring-cloud-job-admin</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
 	
 	<name>xmfcn-spring-cloud-job-admin</name>
 	<description>xmfcn-spring-cloud-job-admin</description>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.cn.xmf</groupId>
             <artifactId>xmfcn-spring-cloud-job-core</artifactId>
-            <version>1.1.1-SNAPSHOT</version>
+            <version>1.1.1</version>
         </dependency>
         <!--mybatis-->
         <dependency>
