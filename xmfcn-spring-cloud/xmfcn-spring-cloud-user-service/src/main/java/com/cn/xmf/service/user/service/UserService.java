@@ -1,26 +1,28 @@
 package com.cn.xmf.service.user.service;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.Partion;
-import com.cn.xmf.model.user.User;
+import java.util.List;
+import java.util.Map;
+
+import com.cn.xmf.service.common.SysCommonService;
 import com.cn.xmf.service.user.dao.UserDao;
-import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.cn.xmf.model.user.*;
+import com.cn.xmf.base.model.*;
+import com.cn.xmf.util.*;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 /**
  * Service(用户信息)
  *
  * @author airufei
- * @version 2018-09-11
+ * @version 2018-09-16
  */
 @RestController
 @RequestMapping(value = "/server/user/")
@@ -31,6 +33,9 @@ public class UserService {
     private UserDao userDao;
     @Autowired
     private UserHelperService userHelperService;
+    @Autowired
+    private SysCommonService sysCommonService;//如果不需要发钉钉消息可以注释了
+    @Autowired
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     /**
@@ -61,7 +66,7 @@ public class UserService {
             if (json != null) {
                 parms = json.toString();
             }
-            //commonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingMessage("user-service[getList]", parms, null, msg, this.getClass());
             e.printStackTrace();
         }
         logger.info("getList(获取用户信息带分页数据-服务) 结束 ");
@@ -88,7 +93,7 @@ public class UserService {
         } catch (Exception e) {
             String msg = "getUserList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            //commonService.sendDingMessage("base-service[getUserList]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingMessage("user-service[getUserList]", parms, null, msg, this.getClass());
             e.printStackTrace();
         }
         logger.info("getUserList(获取用户信息 不带分页数据-服务) 结束");
@@ -115,7 +120,7 @@ public class UserService {
         } catch (Exception e) {
             String msg = "save (保存用户信息 数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            //commonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingMessage("user-service[save]", parms, null, msg, this.getClass());
             e.printStackTrace();
         }
         logger.info("save (保存用户信息 数据-服务) 结束");
@@ -144,13 +149,12 @@ public class UserService {
         } catch (Exception e) {
             String msg = "getUser(获取用户信息单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            // commonService.sendDingMessage("base-service[getUser]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingMessage("user-service[getUser]", parms, null, msg, this.getClass());
             e.printStackTrace();
         }
         logger.info("getUser(获取用户信息单条数据-服务) 结束 ");
         return ret;
     }
-
 
     /**
      * delete(逻辑删除用户信息数据-服务)

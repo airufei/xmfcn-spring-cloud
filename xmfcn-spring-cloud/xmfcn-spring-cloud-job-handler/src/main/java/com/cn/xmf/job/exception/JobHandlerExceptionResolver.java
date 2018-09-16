@@ -37,7 +37,7 @@ public class JobHandlerExceptionResolver {
         RetData mobileData  = new RetData();;
         Map<String, Object> data = null;
         String message = "服务器繁忙，请稍后再试";
-        mobileData.setCode(RetCode.FAILURE);
+        mobileData.setCode(RetCode.SYS_ERROR);
         mobileData.setMessage(message);
         mobileData.setData(data);
         dingTalkMessage(request, e);

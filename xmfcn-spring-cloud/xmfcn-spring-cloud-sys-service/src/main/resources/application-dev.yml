@@ -56,6 +56,23 @@ spring:
       name: serviceadmin
       password: service987423Ds887
       roles: admin
+  redis:
+    database: 0
+    jedis:
+      pool:
+        max-active: 4000 # 连接池最大连接数（使用负值表示没有限制）
+        max-idle: 3000  # 连接池中的最大空闲连接
+        max-wait: 3000ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+    lettuce:
+      pool:
+        max-active: 4000
+        max-idle: 3000
+        max-wait: 3000ms
+      shutdown-timeout: 5000ms
+    host: 192.168.1.18
+    password: xmfred*&21^%1dd22
+    port: 6379
+    timeout: 5000ms
 # myBatis配置
 mybatis:
   # mybatis主配置文件

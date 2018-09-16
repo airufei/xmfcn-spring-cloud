@@ -1,9 +1,9 @@
-package com.cn.xmf.api.common;
+package com.cn.xmf.service.common;
 
-import com.cn.xmf.api.sys.DingTalkService;
-import com.cn.xmf.api.sys.RedisService;
 import com.cn.xmf.enums.DingMessageType;
 import com.cn.xmf.model.ding.DingMessage;
+import com.cn.xmf.service.sys.DingTalkService;
+import com.cn.xmf.service.sys.RedisService;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

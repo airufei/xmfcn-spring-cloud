@@ -67,7 +67,7 @@ public class ErrorExtFilter extends SendErrorFilter {
         throwable.printStackTrace();
         // 构建返回信息
         RetData dataReturn = new RetData();
-        dataReturn.setCode(RetCode.FAILURE);
+        dataReturn.setCode(RetCode.SYS_ERROR);
         dataReturn.setMessage("服务繁忙，请稍后再试");
         dataReturn.setData(new Object());
         return dataReturn;

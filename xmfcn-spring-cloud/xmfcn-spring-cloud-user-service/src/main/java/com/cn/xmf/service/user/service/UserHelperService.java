@@ -3,6 +3,7 @@ package com.cn.xmf.service.user.service;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.model.user.User;
 import com.cn.xmf.service.user.dao.UserDao;
+import com.cn.xmf.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Service(用户信息)
  * @author airufei
- * @version 2018-09-11
+ * @version 2018-09-16
  */
 @Service
 @SuppressWarnings("all")
@@ -77,7 +78,6 @@ public class UserHelperService  {
 	 {
 	      return userDao.getSignleUser(user);
 	 }
-
 	 /**
 	 * 修改单条数据
 	 * @param id

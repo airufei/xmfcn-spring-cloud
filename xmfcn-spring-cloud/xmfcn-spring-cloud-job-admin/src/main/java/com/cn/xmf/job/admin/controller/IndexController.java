@@ -91,7 +91,7 @@ public class IndexController {
         RetData retData = userHelperService.login(userName, password);
         int code = retData.getCode();
         Object data = retData.getData();
-        if (code == RetCode.FAILURE) {
+        if (code == RetCode.SYS_ERROR) {
             return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
         }
         User user = (User) data;
