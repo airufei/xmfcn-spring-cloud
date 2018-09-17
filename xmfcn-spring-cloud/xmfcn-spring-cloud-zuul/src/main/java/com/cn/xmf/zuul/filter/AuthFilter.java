@@ -1,8 +1,11 @@
 package com.cn.xmf.zuul.filter;
 
+import com.cn.xmf.util.StringUtil;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
@@ -15,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 public class AuthFilter extends ZuulFilter {
-
+    private Logger logger = LoggerFactory.getLogger(TokenFilter.class);
     @Value("${api.name}")
     String apiName;
     @Value("${api.password}")
@@ -53,10 +56,12 @@ public class AuthFilter extends ZuulFilter {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
         String requestURI = request.getRequestURI();
+        String url = StringUtil.getSystemUrl(request);
+        logger.info("请求requestURI："+requestURI);
+        logger.info("请求url："+url);
         //添加Basic Auth认证信息
-        if (requestURI.contains("/service/")) {
+        if (requestURI.contains("/server/")) {
             requestContext.addZuulRequestHeader("Authorization", "Basic " + getBase64Credentials(serviceName, servicePassword));
-
         } else {
             requestContext.addZuulRequestHeader("Authorization", "Basic " + getBase64Credentials(apiName, apiPassword));
         }

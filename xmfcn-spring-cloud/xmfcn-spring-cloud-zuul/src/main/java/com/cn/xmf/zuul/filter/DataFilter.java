@@ -22,7 +22,7 @@ import static org.springframework.util.ReflectionUtils.rethrowRuntimeException;
  *
  */
 @Component
-public class ModifyResponseFilter extends ZuulFilter {
+public class DataFilter extends ZuulFilter {
 
     /**
      * 服务完成之后进行处理
@@ -54,11 +54,6 @@ public class ModifyResponseFilter extends ZuulFilter {
         // 根据之前的过滤器结果处理，若前一个过滤器失败，则该过滤器直接跳过
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
-        Boolean isSuccess = (Boolean) requestContext.get("isSuccess");
-        if (isSuccess != null && isSuccess) {
-            String servletPath = request.getServletPath();
-
-        }
         return false;
     }
 
@@ -71,12 +66,12 @@ public class ModifyResponseFilter extends ZuulFilter {
     public Object run() {
 //        modifyResponseBodyDataStream();
 //        modifyResponseBody();
-        modifyResponseHeader();
+        //modifyResponseHeader();
         return null;
     }
 
     /**
-     * 修改返回头（一对一借款协议添加返回头信息）
+     * 修改返回头
      */
     private void modifyResponseHeader() {
         RequestContext context = RequestContext.getCurrentContext();

@@ -11,10 +11,10 @@ import com.netflix.zuul.context.RequestContext;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,9 +25,9 @@ import javax.servlet.http.HttpServletResponse;
  * <p>Description: 授权过滤器</p>
  */
 @Component
-public class AppTokenFilter extends ZuulFilter {
+public class TokenFilter extends ZuulFilter {
 
-    private Logger logger = LoggerFactory.getLogger(AppTokenFilter.class);
+    private Logger logger = LoggerFactory.getLogger(TokenFilter.class);
 
 
     /**
@@ -139,7 +139,7 @@ public class AppTokenFilter extends ZuulFilter {
             // 构建返回信息
             RetData dataReturn = new RetData();
             dataReturn.setCode(RetCode.NO_LOGIN);
-            dataReturn.setMessage("您的账号已在其它手机登录，请重新登录");
+            dataReturn.setMessage("登录信息已失效，请重新登录");
             String jsonString = JSON.toJSONString(dataReturn, SerializerFeature.WriteMapNullValue);
             requestContext.setResponseBody(jsonString);
             requestContext.addZuulResponseHeader("content-type", MediaType.APPLICATION_JSON_UTF8_VALUE);
@@ -157,24 +157,8 @@ public class AppTokenFilter extends ZuulFilter {
      * @return true:校验通过；false:校验失败
      */
     private boolean checkToken(HttpServletRequest request, HttpServletResponse response) {
-        String token = request.getParameter("token");
-        if (StringUtil.isBlank(token)) {
-            return false;
-        }
-        String userId = request.getParameter("userId");
-        String uuid = request.getParameter("uuid");
-        logger.info("访问地址：" + request.getRequestURI() + ",token:" + token + ",userId:" + userId + ",uuid:" + uuid);
-        if ((StringUtils.isNotBlank(token) && StringUtils.isNotBlank(uuid))
-                || (StringUtils.isNotBlank(token) && StringUtils.isNotBlank(userId))) {
-            // 匹配token与uuid
-            logger.info("token:" + token + ",userId:" + userId + ",uuid:" + uuid);
-            JSONObject param = new JSONObject();
-            param.put("userId", userId);
-            param.put("token", token);
-            param.put("uuid", uuid);
-        }
-        logger.info("token验证不通过。token:" + token + ",userId:" + userId + ",uuid:" + uuid);
-        return false;
+
+        return true;
     }
 
 }
