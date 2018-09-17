@@ -1,9 +1,9 @@
-package com.cn.xmf.api.common;
+package com.cn.xmf.service.common;
 
-import com.cn.xmf.api.sys.DingTalkService;
-import com.cn.xmf.api.sys.RedisService;
 import com.cn.xmf.enums.DingMessageType;
 import com.cn.xmf.model.ding.DingMessage;
+//import com.cn.xmf.service.sys.DingTalkService;
+//import com.cn.xmf.service.sys.RedisService;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +20,10 @@ import org.springframework.stereotype.Service;
 public class SysCommonService {
     private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
 
-    @Autowired
-    private DingTalkService dingTalkService;
-    @Autowired
-    private RedisService redisService;
+    //@Autowired
+   // private DingTalkService dingTalkService;
+    //@Autowired
+    //private RedisService redisService;
     @Autowired
     private Environment environment;
 
@@ -53,7 +53,7 @@ public class SysCommonService {
             dingMessage.setParms(parms);
             dingMessage.setExceptionMessage(msg);
             dingMessage.setRetData(retData);
-            dingTalkService.sendMessageToDingTalk(dingMessage);
+            //dingTalkService.sendMessageToDingTalk(dingMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,7 +72,7 @@ public class SysCommonService {
             if (StringUtil.isBlank(key)) {
                 return;
             }
-            redisService.saveCache(key, value, expireTime);
+            //redisService.saveCache(key, value, expireTime);
         } catch (Exception e) {
             logger.error("saveRedis_error:" + StringUtil.getExceptionMsg(e));
             e.printStackTrace();
@@ -92,7 +92,7 @@ public class SysCommonService {
             return cache;
         }
         try {
-            cache = redisService.getCache(key);
+            //cache = redisService.getCache(key);
         } catch (Exception e) {
             logger.error("getCache（获取Redis缓存数据）:" + StringUtil.getExceptionMsg(e));
             e.printStackTrace();
@@ -114,7 +114,7 @@ public class SysCommonService {
             return num;
         }
         try {
-            Long ret = redisService.delCache(key);
+            Long ret = null;//redisService.delCache(key);
             if (ret != null) {
                 num = ret;
             }
@@ -140,7 +140,7 @@ public class SysCommonService {
         }
         boolean broken = false;
         try {
-            Long queueLength = redisService.getQueueLength(key);
+            Long queueLength =null;// redisService.getQueueLength(key);
             if (queueLength != null) {
                 result = queueLength;
             }
@@ -164,7 +164,7 @@ public class SysCommonService {
             return num;
         }
         try {
-            Long ret = redisService.delCaches(pattern);
+            Long ret =null;// redisService.delCaches(pattern);
             if (ret != null) {
                 num = ret;
             }
@@ -188,7 +188,7 @@ public class SysCommonService {
             return lock;
         }
         try {
-            Long aLong = redisService.getLock(key);
+            Long aLong = null;// redisService.getLock(key);
             if (aLong != null) {
                 lock = aLong;
             }
@@ -212,7 +212,7 @@ public class SysCommonService {
             return queue;
         }
         try {
-            queue = redisService.getFromQueue(key);
+            queue =null;//  redisService.getFromQueue(key);
         } catch (Exception e) {
             logger.error("getQueue（获取Redis对列数据）:" + StringUtil.getExceptionMsg(e));
             e.printStackTrace();
@@ -236,7 +236,7 @@ public class SysCommonService {
             return queueCount;
         }
         try {
-            Long aLong = redisService.putToQueue(key, value);
+            Long aLong =null;//  redisService.putToQueue(key, value);
             if (aLong != null) {
                 queueCount = aLong;
             }
@@ -261,7 +261,7 @@ public class SysCommonService {
         }
         // 前缀必须为四位字符
         try {
-            onlyNo = redisService.getOnlyNo(prefix);
+            onlyNo = null;// redisService.getOnlyNo(prefix);
 
         } catch (Exception e) {
             logger.error("getOnlyNo(获取唯一编号):" + StringUtil.getExceptionMsg(e));
