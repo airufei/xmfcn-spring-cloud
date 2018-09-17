@@ -6,6 +6,7 @@ import com.cn.xmf.base.request.WrapperedResponse;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,9 @@ public class AdminFilter implements Filter {
 
     private static Logger logger = LoggerFactory.getLogger(AdminFilter.class);
 
+    @Value("${xmf.job.login.webRoot}")
+    private String webRoot;
+
     /**
      * 执行过滤操作
      */
@@ -36,13 +40,25 @@ public class AdminFilter implements Filter {
             throws IOException, ServletException {
         chain.doFilter(request, response);
         logger.info("执行过滤操作。。。222");
-        //JSONObject json = ResponeUtil.getParms(req);
-        // logger.info("请求参数============================" + json);
-        // byte[] data = wrapResponse.getResponseData();
-        //String responseBodyMw = new String(data, "utf-8");
-        //logger.info("返回参数============================" + responseBodyMw);
-        //ResponeUtil.writeResponse(response, responseBodyMw);
-        //logger.info("执行过滤操作。。。");
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse response1 = (HttpServletResponse) response;
+        String strUrl = req.getRequestURI();
+        String loginUrl=webRoot+"/jobadmin/toLogin";
+        logger.info("请求地址============================" + strUrl);
+        if(!strUrl.contains("jobadmin"))
+        {
+            return;
+        }
+        HttpSession session = req.getSession();
+        if(session==null)
+        {
+            return;
+        }
+        Object user = req.getSession().getAttribute("user");
+        if(user==null)
+        {
+            StringUtil.redirect(response1,loginUrl);
+        }
     }
 
 

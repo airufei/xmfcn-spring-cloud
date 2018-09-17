@@ -4,6 +4,7 @@ import com.cn.xmf.job.admin.controller.annotation.PermessionLimit;
 import com.cn.xmf.job.admin.config.XxlJobAdminConfig;
 import com.cn.xmf.job.admin.controller.annotation.PermessionLimit;
 import com.cn.xmf.job.admin.core.util.CookieUtil;
+import com.cn.xmf.util.StringUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -24,24 +25,14 @@ public class PermissionInterceptor {
 	private static final String LOGIN_IDENTITY_TOKEN;
     static {
 		XxlJobAdminConfig adminConfig = XxlJobAdminConfig.getAdminConfig();
-		String username = adminConfig.getLoginUsername();
-		String password = adminConfig.getLoginPassword();
 
         // login token
-        String tokenTmp = DigestUtils.md5Hex(username + "_" + password);
+        String tokenTmp = DigestUtils.md5Hex(StringUtil.getUuId());
 		tokenTmp = new BigInteger(1, tokenTmp.getBytes()).toString(16);
 
 		LOGIN_IDENTITY_TOKEN = tokenTmp;
     }
 	public static boolean login(HttpServletResponse response, String username, String password, boolean ifRemember){
-
-    	// login token
-		String tokenTmp = DigestUtils.md5Hex(username + "_" + password);
-		tokenTmp = new BigInteger(1, tokenTmp.getBytes()).toString(16);
-
-		if (!LOGIN_IDENTITY_TOKEN.equals(tokenTmp)){
-			return false;
-		}
 		// do login
 		CookieUtil.set(response, LOGIN_IDENTITY_KEY, LOGIN_IDENTITY_TOKEN, ifRemember);
 		return true;

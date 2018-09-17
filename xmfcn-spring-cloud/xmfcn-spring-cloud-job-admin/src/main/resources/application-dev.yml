@@ -124,7 +124,6 @@ ribbon:
 xmf:
  job:
   login:
-    username: admin
-    password: 123456
+    webRoot: http://localhost:8082
   accessToken: 123456
   i18n:

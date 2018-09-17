@@ -22,22 +22,8 @@ public class XxlJobAdminConfig implements InitializingBean {
         adminConfig = this;
     }
 
-    @Value("${xmf.job.login.username}")
-    private String loginUsername;
-
-    @Value("${xmf.job.login.password}")
-    private String loginPassword;
-
     @Value("${xmf.job.i18n}")
     private String i18n;
-
-    public String getLoginUsername() {
-        return loginUsername;
-    }
-
-    public String getLoginPassword() {
-        return loginPassword;
-    }
 
     public String getI18n() {
         return i18n;
