@@ -11,7 +11,7 @@ server:
       directory: /opt/mnt_file/logs/zuul/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D(ms)'
 
-# 链接 base-service 的用户名和密码
+# 本服务需要调用的服务和授权信息-service层
 base-service:
   sys-service: sys-service
   name: serviceadmin

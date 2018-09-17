@@ -3,8 +3,8 @@
 <mapper namespace="com.cn.xmf.service.user.dao.UserDao">
 
     <sql id="userColumns">
-	   str_to_date(a.CREATE_TIME, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
-	   str_to_date(a.UPDATE_TIME, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
+	   str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
+	   str_to_date(a.updatetime, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
 		a.id AS "id",
 		a.username AS "username",
 		a.password AS "password",
@@ -18,8 +18,7 @@
 		a.updatetime AS "updatetime",
 		a.flag AS "flag",
 		a.remark AS "remark",
-		a.type AS "type",
-		a.roleId AS "roleid"
+		a.type AS "type"
 	</sql>
 
     <sql id="userJoins">
@@ -65,7 +64,7 @@
         </where>
         <choose>
             <otherwise>
-                ORDER BY t.UPDATE_TIME desc
+                ORDER BY t.updatetime desc
             </otherwise>
         </choose>
         limit #{startIndex},#{pageSize}) b inner join
@@ -87,7 +86,7 @@
         </where>
         <choose>
             <otherwise>
-                ORDER BY t.UPDATE_TIME desc
+                ORDER BY t.updatetime desc
             </otherwise>
         </choose>
         ) b inner join t_base_user a on b.id=a.id
@@ -110,7 +109,7 @@
         </where>
         <choose>
             <otherwise>
-                ORDER BY t.UPDATE_TIME desc
+                ORDER BY t.updatetime desc
             </otherwise>
         </choose>
         limit 1)b inner join t_base_user a on b.id=a.id
@@ -235,7 +234,7 @@
         <if test="type != null and type != '' ">
             type = #{type},
         </if>
-        UPDATE_TIME= NOW()
+        updatetime= NOW()
         WHERE id = #{id}
     </update>
 

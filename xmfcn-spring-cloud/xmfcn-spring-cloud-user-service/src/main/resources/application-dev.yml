@@ -10,6 +10,12 @@ server:
       enabled: true
       directory: /opt/mnt_file/logs/sys_service/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D(ms)'
+
+  # 本服务需要调用的服务和授权信息-service层
+base-service:
+  sys-service: sys-service
+  name: serviceadmin
+  password: service987423Ds887
   # eureka 配置
 eureka:
   # 链接eureka的用户名密码
@@ -38,7 +44,7 @@ spring:
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/cooxin?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    url: jdbc:mysql://127.0.0.1:3306/xcode?useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: abc123
     initialSize: 10 #连接池初始化大小

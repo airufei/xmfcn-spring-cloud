@@ -1,3 +1,4 @@
+/*
 package com.cn.xmf.service.common;
 
 import com.cn.xmf.enums.DingMessageType;
@@ -11,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+*/
 /**
  * @author airufei
  * <p>公共处理方法模块 $DESCRIPTION</p>
- */
+ *//*
+
 @Service
 @SuppressWarnings("all")
 public class SysCommonService {
@@ -27,22 +30,26 @@ public class SysCommonService {
     @Autowired
     private Environment environment;
 
-    /**
+    */
+/**
      * 获取当前运行的系统名称
      *
      * @return
-     */
+     *//*
+
     public String getSysName() {
         return environment.getProperty("spring.application.name");
     }
 
-    /**
+    */
+/**
      * setDingMessage(组织钉钉消息)
      *
      * @param method
      * @param parms
      * @return
-     */
+     *//*
+
     public void sendDingMessage(String method, String parms, String retData, String msg, Class t) {
         try {
             DingMessage dingMessage = new DingMessage();
@@ -59,14 +66,16 @@ public class SysCommonService {
         }
     }
 
-    /**
+    */
+/**
      * saveCache(保存redis)
      *
      * @param key        缓存key
      * @param value      缓存值
      * @param expireTime 缓时间（秒）
      * @author airuei
-     */
+     *//*
+
     public void saveCache(String key, String value, int expireTime) {
         try {
             if (StringUtil.isBlank(key)) {
@@ -79,13 +88,15 @@ public class SysCommonService {
         }
     }
 
-    /**
+    */
+/**
      * getCache（获取Redis缓存数据）
      *
      * @param key
      * @return
      * @author airuei
-     */
+     *//*
+
     public String getCache(String key) {
         String cache = null;
         if (StringUtil.isBlank(key)) {
@@ -100,13 +111,15 @@ public class SysCommonService {
         return cache;
     }
 
-    /**
+    */
+/**
      * delCache(删除redis缓存)
      *
      * @param key
      * @return
      * @author airuei
-     */
+     *//*
+
     public long delCache(String key) {
         logger.info("delCache(删除redis缓存) 开始：" + key);
         long num = -1;
@@ -126,12 +139,14 @@ public class SysCommonService {
         return num;
     }
 
-    /**
+    */
+/**
      * getQueueLength（获取队列长度)key 是消息频道
      *
      * @param key
      * @return
-     */
+     *//*
+
     public long getQueueLength(String key) {
         logger.info("getQueueLength（获取队列长度) 开始 " + key);
         long result = -1;
@@ -151,13 +166,15 @@ public class SysCommonService {
         return result;
     }
 
-    /**
+    */
+/**
      * delCaches(根据通配符删除所有key)
      *
      * @param key
      * @return
      * @author airuei
-     */
+     *//*
+
     public long delCaches(String pattern) {
         long num = -1;
         if (StringUtil.isBlank(pattern)) {
@@ -175,13 +192,15 @@ public class SysCommonService {
         return num;
     }
 
-    /**
+    */
+/**
      * getLock（获取分布式锁）
      *
      * @param key
      * @return
      * @author airuei
-     */
+     *//*
+
     public long getLock(String key) {
         long lock = -1;
         if (StringUtil.isBlank(key)) {
@@ -199,13 +218,15 @@ public class SysCommonService {
         return lock;
     }
 
-    /**
+    */
+/**
      * getQueue（获取Redis队列数据）
      *
      * @param key
      * @return
      * @author airuei
-     */
+     *//*
+
     public String getQueue(String key) {
         String queue = null;
         if (StringUtil.isBlank(key)) {
@@ -220,13 +241,15 @@ public class SysCommonService {
         return queue;
     }
 
-    /**
+    */
+/**
      * saveQueue（保存Redis队列数据）
      *
      * @param key
      * @return
      * @author airuei
-     */
+     *//*
+
     public long saveQueue(String key, String value) {
         long queueCount = -1;
         if (StringUtil.isBlank(key)) {
@@ -247,12 +270,14 @@ public class SysCommonService {
         return queueCount;
     }
 
-    /**
+    */
+/**
      * getOnlyNo(米族产生24位唯一单号)
      *
      * @param type
      * @return
-     */
+     *//*
+
     public String getOnlyNo(String prefix) {
         String onlyNo = null;
         logger.info("getOnlyNo(获取唯一编号) 开始：" + prefix);
@@ -276,3 +301,4 @@ public class SysCommonService {
         return onlyNo;
     }
 }
+*/

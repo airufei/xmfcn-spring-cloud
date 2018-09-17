@@ -10,6 +10,10 @@ server:
       enabled: true
       directory: /opt/mnt_file/logs/user_service/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D(ms)'
+base-service:
+  sys-service: sys-service
+  name: serviceadmin
+  password: service987423Ds887
   # eureka 配置
 eureka:
   # 链接eureka的用户名密码

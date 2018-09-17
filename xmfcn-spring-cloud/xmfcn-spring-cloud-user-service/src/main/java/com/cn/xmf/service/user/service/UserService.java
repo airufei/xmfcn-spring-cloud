@@ -4,7 +4,6 @@ package com.cn.xmf.service.user.service;
 import java.util.List;
 import java.util.Map;
 
-import com.cn.xmf.service.common.SysCommonService;
 import com.cn.xmf.service.user.dao.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +32,7 @@ public class UserService {
     private UserDao userDao;
     @Autowired
     private UserHelperService userHelperService;
-    @Autowired
-    private SysCommonService sysCommonService;//如果不需要发钉钉消息可以注释了
+
     @Autowired
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -66,7 +64,7 @@ public class UserService {
             if (json != null) {
                 parms = json.toString();
             }
-            sysCommonService.sendDingMessage("user-service[getList]", parms, null, msg, this.getClass());
+            // sysCommonService.sendDingMessage("user-service[getList]", parms, null, msg, this.getClass());
             e.printStackTrace();
         }
         logger.info("getList(获取用户信息带分页数据-服务) 结束 ");
@@ -93,7 +91,7 @@ public class UserService {
         } catch (Exception e) {
             String msg = "getUserList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("user-service[getUserList]", parms, null, msg, this.getClass());
+            //sysCommonService.sendDingMessage("user-service[getUserList]", parms, null, msg, this.getClass());
             e.printStackTrace();
         }
         logger.info("getUserList(获取用户信息 不带分页数据-服务) 结束");
@@ -120,7 +118,7 @@ public class UserService {
         } catch (Exception e) {
             String msg = "save (保存用户信息 数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("user-service[save]", parms, null, msg, this.getClass());
+            // sysCommonService.sendDingMessage("user-service[save]", parms, null, msg, this.getClass());
             e.printStackTrace();
         }
         logger.info("save (保存用户信息 数据-服务) 结束");
@@ -149,7 +147,7 @@ public class UserService {
         } catch (Exception e) {
             String msg = "getUser(获取用户信息单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("user-service[getUser]", parms, null, msg, this.getClass());
+            //SsysCommonService.sendDingMessage("user-service[getUser]", parms, null, msg, this.getClass());
             e.printStackTrace();
         }
         logger.info("getUser(获取用户信息单条数据-服务) 结束 ");
