@@ -122,9 +122,8 @@ ribbon:
     enabled: true
 
 xmf:
- job:
-  login:
-    username: admin
-    password: 123456
-  accessToken: 123456
-  i18n:
+  job:
+    login:
+      webRoot: https://xmf.cn
+    accessToken: 123456
+    i18n:

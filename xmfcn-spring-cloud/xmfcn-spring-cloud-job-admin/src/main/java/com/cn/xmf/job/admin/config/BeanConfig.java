@@ -1,6 +1,7 @@
 package com.cn.xmf.job.admin.config;
 
 import com.cn.xmf.job.admin.core.schedule.XxlJobDynamicScheduler;
+import com.cn.xmf.util.SpringUtil;
 import org.quartz.ee.servlet.QuartzInitializerListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -52,9 +53,15 @@ public class BeanConfig {
         properties.setProperty("org.quartz.jobStore.tablePrefix","XXL_JOB_QRTZ_");
         quartzScheduler.setQuartzProperties(properties);
         quartzScheduler.setApplicationContextSchedulerContextKey("applicationContextKey");
-       // Resource resource = new ClassPathResource("quartz.properties");
-        //quartzScheduler.setConfigLocation(resource);
         return quartzScheduler;
+    }
+
+    /**
+     * 注册Spring Util
+     */
+    @Bean
+    public SpringUtil springUtil() {
+        return new SpringUtil();
     }
 
     @Bean(initMethod = "init",destroyMethod = "destroy")

@@ -46,7 +46,6 @@ public class IndexController {
 
     @RequestMapping("/")
     public String index(Model model) {
-
         Map<String, Object> dashboardMap = xxlJobService.dashboardInfo();
         model.addAllAttributes(dashboardMap);
         logger.info("-----------------------------------1");
@@ -61,21 +60,12 @@ public class IndexController {
     }
 
     @RequestMapping("/toLogin")
-    @PermessionLimit(limit = false)
     public String toLogin(Model model, HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        Object us = session.getAttribute("user");
-        String loginUrl = StringUtil.getSystemUrl(request) + "/jobadmin/toLogin";
-        logger.info("loginDo_loginUrl============================" + loginUrl);
-       if (us != null) {
-           return "redirect:/jobadmin/";
-        }
         return "login";
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    @PermessionLimit(limit = false)
     public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String userName, String password, String ifRemember) {
         // param
 
@@ -105,23 +95,17 @@ public class IndexController {
         return ReturnT.SUCCESS;
     }
 
-    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    @RequestMapping(value = "logout")
     @ResponseBody
-    @PermessionLimit(limit = false)
-    public ReturnT<String> logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         PermissionInterceptor.logout(request, response);
-        return ReturnT.SUCCESS;
+        return "login";
     }
 
     @RequestMapping("/help")
     public String help() {
-
-		/*if (!PermissionInterceptor.ifLogin(request)) {
-			return "redirect:/toLogin";
-		}*/
-
         return "help";
     }
 
