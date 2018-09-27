@@ -60,7 +60,7 @@ $(function () {
                     return function () {
                         tableData['key'+row.id] = row;
                         return '<p id="' + row.id + '" >' +
-                            '<button class="btn btn-warning btn-xs update" type="button">' + I18n.system_opt_edit + '</button>  ' +
+                            '<button class="btn btn-warning btn-xs job_operate"  _type="dict_edit" type="button">' + I18n.system_opt_edit + '</button>  ' +
                             '<button class="btn btn-danger btn-xs job_operate" _type="dict_del" type="button">' + I18n.system_opt_del + '</button>  ' +
                             '</p>';
                     };
@@ -167,8 +167,33 @@ $(function () {
         });
     });
 
+
+    $("#jobMenu_list").on('click', '.job_operate', function () {
+        var type = $(this).attr("_type");
+        if ("dict_edit" == type) {
+            edit(this);
+        }
+    });
+
+    function edit(target) {
+        var id = $(this).parent('p').attr("id");
+        var row = tableData['key' + id];
+        if (row != null && row != undefined) {
+            $("#addModal .form input[name='name']").val(row.name);
+            $("#addModal .form input[name='url']").val(row.url);
+            $("#addModal .form input[name='isbutton']").val(row.isbutton);
+            $("#addModal .form input[name='remark']").val(row.remark);
+            $("#addModal .form input[name='fid']").val(row.fid);
+            $("#addModal .form input[name='level']").val(row.level);
+            $("#addModal .form input[name='id']").val(row.id);
+        }
+        // show
+        $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
+    }
+
     // add
     $(".add").click(function () {
+        // show
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
     });
     var addModalValidate = $("#addModal .form").validate({
@@ -247,109 +272,6 @@ $(function () {
 
     });
 
-    // update
-    $("#dict_list").on('click', '.update', function () {
-
-        var id = $(this).parent('p').attr("id");
-        var row = tableData['key' + id];
-        if (row == null || row == undefined) {
-            alert("暂不可用")
-        }
-        // base data
-        $("#updateModal .form input[name='id']").val(row.id);
-        $("#updateModal .form input[name='dictKey']").val(row.dictKey);
-        $("#updateModal .form input[name='dictValue']").val(row.dictValue);
-        $("#updateModal .form input[name='type']").val(row.type);
-        $("#updateModal .form input[name='remark']").val(row.remark);
-
-        // show
-        $('#updateModal').modal({backdrop: false, keyboard: false}).modal('show');
-    });
-    var updateModalValidate = $("#updateModal .form").validate({
-        errorElement: 'span',
-        errorClass: 'help-block',
-        focusInvalid: true,
-
-        rules: {
-            dictKey: {
-                required: true
-            },
-            dictValue: {
-                required: true
-            },
-            type: {
-                required: true
-            },
-            remark: {
-                required: true
-            }
-        },
-        messages: {
-            dictKey: {
-                required: I18n.system_please_input + "键"
-            },
-            dictValue: {
-                required: I18n.system_please_input + "值"
-            },
-            type: {
-                required: I18n.system_please_input + "类型"
-            },
-            remark: {
-                digits: I18n.system_please_input + "备注"
-            }
-        },
-        highlight: function (element) {
-            $(element).closest('.form-group').addClass('has-error');
-        },
-        success: function (label) {
-            label.closest('.form-group').removeClass('has-error');
-            label.remove();
-        },
-        errorPlacement: function (error, element) {
-            element.parent('div').append(error);
-        },
-        submitHandler: function (form) {
-
-            // process
-            var executorTimeout = $("#updateModal .form input[name='executorTimeout']").val();
-            if (!/^\d+$/.test(executorTimeout)) {
-                executorTimeout = 0;
-            }
-            $("#updateModal .form input[name='executorTimeout']").val(executorTimeout);
-            var executorFailRetryCount = $("#updateModal .form input[name='executorFailRetryCount']").val();
-            if (!/^\d+$/.test(executorFailRetryCount)) {
-                executorFailRetryCount = 0;
-            }
-            $("#updateModal .form input[name='executorFailRetryCount']").val(executorFailRetryCount);
-
-            // post
-            $.post(base_url + "/dict/save", $("#updateModal .form").serialize(), function (data, status) {
-                if (data.code == "200") {
-                    $('#updateModal').modal('hide');
-                    layer.open({
-                        title: I18n.system_tips,
-                        btn: [I18n.system_ok],
-                        content: I18n.system_update_suc,
-                        icon: '1',
-                        end: function (layero, index) {
-                            //window.location.reload();
-                            dictTable.fnDraw();
-                        }
-                    });
-                } else {
-                    layer.open({
-                        title: I18n.system_tips,
-                        btn: [I18n.system_ok],
-                        content: (data.msg || I18n.system_update_fail),
-                        icon: '2'
-                    });
-                }
-            });
-        }
-    });
-    $("#updateModal").on('hide.bs.modal', function () {
-        $("#updateModal .form")[0].reset()
-    });
 
     /**
      * find title by name, GlueType

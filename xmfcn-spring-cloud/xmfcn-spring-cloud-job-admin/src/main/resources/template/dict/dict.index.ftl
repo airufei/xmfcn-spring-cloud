@@ -83,10 +83,21 @@
 
 <!-- job新增.模态框 -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg" role="document" id="modalDialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">新增字典</h4>
+                <table width="99%">
+                    <tr>
+                        <td style="width: 15%">
+                            <h4 class="modal-title">保存字典</h4>
+                        </td>
+                        <td style="width: 77%">
+                        </td>
+                        <td style="width: 8%">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal form" role="form">
@@ -116,50 +127,6 @@
                             <button type="submit" class="btn btn-primary">${I18n.system_save}</button>
                             <button type="button" class="btn btn-default"
                                     data-dismiss="modal">${I18n.system_cancel}</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- 更新.模态框 -->
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">更新字典</h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal form" role="form">
-                    <div class="form-group">
-                        <label for="dictKey" class="col-sm-2 control-label">键<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="dictKey" placeholder="请输入键"
-                                                     maxlength="50"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="dictValue" class="col-sm-2 control-label">值<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="dictValue" placeholder="请输入值"
-                                                     maxlength="50"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="type" class="col-sm-2 control-label">类型<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="type" placeholder="请输入类型"
-                                                     maxlength="50"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="remark" class="col-sm-2 control-label">备注<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="remark" placeholder="请输入备注"
-                                                     maxlength="100"></div>
-                    </div>
-                    <hr>
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-6">
-                            <button type="submit" class="btn btn-primary">${I18n.system_save}</button>
-                            <button type="button" class="btn btn-default"
-                                    data-dismiss="modal">${I18n.system_cancel}</button>
-                            <input type="hidden" name="id">
                         </div>
                     </div>
                 </form>
@@ -175,6 +142,14 @@
 <script src="/jobadmin/plugins/jquery/jquery.validate.min.js"></script>
 <!-- moment -->
 <script src="/jobadmin/adminlte/plugins/daterangepicker/moment.min.js"></script>
+<script src="/jobadmin/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>//拖拽
 <script src="/jobadmin/js/dict.index.1.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#modalDialog").draggable();		        //为模态对话框添加拖拽，拖拽区域只在顶部栏
+        $("#modalDialog").draggable({handle: ".modal-header"});//为模态对话框添加拖拽
+        $("#addModal").css("overflow", "hidden"); // 禁止模态对话框的半透明背景滚动
+    })
+</script>
 </body>
 </html>
