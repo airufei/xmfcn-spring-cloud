@@ -1,5 +1,10 @@
 $(function () {
 
+
+    $(".menu_header").click(function () {
+        $(this).next(".sidebar_menu_list").slideToggle();
+    });
+
     // logout
     $("#logoutBtn").click(function () {
         layer.confirm(I18n.logout_confirm, {

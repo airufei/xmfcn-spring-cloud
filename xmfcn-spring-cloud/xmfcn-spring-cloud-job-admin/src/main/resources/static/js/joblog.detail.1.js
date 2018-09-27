@@ -7,7 +7,7 @@ $(function() {
         return;
     }
 
-    // pull user
+    // pull log
     var fromLineNum = 1;    // [from, to], start as 1
     var pullFailCount = 0;
     function pullLog() {
@@ -22,7 +22,7 @@ $(function() {
 
         $.ajax({
             type : 'POST',
-            async: false,   // sync, make user ordered
+            async: false,   // sync, make log ordered
             url : base_url + '/joblog/logDetailCat',
             data : {
                 "executorAddress":executorAddress,

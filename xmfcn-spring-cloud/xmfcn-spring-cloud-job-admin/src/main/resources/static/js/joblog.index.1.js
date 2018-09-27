@@ -237,7 +237,7 @@ $(function() {
 	});
 
 	/**
-	 * user Kill
+	 * log Kill
 	 */
 	$('#joblog_list').on('click', '.logKill', function(){
 		var _id = $(this).attr('_id');
