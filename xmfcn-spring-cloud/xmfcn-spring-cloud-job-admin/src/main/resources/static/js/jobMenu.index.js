@@ -1,5 +1,5 @@
 $(function () {
-    // init date tables
+    //查询表格数据
     var jobMenuTable = $("#jobMenu_list").dataTable({
         "deferRender": true,
         "processing": true,
@@ -9,11 +9,7 @@ $(function () {
             type: "post",
             data: function (d) {
                 var obj = {};
-                obj.id = $('#id').val();
-                obj.url = $('#url').val();
-                obj.createTime = $('#createTime').val();
-                obj.updateTime = $('#updateTime').val();
-                obj.remark = $('#remark').val();
+                obj.name = $('#name').val();
                 obj.fid = $('#fid').val();
                 obj.level = $('#level').val();
                 obj.start = d.start;
@@ -32,33 +28,29 @@ $(function () {
                 "width": '180'
             },
             {
+                "data": 'name',
+                "visible": true,
+                "width": '180'
+            }
+            , {
                 "data": 'url',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
-            },
+            }
+            ,
             {
-                "data": 'createTime',
-                 "visible": true,
-                "width": '180'
-            },
-            {
-                "data": 'updateTime',
-                 "visible": true,
+                "data": 'updatetimestr',
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'remark',
-                 "visible": true,
-                "width": '180'
-            },
-            {
-                "data": 'fid',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'level',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
@@ -66,7 +58,7 @@ $(function () {
                 "width": '15%',
                 "render": function (data, type, row) {
                     return function () {
-                        tableData['key'+row.id] = row;
+                        tableData['key' + row.id] = row;
                         return '<p id="' + row.id + '" >' +
                             '<button class="btn btn-warning btn-xs job_operate" _type="jobMenu_edit"" type="button">' + I18n.system_opt_edit + '</button>  ' +
                             '<button class="btn btn-danger btn-xs job_operate" _type="jobMenu_del" type="button">' + I18n.system_opt_del + '</button>  ' +
@@ -104,17 +96,17 @@ $(function () {
     // table data
     var tableData = {};
 
-    // search btn
+    // 查询按钮事件
     $('#searchBtn').on('click', function () {
         jobMenuTable.fnDraw();
     });
 
-    // job operate
+
+    // 操作按钮事件
     $("#jobMenu_list").on('click', '.job_operate', function () {
         var typeName;
         var url;
         var needFresh = false;
-
         var type = $(this).attr("_type");
         if ("jobMenu_del" == type) {
             typeName = I18n.system_opt_del;
@@ -130,7 +122,6 @@ $(function () {
             btn: [I18n.system_ok, I18n.system_cancel]
         }, function (index) {
             layer.close(index);
-
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -166,41 +157,45 @@ $(function () {
     });
 
 
+    //编辑按钮事件
     $("#jobMenu_list").on('click', '.job_operate', function () {
         var type = $(this).attr("_type");
-        if ("jobMenu_edit" == type) {
+        if ("{className}_edit" == type) {
             edit(this);
         }
     });
 
     //双击弹出编辑
-    $('#dict_list').on('dblclick','tr',function(){
+    $('#jobMenu_list').on('dblclick', 'tr', function () {
         edit(this);
     });
 
+    //处理编辑页面的数据
     function edit(target) {
         var id = $(target).parent('p').attr("id");
-        if(id==null||id==undefined||id<0) {
+        if (id == null || id == undefined || id < 0) {
             id = $(target).children('td').children('p').attr("id");
         }
         var row = tableData['key' + id];
         if (row != null && row != undefined) {
-           $("#addModal .form input[name='name']").val(row.name);
-           $("#addModal .form input[name='url']").val(row.url);
-           $("#addModal .form input[name='isbutton']").val(row.isbutton);
-           $("#addModal .form input[name='remark']").val(row.remark);
-           $("#addModal .form input[name='fid']").val(row.fid);
-           $("#addModal .form input[name='level']").val(row.level);
-          $("#addModal .form input[name='id']").val(row.id);
+            $("#addModal .form input[name='name']").val(row.name);
+            $("#addModal .form input[name='url']").val(row.url);
+            $("#addModal .form input[name='isbutton']").val(row.isbutton);
+            $("#addModal .form input[name='remark']").val(row.remark);
+            $("#addModal .form input[name='fid']").val(row.fid);
+            $("#addModal .form input[name='level']").val(row.level);
+            $("#addModal .form input[name='id']").val(row.id);
         }
         // show
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
-     }
-    // 添加按钮
+    }
+
+    // 添加页面按钮事件
     $(".add").click(function () {
         edit(this);
     });
-    //编辑字段验证
+
+    //验证保存数据并且提交
     var addModalValidate = $("#addModal .form").validate({
         errorElement: 'span',
         errorClass: 'help-block',
@@ -257,7 +252,7 @@ $(function () {
         },
         submitHandler: function (form) {
             $.post(base_url + "/jobMenu/save", $("#addModal .form").serialize(), function (data, status) {
-                if (data.code ==200) {
+                if (data.code == 200) {
                     $('#addModal').modal('hide');
                     layer.open({
                         title: I18n.system_tips,
@@ -279,6 +274,7 @@ $(function () {
             });
         }
     });
+    //重置编辑页面数据
     $("#addModal").on('hide.bs.modal', function () {
         $("#addModal .form")[0].reset();
         addModalValidate.resetForm();
