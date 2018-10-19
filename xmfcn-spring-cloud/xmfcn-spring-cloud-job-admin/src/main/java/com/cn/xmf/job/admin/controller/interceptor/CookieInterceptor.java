@@ -1,26 +1,29 @@
-package com.cn.xmf.job.admin.config;
+package com.cn.xmf.job.admin.controller.interceptor;
 
 import com.cn.xmf.job.admin.core.util.FtlUtil;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
 import com.cn.xmf.util.SpringUtil;
 import com.cn.xmf.util.StringUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 
 /**
  * push cookies to model as cookieMap
  *
  * @author xuxueli 2015-12-12 18:09:04
  */
-public class XmfInterceptor extends HandlerInterceptorAdapter {
-    private static Logger logger = LoggerFactory.getLogger(XmfInterceptor.class);
+public class CookieInterceptor extends HandlerInterceptorAdapter {
+    private static Logger logger = LoggerFactory.getLogger(CookieInterceptor.class);
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,

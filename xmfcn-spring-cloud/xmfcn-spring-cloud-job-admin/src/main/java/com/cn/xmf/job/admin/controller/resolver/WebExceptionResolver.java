@@ -1,4 +1,4 @@
-package com.cn.xmf.job.admin.job.controller.resolver;
+package com.cn.xmf.job.admin.controller.resolver;
 
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.job.core.util.JacksonUtil;

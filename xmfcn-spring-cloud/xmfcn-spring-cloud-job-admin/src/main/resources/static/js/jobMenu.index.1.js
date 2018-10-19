@@ -33,32 +33,32 @@ $(function () {
             },
             {
                 "data": 'url',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'createTime',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'updateTime',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'remark',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'fid',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'level',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
@@ -66,7 +66,7 @@ $(function () {
                 "width": '15%',
                 "render": function (data, type, row) {
                     return function () {
-                        tableData['key'+row.id] = row;
+                        tableData['key' + row.id] = row;
                         return '<p id="' + row.id + '" >' +
                             '<button class="btn btn-warning btn-xs job_operate" _type="jobMenu_edit"" type="button">' + I18n.system_opt_edit + '</button>  ' +
                             '<button class="btn btn-danger btn-xs job_operate" _type="jobMenu_del" type="button">' + I18n.system_opt_del + '</button>  ' +
@@ -109,6 +109,13 @@ $(function () {
         jobMenuTable.fnDraw();
     });
 
+    // jobGroup change
+    $('#jobGroup').on('change', function () {
+        //reload
+        var jobGroup = $('#jobGroup').val();
+        window.location.href = base_url + "/jobinfo?jobGroup=" + jobGroup;
+    });
+
     // job operate
     $("#jobMenu_list").on('click', '.job_operate', function () {
         var typeName;
@@ -123,7 +130,9 @@ $(function () {
         } else {
             return;
         }
+
         var id = $(this).parent('p').attr("id");
+
         layer.confirm(I18n.system_ok + typeName + '?', {
             icon: 3,
             title: I18n.system_tips,
@@ -168,39 +177,33 @@ $(function () {
 
     $("#jobMenu_list").on('click', '.job_operate', function () {
         var type = $(this).attr("_type");
-        if ("jobMenu_edit" == type) {
+        if ("{className}_edit" == type) {
             edit(this);
         }
     });
 
-    //双击弹出编辑
-    $('#dict_list').on('dblclick','tr',function(){
-        edit(this);
-    });
-
     function edit(target) {
-        var id = $(target).parent('p').attr("id");
-        if(id==null||id==undefined||id<0) {
-            id = $(target).children('td').children('p').attr("id");
-        }
+        var id = $(this).parent('p').attr("id");
         var row = tableData['key' + id];
         if (row != null && row != undefined) {
-           $("#addModal .form input[name='name']").val(row.name);
-           $("#addModal .form input[name='url']").val(row.url);
-           $("#addModal .form input[name='isbutton']").val(row.isbutton);
-           $("#addModal .form input[name='remark']").val(row.remark);
-           $("#addModal .form input[name='fid']").val(row.fid);
-           $("#addModal .form input[name='level']").val(row.level);
-          $("#addModal .form input[name='id']").val(row.id);
+            $("#addModal .form input[name='name']").val(row.name);
+            $("#addModal .form input[name='url']").val(row.url);
+            $("#addModal .form input[name='isbutton']").val(row.isbutton);
+            $("#addModal .form input[name='remark']").val(row.remark);
+            $("#addModal .form input[name='fid']").val(row.fid);
+            $("#addModal .form input[name='level']").val(row.level);
+            $("#addModal .form input[name='id']").val(row.id);
         }
         // show
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
-     }
-    // 添加按钮
+    }
+
+    // add
     $(".add").click(function () {
-        edit(this);
+        // show
+        $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
+        //$("#addModal").draggable();//为模态对话框添加拖拽
     });
-    //编辑字段验证
     var addModalValidate = $("#addModal .form").validate({
         errorElement: 'span',
         errorClass: 'help-block',
@@ -209,16 +212,10 @@ $(function () {
             name: {
                 required: true
             },
-            url: {
-                required: true
-            },
             isbutton: {
                 required: true
             },
             remark: {
-                required: true
-            },
-            fid: {
                 required: true
             },
             level: {
@@ -229,17 +226,11 @@ $(function () {
             name: {
                 required: I18n.system_please_input + "菜单名称"
             },
-            url: {
-                required: I18n.system_please_input + "菜单地址"
-            },
             isbutton: {
                 required: I18n.system_please_input + "是否button按钮 0不是 1是"
             },
             remark: {
                 required: I18n.system_please_input + "备注"
-            },
-            fid: {
-                required: I18n.system_please_input + "父级菜单ID"
             },
             level: {
                 required: I18n.system_please_input + "菜单等级"
@@ -257,7 +248,7 @@ $(function () {
         },
         submitHandler: function (form) {
             $.post(base_url + "/jobMenu/save", $("#addModal .form").serialize(), function (data, status) {
-                if (data.code ==200) {
+                if (data.code == 200) {
                     $('#addModal').modal('hide');
                     layer.open({
                         title: I18n.system_tips,
@@ -286,4 +277,21 @@ $(function () {
         $(".remote_panel").show();	// remote
 
     });
+
+    /**
+     * find title by name, GlueType
+     */
+    function findGlueTypeTitle(glueType) {
+        var glueTypeTitle;
+        $("#addModal .form select[name=glueType] option").each(function () {
+            var name = $(this).val();
+            var title = $(this).text();
+            if (glueType == name) {
+                glueTypeTitle = title;
+                return false
+            }
+        });
+        return glueTypeTitle;
+    }
+
 });

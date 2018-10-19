@@ -1634,11 +1634,10 @@ a:hover, a:active, a:focus {
     position: relative;
     border-radius: 3px;
     background: #ffffff;
-    border-top: 1px solid #3dd496;
+    border-top: 3px solid #d2d6de;
     margin-bottom: 20px;
     width: 100%;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    margin-top: 2%;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1)
 }
 
 .box.box-primary {
@@ -2879,7 +2878,7 @@ a:hover, a:active, a:focus {
 }
 
 .table-bordered {
-    border: 1px solid #95c7a0
+    border: 1px solid #f4f4f4
 }
 
 .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {

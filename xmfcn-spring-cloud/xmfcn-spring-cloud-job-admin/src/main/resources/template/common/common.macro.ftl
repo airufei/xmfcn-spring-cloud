@@ -19,19 +19,19 @@
     <link rel="stylesheet" href="/jobadmin/adminlte/dist/css/AdminLTE-local.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="/jobadmin/adminlte/dist/css/skins/_all-skins.min.css">
-      
+
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-     <link rel="stylesheet" href="/jobadmin/treeview/bootstrap-treeview.css">
+
 	<!-- pace -->
 	<link rel="stylesheet" href="/jobadmin/plugins/pace/themes/pace-theme-flash.css">
 
 <#-- i18n -->
-    <#global I18n = I18nUtil.getMultString()?eval />
+	<#global I18n = I18nUtil.getMultString()?eval />
 
 </#macro>
 
@@ -49,31 +49,21 @@
 
     <!-- pace -->
     <script src="/jobadmin/plugins/pace/pace.min.js"></script>
+<#-- jquery cookie -->
+	<script src="/jobadmin/plugins/jquery/jquery.cookie.js"></script>
 
 <#-- layer -->
 	<script src="/jobadmin/plugins/layer/layer.js"></script>
 
 <#-- common -->
-<script src="/jobadmin/treeview/bootstrap-treeview.js"></script>
-
- <script src="/jobadmin/js/common.1.js"></script>
+    <script src="/jobadmin/js/common.1.js"></script>
     <script>
         var base_url = '${request.contextPath}/jobadmin';
-		if(base_url.indexOf("https")<0)
-		{
-            base_url=base_url.replace('http','https')
-		}
-		if(base_url.indexOf("https")<0)
-		{
-            base_url=base_url.replace('http','https')
-		}
         var I18n = ${I18nUtil.getMultString()};
     </script>
 
 </#macro>
-<#--
-导航参考目录  https://www.cnblogs.com/chenhtblog/p/8507752.html
--->
+
 <#macro commonHeader>
 	<header class="main-header">
         <a href="${request.contextPath}/jobadmin/" class="logo">
@@ -110,11 +100,9 @@
                     <li class="nav-click <#if pageName == "joblog">active</#if>" ><a href="${request.contextPath}/jobadmin/joblog"><i class="fa fa-circle-o text-green"></i><span>${I18n.joblog_name}</span></a></li>
                     <li class="nav-click <#if pageName == "jobgroup">active</#if>" ><a href="${request.contextPath}/jobadmin/jobgroup"><i class="fa fa-circle-o text-red"></i><span>${I18n.jobgroup_name}</span></a></li>
                     <li class="nav-click <#if pageName == "help">active</#if>" ><a href="${request.contextPath}/jobadmin/help"><i class="fa fa-circle-o text-gray"></i><span>${I18n.job_help}</span></a></li>
-                    <li class="nav-click <#if pageName == "dict">active</#if>" ><a href="${request.contextPath}/jobadmin/dict"><i class="fa fa-circle-o text-orange"></i><span>${I18n.dict_name}</span></a></li>
-                    <li class="nav-click <#if pageName == "dict">active</#if>" ><a href="${request.contextPath}/jobadmin/jobMenu"><i class="fa fa-circle-o text-orange"></i><span>菜单</span></a></li>
-                </ul>
+				</ul>
             </ul>
-	   <#-- <#list menuList as c>
+	    <#list menuList as c>
 			<ul class="sidebar-menu">
                 <li class="menu_header">${c.name}</li>
                 <ul class="sidebar_menu_list">
@@ -122,25 +110,99 @@
 				   <li class="nav-click active"><a
                            href="${request.contextPath}/${c1.url}"><i
                            class="fa fa-circle-o text-aqua"></i><span>${c1.name}</span></a></li>
-                   </#list>
-                &lt;#&ndash;
-                 &ndash;&gt;
-
+				   </#list>
                 </ul>
             </ul>
-        </#list>-->
+		</#list>
         </section>
         <!-- /.sidebar -->
     </aside>
 </#macro>
 
+<#macro commonControl >
+	<!-- Control Sidebar -->
+	<aside class="control-sidebar control-sidebar-dark">
+		<!-- Create the tabs -->
+		<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+			<li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+			<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+		</ul>
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<!-- Home tab content -->
+			<div class="tab-pane active" id="control-sidebar-home-tab">
+				<h3 class="control-sidebar-heading">近期活动</h3>
+				<ul class="control-sidebar-menu">
+					<li>
+						<a href="javascript::;">
+							<i class="menu-icon fa fa-birthday-cake bg-red"></i>
+							<div class="menu-info">
+								<h4 class="control-sidebar-subheading">张三今天过生日</h4>
+								<p>2015-09-10</p>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="javascript::;"> 
+							<i class="menu-icon fa fa-user bg-yellow"></i>
+							<div class="menu-info">
+								<h4 class="control-sidebar-subheading">Frodo 更新了资料</h4>
+								<p>更新手机号码 +1(800)555-1234</p>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="javascript::;"> 
+							<i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+							<div class="menu-info">
+								<h4 class="control-sidebar-subheading">Nora 加入邮件列表</h4>
+								<p>nora@example.com</p>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="javascript::;">
+						<i class="menu-icon fa fa-file-code-o bg-green"></i>
+						<div class="menu-info">
+							<h4 class="control-sidebar-subheading">001号定时作业调度</h4>
+							<p>5秒前执行</p>
+						</div>
+						</a>
+					</li>
+				</ul>
+				<!-- /.control-sidebar-menu -->
+			</div>
+			<!-- /.tab-pane -->
+
+			<!-- Settings tab content -->
+			<div class="tab-pane" id="control-sidebar-settings-tab">
+				<form method="post">
+					<h3 class="control-sidebar-heading">个人设置</h3>
+					<div class="form-group">
+						<label class="control-sidebar-subheading"> 左侧菜单自适应
+							<input type="checkbox" class="pull-right" checked>
+						</label>
+						<p>左侧菜单栏样式自适应</p>
+					</div>
+					<!-- /.form-group -->
+
+				</form>
+			</div>
+			<!-- /.tab-pane -->
+		</div>
+	</aside>
+	<!-- /.control-sidebar -->
+	<!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+	<div class="control-sidebar-bg"></div>
+</#macro>
+
 <#macro commonFooter >
 	<footer class="main-footer">
-        <b>MZ-JOB</b> ${I18n.admin_version}
-        <div class="pull-right hidden-xs">
+       <b>XMF-JOB</b> ${I18n.admin_version}
+		<div class="pull-right hidden-xs">
             <strong>Copyright &copy; 2015-${.now?string('yyyy')} &nbsp;
-                <a href="http://www.miuzone.com/" target="_blank">米族</a>
+                <a href="http://www.xmf.cn/" target="_blank" >小蜜蜂</a>
             </strong><!-- All rights reserved. -->
-        </div>
-    </footer>
+		</div>
+	</footer>
 </#macro>

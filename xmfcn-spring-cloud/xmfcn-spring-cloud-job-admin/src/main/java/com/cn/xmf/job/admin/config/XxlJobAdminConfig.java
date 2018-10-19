@@ -21,7 +21,8 @@ public class XxlJobAdminConfig implements InitializingBean {
     public void afterPropertiesSet() {
         adminConfig = this;
     }
-    @Value("${mz.job.i18n}")
+
+    @Value("${xmf.job.i18n}")
     private String i18n;
 
     public String getI18n() {

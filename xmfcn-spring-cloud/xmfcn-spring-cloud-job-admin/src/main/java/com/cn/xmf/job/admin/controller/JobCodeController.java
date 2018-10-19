@@ -1,4 +1,4 @@
-package com.cn.xmf.job.admin.job.controller;
+package com.cn.xmf.job.admin.controller;
 
 import com.cn.xmf.job.admin.job.dao.XxlJobInfoDao;
 import com.cn.xmf.job.admin.job.dao.XxlJobLogGlueDao;

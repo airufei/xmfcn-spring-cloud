@@ -1,6 +1,5 @@
 package com.cn.xmf.job.admin.config;
 
-
 import com.cn.xmf.job.admin.core.schedule.XxlJobDynamicScheduler;
 import com.cn.xmf.util.SpringUtil;
 import org.quartz.ee.servlet.QuartzInitializerListener;
@@ -9,6 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import javax.sql.DataSource;
@@ -16,10 +17,10 @@ import java.util.Properties;
 
 /**
  * 初始化bean
- * @author quyuanchao
+ * @author airufei
  * @date 2018-8-23 17:30
- * <p>Title: com.xxl.job.admin.config</p>
- * <p>Description: $DESCRIPTION</p>
+ * <p>Title: com.cn.xmf.job.admin.config</p>
+ * <p></p>
  */
 @Configuration
 public class BeanConfig {
@@ -27,8 +28,7 @@ public class BeanConfig {
     @Qualifier("dataSource")
     @Autowired
     private DataSource dataSource;
-
-    @Value("${mz.job.accessToken}")
+    @Value("${xmf.job.accessToken}")
     private String token;
 
     /*
