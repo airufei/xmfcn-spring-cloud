@@ -221,3 +221,17 @@ INSERT INTO `XXL_JOB_QRTZ_TRIGGER_GROUP` ( `app_name`, `title`, `order`, `addres
 
 commit;
 
+CREATE TABLE `t_sys_admin_menu` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(20) DEFAULT NULL COMMENT '菜单名称',
+  `url` varchar(50) DEFAULT NULL COMMENT '菜单地址',
+  `isbutton` int(1) DEFAULT '0' COMMENT '是否button按钮 0不是 1是',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `flag` int(1) DEFAULT '-1' COMMENT '删除标记 -1删除 1正常',
+  `remark` text COMMENT '备注',
+  `fid` bigint(20) DEFAULT '-1' COMMENT '父级菜单ID',
+  `level` int(11) DEFAULT '1' COMMENT '菜单等级',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字典数据表';
+
