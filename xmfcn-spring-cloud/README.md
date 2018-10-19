@@ -34,10 +34,10 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
 如：分页查询用户信息接口：http://localhost:8082/user/getList 参数：parms={"pageNo":1,"pageSize":20}，当前代码由https://github.com/airufei/xCode 生成
 
 5、xmfcn-spring-cloud-user-service 提供对外用户信息功能接口，用户基础信息查询，用户注册、登录等，不对外开放，只对微服务体系内开放。当前代码由 https://github.com/airufei/xCode 生成
-   所需数据库文件在xmfcn-spring-cloud/db/job-admin/xcode.sql
+   所需数据库文件在xmfcn-spring-cloud/db/job-admin/xcode.sql 
    
 6、xmfcn-spring-cloud-sys-service 作为日志基础服务，提供包括日志、缓存、队列、字典等系统相关的基础服务，不对外开放，只对微服务体系内开放。
-  所需数据库文件在xmfcn-spring-cloud/db/job-admin/xcode.sql
+  所需数据库文件在xmfcn-spring-cloud/db/job-admin/xcode.sql 
   
 7、xmfcn-spring-cloud-job-core 是xxl-job的基础核心工具类工程，修改工程名称和包路径是为了整体统一，内部实现还是基于xxl-job
 
