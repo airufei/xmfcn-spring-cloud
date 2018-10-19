@@ -11,6 +11,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class XxlJobAdminConfig implements InitializingBean {
+
+
+    @Value("${xmf.job.i18n}")
+    private String i18n;
+
     private static XxlJobAdminConfig adminConfig = null;
 
     public static XxlJobAdminConfig getAdminConfig() {
@@ -22,8 +27,6 @@ public class XxlJobAdminConfig implements InitializingBean {
         adminConfig = this;
     }
 
-    @Value("${xmf.job.i18n}")
-    private String i18n;
 
     public String getI18n() {
         return i18n;
