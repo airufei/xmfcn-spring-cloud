@@ -15,7 +15,6 @@
         <module>xmfcn-spring-cloud-job-admin</module>
         <module>xmfcn-spring-cloud-user-api</module>
         <module>xmfcn-spring-cloud-user-service</module>
-
     </modules>
     <packaging>pom</packaging>
     <parent>
