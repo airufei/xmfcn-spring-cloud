@@ -1,6 +1,6 @@
 # ==Tomcat配置==
 server:
-  port: 8084
+  port: 8090
   tomcat:
     max-connections: 20000 # 最大连接数 表示有多少个socket连接到tomcat上 NIO模式下默认是10000
     accept-count: 200 # 允许的最大连接数，即等待队列 应大于等于max-threads 默认值75
@@ -38,7 +38,7 @@ spring:
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/cooxin?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    url: jdbc:mysql://127.0.0.1:3306/xcode?useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: abc123
     initialSize: 10 #连接池初始化大小
@@ -56,6 +56,7 @@ spring:
       name: serviceadmin
       password: service987423Ds887
       roles: admin
+
   redis:
     database: 0
     jedis:
@@ -69,10 +70,10 @@ spring:
         max-idle: 3000
         max-wait: 3000ms
       shutdown-timeout: 5000ms
-    host: 192.168.1.18
-    password: xmfred*&21^%1dd22
+    host: 10.105.10.113
+    password: testredis
     port: 6379
-    timeout: 5000ms
+    timeout: 4000ms
 # myBatis配置
 mybatis:
   # mybatis主配置文件

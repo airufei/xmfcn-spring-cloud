@@ -1,6 +1,6 @@
 # ==Tomcat配置==
 server:
-  port: 8084
+  port: 8089
   tomcat:
     max-connections: 20000 # 最大连接数 表示有多少个socket连接到tomcat上 NIO模式下默认是10000
     accept-count: 200 # 允许的最大连接数，即等待队列 应大于等于max-threads 默认值75
@@ -69,8 +69,8 @@ spring:
         max-idle: 3000
         max-wait: 3000ms
       shutdown-timeout: 5000ms
-    host: 192.168.1.18
-    password: xmfred*&21^%1dd22
+    host: 10.105.10.113
+    password: testredis
     port: 6379
     timeout: 4000ms
 
