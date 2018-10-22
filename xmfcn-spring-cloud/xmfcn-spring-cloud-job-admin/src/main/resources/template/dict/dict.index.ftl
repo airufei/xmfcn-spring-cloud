@@ -156,14 +156,14 @@
 
 <@netCommon.commonScript />
 <!-- DataTables -->
-<script src="/jobadmin/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script><#--//拖拽-->
+
 <script src="/jobadmin/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="/jobadmin/plugins/jquery/jquery.validate.min.js"></script>
 <!-- moment -->
 <script src="/jobadmin/adminlte/plugins/daterangepicker/moment.min.js"></script>
+<script src="/jobadmin/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script><#--//拖拽-->
 <script src="/jobadmin/js/dict.index.1.js"></script>
-
 <script>
     $(document).ready(function () {
         $("#modalDialog").draggable();		        //为模态对话框添加拖拽，拖拽区域只在顶部栏

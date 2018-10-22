@@ -272,24 +272,24 @@ public class SysCommonService {
 
     */
 /**
-     * getOnlyNo(米族产生24位唯一单号)
+     * getOnlyOneNo(米族产生24位唯一单号)
      *
      * @param type
      * @return
      *//*
 
-    public String getOnlyNo(String prefix) {
+    public String getOnlyOneNo(String prefix) {
         String onlyNo = null;
-        logger.info("getOnlyNo(获取唯一编号) 开始：" + prefix);
+        logger.info("getOnlyOneNo(获取唯一编号) 开始：" + prefix);
         if (StringUtil.isBlank(prefix)) {
             return onlyNo;
         }
         // 前缀必须为四位字符
         try {
-            onlyNo = null;// redisService.getOnlyNo(prefix);
+            onlyNo = null;// redisService.getOnlyOneNo(prefix);
 
         } catch (Exception e) {
-            logger.error("getOnlyNo(获取唯一编号):" + StringUtil.getExceptionMsg(e));
+            logger.error("getOnlyOneNo(获取唯一编号):" + StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
         if (StringUtil.isBlank(onlyNo))//如果获取单号失败，则自动生成一个
@@ -297,7 +297,7 @@ public class SysCommonService {
             String s = StringUtil.randomCodeUtil();//20位
             onlyNo = prefix + s;
         }
-        logger.info("getOnlyNo(获取唯一编号) 结束 onlyNo ：" + onlyNo);
+        logger.info("getOnlyOneNo(获取唯一编号) 结束 onlyNo ：" + onlyNo);
         return onlyNo;
     }
 }

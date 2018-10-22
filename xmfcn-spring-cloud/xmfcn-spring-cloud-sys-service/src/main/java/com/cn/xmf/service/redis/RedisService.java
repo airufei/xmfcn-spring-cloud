@@ -25,8 +25,12 @@ public class RedisService {
 
     private Jedis getJedis() {
         Jedis jedis = null;
-        if (jedisConnectionFactory != null) {
-            jedis = jedisConnectionFactory.getShardInfo().createResource();
+        try {
+            if (jedisConnectionFactory != null) {
+                jedis = jedisConnectionFactory.getShardInfo().createResource();
+            }
+        } catch (Exception e) {
+            logger.error("getJedis:获取redis连接失败："+StringUtil.getExceptionMsg(e));
         }
         return jedis;
     }
@@ -419,14 +423,14 @@ public class RedisService {
     }
 
     /**
-     * getOnlyNo(获取唯一编号)
+     * getOnlyOneNo(获取唯一编号)
      *
      * @param type
      * @return
      */
-    @RequestMapping("getOnlyNo")
-    public String getOnlyNo(String prefix) {
-        logger.info("getOnlyNo(获取唯一编号) 开始：" + prefix);
+    @RequestMapping("getOnlyOneNo")
+    public String getOnlyOneNo(String prefix) {
+        logger.info("getOnlyOneNo(获取唯一编号) 开始：" + prefix);
         String onlyNo = null;
         if (StringUtil.isBlank(prefix)) {
             return onlyNo;
@@ -446,7 +450,7 @@ public class RedisService {
             logger.error(StringUtil.getExceptionMsg(e));
         }
         onlyNo = prefix + DateUtil.formatDate(new Date(), "yyyyMMddHHmmss") + number;
-        logger.info("getOnlyNo(获取唯一编号) 结束  ：" + onlyNo);
+        logger.info("getOnlyOneNo(获取唯一编号) 结束  ：" + onlyNo);
         return onlyNo;
     }
 

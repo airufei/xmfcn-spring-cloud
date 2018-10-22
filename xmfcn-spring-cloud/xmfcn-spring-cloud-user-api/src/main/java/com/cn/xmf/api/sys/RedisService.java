@@ -82,10 +82,10 @@ public interface RedisService {
     public Long getQueueLength(@RequestParam(value = "key") String key);
 
     /**
-     * getOnlyNo(获取唯一编号)
+     * getOnlyOneNo(获取唯一编号)
      * @param prefix
      * @return
      */
-    @RequestMapping(value = "getOnlyNo",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public  String getOnlyNo(@RequestParam(value = "prefix") String prefix);
+    @RequestMapping(value = "getOnlyOneNo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public  String getOnlyOneNo(@RequestParam(value = "prefix") String prefix);
 }

@@ -1,29 +1,29 @@
-package com.cn.xmf.job.admin.controller.interceptor;
+package com.cn.xmf.job.admin.config;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.job.admin.core.util.FtlUtil;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
+import com.cn.xmf.model.user.User;
 import com.cn.xmf.util.SpringUtil;
 import com.cn.xmf.util.StringUtil;
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
+import java.util.List;
 
 /**
  * push cookies to model as cookieMap
  *
  * @author xuxueli 2015-12-12 18:09:04
  */
-public class CookieInterceptor extends HandlerInterceptorAdapter {
-    private static Logger logger = LoggerFactory.getLogger(CookieInterceptor.class);
+public class JobAdminInterceptor extends HandlerInterceptorAdapter {
+    private static Logger logger = LoggerFactory.getLogger(JobAdminInterceptor.class);
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
@@ -31,27 +31,28 @@ public class CookieInterceptor extends HandlerInterceptorAdapter {
         if (modelAndView != null) {
             modelAndView.addObject("I18nUtil", FtlUtil.generateStaticModel(I18nUtil.class.getName()));
         }
-        super.postHandle(request, response, handler, modelAndView);
         String webRoot = getWebRootUrl();
         if (StringUtil.isBlank(webRoot)) {
+            super.postHandle(request, response, handler, modelAndView);
             return;
         }
         String loginUrl = webRoot + "/jobadmin/toLogin";
         String strUrl = request.getRequestURI();
-        if(strUrl!=null&&(strUrl.contains("toLogin")||strUrl.contains("login")||strUrl.contains("logout")))
-        {
+        if (strUrl != null && (strUrl.contains("toLogin") || strUrl.contains("login") || strUrl.contains("logout") || strUrl.equals("/api"))) {
+            super.postHandle(request, response, handler, modelAndView);
             return;
         }
         logger.info("请求地址============================" + strUrl);
-        logger.info("登录地址============================" + loginUrl);
         HttpSession session = null;
         try {
             session = request.getSession();
         } catch (Exception e) {
             e.printStackTrace();
+            super.postHandle(request, response, handler, modelAndView);
             return;
         }
         if (session == null) {
+            super.postHandle(request, response, handler, modelAndView);
             return;
         }
         Object user = request.getSession().getAttribute("user");
@@ -59,6 +60,13 @@ public class CookieInterceptor extends HandlerInterceptorAdapter {
             StringUtil.redirect(response, loginUrl);
             return;
         }
+        User u = (User) user;
+        if (u == null) {
+            StringUtil.redirect(response, loginUrl);
+            return;
+        }
+        // getMunuList(modelAndView,u);
+        super.postHandle(request, response, handler, modelAndView);
     }
 
     /**
@@ -73,4 +81,26 @@ public class CookieInterceptor extends HandlerInterceptorAdapter {
         }
         return environment.getProperty("xmf.job.login.webRoot");
     }
+
+    /*   *//**
+     * 获取菜单数据
+     *
+     * @return
+     *//*
+    public void getMunuList(ModelAndView modelAndView,JobUser u) {
+        JobMenuService jobMenuService = (JobMenuService) SpringUtil.getBean("jobMenuService");
+        if (jobMenuService == null) {
+            return ;
+        }
+        JobMenu menu = new JobMenu();
+        menu.setLevel(1);
+        List<JobMenu> menuList = jobMenuService.getJobMenuList(menu);
+        JobMenu secMenu = new JobMenu();
+        secMenu.setLevel(2);
+        List<JobMenu> secList = jobMenuService.getJobMenuList(secMenu);
+        if (modelAndView != null) {
+            modelAndView.addObject("menuList", menuList);
+            modelAndView.addObject("menuSecList", secList);
+        }
+    }*/
 }
