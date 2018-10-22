@@ -1,71 +1,72 @@
 $(function () {
-
-    // init date tables
-    var dictTable = $("#dict_list").dataTable({
+    //查询表格数据
+    var jobMenuTable = $("#jobMenu_list").dataTable({
         "deferRender": true,
         "processing": true,
         "serverSide": true,
-        scrollX: true,
         "searching": false,
         "ordering": false,
+        scrollX: true,
         "ajax": {
-            url: base_url + "/dict/pageList",
+            url: base_url + "/jobMenu/pageList",
             type: "post",
             data: function (d) {
                 var obj = {};
-                obj.dictKey = $('#dictKey').val();
-                obj.dictValue = $('#dictValue').val();
-                obj.type = $('#type').val();
-                obj.id = $('#id').val();
+                obj.name = $('#name').val();
+                obj.fid = $('#fid').val();
+                obj.level = $('#level').val();
                 obj.start = d.start;
                 obj.length = d.length;
                 return obj;
             }
         },
+
         //"scrollX": true,	// scroll x，close self-adaption
         "columns": [
+
             {
                 "data": 'id',
-                "visible": false
-            }
-            ,
+                "visible": false,
+                "width": '180'
+            },
             {
                 "data": I18n.system_opt,
-                "width": '30',
+                "width": '15%',
                 "render": function (data, type, row) {
                     return function () {
                         tableData['key' + row.id] = row;
                         return '<p id="' + row.id + '" >' +
-                            '<button class="btn btn-warning btn-xs job_operate" _type="dict_save" type="button">' + I18n.system_opt_edit + '</button>  ' +
-                            '<button class="btn btn-danger btn-xs job_operate" _type="dict_del" type="button">' + I18n.system_opt_del + '</button>  ' +
+                            '<button class="btn btn-warning btn-xs job_operate" _type="jobMenu_edit"" type="button">' + I18n.system_opt_edit + '</button>  ' +
+                            '<button class="btn btn-danger btn-xs job_operate" _type="jobMenu_del" type="button">' + I18n.system_opt_del + '</button>  ' +
                             '</p>';
                     };
                 }
             },
             {
-                "data": 'dictKey',
+                "data": 'name',
                 "visible": true,
-                "width": '10'
-            },
-            {
-                "data": 'dictValue',
+                "width": '180'
+            }
+            , {
+                "data": 'url',
                 "visible": true,
-                "width": '20'
-            },
+                "width": '180'
+            }
+            ,
             {
-                "data": 'type',
-                "width": '10',
-                "visible": true
+                "data": 'updatetimestr',
+                "visible": true,
+                "width": '180'
             },
             {
                 "data": 'remark',
                 "visible": true,
-                "width": '20'
+                "width": '180'
             },
             {
-                "data": 'updatetimestr',
-                "width": '10',
-                "visible": true
+                "data": 'level',
+                "visible": true,
+                "width": '180'
             }
         ],
         "language": {
@@ -94,32 +95,24 @@ $(function () {
         }
     });
 
-
     // table data
     var tableData = {};
 
-    // search btn
+    // 查询按钮事件
     $('#searchBtn').on('click', function () {
-        dictTable.fnDraw();
+        jobMenuTable.fnDraw();
     });
 
-    // jobGroup change
-    $('#jobGroup').on('change', function () {
-        //reload
-        var jobGroup = $('#jobGroup').val();
-        window.location.href = base_url + "/jobinfo?jobGroup=" + jobGroup;
-    });
 
-    // job operate
-    $("#dict_list").on('click', '.job_operate', function () {
+    // 操作按钮事件
+    $("#jobMenu_list").on('click', '.job_operate', function () {
         var typeName;
         var url;
         var needFresh = false;
-
         var type = $(this).attr("_type");
-        if ("dict_del" == type) {
+        if ("jobMenu_del" == type) {
             typeName = I18n.system_opt_del;
-            url = base_url + "/dict/delete";
+            url = base_url + "/jobMenu/delete";
             needFresh = true;
         } else {
             return;
@@ -131,55 +124,55 @@ $(function () {
             btn: [I18n.system_ok, I18n.system_cancel]
         }, function (index) {
             layer.close(index);
-            deleted(url,id,typeName,needFresh);
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    "id": id
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.code === 200) {
+                        layer.open({
+                            title: I18n.system_tips,
+                            btn: [I18n.system_ok],
+                            content: typeName + I18n.system_success,
+                            icon: '1',
+                            end: function (layero, index) {
+                                if (needFresh) {
+                                    //window.location.reload();
+                                    jobMenuTable.fnDraw(false);
+                                }
+                            }
+                        });
+                    } else {
+                        layer.open({
+                            title: I18n.system_tips,
+                            btn: [I18n.system_ok],
+                            content: (data.msg || typeName + I18n.system_fail),
+                            icon: '2'
+                        });
+                    }
+                }
+            });
         });
     });
 
-    //删除
-    function deleted(url,id,typeName,needFresh) {
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: {
-                "id": id
-            },
-            dataType: "json",
-            success: function (data) {
-                if (data.code === 200) {
-                    layer.open({
-                        title: I18n.system_tips,
-                        btn: [I18n.system_ok],
-                        content: typeName + I18n.system_success,
-                        icon: '1',
-                        end: function (layero, index) {
-                            if (needFresh) {
-                                dictTable.fnDraw(false);
-                            }
-                        }
-                    });
-                } else {
-                    layer.open({
-                        title: I18n.system_tips,
-                        btn: [I18n.system_ok],
-                        content: (data.msg || typeName + I18n.system_fail),
-                        icon: '2'
-                    });
-                }
-            }
-        });
-    }
 
-    $("#dict_list").on('click', '.job_operate', function () {
+    //编辑按钮事件
+    $("#jobMenu_list").on('click', '.job_operate', function () {
         var type = $(this).attr("_type");
-        if ("dict_save" == type) {
+        if ("{className}_edit" == type) {
             edit(this);
         }
     });
+
     //双击弹出编辑
-    $('#dict_list').on('dblclick', 'tr', function () {
+    $('#jobMenu_list').on('dblclick', 'tr', function () {
         edit(this);
     });
 
+    //处理编辑页面的数据
     function edit(target) {
         var id = $(target).parent('p').attr("id");
         if (id == null || id == undefined || id < 0) {
@@ -187,52 +180,68 @@ $(function () {
         }
         var row = tableData['key' + id];
         if (row != null && row != undefined) {
-            $("#addModal .form input[name='id']").val(row.id);
-            $("#addModal .form input[name='dictKey']").val(row.dictKey);
-            $("#addModal .form input[name='dictValue']").val(row.dictValue);
-            $("#addModal .form input[name='type']").val(row.type);
+            $("#addModal .form input[name='name']").val(row.name);
+            $("#addModal .form input[name='url']").val(row.url);
+            $("#addModal .form input[name='isbutton']").val(row.isbutton);
             $("#addModal .form input[name='remark']").val(row.remark);
+            $("#addModal .form input[name='fid']").val(row.fid);
+            $("#addModal .form input[name='level']").val(row.level);
+            $("#addModal .form input[name='id']").val(row.id);
         }
         // show
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
     }
 
-    // add
+    // 添加页面按钮事件
     $(".add").click(function () {
-        $("#addModal .form")[0].reset();
-        $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
+        $("#addModal .form input[name='id']").val(0);
+        edit(this);
     });
+
+    //验证保存数据并且提交
     var addModalValidate = $("#addModal .form").validate({
         errorElement: 'span',
         errorClass: 'help-block',
         focusInvalid: true,
         rules: {
-            dictKey: {
+            name: {
                 required: true
             },
-            dictValue: {
+            url: {
                 required: true
             },
-            type: {
+            isbutton: {
                 required: true
             },
             remark: {
                 required: true
-            }
+            },
+            fid: {
+                required: true
+            },
+            level: {
+                required: true
+            },
         },
         messages: {
-            dictKey: {
-                required: I18n.system_please_input + "键"
+            name: {
+                required: I18n.system_please_input + "菜单名称"
             },
-            dictValue: {
-                required: I18n.system_please_input + "值"
+            url: {
+                required: I18n.system_please_input + "菜单地址"
             },
-            type: {
-                required: I18n.system_please_input + "类型"
+            isbutton: {
+                required: I18n.system_please_input + "是否button按钮 0不是 1是"
             },
             remark: {
-                digits: I18n.system_please_input + "备注"
-            }
+                required: I18n.system_please_input + "备注"
+            },
+            fid: {
+                required: I18n.system_please_input + "父级菜单ID"
+            },
+            level: {
+                required: I18n.system_please_input + "菜单等级"
+            },
         },
         highlight: function (element) {
             $(element).closest('.form-group').addClass('has-error');
@@ -245,8 +254,8 @@ $(function () {
             element.parent('div').append(error);
         },
         submitHandler: function (form) {
-            $.post(base_url + "/dict/save", $("#addModal .form").serialize(), function (data, status) {
-                if (data.code === 200) {
+            $.post(base_url + "/jobMenu/save", $("#addModal .form").serialize(), function (data, status) {
+                if (data.code == 200) {
                     $('#addModal').modal('hide');
                     layer.open({
                         title: I18n.system_tips,
@@ -254,7 +263,7 @@ $(function () {
                         content: I18n.system_add_suc,
                         icon: '1',
                         end: function (layero, index) {
-                            dictTable.fnDraw();
+                            jobMenuTable.fnDraw();
                         }
                     });
                 } else {
@@ -268,6 +277,7 @@ $(function () {
             });
         }
     });
+    //重置编辑页面数据
     $("#addModal").on('hide.bs.modal', function () {
         $("#addModal .form")[0].reset();
         addModalValidate.resetForm();
@@ -275,21 +285,4 @@ $(function () {
         $(".remote_panel").show();	// remote
 
     });
-
-    /**
-     * find title by name, GlueType
-     */
-    function findGlueTypeTitle(glueType) {
-        var glueTypeTitle;
-        $("#addModal .form select[name=glueType] option").each(function () {
-            var name = $(this).val();
-            var title = $(this).text();
-            if (glueType == name) {
-                glueTypeTitle = title;
-                return false
-            }
-        });
-        return glueTypeTitle;
-    }
-
 });
