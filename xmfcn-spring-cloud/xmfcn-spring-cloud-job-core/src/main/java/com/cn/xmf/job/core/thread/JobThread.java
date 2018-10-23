@@ -115,7 +115,7 @@ public class JobThread extends Thread{
 					idleTimes = 0;
 					triggerLogIdSet.remove(triggerParam.getLogId());
 
-					// user filename, like "logPath/yyyy-MM-dd/9999.user"
+					// log filename, like "logPath/yyyy-MM-dd/9999.log"
 					String logFileName = XxlJobFileAppender.makeLogFileName(new Date(triggerParam.getLogDateTim()), triggerParam.getLogId());
 					XxlJobFileAppender.contextHolder.set(logFileName);
 					ShardingUtil.setShardingVo(new ShardingUtil.ShardingVO(triggerParam.getBroadcastIndex(), triggerParam.getBroadcastTotal()));

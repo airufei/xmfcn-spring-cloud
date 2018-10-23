@@ -4,9 +4,11 @@ import com.cn.xmf.job.admin.core.model.XxlJobGroup;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.admin.core.model.XxlJobLog;
 import com.cn.xmf.job.admin.core.schedule.XxlJobDynamicScheduler;
+import com.cn.xmf.job.admin.core.trigger.TriggerTypeEnum;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.job.core.handler.IJobHandler;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +46,7 @@ public class JobFailMonitorHelper {
 						List<Integer> jobLogIdList = new ArrayList<Integer>();
 						int drainToNum = JobFailMonitorHelper.instance.queue.drainTo(jobLogIdList);
 
-						if (jobLogIdList!=null&&jobLogIdList.size()>0) {
+						if (CollectionUtils.isNotEmpty(jobLogIdList)) {
 							for (Integer jobLogId : jobLogIdList) {
 								if (jobLogId==null || jobLogId==0) {
 									continue;
@@ -56,13 +58,13 @@ public class JobFailMonitorHelper {
 								if (IJobHandler.SUCCESS.getCode() == log.getTriggerCode() && log.getHandleCode() == 0) {
 									// job running
 									JobFailMonitorHelper.monitor(jobLogId);
-									logger.info(">>>>>>>>>>> job monitor, job running, JobLogId:{}", jobLogId);
+									logger.debug(">>>>>>>>>>> job monitor, job running, JobLogId:{}", jobLogId);
 								} else if (IJobHandler.SUCCESS.getCode() == log.getHandleCode()) {
 									// job success, pass
 									logger.info(">>>>>>>>>>> job monitor, job success, JobLogId:{}", jobLogId);
-								} else /*if (IJobHandler.FAIL.getCode() == user.getTriggerCode()
-										|| IJobHandler.FAIL.getCode() == user.getHandleCode()
-										|| IJobHandler.FAIL_RETRY.getCode() == user.getHandleCode() )*/ {
+								} else /*if (IJobHandler.FAIL.getCode() == log.getTriggerCode()
+										|| IJobHandler.FAIL.getCode() == log.getHandleCode()
+										|| IJobHandler.FAIL_RETRY.getCode() == log.getHandleCode() )*/ {
 
 									// job fail,
 
@@ -70,10 +72,7 @@ public class JobFailMonitorHelper {
 									XxlJobInfo info = XxlJobDynamicScheduler.xxlJobInfoDao.loadById(log.getJobId());
 
 									if (log.getExecutorFailRetryCount() > 0) {
-
-										// TODO，分片任务失败重试优化，仅重试失败分片
-
-										JobTriggerPoolHelper.trigger(log.getJobId(), (log.getExecutorFailRetryCount()-1), I18nUtil.getString("jobconf_trigger_type_retry"));
+										JobTriggerPoolHelper.trigger(log.getJobId(), TriggerTypeEnum.RETRY, (log.getExecutorFailRetryCount()-1), log.getExecutorShardingParam(), null);
 										String retryMsg = "<br><br><span style=\"color:#F39C12;\" > >>>>>>>>>>>"+ I18nUtil.getString("jobconf_trigger_type_retry") +"<<<<<<<<<<< </span><br>";
 										log.setTriggerMsg(log.getTriggerMsg() + retryMsg);
 										XxlJobDynamicScheduler.xxlJobLogDao.updateTriggerInfo(log);
@@ -138,7 +137,7 @@ public class JobFailMonitorHelper {
 	// ---------------------- alarm ----------------------
 
 	// email alarm template
-	private static final String MAIL_BODY_TEMPLATE = "<h5>" + I18nUtil.getString("jobconf_monitor_detail") + "：</span>" +
+	private static final String mailBodyTemplate = "<h5>" + I18nUtil.getString("jobconf_monitor_detail") + "：</span>" +
 			"<table border=\"1\" cellpadding=\"3\" style=\"border-collapse:collapse; width:80%;\" >\n" +
 			"   <thead style=\"font-weight: bold;color: #ffffff;background-color: #ff8c00;\" >" +
 			"      <tr>\n" +
@@ -148,7 +147,7 @@ public class JobFailMonitorHelper {
 			"         <td width=\"10%\" >"+ I18nUtil.getString("jobconf_monitor_alarm_title") +"</td>\n" +
 			"         <td width=\"40%\" >"+ I18nUtil.getString("jobconf_monitor_alarm_content") +"</td>\n" +
 			"      </tr>\n" +
-			"   <thead/>\n" +
+			"   </thead>\n" +
 			"   <tbody>\n" +
 			"      <tr>\n" +
 			"         <td>{0}</td>\n" +
@@ -157,7 +156,7 @@ public class JobFailMonitorHelper {
 			"         <td>"+ I18nUtil.getString("jobconf_monitor_alarm_type") +"</td>\n" +
 			"         <td>{3}</td>\n" +
 			"      </tr>\n" +
-			"   <tbody>\n" +
+			"   </tbody>\n" +
 			"</table>";
 
 	/**
@@ -177,17 +176,19 @@ public class JobFailMonitorHelper {
 			if (jobLog.getHandleCode()>0 && jobLog.getHandleCode() != ReturnT.SUCCESS_CODE) {
 				alarmContent += "<br>HandleCode=" + jobLog.getHandleMsg();
 			}
+
 			Set<String> emailSet = new HashSet<String>(Arrays.asList(info.getAlarmEmail().split(",")));
 			for (String email: emailSet) {
 				XxlJobGroup group = XxlJobDynamicScheduler.xxlJobGroupDao.load(Integer.valueOf(info.getJobGroup()));
+
 				String title = I18nUtil.getString("jobconf_monitor");
-				String content = MessageFormat.format(MAIL_BODY_TEMPLATE,
+				String content = MessageFormat.format(mailBodyTemplate,
 						group!=null?group.getTitle():"null",
 						info.getId(),
 						info.getJobDesc(),
 						alarmContent);
-				//TODO, custom alarm strategy
-				//DingTalkUtil.send("",content);
+
+				//MailUtil.sendMail(email, title, content);
 			}
 		}
 

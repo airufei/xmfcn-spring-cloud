@@ -1,7 +1,6 @@
 package com.cn.xmf.job.admin.core.route;
 
 import com.cn.xmf.job.admin.core.route.strategy.*;
-import com.cn.xmf.job.admin.core.route.strategy.*;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
 
 /**

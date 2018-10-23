@@ -1,7 +1,6 @@
 package com.cn.xmf.job.core.log;
 
 import com.cn.xmf.job.core.util.DateUtil;
-import com.cn.xmf.job.core.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.FormattingTuple;
@@ -18,7 +17,7 @@ public class XxlJobLogger {
     private static Logger logger = LoggerFactory.getLogger("xxl-job logger");
 
     /**
-     * append user
+     * append log
      *
      * @param callInfo
      * @param appendLog
@@ -26,15 +25,17 @@ public class XxlJobLogger {
     private static void logDetail(StackTraceElement callInfo, String appendLog) {
 
 
-        /*// "yyyy-MM-dd HH:mm:ss [ClassName]-[MethodName]-[LineNumber]-[ThreadName] user";
+        /*// "yyyy-MM-dd HH:mm:ss [ClassName]-[MethodName]-[LineNumber]-[ThreadName] log";
         StackTraceElement[] stackTraceElements = new Throwable().getStackTrace();
         StackTraceElement callInfo = stackTraceElements[1];*/
 
-        String formatAppendLog = DateUtil.format(new Date()) + " " +
-                "[" + callInfo.getClassName() + "#" + callInfo.getMethodName() + "]" + "-" +
-                "[" + callInfo.getLineNumber() + "]" + "-" +
-                "[" + Thread.currentThread().getName() + "]" + " " +
-                (appendLog != null ? appendLog : "");
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(DateUtil.format(new Date())).append(" ")
+            .append("["+ callInfo.getClassName() + "#" + callInfo.getMethodName() +"]").append("-")
+            .append("["+ callInfo.getLineNumber() +"]").append("-")
+            .append("["+ Thread.currentThread().getName() +"]").append(" ")
+            .append(appendLog!=null?appendLog:"");
+        String formatAppendLog = stringBuffer.toString();
 
         // appendlog
         String logFileName = XxlJobFileAppender.contextHolder.get();
@@ -46,7 +47,7 @@ public class XxlJobLogger {
     }
 
     /**
-     * append user with pattern
+     * append log with pattern
      *
      * @param appendLogPattern  like "aaa {} bbb {} ccc"
      * @param appendLogArguments    like "111, true"

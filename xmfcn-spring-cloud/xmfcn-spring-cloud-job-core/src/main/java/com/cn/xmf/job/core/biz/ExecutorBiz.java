@@ -5,20 +5,18 @@ import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.job.core.biz.model.TriggerParam;
 
 /**
- * 执行器API服务
  * Created by xuxueli on 17/3/1.
  */
 public interface ExecutorBiz {
 
     /**
-     * beat（心跳检测）
-     *
+     * beat
      * @return
      */
     public ReturnT<String> beat();
 
     /**
-     * idle beat（忙碌检测）
+     * idle beat
      *
      * @param jobId
      * @return
@@ -26,16 +24,14 @@ public interface ExecutorBiz {
     public ReturnT<String> idleBeat(int jobId);
 
     /**
-     * kill（终止任务）
-     *
+     * kill
      * @param jobId
      * @return
      */
     public ReturnT<String> kill(int jobId);
 
     /**
-     * user（获取Rolling Log）
-     *
+     * log
      * @param logDateTim
      * @param logId
      * @param fromLineNum
@@ -44,8 +40,7 @@ public interface ExecutorBiz {
     public ReturnT<LogResult> log(long logDateTim, int logId, int fromLineNum);
 
     /**
-     * run（触发任务执行）
-     *
+     * run
      * @param triggerParam
      * @return
      */

@@ -10,7 +10,8 @@ public enum GlueTypeEnum {
     GLUE_SHELL("GLUE(Shell)", true, "bash", ".sh"),
     GLUE_PYTHON("GLUE(Python)", true, "python", ".py"),
     GLUE_PHP("GLUE(PHP)", true, "php", ".php"),
-    GLUE_NODEJS("GLUE(Nodejs)", true, "node", ".js");
+    GLUE_NODEJS("GLUE(Nodejs)", true, "node", ".js"),
+    GLUE_POWERSHELL("GLUE(PowerShell)", true, "powershell ", ".ps1");
 
     private String desc;
     private boolean isScript;
@@ -22,15 +23,6 @@ public enum GlueTypeEnum {
         this.isScript = isScript;
         this.cmd = cmd;
         this.suffix = suffix;
-    }
-
-    public static GlueTypeEnum match(String name) {
-        for (GlueTypeEnum item : GlueTypeEnum.values()) {
-            if (item.name().equals(name)) {
-                return item;
-            }
-        }
-        return null;
     }
 
     public String getDesc() {
@@ -47,6 +39,15 @@ public enum GlueTypeEnum {
 
     public String getSuffix() {
         return suffix;
+    }
+
+    public static GlueTypeEnum match(String name){
+        for (GlueTypeEnum item: GlueTypeEnum.values()) {
+            if (item.name().equals(name)) {
+                return item;
+            }
+        }
+        return null;
     }
 
 }

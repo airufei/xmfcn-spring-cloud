@@ -9,19 +9,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * store trigger user in each user-file
+ * store trigger log in each log-file
  * @author xuxueli 2016-3-12 19:25:12
  */
 public class XxlJobFileAppender {
 	private static Logger logger = LoggerFactory.getLogger(XxlJobFileAppender.class);
 	
-	// for JobThread (support user for child thread of job handler)
+	// for JobThread (support log for child thread of job handler)
 	//public static ThreadLocal<String> contextHolder = new ThreadLocal<String>();
 	public static final InheritableThreadLocal<String> contextHolder = new InheritableThreadLocal<String>();
 
 
 	/**
-	 * user base path
+	 * log base path
 	 *
 	 * strut like:
 	 * 	---/
@@ -29,8 +29,8 @@ public class XxlJobFileAppender {
 	 * 	---/gluesource/10_1514171108000.js
 	 * 	---/gluesource/10_1514171108000.js
 	 * 	---/2017-12-25/
-	 * 	---/2017-12-25/639.user
-	 * 	---/2017-12-25/821.user
+	 * 	---/2017-12-25/639.log
+	 * 	---/2017-12-25/821.log
 	 *
 	 */
 	private static String logBasePath = "/data/applogs/xxl-job/jobhandler";
@@ -62,7 +62,7 @@ public class XxlJobFileAppender {
 	}
 
 	/**
-	 * user filename, like "logPath/yyyy-MM-dd/9999.user"
+	 * log filename, like "logPath/yyyy-MM-dd/9999.log"
 	 *
 	 * @param triggerDate
 	 * @param logId
@@ -77,22 +77,23 @@ public class XxlJobFileAppender {
 			logFilePath.mkdir();
 		}
 
-		// filePath/yyyy-MM-dd/9999.user
-		return logFilePath.getPath()
+		// filePath/yyyy-MM-dd/9999.log
+		String logFileName = logFilePath.getPath()
 				.concat(File.separator)
 				.concat(String.valueOf(logId))
-				.concat(".user");
+				.concat(".log");
+		return logFileName;
 	}
 
 	/**
-	 * append user
+	 * append log
 	 *
 	 * @param logFileName
 	 * @param appendLog
 	 */
 	public static void appendLog(String logFileName, String appendLog) {
 
-		// user file
+		// log file
 		if (logFileName==null || logFileName.trim().length()==0) {
 			return;
 		}
@@ -107,7 +108,7 @@ public class XxlJobFileAppender {
 			}
 		}
 
-		// user
+		// log
 		if (appendLog == null) {
 			appendLog = "";
 		}
@@ -134,14 +135,14 @@ public class XxlJobFileAppender {
 	}
 
 	/**
-	 * support read user-file
+	 * support read log-file
 	 *
 	 * @param logFileName
-	 * @return user content
+	 * @return log content
 	 */
 	public static LogResult readLog(String logFileName, int fromLineNum){
 
-		// valid user file
+		// valid log file
 		if (logFileName==null || logFileName.trim().length()==0) {
             return new LogResult(fromLineNum, 0, "readLog fail, logFile not found", true);
 		}
@@ -191,9 +192,9 @@ public class XxlJobFileAppender {
 	}
 
 	/**
-	 * read user data
+	 * read log data
 	 * @param logFile
-	 * @return user line content
+	 * @return log line content
 	 */
 	public static String readLines(File logFile){
 		BufferedReader reader = null;

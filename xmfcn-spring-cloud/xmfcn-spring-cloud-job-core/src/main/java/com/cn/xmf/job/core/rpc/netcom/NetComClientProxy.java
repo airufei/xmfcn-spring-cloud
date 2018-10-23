@@ -3,9 +3,6 @@ package com.cn.xmf.job.core.rpc.netcom;
 import com.cn.xmf.job.core.rpc.codec.RpcRequest;
 import com.cn.xmf.job.core.rpc.codec.RpcResponse;
 import com.cn.xmf.job.core.rpc.netcom.jetty.client.JettyClient;
-import com.cn.xmf.job.core.rpc.codec.RpcRequest;
-import com.cn.xmf.job.core.rpc.codec.RpcResponse;
-import com.cn.xmf.job.core.rpc.netcom.jetty.client.JettyClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
@@ -33,14 +30,12 @@ public class NetComClientProxy implements FactoryBean<Object> {
 	}
 
 	@Override
-	public Object getObject() {
+	public Object getObject() throws Exception {
 		return Proxy.newProxyInstance(Thread.currentThread()
 				.getContextClassLoader(), new Class[] { iface },
 				new InvocationHandler() {
 					@Override
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-						logger.error(">>>>>>>>>>> xxl-rpc proxy class-method not support [{}.{}]", method.getDeclaringClass().getName(), method.getName());
 
 						// filter method like "Object.toString()"
 						if (Object.class.getName().equals(method.getDeclaringClass().getName())) {

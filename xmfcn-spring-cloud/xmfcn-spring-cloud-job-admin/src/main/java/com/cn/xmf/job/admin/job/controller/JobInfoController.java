@@ -4,6 +4,7 @@ import com.cn.xmf.job.admin.core.model.XxlJobGroup;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.admin.core.route.ExecutorRouteStrategyEnum;
 import com.cn.xmf.job.admin.core.thread.JobTriggerPoolHelper;
+import com.cn.xmf.job.admin.core.trigger.TriggerTypeEnum;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
 import com.cn.xmf.job.admin.job.dao.XxlJobGroupDao;
 import com.cn.xmf.job.admin.job.service.XxlJobService;
@@ -90,8 +91,8 @@ public class JobInfoController {
 	
 	@RequestMapping("/trigger")
 	@ResponseBody
-	public ReturnT<String> triggerJob(int id) {
-		JobTriggerPoolHelper.trigger(id, -1, I18nUtil.getString("jobconf_trigger_type_manual"));
+	public ReturnT<String> triggerJob(int id,String executorParam) {
+		JobTriggerPoolHelper.trigger(id, TriggerTypeEnum.MANUAL, -1, null, executorParam);
 		return ReturnT.SUCCESS;
 	}
 	

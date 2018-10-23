@@ -13,9 +13,7 @@ public class HandleCallbackParam implements Serializable {
 
     private ReturnT<String> executeResult;
 
-    public HandleCallbackParam() {
-    }
-
+    public HandleCallbackParam(){}
     public HandleCallbackParam(int logId, long logDateTim, ReturnT<String> executeResult) {
         this.logId = logId;
         this.logDateTim = logDateTim;
