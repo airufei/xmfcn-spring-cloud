@@ -81,14 +81,12 @@
 					<div class="box">
 			            <#--<div class="box-header hide"><h3 class="box-title">调度日志</h3></div>-->
 			            <div class="box-body">
-			              	<table id="joblog_list" class="table table-bordered table-striped display" width="100%" >
+			              	<table id="joblog_list" class="table table-striped table-hover table-condensed"
+                                   width="100%" style="white-space: nowrap;" >
 				                <thead>
 					            	<tr>
                                         <th name="jobId" >${I18n.jobinfo_field_id}</th>
                                         <th name="jobGroup" >jobGroup</th>
-										<#--<th name="executorAddress" >执行器地址</th>
-										<th name="glueType" >运行模式</th>
-                                      	<th name="executorParam" >任务参数</th>-->
                                         <th name="triggerTime" >${I18n.joblog_field_triggerTime}</th>
                                         <th name="triggerCode" >${I18n.joblog_field_triggerCode}</th>
                                         <th name="triggerMsg" >${I18n.joblog_field_triggerMsg}</th>

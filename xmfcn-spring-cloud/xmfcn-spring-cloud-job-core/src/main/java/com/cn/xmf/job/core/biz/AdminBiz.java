@@ -3,15 +3,10 @@ package com.cn.xmf.job.core.biz;
 import com.cn.xmf.job.core.biz.model.HandleCallbackParam;
 import com.cn.xmf.job.core.biz.model.RegistryParam;
 import com.cn.xmf.job.core.biz.model.ReturnT;
-import com.cn.xmf.job.core.biz.model.HandleCallbackParam;
-import com.cn.xmf.job.core.biz.model.RegistryParam;
-import com.cn.xmf.job.core.biz.model.ReturnT;
 
 import java.util.List;
 
 /**
- * 调度中心API服务
- *
  * @author xuxueli 2017-07-27 21:52:49
  */
 public interface AdminBiz {
@@ -22,7 +17,7 @@ public interface AdminBiz {
     // ---------------------- callback ----------------------
 
     /**
-     * callback（任务结果回调服务）
+     * callback
      *
      * @param callbackParamList
      * @return
@@ -33,7 +28,7 @@ public interface AdminBiz {
     // ---------------------- registry ----------------------
 
     /**
-     * registry（执行器注册服务）
+     * registry
      *
      * @param registryParam
      * @return
@@ -41,22 +36,11 @@ public interface AdminBiz {
     public ReturnT<String> registry(RegistryParam registryParam);
 
     /**
-     * registry remove（执行器注册摘除服务）
+     * registry remove
      *
      * @param registryParam
      * @return
      */
     public ReturnT<String> registryRemove(RegistryParam registryParam);
-
-
-    // ---------------------- job opt ----------------------
-
-    /**
-     * trigger job for once（触发任务单次执行服务，支持任务根据业务事件触发）
-     *
-     * @param jobId
-     * @return
-     */
-    public ReturnT<String> triggerJob(int jobId);
 
 }

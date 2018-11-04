@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContextAware;
  *
  * @author quyuanchao
  * @date 2018-8-16 18:29
- * <p>Title:com.miuzone.utils</p>
+ * <p>Title:com.cn.xmf.utils</p>
  * <p>Description:$DESCRIPTION</p>
  */
 public class SpringUtil implements ApplicationContextAware {

@@ -5,6 +5,9 @@ $(function () {
         "deferRender": true,
         "processing": true,
         "serverSide": true,
+        scrollX: true,
+        "searching": false,
+        "ordering": false,
         "ajax": {
             url: base_url + "/dict/pageList",
             type: "post",
@@ -19,52 +22,50 @@ $(function () {
                 return obj;
             }
         },
-        "searching": false,
-        "ordering": false,
         //"scrollX": true,	// scroll x，close self-adaption
         "columns": [
             {
                 "data": 'id',
-                "visible": false,
-                "width": '10%'
+                "visible": false
+            }
+            ,
+            {
+                "data": I18n.system_opt,
+                "width": '30',
+                "render": function (data, type, row) {
+                    return function () {
+                        tableData['key' + row.id] = row;
+                        return '<p id="' + row.id + '" >' +
+                            '<button class="btn btn-warning btn-xs job_operate" _type="dict_save" type="button">' + I18n.system_opt_edit + '</button>  ' +
+                            '<button class="btn btn-danger btn-xs job_operate" _type="dict_del" type="button">' + I18n.system_opt_del + '</button>  ' +
+                            '</p>';
+                    };
+                }
             },
             {
                 "data": 'dictKey',
                 "visible": true,
-                "width": '10%'
+                "width": '10'
             },
             {
                 "data": 'dictValue',
                 "visible": true,
-                "width": '20%'
+                "width": '20'
             },
             {
                 "data": 'type',
-                "width": '20%',
+                "width": '10',
                 "visible": true
             },
             {
                 "data": 'remark',
                 "visible": true,
-                "width": '10%'
+                "width": '20'
             },
             {
-                "data": 'createtimestr',
-                "width": '20%',
+                "data": 'updatetimestr',
+                "width": '10',
                 "visible": true
-            },
-            {
-                "data": I18n.system_opt,
-                "width": '15%',
-                "render": function (data, type, row) {
-                    return function () {
-                        tableData['key'+row.id] = row;
-                        return '<p id="' + row.id + '" >' +
-                            '<button class="btn btn-warning btn-xs job_operate"  _type="dict_edit" type="button">' + I18n.system_opt_edit + '</button>  ' +
-                            '<button class="btn btn-danger btn-xs job_operate" _type="dict_del" type="button">' + I18n.system_opt_del + '</button>  ' +
-                            '</p>';
-                    };
-                }
             }
         ],
         "language": {
@@ -93,6 +94,7 @@ $(function () {
         }
     });
 
+
     // table data
     var tableData = {};
 
@@ -117,75 +119,79 @@ $(function () {
         var type = $(this).attr("_type");
         if ("dict_del" == type) {
             typeName = I18n.system_opt_del;
-            url = base_url + "/dict/remove";
+            url = base_url + "/dict/delete";
             needFresh = true;
         } else {
             return;
         }
-
         var id = $(this).parent('p').attr("id");
-
         layer.confirm(I18n.system_ok + typeName + '?', {
             icon: 3,
             title: I18n.system_tips,
             btn: [I18n.system_ok, I18n.system_cancel]
         }, function (index) {
             layer.close(index);
-
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    "id": id
-                },
-                dataType: "json",
-                success: function (data) {
-                    if (data.code === 200) {
-
-                        layer.open({
-                            title: I18n.system_tips,
-                            btn: [I18n.system_ok],
-                            content: typeName + I18n.system_success,
-                            icon: '1',
-                            end: function (layero, index) {
-                                if (needFresh) {
-                                    //window.location.reload();
-                                    dictTable.fnDraw(false);
-                                }
-                            }
-                        });
-                    } else {
-                        layer.open({
-                            title: I18n.system_tips,
-                            btn: [I18n.system_ok],
-                            content: (data.msg || typeName + I18n.system_fail),
-                            icon: '2'
-                        });
-                    }
-                }
-            });
+            deleted(url,id,typeName,needFresh);
         });
     });
 
+    //删除
+    function deleted(url,id,typeName,needFresh) {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                "id": id
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.code === 200) {
+                    layer.open({
+                        title: I18n.system_tips,
+                        btn: [I18n.system_ok],
+                        content: typeName + I18n.system_success,
+                        icon: '1',
+                        end: function (layero, index) {
+                            if (needFresh) {
+                                dictTable.fnDraw(false);
+                            }
+                        }
+                    });
+                } else {
+                    layer.open({
+                        title: I18n.system_tips,
+                        btn: [I18n.system_ok],
+                        content: (data.msg || typeName + I18n.system_fail),
+                        icon: '2'
+                    });
+                }
+            }
+        });
+    }
 
-    $("#jobMenu_list").on('click', '.job_operate', function () {
+    $("#dict_list").on('click', '.job_operate', function () {
         var type = $(this).attr("_type");
-        if ("dict_edit" == type) {
+        if ("dict_save" == type) {
             edit(this);
         }
     });
+    //双击弹出编辑
+    $('#dict_list').on('dblclick', 'tr', function () {
+        edit(this);
+    });
 
     function edit(target) {
-        var id = $(this).parent('p').attr("id");
+        var id = $(target).parent('p').attr("id");
+        if (id == null || id == undefined || id < 0) {
+            id = $(target).children('td').children('p').attr("id");
+        }
         var row = tableData['key' + id];
         if (row != null && row != undefined) {
-            $("#addModal .form input[name='name']").val(row.name);
-            $("#addModal .form input[name='url']").val(row.url);
-            $("#addModal .form input[name='isbutton']").val(row.isbutton);
-            $("#addModal .form input[name='remark']").val(row.remark);
-            $("#addModal .form input[name='fid']").val(row.fid);
-            $("#addModal .form input[name='level']").val(row.level);
             $("#addModal .form input[name='id']").val(row.id);
+            $("#addModal .form input[name='dictKey']").val(row.dictKey);
+            $("#addModal .form input[name='dictValue']").val(row.dictValue);
+            $("#addModal .form input[name='type']").val(row.type);
+            $("#addModal .form input[name='remark']").val(row.remark);
         }
         // show
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
@@ -193,7 +199,7 @@ $(function () {
 
     // add
     $(".add").click(function () {
-        // show
+        $("#addModal .form")[0].reset();
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
     });
     var addModalValidate = $("#addModal .form").validate({
@@ -239,9 +245,8 @@ $(function () {
             element.parent('div').append(error);
         },
         submitHandler: function (form) {
-
             $.post(base_url + "/dict/save", $("#addModal .form").serialize(), function (data, status) {
-                if (data.code === "200") {
+                if (data.code === 200) {
                     $('#addModal').modal('hide');
                     layer.open({
                         title: I18n.system_tips,
@@ -250,7 +255,6 @@ $(function () {
                         icon: '1',
                         end: function (layero, index) {
                             dictTable.fnDraw();
-                            //window.location.reload();
                         }
                     });
                 } else {
@@ -271,7 +275,6 @@ $(function () {
         $(".remote_panel").show();	// remote
 
     });
-
 
     /**
      * find title by name, GlueType

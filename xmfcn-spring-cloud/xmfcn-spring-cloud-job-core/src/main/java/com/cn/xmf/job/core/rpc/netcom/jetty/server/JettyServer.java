@@ -2,8 +2,6 @@ package com.cn.xmf.job.core.rpc.netcom.jetty.server;
 
 import com.cn.xmf.job.core.thread.ExecutorRegistryThread;
 import com.cn.xmf.job.core.thread.TriggerCallbackThread;
-import com.cn.xmf.job.core.thread.ExecutorRegistryThread;
-import com.cn.xmf.job.core.thread.TriggerCallbackThread;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -28,7 +26,7 @@ public class JettyServer {
 			public void run() {
 
 				// The Server
-				server = new Server(new ExecutorThreadPool());  // 非阻塞
+				server = new Server(new ExecutorThreadPool(1000));
 
 				// HTTP connector
 				ServerConnector connector = new ServerConnector(server);

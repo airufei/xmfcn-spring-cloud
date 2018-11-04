@@ -1,6 +1,5 @@
 package com.cn.xmf.job.core.thread;
 
-import com.cn.xmf.job.core.enums.RegistryConfig;
 import com.cn.xmf.job.core.biz.AdminBiz;
 import com.cn.xmf.job.core.biz.model.HandleCallbackParam;
 import com.cn.xmf.job.core.biz.model.ReturnT;
@@ -112,7 +111,7 @@ public class TriggerCallbackThread {
                     try {
                         TimeUnit.SECONDS.sleep(RegistryConfig.BEAT_TIMEOUT);
                     } catch (InterruptedException e) {
-                        logger.error(e.getMessage(), e);
+                        logger.warn(">>>>>>>>>>> xxl-job, executor retry callback thread interrupted, error msg:{}", e.getMessage());
                     }
                 }
                 logger.info(">>>>>>>>>>> xxl-job, executor retry callback thread destory.");
@@ -168,7 +167,7 @@ public class TriggerCallbackThread {
     }
 
     /**
-     * callback user
+     * callback log
      */
     private void callbackLog(List<HandleCallbackParam> callbackParamList, String logContent){
         for (HandleCallbackParam callbackParam: callbackParamList) {
@@ -179,9 +178,9 @@ public class TriggerCallbackThread {
     }
 
 
-    // ---------------------- fial-callback file TODO ----------------------
+    // ---------------------- fail-callback file ----------------------
 
-    private static String failCallbackFileName = XxlJobFileAppender.getLogPath().concat(File.separator).concat("xxl-job-callback").concat(".user");
+    private static String failCallbackFileName = XxlJobFileAppender.getLogPath().concat(File.separator).concat("xxl-job-callback").concat(".log");
 
     private void appendFailCallbackFile(List<HandleCallbackParam> callbackParamList){
         // append file
@@ -207,7 +206,7 @@ public class TriggerCallbackThread {
         }
 
         // retry callback, 100 lines per page
-        if (failCallbackParamList.size() > 0) {
+        if (failCallbackParamList!=null && failCallbackParamList.size()>0) {
             int pagesize = 100;
             List<HandleCallbackParam> pageData = new ArrayList<>();
             for (int i = 0; i < failCallbackParamList.size(); i++) {

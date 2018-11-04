@@ -180,7 +180,6 @@ public class StringUtil extends StringUtils {
     }
 
 
-
     /**
      * getFileExt:(获取文件名后缀 默认值 "")
      *
@@ -535,6 +534,7 @@ public class StringUtil extends StringUtils {
         try {
             logger.info("重定向到：url={}", url);
             response.sendRedirect(url);
+            return;
         } catch (IOException e) {
             logger.error("redirect:(重定向----跳转) error===>" + e + "========》url：" + url);
             e.printStackTrace();

@@ -1,12 +1,10 @@
 package com.cn.xmf.job.admin.core.route.strategy;
 
-import com.cn.xmf.job.admin.core.trigger.XxlJobTrigger;
 import com.cn.xmf.job.admin.core.route.ExecutorRouter;
-import com.cn.xmf.job.admin.core.trigger.XxlJobTrigger;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.job.core.biz.model.TriggerParam;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,20 +29,10 @@ public class ExecutorRouteRound extends ExecutorRouter {
         return count;
     }
 
-    public String route(int jobId, ArrayList<String> addressList) {
-        return addressList.get(count(jobId)%addressList.size());
-    }
-
-
     @Override
-    public ReturnT<String> routeRun(TriggerParam triggerParam, ArrayList<String> addressList) {
-
-        // address
-        String address = route(triggerParam.getJobId(), addressList);
-
-        // run executor
-        ReturnT<String> runResult = XxlJobTrigger.runExecutor(triggerParam, address);
-        runResult.setContent(address);
-        return runResult;
+    public ReturnT<String> route(TriggerParam triggerParam, List<String> addressList) {
+        String address = addressList.get(count(triggerParam.getJobId())%addressList.size());
+        return new ReturnT<String>(address);
     }
+
 }

@@ -1,5 +1,6 @@
 package com.cn.xmf.job.admin.job.service.impl;
 
+import com.cn.xmf.job.admin.core.trigger.TriggerTypeEnum;
 import com.cn.xmf.job.admin.job.dao.XxlJobRegistryDao;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.admin.core.model.XxlJobLog;
@@ -27,8 +28,8 @@ import java.util.List;
  */
 @Service
 public class AdminBizImpl implements AdminBiz {
-    private static Logger logger = LoggerFactory.getLogger(AdminBizImpl.class);
 
+    private static Logger logger = LoggerFactory.getLogger(AdminBizImpl.class);
     @Resource
     public XxlJobLogDao xxlJobLogDao;
     @Resource
@@ -49,42 +50,41 @@ public class AdminBizImpl implements AdminBiz {
     }
 
     private ReturnT<String> callback(HandleCallbackParam handleCallbackParam) {
-        // valid user item
+        // valid log item
         XxlJobLog log = xxlJobLogDao.load(handleCallbackParam.getLogId());
         if (log == null) {
-            return new ReturnT<String>(ReturnT.FAIL_CODE, "user item not found.");
+            return new ReturnT<String>(ReturnT.FAIL_CODE, "log item not found.");
         }
         if (log.getHandleCode() > 0) {
-            return new ReturnT<String>(ReturnT.FAIL_CODE, "user repeate callback.");     // avoid repeat callback, trigger child job etc
+            return new ReturnT<String>(ReturnT.FAIL_CODE, "log repeate callback.");     // avoid repeat callback, trigger child job etc
         }
 
         // trigger success, to trigger child job
-        StringBuilder callbackMsg = null;
+        String callbackMsg = null;
         if (IJobHandler.SUCCESS.getCode() == handleCallbackParam.getExecuteResult().getCode()) {
             XxlJobInfo xxlJobInfo = xxlJobInfoDao.loadById(log.getJobId());
             if (xxlJobInfo!=null && StringUtils.isNotBlank(xxlJobInfo.getChildJobId())) {
-                callbackMsg = new StringBuilder("<br><br><span style=\"color:#00c0ef;\" > >>>>>>>>>>>" + I18nUtil.getString("jobconf_trigger_child_run") + "<<<<<<<<<<< </span><br>");
+                callbackMsg = "<br><br><span style=\"color:#00c0ef;\" > >>>>>>>>>>>"+ I18nUtil.getString("jobconf_trigger_child_run") +"<<<<<<<<<<< </span><br>";
 
                 String[] childJobIds = xxlJobInfo.getChildJobId().split(",");
                 for (int i = 0; i < childJobIds.length; i++) {
                     int childJobId = (StringUtils.isNotBlank(childJobIds[i]) && StringUtils.isNumeric(childJobIds[i]))?Integer.valueOf(childJobIds[i]):-1;
                     if (childJobId > 0) {
-
-                        JobTriggerPoolHelper.trigger(childJobId, 0, I18nUtil.getString("jobconf_trigger_type_parent"));
+                        JobTriggerPoolHelper.trigger(childJobId, TriggerTypeEnum.PARENT, 0, null, null);
                         ReturnT<String> triggerChildResult = ReturnT.SUCCESS;
 
                         // add msg
-                        callbackMsg.append(MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg1"),
-                                (i + 1),
+                        callbackMsg += MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg1"),
+                                (i+1),
                                 childJobIds.length,
                                 childJobIds[i],
-                                (triggerChildResult.getCode() == ReturnT.SUCCESS_CODE ? I18nUtil.getString("system_success") : I18nUtil.getString("system_fail")),
-                                triggerChildResult.getMsg()));
+                                (triggerChildResult.getCode()==ReturnT.SUCCESS_CODE?I18nUtil.getString("system_success"):I18nUtil.getString("system_fail")),
+                                triggerChildResult.getMsg());
                     } else {
-                        callbackMsg.append(MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg2"),
-                                (i + 1),
+                        callbackMsg += MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg2"),
+                                (i+1),
                                 childJobIds.length,
-                                childJobIds[i]));
+                                childJobIds[i]);
                     }
                 }
 
@@ -92,7 +92,7 @@ public class AdminBizImpl implements AdminBiz {
         }
 
         // handle msg
-        StringBuilder handleMsg = new StringBuilder();
+        StringBuffer handleMsg = new StringBuffer();
         if (log.getHandleMsg()!=null) {
             handleMsg.append(log.getHandleMsg()).append("<br>");
         }
@@ -103,7 +103,7 @@ public class AdminBizImpl implements AdminBiz {
             handleMsg.append(callbackMsg);
         }
 
-        // success, save user
+        // success, save log
         log.setHandleTime(new Date());
         log.setHandleCode(handleCallbackParam.getExecuteResult().getCode());
         log.setHandleMsg(handleMsg.toString());
@@ -126,11 +126,4 @@ public class AdminBizImpl implements AdminBiz {
         xxlJobRegistryDao.registryDelete(registryParam.getRegistGroup(), registryParam.getRegistryKey(), registryParam.getRegistryValue());
         return ReturnT.SUCCESS;
     }
-
-    @Override
-    public ReturnT<String> triggerJob(int jobId) {
-        JobTriggerPoolHelper.trigger(jobId, -1, I18nUtil.getString("jobconf_trigger_type_api"));
-        return ReturnT.SUCCESS;
-    }
-
 }

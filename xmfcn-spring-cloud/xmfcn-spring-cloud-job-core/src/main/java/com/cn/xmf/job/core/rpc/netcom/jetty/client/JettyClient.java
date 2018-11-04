@@ -1,6 +1,5 @@
 package com.cn.xmf.job.core.rpc.netcom.jetty.client;
 
-import com.cn.xmf.job.core.util.HttpClientUtil;
 import com.cn.xmf.job.core.rpc.codec.RpcRequest;
 import com.cn.xmf.job.core.rpc.codec.RpcResponse;
 import com.cn.xmf.job.core.rpc.serialize.HessianSerializer;

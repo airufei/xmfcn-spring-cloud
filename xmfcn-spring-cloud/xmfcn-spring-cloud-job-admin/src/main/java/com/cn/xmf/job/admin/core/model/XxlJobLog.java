@@ -3,7 +3,7 @@ package com.cn.xmf.job.admin.core.model;
 import java.util.Date;
 
 /**
- * xxl-job user, used to track trigger process
+ * xxl-job log, used to track trigger process
  * @author xuxueli  2015-12-19 23:19:09
  */
 public class XxlJobLog {
@@ -18,6 +18,7 @@ public class XxlJobLog {
 	private String executorAddress;
 	private String executorHandler;
 	private String executorParam;
+	private String executorShardingParam;
 	private int executorFailRetryCount;
 	
 	// trigger info
@@ -78,6 +79,14 @@ public class XxlJobLog {
 		this.executorParam = executorParam;
 	}
 
+	public String getExecutorShardingParam() {
+		return executorShardingParam;
+	}
+
+	public void setExecutorShardingParam(String executorShardingParam) {
+		this.executorShardingParam = executorShardingParam;
+	}
+
 	public int getExecutorFailRetryCount() {
 		return executorFailRetryCount;
 	}
@@ -107,10 +116,6 @@ public class XxlJobLog {
 	}
 
 	public void setTriggerMsg(String triggerMsg) {
-		// plugin
-		if (triggerMsg!=null && triggerMsg.length()>2000) {
-			triggerMsg = triggerMsg.substring(0, 2000);
-		}
 		this.triggerMsg = triggerMsg;
 	}
 
@@ -135,10 +140,6 @@ public class XxlJobLog {
 	}
 
 	public void setHandleMsg(String handleMsg) {
-		// plugin
-		if (handleMsg!=null && handleMsg.length()>2000) {
-			handleMsg = handleMsg.substring(0, 2000);
-		}
 		this.handleMsg = handleMsg;
 	}
 }

@@ -1,6 +1,5 @@
 package com.cn.xmf.job.core.thread;
 
-import com.cn.xmf.job.core.enums.RegistryConfig;
 import com.cn.xmf.job.core.biz.AdminBiz;
 import com.cn.xmf.job.core.biz.model.RegistryParam;
 import com.cn.xmf.job.core.biz.model.ReturnT;
@@ -75,7 +74,7 @@ public class ExecutorRegistryThread extends Thread {
                     try {
                         TimeUnit.SECONDS.sleep(RegistryConfig.BEAT_TIMEOUT);
                     } catch (InterruptedException e) {
-                        logger.error(e.getMessage(), e);
+                        logger.warn(">>>>>>>>>>> xxl-job, executor registry thread interrupted, error msg:{}", e.getMessage());
                     }
                 }
 

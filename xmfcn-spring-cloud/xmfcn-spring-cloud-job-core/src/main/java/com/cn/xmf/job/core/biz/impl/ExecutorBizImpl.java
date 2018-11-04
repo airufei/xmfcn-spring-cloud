@@ -1,10 +1,5 @@
 package com.cn.xmf.job.core.biz.impl;
 
-import com.cn.xmf.job.core.enums.ExecutorBlockStrategyEnum;
-import com.cn.xmf.job.core.glue.GlueFactory;
-import com.cn.xmf.job.core.glue.GlueTypeEnum;
-import com.cn.xmf.job.core.log.XxlJobFileAppender;
-import com.cn.xmf.job.core.thread.JobThread;
 import com.cn.xmf.job.core.biz.ExecutorBiz;
 import com.cn.xmf.job.core.biz.model.LogResult;
 import com.cn.xmf.job.core.biz.model.ReturnT;
@@ -64,7 +59,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
 
     @Override
     public ReturnT<LogResult> log(long logDateTim, int logId, int fromLineNum) {
-        // user filename: logPath/yyyy-MM-dd/9999.user
+        // log filename: logPath/yyyy-MM-dd/9999.log
         String logFileName = XxlJobFileAppender.makeLogFileName(new Date(logDateTim), logId);
 
         LogResult logResult = XxlJobFileAppender.readLog(logFileName, fromLineNum);
@@ -75,7 +70,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
     public ReturnT<String> run(TriggerParam triggerParam) {
         // load old：jobHandler + jobThread
         JobThread jobThread = XxlJobExecutor.loadJobThread(triggerParam.getJobId());
-        IJobHandler jobHandler = jobThread != null ? jobThread.getHandler() : null;
+        IJobHandler jobHandler = jobThread!=null?jobThread.getHandler():null;
         String removeOldReason = null;
 
         // valid：jobHandler + jobThread
@@ -86,7 +81,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
             IJobHandler newJobHandler = XxlJobExecutor.loadJobHandler(triggerParam.getExecutorHandler());
 
             // valid old jobThread
-            if (jobThread != null && jobHandler != newJobHandler) {
+            if (jobThread!=null && jobHandler != newJobHandler) {
                 // change handler, need kill old thread
                 removeOldReason = "change jobhandler or glue type, and terminate the old job thread.";
 
@@ -107,7 +102,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
             // valid old jobThread
             if (jobThread != null &&
                     !(jobThread.getHandler() instanceof GlueJobHandler
-                            && ((GlueJobHandler) jobThread.getHandler()).getGlueUpdatetime() == triggerParam.getGlueUpdatetime())) {
+                        && ((GlueJobHandler) jobThread.getHandler()).getGlueUpdatetime()==triggerParam.getGlueUpdatetime() )) {
                 // change handler or gluesource updated, need kill old thread
                 removeOldReason = "change job source or glue type, and terminate the old job thread.";
 
@@ -125,12 +120,12 @@ public class ExecutorBizImpl implements ExecutorBiz {
                     return new ReturnT<String>(ReturnT.FAIL_CODE, e.getMessage());
                 }
             }
-        } else if (glueTypeEnum != null && glueTypeEnum.isScript()) {
+        } else if (glueTypeEnum!=null && glueTypeEnum.isScript()) {
 
             // valid old jobThread
             if (jobThread != null &&
                     !(jobThread.getHandler() instanceof ScriptJobHandler
-                            && ((ScriptJobHandler) jobThread.getHandler()).getGlueUpdatetime() == triggerParam.getGlueUpdatetime())) {
+                            && ((ScriptJobHandler) jobThread.getHandler()).getGlueUpdatetime()==triggerParam.getGlueUpdatetime() )) {
                 // change script or gluesource updated, need kill old thread
                 removeOldReason = "change job source or glue type, and terminate the old job thread.";
 
@@ -152,7 +147,7 @@ public class ExecutorBizImpl implements ExecutorBiz {
             if (ExecutorBlockStrategyEnum.DISCARD_LATER == blockStrategy) {
                 // discard when running
                 if (jobThread.isRunningOrHasQueue()) {
-                    return new ReturnT<String>(ReturnT.FAIL_CODE, "block strategy effect：" + ExecutorBlockStrategyEnum.DISCARD_LATER.getTitle());
+                    return new ReturnT<String>(ReturnT.FAIL_CODE, "block strategy effect："+ExecutorBlockStrategyEnum.DISCARD_LATER.getTitle());
                 }
             } else if (ExecutorBlockStrategyEnum.COVER_EARLY == blockStrategy) {
                 // kill running jobThread
@@ -172,7 +167,8 @@ public class ExecutorBizImpl implements ExecutorBiz {
         }
 
         // push data to queue
-        return jobThread.pushTriggerQueue(triggerParam);
+        ReturnT<String> pushResult = jobThread.pushTriggerQueue(triggerParam);
+        return pushResult;
     }
 
 }

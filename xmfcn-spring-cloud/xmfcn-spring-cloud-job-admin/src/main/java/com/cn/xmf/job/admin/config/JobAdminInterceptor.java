@@ -73,4 +73,26 @@ public class CookieInterceptor extends HandlerInterceptorAdapter {
         }
         return environment.getProperty("xmf.job.login.webRoot");
     }
+
+    /*   *//**
+     * 获取菜单数据
+     *
+     * @return
+     *//*
+    public void getMunuList(ModelAndView modelAndView,JobUser u) {
+        JobMenuService jobMenuService = (JobMenuService) SpringUtil.getBean("jobMenuService");
+        if (jobMenuService == null) {
+            return ;
+        }
+        JobMenu menu = new JobMenu();
+        menu.setLevel(1);
+        List<JobMenu> menuList = jobMenuService.getJobMenuList(menu);
+        JobMenu secMenu = new JobMenu();
+        secMenu.setLevel(2);
+        List<JobMenu> secList = jobMenuService.getJobMenuList(secMenu);
+        if (modelAndView != null) {
+            modelAndView.addObject("menuList", menuList);
+            modelAndView.addObject("menuSecList", secList);
+        }
+    }*/
 }

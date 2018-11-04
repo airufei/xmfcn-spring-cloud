@@ -4,7 +4,7 @@ import com.cn.xmf.job.admin.core.model.XxlJobGroup;
 import com.cn.xmf.job.admin.core.model.XxlJobRegistry;
 import com.cn.xmf.job.admin.core.schedule.XxlJobDynamicScheduler;
 import com.cn.xmf.job.core.enums.RegistryConfig;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class JobRegistryMonitorHelper {
 					try {
 						// auto registry group
 						List<XxlJobGroup> groupList = XxlJobDynamicScheduler.xxlJobGroupDao.findByAddressType(0);
-						if (groupList!=null&&groupList.size()>0 ) {
+						if (CollectionUtils.isNotEmpty(groupList)) {
 
 							// remove dead address (admin/executor)
 							XxlJobDynamicScheduler.xxlJobRegistryDao.removeDead(RegistryConfig.DEAD_TIMEOUT);
@@ -66,7 +66,7 @@ public class JobRegistryMonitorHelper {
 							for (XxlJobGroup group: groupList) {
 								List<String> registryList = appAddressMap.get(group.getAppName());
 								String addressListStr = null;
-								if (registryList!=null&&registryList.size()>0) {
+								if (CollectionUtils.isNotEmpty(registryList)) {
 									Collections.sort(registryList);
 									addressListStr = StringUtils.join(registryList, ",");
 								}

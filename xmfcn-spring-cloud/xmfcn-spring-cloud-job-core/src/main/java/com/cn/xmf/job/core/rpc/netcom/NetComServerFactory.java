@@ -20,7 +20,7 @@ public class NetComServerFactory  {
 	private static final Logger logger = LoggerFactory.getLogger(NetComServerFactory.class);
 
 	// ---------------------- server start ----------------------
-	private JettyServer server = new JettyServer();
+	JettyServer server = new JettyServer();
 	public void start(int port, String ip, String appName) throws Exception {
 		server.start(port, ip, appName);
 	}

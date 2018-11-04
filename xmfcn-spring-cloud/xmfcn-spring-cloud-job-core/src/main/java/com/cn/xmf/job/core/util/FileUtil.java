@@ -87,7 +87,7 @@ public class FileUtil {
 
         List<String> result = new ArrayList<>();
 
-        // valid user file
+        // valid log file
         File file = new File(fileName);
         if (!file.exists()) {
             return result;
