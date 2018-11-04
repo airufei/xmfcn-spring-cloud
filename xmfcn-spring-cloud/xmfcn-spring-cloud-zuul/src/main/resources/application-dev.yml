@@ -75,16 +75,16 @@ ribbon:
   NFLoadBalancerClassName: com.netflix.loadbalancer.DynamicServerListLoadBalancer  #负载均衡器
   NFLoadBalancerRuleClassName: com.netflix.loadbalancer.WeightedResponseTimeRule # 负载策略 ------WeightedResponseTimeRule根据响应时间分配一个weight，响应时间越长，weight越小，被选中的可能性越低。
   OkToRetryOnAllOperations: false  # 是否所有操作都进行重试
-  retryable: true #是否开启重试功能
+  retryable: false #是否开启重试功能
   MaxAutoRetries: 0 #同一个Server重试的次数(除去首次)
-  MaxAutoRetriesNextServer: 1 #切换相同Server的次数
+  MaxAutoRetriesNextServer: 0 #切换相同Server的次数
   MaxHttpConnectionsPerHost: 200 #每个节点Http的最大连接数 默认值50
   MaxConnectionsPerHost: 200 #每个节点的最大连接数 默认值50
   MaxTotalHttpConnections: 2000  #http总连接数 默认值200
   MaxTotalConnections: 2000 # 总连接数 默认值200
   PoolMinThreads: 1 #线程池最小容量 默认值1 值范围1-10
   PoolMaxThreads: 300 #线程池最大容量 默认值 200 值范围200-400
-  ConnectTimeout: 5000
+  ConnectTimeout: 10000
   ReadTimeout: 60000 # ribbon 读取返回信息的超时时间，值范围30000-300000
   httpclient:
     enabled: true #okhttp替换httpclient OkHttp 会使用连接池来复用连接以提高效率。OkHttp 提供了对 GZIP 的默认支持来降低传输内容的大小。OkHttp 也提供了对 HTTP 响应的缓存机制，可以避免不必要的网络请求
@@ -101,7 +101,7 @@ hystrix:
           enabled: true # 开启hystrix 熔断。ribbonTimeout = (ribbonReadTimeout + ribbonConnectTimeout) * (maxAutoRetries + 1) * (maxAutoRetriesNextServer + 1);
         isolation:
           thread:
-            timeoutInMilliseconds: 130000 #zuul 配置的hystrix 熔断时间，返回时间超过这个时间并不会立即返回，而是等到请求返回或超过ribbon的返回时间时触发熔断器。  # 即使请求数据返回，但是超过熔断超时时间依然是触发熔断，而不是返回数据。
+            timeoutInMilliseconds: 70000 #zuul 配置的hystrix 熔断时间，返回时间超过这个时间并不会立即返回，而是等到请求返回或超过ribbon的返回时间时触发熔断器。  # 即使请求数据返回，但是超过熔断超时时间依然是触发熔断，而不是返回数据。
 
 # LOGGING
 logging:

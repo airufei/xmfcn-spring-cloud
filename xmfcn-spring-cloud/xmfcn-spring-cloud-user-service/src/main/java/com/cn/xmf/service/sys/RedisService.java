@@ -11,36 +11,68 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface RedisService {
 
     /**
-     * saveCache:(设置缓存-带有效期)
-     *
+     * save:(设置缓存-带有效期)
      * @param key
      * @param value
      * @param seconds
      * @return
      */
-
-    @RequestMapping(value = "saveCache", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String saveCache(@RequestParam(value = "key") String key, @RequestParam(value = "value") String value, @RequestParam(value = "seconds") int seconds);
-
+    @RequestMapping(value = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String save(@RequestParam(value = "key") String key, @RequestParam(value = "value") String value, @RequestParam(value = "seconds") int seconds);
 
     /**
      * 获取单个值
+     * @param key
+     * @return
+     */
+    @RequestMapping(value = "getCache", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String getCache(@RequestParam(value = "key") String key);
+
+    /**
+     * 入队key 是消息频道 ，value 消息内容
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    @RequestMapping(value = "putToQueue", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long putToQueue(@RequestParam(value = "key") String key, @RequestParam(value = "value") String value);
+
+    /**
+     * 读取消息 （读过队列中消息就没有了）key 是消息频道
      *
      * @param key
      * @return
      */
-
-    @RequestMapping(value = "getCache", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String getCache(@RequestParam(value = "key") String key);
+    @RequestMapping(value = "getFromQueue",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String getFromQueue(@RequestParam(value = "key") String key);
 
 
     /**
      * 将 key 缓存数据删除
-     *
      * @param key
      * @return
      */
-    @RequestMapping(value = "delCache", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Long delCache(@RequestParam(value = "key") String key);
+    @RequestMapping(value = "delete",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long delete(@RequestParam(value = "key") String key);
+
+    /**
+     * 根据通配符删除所有key
+     *
+     * @param pattern
+     * @return
+     */
+    @RequestMapping(value = "deletes",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public long deletes(@RequestParam(value = "pattern") String pattern);
+
+
+    /**
+     * 获取分布式锁
+     * @param key
+     * @return
+     */
+    @RequestMapping(value ="getLock",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long getLock(@RequestParam(value = "key") String key);
+
 
 }

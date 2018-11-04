@@ -19,8 +19,8 @@ eureka:
       enabled: true
   server:
     enableSelfPreservation: false           # 关闭自我保护模式（缺省为打开）
-    evictionIntervalTimerInMs: 2000       # 续期时间，即扫描失效服务的间隔时间（缺省为60*1000ms）
-    responseCacheUpdateIntervalMs: 3000   #eureka server刷新readCacheMap的时间，默认30s 注意，client读取的是readCacheMap，这个时间决定了多久会把readWriteCacheMap的缓存更新到readCacheMap上
+    evictionIntervalTimerInMs: 10000       # 续期时间，即扫描失效服务的间隔时间（缺省为60*1000ms）
+    responseCacheUpdateIntervalMs: 5000   #eureka server刷新readCacheMap的时间，默认30s 注意，client读取的是readCacheMap，这个时间决定了多久会把readWriteCacheMap的缓存更新到readCacheMap上
 
 # LOGGING
 logging:

@@ -55,7 +55,7 @@ public class DictService {
         String dictType = dt.getType();
         String key = dictType;
         dictDao.delete(id);
-        redisService.delCache(key);//更新时清除缓存
+        redisService.delete(key);//更新时清除缓存
         isSuccess = true;
         logger.info("删除数据（逻辑删除）结束 id={},isSuccess={}", id, isSuccess);
         return isSuccess;
@@ -82,7 +82,7 @@ public class DictService {
         } else {
             dictDao.add(dict);
         }
-        redisService.delCache(key);//更新时清除缓存
+        redisService.delete(key);//更新时清除缓存
         parms = JSON.toJSONString(dict);
         logger.info("保存数据（增加或者修改 ）结束 parms={}", parms);
         return dict;
@@ -163,7 +163,7 @@ public class DictService {
         String key = dictType;
         dictDao.updateById(dict);
         isSuccess = true;
-        redisService.delCache(key);//更新时清除缓存
+        redisService.delete(key);//更新时清除缓存
         logger.info("修改单条数据 结束 parms={},isSuccess={}", parms, isSuccess);
         return isSuccess;
     }

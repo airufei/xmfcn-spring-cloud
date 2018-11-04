@@ -38,7 +38,7 @@ public class CookieInterceptor extends HandlerInterceptorAdapter {
         }
         String loginUrl = webRoot + "/jobadmin/toLogin";
         String strUrl = request.getRequestURI();
-        if(strUrl!=null&&(strUrl.contains("toLogin")||strUrl.contains("login")||strUrl.contains("logout")))
+        if(strUrl!=null&&(strUrl.contains("/toLogin")||strUrl.contains("/login")||strUrl.contains("/logout")||strUrl.contains("/api")))
         {
             return;
         }

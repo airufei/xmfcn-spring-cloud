@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  * @author xuxueli 2017-04-28
  */
 @Configuration
-@ComponentScan(basePackages = "com.cn.xmf.job.jobhandler")
+@ComponentScan(basePackages = "com.cn.xmf.job.task")
 public class JobConfig {
     private Logger logger = LoggerFactory.getLogger(JobConfig.class);
 

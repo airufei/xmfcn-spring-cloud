@@ -5,10 +5,11 @@ import org.apache.commons.httpclient.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import redis.clients.jedis.Jedis;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -21,14 +22,11 @@ public class RedisService {
     private static Logger logger = LoggerFactory.getLogger(RedisService.class);
 
     @Autowired
-    private JedisConnectionFactory jedisConnectionFactory;
+    private LettuceConnectionFactory lettuceConnectionFactory;
 
-    private Jedis getJedis() {
-        Jedis jedis = null;
-        if (jedisConnectionFactory != null) {
-            jedis = jedisConnectionFactory.getShardInfo().createResource();
-        }
-        return jedis;
+    public RedisConnection getRedisConnection(){
+        RedisConnection connection = lettuceConnectionFactory.getConnection();
+        return connection;
     }
 
     /**
@@ -43,13 +41,13 @@ public class RedisService {
         if (StringUtil.isBlank(key)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         boolean broken = false;
         try {
-            result = jedis.llen(key);
+            result= conn.lLen(key.getBytes());
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
@@ -74,13 +72,13 @@ public class RedisService {
         if (StringUtil.isBlank(value)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         boolean broken = false;
         try {
-            result = jedis.lpush(key, value);
+            result = conn.lPush(key.getBytes(),value.getBytes());
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
             broken = true;
@@ -102,12 +100,16 @@ public class RedisService {
         if (StringUtil.isBlank(key)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            result = jedis.rpop(key);
+            byte[] bytes = conn.rPop(key.getBytes());
+            if(bytes!=null)
+            {
+                result=new String(bytes, "utf-8");
+            }
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
@@ -115,34 +117,6 @@ public class RedisService {
         return result;
     }
 
-    /**
-     * 设置缓存-默认缓存5分钟
-     *
-     * @param key
-     * @param value
-     * @return
-     */
-    @RequestMapping("setCache")
-    public String setCache(String key, String value) {
-        String result = null;
-        if (StringUtil.isBlank(key)) {
-            return result;
-        }
-        if (StringUtil.isBlank(value)) {
-            return result;
-        }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
-            return result;
-        }
-        try {
-            int expDate = 60 * 5;
-            saveCache(key, value, expDate);
-        } catch (Exception e) {
-            logger.error("setCache:" + StringUtil.getExceptionMsg(e));
-        }
-        return result;
-    }
 
 
     /**
@@ -158,12 +132,16 @@ public class RedisService {
         if (StringUtil.isBlank(key)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            result = jedis.get(key);
+            byte[] bytes = conn.get(key.getBytes());
+            if(bytes!=null)
+            {
+                result=new String(bytes, "utf-8");
+            }
         } catch (Exception e) {
             logger.error("getCache:" + StringUtil.getExceptionMsg(e));
         }
@@ -182,12 +160,12 @@ public class RedisService {
         if (StringUtil.isBlank(key)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            result = jedis.exists(key);
+            result = conn.exists(key.getBytes());
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
@@ -202,17 +180,21 @@ public class RedisService {
      * @return
      */
     @RequestMapping("expire")
-    public Long expire(String key, int seconds) {
+    public Long expire(String key, long seconds) {
         Long result = (long) -1;
         if (StringUtil.isBlank(key)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            result = jedis.expire(key, seconds);
+            boolean ret= conn.expire(key.getBytes(), seconds);
+            if(ret)
+            {
+                result = (long) 1;
+            }
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
@@ -229,18 +211,26 @@ public class RedisService {
      * @Author airufei
      */
     @RequestMapping("saveCache")
-    public String saveCache(String key, String value, int seconds) {
+    public long saveCache(String key, String value, long seconds) {
         logger.info("saveRedis:(设置缓存-带有效期) 开始 key={},seconds={}",key,seconds);
-        String result = null;
+        long result = -1;
         if (StringUtil.isBlank(key)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            result = jedis.setex(key, seconds, value);
+            Boolean ret = conn.set(key.getBytes(), value.getBytes());
+            if(ret)
+            {
+                result = 1;
+            }
+            if(seconds>0&&ret)
+            {
+                expire(key,seconds);
+            }
         } catch (Exception e) {
             logger.error("saveCache:" + StringUtil.getExceptionMsg(e));
         }
@@ -249,28 +239,28 @@ public class RedisService {
     }
 
     /**
-     * delCache（将 key 缓存数据删除）
+     * delete（将 key 缓存数据删除）
      *
      * @param key
      * @return
      */
-    @RequestMapping("delCache")
-    public Long delCache(String key) {
-        logger.info("delCache（将 key 缓存数据删除） 开始 key={}",key);
+    @RequestMapping("delete")
+    public Long delete(String key) {
+        logger.info("delete（将 key 缓存数据删除） 开始 key={}",key);
         Long result = null;
         if (StringUtil.isBlank(key)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            result = jedis.del(key);
+            result = conn.del(key.getBytes());
         } catch (Exception e) {
-            logger.error("delCache_error:" + StringUtil.getExceptionMsg(e));
+            logger.error("delete_error:" + StringUtil.getExceptionMsg(e));
         }
-        logger.info("delCache（将 key 缓存数据删除）结束 key={},result={}", key,result);
+        logger.info("delete（将 key 缓存数据删除）结束 key={},result={}", key,result);
         return result;
     }
 
@@ -286,12 +276,12 @@ public class RedisService {
         if (StringUtil.isBlank(key)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            result = jedis.decr(key);
+            result = conn.decr(key.getBytes());
         } catch (Exception e) {
             logger.error("decr_error:" + StringUtil.getExceptionMsg(e));
         }
@@ -311,12 +301,12 @@ public class RedisService {
         if (StringUtil.isBlank(key)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            result = jedis.incrBy(key, integer);
+            result = conn.incrBy(key.getBytes(), integer);
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
@@ -337,22 +327,26 @@ public class RedisService {
         if (StringUtil.isBlank(pattern)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            Set<String> list = getKeyList(pattern);
+            Set<byte[]> list = getKeyList(pattern);
             if (list == null || list.size() < 1) {
                 return result;
             }
-            Iterator<String> iterator = list.iterator();
+            Iterator<byte[]> iterator = list.iterator();
             while (iterator.hasNext()) {
-                String next = iterator.next();
+                if(iterator.next()==null)
+                {
+                    continue;
+                }
+                String next=new String(iterator.next(), "utf-8");
                 if (StringUtil.isBlank(next)) {
                     continue;
                 }
-                delCache(next);
+                delete(next);
             }
             result = 1;
         } catch (Exception e) {
@@ -369,17 +363,17 @@ public class RedisService {
      * @return
      */
     @RequestMapping("getKeyList")
-    public Set<String> getKeyList(String pattern) {
-        Set<String> result = null;
+    public Set<byte[]> getKeyList(String pattern) {
+        Set<byte[]> result = null;
         if (StringUtil.isBlank(pattern)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            result = jedis.keys(pattern);
+            Set<byte[]> keys = conn.keys(pattern.getBytes());
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
@@ -400,19 +394,19 @@ public class RedisService {
         if (StringUtil.isBlank(key)) {
             return result;
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return result;
         }
         try {
-            result = jedis.incr(key);
+            result = conn.incr(key.getBytes());
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
-        int maxLockCount=500;
+        int maxLockCount=300;
         if(result>=maxLockCount)//清除死锁
         {
-            delCache(key);
+            delete(key);
         }
         logger.info("getLock(获取分布式锁) 结束：" + result);
         return result;
@@ -435,13 +429,13 @@ public class RedisService {
         if (!exists(key)) {
             saveCache(key, "100000", 60 * 60 * 24);
         }
-        Jedis jedis = getJedis();
-        if (jedis == null) {
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
             return onlyNo;
         }
         long number=-1;
         try {
-            number = jedis.incr(key);
+            number = conn.incr(key.getBytes());
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }

@@ -44,7 +44,7 @@ spring:
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/xcode?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    url: jdbc:mysql://127.0.0.1:3306/cooxin?useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: abc123
     initialSize: 10 #连接池初始化大小
@@ -85,8 +85,8 @@ ribbon:
   MaxTotalConnections: 2000 # 总连接数 默认值200
   PoolMinThreads: 1 #线程池最小容量 默认值1 值范围1-10
   PoolMaxThreads: 300 #线程池最大容量 默认值 200 值范围200-400
-  ConnectTimeout: 20000
-  ReadTimeout: 100000 # ribbon 读取返回信息的超时时间，值范围30000-300000
+  ConnectTimeout: 2000
+  ReadTimeout: 20000 # ribbon 读取返回信息的超时时间，值范围30000-300000
   httpclient:
     enabled: true
   eager-load:

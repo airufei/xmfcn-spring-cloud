@@ -78,7 +78,13 @@ public class IndexController {
             return ReturnT.SUCCESS;
         }
         // do login
-        RetData retData = userHelperService.login(userName, password);
+        RetData retData = null;
+        try {
+            retData = userHelperService.login(userName, password);
+        } catch (Exception e) {
+            logger.error(StringUtil.getExceptionMsg(e));
+            e.printStackTrace();
+        }
         int code = retData.getCode();
         Object data = retData.getData();
         if (code == RetCode.SYS_ERROR) {

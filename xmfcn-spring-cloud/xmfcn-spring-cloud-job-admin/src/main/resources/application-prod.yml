@@ -112,8 +112,8 @@ ribbon:
   MaxTotalConnections: 2000 # 总连接数 默认值200
   PoolMinThreads: 1 #线程池最小容量 默认值1 值范围1-10
   PoolMaxThreads: 300 #线程池最大容量 默认值 200 值范围200-400
-  ConnectTimeout: 20000
-  ReadTimeout: 100000 # ribbon 读取返回信息的超时时间，值范围30000-300000
+  ConnectTimeout: 2000
+  ReadTimeout: 20000 # ribbon 读取返回信息的超时时间，值范围30000-300000
   httpclient:
     enabled: true #okhttp替换httpclient OkHttp 会使用连接池来复用连接以提高效率。OkHttp 提供了对 GZIP 的默认支持来降低传输内容的大小。OkHttp 也提供了对 HTTP 响应的缓存机制，可以避免不必要的网络请求
   okhttp:
