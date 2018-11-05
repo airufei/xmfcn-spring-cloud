@@ -67,7 +67,6 @@ public class IndexController {
     @ResponseBody
     public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String userName, String password, String ifRemember) {
         // param
-
         if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
             return new ReturnT<String>(500, I18nUtil.getString("login_param_empty"));
         }
