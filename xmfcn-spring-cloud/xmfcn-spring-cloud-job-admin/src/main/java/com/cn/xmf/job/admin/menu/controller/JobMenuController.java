@@ -58,11 +58,8 @@ public class JobMenuController {
             String length = request.getParameter("length");
             String type = request.getParameter("type");
             String name = request.getParameter("name");
-            ;
             String fid = request.getParameter("fid");
-            ;
             String level = request.getParameter("level");
-            ;
             int pageSize = 10;
             int pageNo = 1;
             int start = 0;

@@ -6,7 +6,7 @@ package com.cn.xmf.job.admin.core.model;
  */
 public class XxlJobLogGlue {
 	
-	private int id;
+	private Integer id;
 	private int jobId;				// 任务主键ID
 	private String glueType;		// GLUE类型	#com.cn.xmf.job.core.glue.GlueTypeEnum
 	private String glueSource;
@@ -14,11 +14,11 @@ public class XxlJobLogGlue {
 	private String addTime;
 	private String updateTime;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

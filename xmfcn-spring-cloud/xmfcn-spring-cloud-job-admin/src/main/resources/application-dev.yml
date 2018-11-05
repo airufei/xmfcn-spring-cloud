@@ -124,6 +124,6 @@ ribbon:
 xmf:
  job:
   login:
-    webRoot: http://localhost:8089
+    webRoot: http://localhost:8082
   accessToken: 123456
   i18n:

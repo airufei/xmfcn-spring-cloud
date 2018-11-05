@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class XxlJobGroup {
 
-    private int id;
+    private Integer id;
     private String appName;
     private String title;
     private int order;
@@ -27,11 +27,12 @@ public class XxlJobGroup {
         return registryList;
     }
 
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
