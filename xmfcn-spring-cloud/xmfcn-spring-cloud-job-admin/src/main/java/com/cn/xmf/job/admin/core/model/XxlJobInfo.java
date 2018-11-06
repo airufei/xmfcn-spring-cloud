@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class XxlJobInfo {
 	
-	private int id;				// 主键ID	    (JobKey.name)
+	private Integer id;				// 主键ID	    (JobKey.name)
 	
 	private int jobGroup;		// 执行器主键ID	(JobKey.group)
 	private String jobCron;		// 任务执行CRON表达式 【base on quartz】
@@ -39,11 +39,11 @@ public class XxlJobInfo {
 	private String jobStatus;		// 任务状态 【base on quartz】
 
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

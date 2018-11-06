@@ -8,6 +8,7 @@ import com.cn.xmf.job.admin.job.service.XxlJobService;
 import com.cn.xmf.job.admin.user.service.UserHelperService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.model.user.User;
+import com.cn.xmf.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +67,6 @@ public class IndexController {
     @ResponseBody
     public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String userName, String password, String ifRemember) {
         // param
-
         if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
             return new ReturnT<String>(500, I18nUtil.getString("login_param_empty"));
         }
