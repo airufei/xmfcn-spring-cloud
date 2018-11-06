@@ -290,7 +290,7 @@ $(function () {
     // add
     $(".add").click(function () {
         $("#addModal .form")[0].reset();
-        $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
+        edit(this);
     });
     var addModalValidate = $("#addModal .form").validate({
         errorElement: 'span',

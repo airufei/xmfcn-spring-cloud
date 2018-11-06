@@ -78,6 +78,7 @@ $(function() {
     }
     // 添加按钮
     $(".add").click(function () {
+        $("#addModal .form")[0].reset();
         edit(this);
     });
 
