@@ -43,7 +43,7 @@ public class LpushQueueTask extends IJobHandler {
             logger.info("----------正在执行，请稍后------------------------------");
             return SUCCESS;
         }
-        for (int j = 0; j <50; j++) {
+        for (int j = 0; j <10; j++) {
             Thread t1 = new Thread(new Runnable() {
                 @Override public void run() {
                     for (int i = 0; i < 1000; i++) {
