@@ -234,3 +234,20 @@ CREATE TABLE `t_sys_admin_menu` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字典数据表';
 
+CREATE TABLE `t_sys_job_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) DEFAULT NULL COMMENT '账号',
+  `password` varchar(32) DEFAULT NULL COMMENT '密码',
+  `age` int(11) DEFAULT '18' COMMENT '年龄',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+  `phone` varchar(11) DEFAULT NULL COMMENT '手机',
+  `address` varchar(50) DEFAULT NULL COMMENT '地址',
+  `qq` varchar(12) DEFAULT NULL COMMENT 'QQ',
+  `wechart` varchar(35) DEFAULT NULL COMMENT '微信号',
+  `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_TIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `flag` int(11) DEFAULT '-1' COMMENT '删除标记 1正常 -1删除',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='调度中心用户表';
+INSERT INTO `t_sys_job_user` VALUES ('1', 'admin', 'e99a18c428cb38d5f260853678922e03', '18', '199199688@qq.com', '18610000006', null, null, null, null, null, '-1', null);
