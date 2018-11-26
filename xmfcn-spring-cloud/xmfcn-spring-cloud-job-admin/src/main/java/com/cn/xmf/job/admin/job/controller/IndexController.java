@@ -5,7 +5,7 @@ import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.admin.controller.interceptor.PermissionInterceptor;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
 import com.cn.xmf.job.admin.job.service.XxlJobService;
-import com.cn.xmf.job.admin.user.service.UserHelperService;
+import com.cn.xmf.job.admin.user.service.JobUserHelperService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.model.user.User;
 import com.cn.xmf.util.StringUtil;
@@ -41,7 +41,7 @@ public class IndexController {
     @Autowired
     private XxlJobService xxlJobService;
     @Autowired
-    private UserHelperService userHelperService;
+    private JobUserHelperService jobUserHelperService;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -78,7 +78,7 @@ public class IndexController {
         // do login
         RetData retData = null;
         try {
-            retData = userHelperService.login(userName, password);
+            retData = jobUserHelperService.login(userName, password);
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
             e.printStackTrace();
