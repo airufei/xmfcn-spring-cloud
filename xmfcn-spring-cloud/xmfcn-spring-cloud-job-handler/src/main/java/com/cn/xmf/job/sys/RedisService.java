@@ -73,4 +73,12 @@ public interface RedisService {
     @RequestMapping(value ="getLock",consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long getLock(@RequestParam(value = "key") String key);
 
+    /**
+     * getQueueLength（获取队列长度)key 是消息频道
+     * @param key
+     * @return
+     */
+    @RequestMapping(value="getQueueLength",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long getQueueLength(@RequestParam(value = "key") String key);
+
 }

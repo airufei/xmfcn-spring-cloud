@@ -184,4 +184,26 @@ public class SysCommonService {
         }
         return lock;
     }
+
+    /**
+     * getQueueLength（获取队列长度)key 是消息频道
+     * @param key
+     * @return
+     */
+    public long getQueueLength(String key) {
+        long lock = -1;
+        if (StringUtil.isBlank(key)) {
+            return lock;
+        }
+        try {
+            Long aLong = redisService.getQueueLength(key);
+            if (aLong != null) {
+                lock = aLong;
+            }
+        } catch (Exception e) {
+            logger.error("getQueueLength（获取队列长度):" + StringUtil.getExceptionMsg(e));
+            e.printStackTrace();
+        }
+        return lock;
+    }
 }
