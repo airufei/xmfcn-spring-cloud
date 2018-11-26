@@ -7,6 +7,7 @@ import com.cn.xmf.job.admin.core.util.I18nUtil;
 import com.cn.xmf.job.admin.job.service.XxlJobService;
 import com.cn.xmf.job.admin.user.service.JobUserHelperService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
+import com.cn.xmf.model.user.JobUser;
 import com.cn.xmf.model.user.User;
 import com.cn.xmf.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -88,7 +89,7 @@ public class IndexController {
         if (code == RetCode.SYS_ERROR) {
             return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
         }
-        User user = (User) data;
+        JobUser user = (JobUser) data;
         if (user == null) {
             return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
         }
