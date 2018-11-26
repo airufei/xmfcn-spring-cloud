@@ -6,31 +6,13 @@
     <!-- DataTables -->
     <link rel="stylesheet" href="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.css">
     <title>字典表</title>
-   <#-- <style>
-        #dict_list tr
-        {
-            position: relative;
-        }
-        #dict_list tr td:nth-child(1)
-        {
-            width: 70px;
-            height: 25px;
-            position: absolute;
-        }
-        #dict_list tr td:nth-child(1) p
-        {
-            position: absolute;
-            top: 5px;
-            left: 0px;
-        }
-    </style>-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini <#if cookieMap?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if>">
 <div class="wrapper">
     <!-- header -->
 	<@netCommon.commonHeader />
     <!-- left -->
-	<@netCommon.commonLeft "dict" />
+	<@netCommon.commonLeft "${className}" />
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -51,14 +33,14 @@
                 </div>
                 <div class="col-xs-3">
                     <div class="input-group">
-                        <span class="input-group-addon">值</span>
-                        <input type="text" class="form-control" id="dictValue" autocomplete="on">
+                        <span class="input-group-addon">类型</span>
+                        <input type="text" class="form-control" id="type" autocomplete="on">
                     </div>
                 </div>
                 <div class="col-xs-3">
                     <div class="input-group">
-                        <span class="input-group-addon">类型</span>
-                        <input type="text" class="form-control" id="type" autocomplete="on">
+                        <span class="input-group-addon">备注</span>
+                        <input type="text" class="form-control" id="remark" autocomplete="on">
                     </div>
                 </div>
                 <div class="col-xs-1">
@@ -73,7 +55,8 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-body">
-                            <table id="dict_list" class="table table-striped table-hover table-condensed" width="100%" style="white-space: nowrap;">
+                            <table id="dict_list" class="table table-striped table-hover table-condensed"
+                                   width="100%" style="white-space: nowrap;">
                                 <thead>
                                 <tr>
                                     <th name="id">ID</th>
@@ -156,14 +139,14 @@
 
 <@netCommon.commonScript />
 <!-- DataTables -->
-
 <script src="/jobadmin/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="/jobadmin/plugins/jquery/jquery.validate.min.js"></script>
 <!-- moment -->
 <script src="/jobadmin/adminlte/plugins/daterangepicker/moment.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script><#--//拖拽-->
+<script src="/jobadmin/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="/jobadmin/js/dict.index.1.js"></script>
+
 <script>
     $(document).ready(function () {
         $("#modalDialog").draggable();		        //为模态对话框添加拖拽，拖拽区域只在顶部栏

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,22 +43,35 @@ public class DictController {
         String dictKey = request.getParameter("dictKey");
         String type = request.getParameter("type");
         String value = request.getParameter("value");
+        String remark = request.getParameter("remark");
         String startStr = request.getParameter("start");
         String length = request.getParameter("length");
         int pageSize = 10;
         int pageNo = 1;
-        int start=0;
+        int start = 0;
         if (StringUtil.isNotBlank(startStr)) {
             start = StringUtil.stringToInt(startStr);
         }
         if (StringUtil.isNotBlank(length)) {
             pageSize = StringUtil.stringToInt(length);
         }
-        if(start>0)
-        {
-            pageNo=(start/pageSize)+1;
+        if (start > 0) {
+            pageNo = (start / pageSize) + 1;
+        }
+        if (StringUtil.isBlank(dictKey)) {
+            dictKey = "";
+        }
+        if (StringUtil.isBlank(type)) {
+            type = "";
+        }
+        if (StringUtil.isBlank(remark)) {
+            remark = "";
         }
         JSONObject object = StringUtil.getPageJSONObject(pageNo, pageSize);
+        object.put("dictKey", dictKey);
+        object.put("type", type);
+        object.put("dictValue", value);
+        object.put("remark", remark);
         Partion partion = dictService.list(object);
         List<Dict> list = null;
         int totalCount = 0;
@@ -75,45 +89,61 @@ public class DictController {
     @RequestMapping("/save")
     @ResponseBody
     public ReturnT<String> save(Dict dict) {
-        logger.info("save 开始============>"+ JSON.toJSONString(dict));
+        logger.info("save 开始============>" + JSON.toJSONString(dict));
         ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
-        if(dict==null)
-        {
+        if (dict == null) {
             returnT.setMsg("参数错误");
+            return returnT;
+        }
+        String dictValue = dict.getDictValue();
+        String dictKey = dict.getDictKey();
+        String type = dict.getType();
+        String remark = dict.getRemark();
+        if (StringUtil.isBlank(dictValue)) {
+            returnT.setMsg("值不能为空");
+            return returnT;
+        }
+        if (StringUtil.isBlank(dictKey)) {
+            returnT.setMsg("键不能为空");
+            return returnT;
+        }
+        if (StringUtil.isBlank(type)) {
+            returnT.setMsg("类型不能为空");
+            return returnT;
+        }
+        if (StringUtil.isBlank(remark)) {
+            returnT.setMsg("备注不能为空");
             return returnT;
         }
         dict.setCreateTime(new Date());
         dict.setUpdateTime(new Date());
         Dict data = dictService.save(dict);
-        if(data==null)
-        {
+        if (data == null) {
             returnT.setMsg("参数错误");
             return returnT;
         }
         returnT.setCode(ReturnT.SUCCESS_CODE);
         returnT.setMsg("成功");
-        logger.info("save 结束============>"+ JSON.toJSONString(returnT));
+        logger.info("save 结束============>" + JSON.toJSONString(returnT));
         return returnT;
     }
 
     @RequestMapping("/delete")
     @ResponseBody
     public ReturnT<String> delete(int id) {
-        logger.info("delete 开始============>"+ id);
+        logger.info("delete 开始============>" + id);
         ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "删除失败");
-        if(id<=0)
-        {
+        if (id <= 0) {
             returnT.setMsg("参数错误");
             return returnT;
         }
-        long newId=id;
+        long newId = id;
         boolean delete = dictService.delete(newId);
-        if(delete)
-        {
+        if (delete) {
             returnT.setCode(ReturnT.SUCCESS_CODE);
             returnT.setMsg("成功");
         }
-        logger.info("delete 结束============>"+ JSON.toJSONString(returnT));
+        logger.info("delete 结束============>" + JSON.toJSONString(returnT));
         return returnT;
     }
 }

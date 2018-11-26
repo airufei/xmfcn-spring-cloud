@@ -23,7 +23,7 @@
     <select id="getDictById" resultType="com.cn.xmf.model.dict.Dict">
         SELECT
         <include refid="dictColumns"/>
-        FROM t_sys_dict a
+        FROM t_sys_dict_new a
         <include refid="dictJoins"/>
         WHERE a.id = #{id}
     </select>
@@ -31,18 +31,21 @@
     <select id="getTotalCount" resultType="Integer" parameterType="java.util.Map">
         SELECT
         count(0) as count
-        FROM t_sys_dict a
+        FROM t_sys_dict_new a
         <include refid="dictJoins"/>
         <where>
             a.flag = #{flag}
             <if test="dictKey != null and dictKey != ''">
                 AND a.DICT_KEY = #{dictKey}
             </if>
-            <if test="flag != null and flag != ''">
-                AND a.FLAG = #{flag}
-            </if>
             <if test="type != null and type != ''">
                 AND a.TYPE = #{type}
+            </if>
+            <if test="dictValue != null and dictValue != ''">
+                AND a.DICT_VALUE = #{dictValue}
+            </if>
+            <if test="remark != null and remark != ''">
+                AND a.remark  like CONCAT('%',#{remark},'%')
             </if>
         </where>
     </select>
@@ -50,18 +53,21 @@
     <select id="getList" resultType="com.cn.xmf.model.dict.Dict" parameterType="java.util.Map">
         SELECT
         <include refid="dictColumns"/>
-        FROM t_sys_dict a inner join
-        (SELECT id from t_sys_dict a
+        FROM t_sys_dict_new a inner join
+        (SELECT id from t_sys_dict_new a
         <where>
             a.flag = #{flag}
             <if test="dictKey != null and dictKey != ''">
                 AND a.DICT_KEY = #{dictKey}
             </if>
-            <if test="flag != null and flag != ''">
-                AND a.FLAG = #{flag}
-            </if>
             <if test="type != null and type != ''">
                 AND a.TYPE = #{type}
+            </if>
+            <if test="dictValue != null and dictValue != ''">
+                AND a.DICT_VALUE = #{dictValue}
+            </if>
+            <if test="remark != null and remark != ''">
+                AND a.remark  like CONCAT('%',#{remark},'%')
             </if>
         </where>
         <choose>
@@ -77,18 +83,21 @@
     <select id="getDictList" resultType="com.cn.xmf.model.dict.Dict" parameterType="com.cn.xmf.model.dict.Dict">
         SELECT
         <include refid="dictColumns"/>
-        FROM t_sys_dict a
+        FROM t_sys_dict_new a
         <include refid="dictJoins"/>
         <where>
             a.flag = #{flag}
             <if test="dictKey != null and dictKey != ''">
                 AND a.DICT_KEY = #{dictKey}
             </if>
-            <if test="flag != null and flag != ''">
-                AND a.FLAG = #{flag}
-            </if>
             <if test="type != null and type != ''">
                 AND a.TYPE = #{type}
+            </if>
+            <if test="dictValue != null and dictValue != ''">
+                AND a.DICT_VALUE = #{dictValue}
+            </if>
+            <if test="remark != null and remark != ''">
+                AND a.remark  like CONCAT('%',#{remark},'%')
             </if>
         </where>
         <choose>
@@ -99,7 +108,7 @@
     </select>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_sys_dict (
+        INSERT INTO t_sys_dict_new (
             ID,
             DICT_KEY,
             DICT_VALUE,
@@ -130,7 +139,7 @@
             SELECT
             LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO t_sys_dict(
+        INSERT INTO t_sys_dict_new(
         ID,
         DICT_KEY,
         DICT_VALUE,
@@ -159,7 +168,7 @@
     </insert>
 
     <update id="updateById">
-        UPDATE t_sys_dict SET
+        UPDATE t_sys_dict_new SET
         <if test="id != null and id != '' ">
             ID = #{id},
         </if>
@@ -195,7 +204,7 @@
     </update>
 
     <update id="delete">
-        UPDATE t_sys_dict
+        UPDATE t_sys_dict_new
         SET
             flag = -1
         WHERE id = #{id}

@@ -14,7 +14,7 @@ $(function () {
             data: function (d) {
                 var obj = {};
                 obj.dictKey = $('#dictKey').val();
-                obj.dictValue = $('#dictValue').val();
+                obj.remark = $('#remark').val();
                 obj.type = $('#type').val();
                 obj.id = $('#id').val();
                 obj.start = d.start;
