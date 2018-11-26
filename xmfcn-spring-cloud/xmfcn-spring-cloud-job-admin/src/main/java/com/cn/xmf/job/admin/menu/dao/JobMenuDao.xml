@@ -23,7 +23,7 @@
     <select id="getJobMenuById" resultType="com.cn.xmf.job.admin.menu.model.JobMenu">
         SELECT
         <include refid="jobMenuColumns"/>
-        FROM mz_admin_menu a
+        FROM t_sys_admin_menu a
         <include refid="jobMenuJoins"/>
         WHERE a.id = #{id}
     </select>
@@ -31,7 +31,7 @@
     <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
         SELECT
         count(*) as count
-        FROM mz_admin_menu a
+        FROM t_sys_admin_menu a
         <include refid="jobMenuJoins"/>
         <where>
             1=1
@@ -55,7 +55,7 @@
         SELECT
         <include refid="jobMenuColumns"/>
         FROM
-        (SELECT id from mz_admin_menu t
+        (SELECT id from t_sys_admin_menu t
         <where>
             1=1
             <if test="flag != null and flag != ''">
@@ -72,7 +72,7 @@
             </if>
         </where>
         limit #{startIndex},#{pageSize}) b inner join
-        mz_admin_menu a on b.id=a.id
+        t_sys_admin_menu a on b.id=a.id
         <choose>
             <otherwise>
                 ORDER BY update_time desc
@@ -84,7 +84,7 @@
             parameterType="com.cn.xmf.job.admin.menu.model.JobMenu">
         SELECT
         <include refid="jobMenuColumns"/>
-        FROM (SELECT id from mz_admin_menu t
+        FROM (SELECT id from t_sys_admin_menu t
         <where>
             1=1
             <if test="name != null and name != ''">
@@ -97,7 +97,7 @@
                 AND t.level = #{level}
             </if>
         </where>
-        ) b inner join mz_admin_menu a on b.id=a.id
+        ) b inner join t_sys_admin_menu a on b.id=a.id
         <choose>
             <otherwise>
                 ORDER BY update_time desc
@@ -110,7 +110,7 @@
         SELECT
         <include refid="jobMenuColumns"/>
         FROM
-        mz_admin_menu a
+        t_sys_admin_menu a
         <where>
             1=1
             <if test="name != null and name != ''">
@@ -128,7 +128,7 @@
 
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO mz_admin_menu(
+        INSERT INTO t_sys_admin_menu(
         <if test="id != null and id != ''">
             id,
         </if>
@@ -194,7 +194,7 @@
             SELECT
             LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO mz_admin_menu(
+        INSERT INTO t_sys_admin_menu(
         <if test="id != null and id != ''">
             #{id},
         </if>
@@ -259,7 +259,7 @@
     </insert>
 
     <update id="updateById">
-        UPDATE mz_admin_menu SET
+        UPDATE t_sys_admin_menu SET
         <if test="name != null and name != ''">
             name = #{name},
         </if>
@@ -286,7 +286,7 @@
     </update>
 
     <update id="delete">
-	UPDATE mz_admin_menu SET
+	UPDATE t_sys_admin_menu SET
 	flag = -1
 		WHERE id = #{id}
 	</update>

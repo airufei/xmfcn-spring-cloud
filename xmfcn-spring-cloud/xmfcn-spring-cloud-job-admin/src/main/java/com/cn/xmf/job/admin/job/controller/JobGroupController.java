@@ -16,103 +16,80 @@ import java.util.List;
 
 /**
  * job group controller
+ *
  * @author xuxueli 2016-10-02 20:52:56
  */
 @Controller
 @RequestMapping("/jobgroup")
 public class JobGroupController {
 
-	@Resource
-	public XxlJobInfoDao xxlJobInfoDao;
-	@Resource
-	public XxlJobGroupDao xxlJobGroupDao;
+    @Resource
+    public XxlJobInfoDao xxlJobInfoDao;
+    @Resource
+    public XxlJobGroupDao xxlJobGroupDao;
 
-	@RequestMapping
-	public String index(Model model) {
+    @RequestMapping
+    public String index(Model model) {
 
-		// job group (executor)
-		List<XxlJobGroup> list = xxlJobGroupDao.findAll();
+        // job group (executor)
+        List<XxlJobGroup> list = xxlJobGroupDao.findAll();
 
-		model.addAttribute("list", list);
-		return "jobgroup/jobgroup.index";
-	}
+        model.addAttribute("list", list);
+        return "jobgroup/jobgroup.index";
+    }
 
-	@RequestMapping("/save")
-	@ResponseBody
-	public ReturnT<String> save(XxlJobGroup xxlJobGroup){
+    @RequestMapping("/save")
+    @ResponseBody
+    public ReturnT<String> save(XxlJobGroup xxlJobGroup) {
 
-		// valid
-		if (xxlJobGroup.getAppName()==null || StringUtils.isBlank(xxlJobGroup.getAppName())) {
-			return new ReturnT<String>(500, (I18nUtil.getString("system_please_input")+"AppName") );
-		}
-		if (xxlJobGroup.getAppName().length()<4 || xxlJobGroup.getAppName().length()>64) {
-			return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_appName_length") );
-		}
-		if (xxlJobGroup.getTitle()==null || StringUtils.isBlank(xxlJobGroup.getTitle())) {
-			return new ReturnT<String>(500, (I18nUtil.getString("system_please_input") + I18nUtil.getString("jobgroup_field_title")) );
-		}
-		if (xxlJobGroup.getAddressType()!=0) {
-			if (StringUtils.isBlank(xxlJobGroup.getAddressList())) {
-				return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_addressType_limit") );
-			}
-			String[] addresss = xxlJobGroup.getAddressList().split(",");
-			for (String item: addresss) {
-				if (StringUtils.isBlank(item)) {
-					return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_registryList_unvalid") );
-				}
-			}
-		}
+        // valid
+        if (xxlJobGroup.getAppName() == null || StringUtils.isBlank(xxlJobGroup.getAppName())) {
+            return new ReturnT<String>(500, (I18nUtil.getString("system_please_input") + "AppName"));
+        }
+        if (xxlJobGroup.getAppName().length() < 4 || xxlJobGroup.getAppName().length() > 64) {
+            return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_appName_length"));
+        }
+        if (xxlJobGroup.getTitle() == null || StringUtils.isBlank(xxlJobGroup.getTitle())) {
+            return new ReturnT<String>(500, (I18nUtil.getString("system_please_input") + I18nUtil.getString("jobgroup_field_title")));
+        }
+        if (xxlJobGroup.getAddressType() != 0) {
+            if (StringUtils.isBlank(xxlJobGroup.getAddressList())) {
+                return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_addressType_limit"));
+            }
+            String[] addresss = xxlJobGroup.getAddressList().split(",");
+            for (String item : addresss) {
+                if (StringUtils.isBlank(item)) {
+                    return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_registryList_unvalid"));
+                }
+            }
+        }
+        Integer id = xxlJobGroup.getId();
+        int ret = -1;
+        if (id == null || id <= 0) {
+            ret = xxlJobGroupDao.save(xxlJobGroup);
+        } else {
+            ret=xxlJobGroupDao.update(xxlJobGroup);
+        }
+        return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
+    }
 
-		int ret = xxlJobGroupDao.save(xxlJobGroup);
-		return (ret>0)?ReturnT.SUCCESS:ReturnT.FAIL;
-	}
+    @RequestMapping("/delete")
+    @ResponseBody
+    public ReturnT<String> remove(int id) {
 
-	@RequestMapping("/update")
-	@ResponseBody
-	public ReturnT<String> update(XxlJobGroup xxlJobGroup){
-		// valid
-		if (xxlJobGroup.getAppName()==null || StringUtils.isBlank(xxlJobGroup.getAppName())) {
-			return new ReturnT<String>(500, (I18nUtil.getString("system_please_input")+"AppName") );
-		}
-		if (xxlJobGroup.getAppName().length()<4 || xxlJobGroup.getAppName().length()>64) {
-			return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_appName_length") );
-		}
-		if (xxlJobGroup.getTitle()==null || StringUtils.isBlank(xxlJobGroup.getTitle())) {
-			return new ReturnT<String>(500, (I18nUtil.getString("system_please_input") + I18nUtil.getString("jobgroup_field_title")) );
-		}
-		if (xxlJobGroup.getAddressType()!=0) {
-			if (StringUtils.isBlank(xxlJobGroup.getAddressList())) {
-				return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_addressType_limit") );
-			}
-			String[] addresss = xxlJobGroup.getAddressList().split(",");
-			for (String item: addresss) {
-				if (StringUtils.isBlank(item)) {
-					return new ReturnT<String>(500, I18nUtil.getString("jobgroup_field_registryList_unvalid") );
-				}
-			}
-		}
+        // valid
+        int count = xxlJobInfoDao.pageListCount(0, 10, id, null, null);
+        if (count > 0) {
+            return new ReturnT<String>(500, I18nUtil.getString("jobgroup_del_limit_0"));
+        }
 
-		int ret = xxlJobGroupDao.update(xxlJobGroup);
-		return (ret>0)?ReturnT.SUCCESS:ReturnT.FAIL;
-	}
+        List<XxlJobGroup> allList = xxlJobGroupDao.findAll();
+        if (allList.size() == 1) {
+            return new ReturnT<String>(500, I18nUtil.getString("jobgroup_del_limit_1"));
+        }
 
-	@RequestMapping("/remove")
-	@ResponseBody
-	public ReturnT<String> remove(int id){
-
-		// valid
-		int count = xxlJobInfoDao.pageListCount(0, 10, id, null, null);
-		if (count > 0) {
-			return new ReturnT<String>(500, I18nUtil.getString("jobgroup_del_limit_0") );
-		}
-
-		List<XxlJobGroup> allList = xxlJobGroupDao.findAll();
-		if (allList.size() == 1) {
-			return new ReturnT<String>(500, I18nUtil.getString("jobgroup_del_limit_1") );
-		}
-
-		int ret = xxlJobGroupDao.remove(id);
-		return (ret>0)?ReturnT.SUCCESS:ReturnT.FAIL;
-	}
+        int ret = xxlJobGroupDao.remove(id);
+        return (ret > 0) ? ReturnT.SUCCESS : ReturnT.FAIL;
+    }
 
 }
