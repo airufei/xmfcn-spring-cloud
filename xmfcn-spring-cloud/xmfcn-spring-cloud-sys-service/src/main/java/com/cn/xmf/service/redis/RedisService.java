@@ -210,9 +210,9 @@ public class RedisService {
      * @return
      * @Author airufei
      */
-    @RequestMapping("saveCache")
+    @RequestMapping("save")
     public long saveCache(String key, String value, long seconds) {
-        logger.info("saveRedis:(设置缓存-带有效期) 开始 key={},seconds={}",key,seconds);
+        logger.info("save:(设置缓存-带有效期) 开始 key={},seconds={}",key,seconds);
         long result = -1;
         if (StringUtil.isBlank(key)) {
             return result;

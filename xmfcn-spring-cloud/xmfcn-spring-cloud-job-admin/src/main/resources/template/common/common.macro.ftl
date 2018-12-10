@@ -59,14 +59,12 @@
  <script src="/jobadmin/js/common.1.js"></script>
     <script>
         var base_url = '${request.contextPath}/jobadmin';
-		if(base_url.indexOf("https")<0)
-		{
-            base_url=base_url.replace('http','https')
-		}
-		if(base_url.indexOf("https")<0)
-		{
-            base_url=base_url.replace('http','https')
-		}
+        if (base_url.indexOf("https") < 0) {
+            base_url = base_url.replace('http', 'https')
+        }
+        if (base_url.indexOf("https") < 0) {
+            base_url = base_url.replace('http', 'https')
+        }
         var I18n = ${I18nUtil.getMultString()};
     </script>
 
@@ -105,30 +103,56 @@
             <ul class="sidebar-menu">
                 <li class="menu_header">菜单</li>
                 <ul class="sidebar_menu_list">
-                    <li class="nav-click <#if pageName == "index">active</#if>" ><a href="${request.contextPath}/jobadmin/"><i class="fa fa-circle-o text-aqua"></i><span>${I18n.job_dashboard_name}</span></a></li>
-                    <li class="nav-click <#if pageName == "jobinfo">active</#if>" ><a href="${request.contextPath}/jobadmin/jobinfo"><i class="fa fa-circle-o text-yellow"></i><span>${I18n.jobinfo_name}</span></a></li>
-                    <li class="nav-click <#if pageName == "joblog">active</#if>" ><a href="${request.contextPath}/jobadmin/joblog"><i class="fa fa-circle-o text-green"></i><span>${I18n.joblog_name}</span></a></li>
-                    <li class="nav-click <#if pageName == "jobgroup">active</#if>" ><a href="${request.contextPath}/jobadmin/jobgroup"><i class="fa fa-circle-o text-red"></i><span>${I18n.jobgroup_name}</span></a></li>
-                    <li class="nav-click <#if pageName == "help">active</#if>" ><a href="${request.contextPath}/jobadmin/help"><i class="fa fa-circle-o text-gray"></i><span>${I18n.job_help}</span></a></li>
-                    <li class="nav-click <#if pageName == "dict">active</#if>" ><a href="${request.contextPath}/jobadmin/dict"><i class="fa fa-circle-o text-orange"></i><span>${I18n.dict_name}</span></a></li>
-                    <li class="nav-click <#if pageName == "dict">active</#if>" ><a href="${request.contextPath}/jobadmin/jobMenu"><i class="fa fa-circle-o text-orange"></i><span>菜单</span></a></li>
+                    <li class="nav-click <#if pageName == "index">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/"><i
+                            class="fa fa-circle-o text-aqua"></i><span>${I18n.job_dashboard_name}</span></a></li>
+                    <li class="nav-click <#if pageName == "jobinfo">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/jobinfo"><i
+                            class="fa fa-circle-o text-yellow"></i><span>${I18n.jobinfo_name}</span></a></li>
+                    <li class="nav-click <#if pageName == "joblog">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/joblog"><i
+                            class="fa fa-circle-o text-green"></i><span>${I18n.joblog_name}</span></a></li>
+                    <li class="nav-click <#if pageName == "jobgroup">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/jobgroup"><i
+                            class="fa fa-circle-o text-red"></i><span>${I18n.jobgroup_name}</span></a></li>
+                    <li class="nav-click <#if pageName == "help">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/help"><i
+                            class="fa fa-circle-o text-gray"></i><span>${I18n.job_help}</span></a></li>
+                    <li class="nav-click <#if pageName == "dict">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/dict"><i
+                            class="fa fa-circle-o text-orange"></i><span>${I18n.dict_name}</span></a></li>
+                    <li class="nav-click <#if pageName == "dict">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/jobMenu"><i
+                            class="fa fa-circle-o text-orange"></i><span>菜单</span></a></li>
                 </ul>
             </ul>
-	   <#-- <#list menuList as c>
-			<ul class="sidebar-menu">
-                <li class="menu_header">${c.name}</li>
-                <ul class="sidebar_menu_list">
-	               <#list menuSecList as c1>
-				   <li class="nav-click active"><a
-                           href="${request.contextPath}/${c1.url}"><i
-                           class="fa fa-circle-o text-aqua"></i><span>${c1.name}</span></a></li>
-                   </#list>
-                &lt;#&ndash;
-                 &ndash;&gt;
 
+            <ul class="sidebar-menu">
+                <li class="menu_header">代码</li>
+                <ul class="sidebar_menu_list">
+                    <li class="nav-click <#if pageName == "codeScheme">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/codeScheme"><i
+                            class="fa fa-circle-o text-aqua"></i><span>代码方案管理</span></a></li>
+                    <li class="nav-click <#if pageName == "codeTable">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/codeTable"><i
+                            class="fa fa-circle-o text-yellow"></i><span>数据表管理</span></a></li>
                 </ul>
             </ul>
-        </#list>-->
+        <#-- <#list menuList as c>
+             <ul class="sidebar-menu">
+                 <li class="menu_header">${c.name}</li>
+                 <ul class="sidebar_menu_list">
+                    <#list menuSecList as c1>
+                    <li class="nav-click active"><a
+                            href="${request.contextPath}/${c1.url}"><i
+                            class="fa fa-circle-o text-aqua"></i><span>${c1.name}</span></a></li>
+                    </#list>
+                 &lt;#&ndash;
+                  &ndash;&gt;
+
+                 </ul>
+             </ul>
+         </#list>-->
         </section>
         <!-- /.sidebar -->
     </aside>

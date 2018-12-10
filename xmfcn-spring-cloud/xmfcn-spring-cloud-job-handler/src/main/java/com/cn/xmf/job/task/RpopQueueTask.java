@@ -47,7 +47,7 @@ public class RpopQueueTask extends IJobHandler {
             return ReturnT.SUCCESS;
         }
         long queueLength = sysCommonService.getQueueLength(key);
-        int threadNum = 60;
+        int threadNum = 100;
         ExecutorService executorService = Executors.newFixedThreadPool(threadNum);
         int perSize = (int) (queueLength / threadNum);
         for (int i = 0; i < threadNum; i++) {

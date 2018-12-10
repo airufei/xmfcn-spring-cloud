@@ -26,23 +26,10 @@
 		<!-- Main content -->
 	    <section class="content">
 	    	<div class="row">
-	    		<div class="col-xs-2">
- 					<div class="input-group">
-	                	<span class="input-group-addon">${I18n.jobinfo_field_jobgroup}</span>
-                		<select class="form-control" id="jobGroup"  paramVal="<#if jobInfo?exists>${jobInfo.jobGroup}</#if>" >
-                            <option value="0" >${I18n.system_all}</option>
-                			<#list JobGroupList as group>
-                				<option value="${group.id}" >${group.title}</option>
-                			</#list>
-	                  	</select>
-	              	</div>
-	            </div>
-	            <div class="col-xs-2">
+	            <div class="col-xs-3">
 	              	<div class="input-group">
-	                	<span class="input-group-addon">${I18n.jobinfo_job}</span>
-                        <select class="form-control" id="jobId" paramVal="<#if jobInfo?exists>${jobInfo.id}</#if>" >
-                            <option value="0" >${I18n.system_all}</option>
-						</select>
+                        <span class="input-group-addon">JobHandler</span>
+                        <input type="text" class="form-control" id="executorHandler" autocomplete="on">
 	              	</div>
 	            </div>
 
@@ -87,13 +74,14 @@
 					            	<tr>
                                         <th name="jobId" >${I18n.jobinfo_field_id}</th>
                                         <th name="jobGroup" >jobGroup</th>
+                                        <th name="executorHandler" >任务JobHandler</th>
                                         <th name="triggerTime" >${I18n.joblog_field_triggerTime}</th>
                                         <th name="triggerCode" >${I18n.joblog_field_triggerCode}</th>
                                         <th name="triggerMsg" >${I18n.joblog_field_triggerMsg}</th>
 					                  	<th name="handleTime" >${I18n.joblog_field_handleTime}</th>
 					                  	<th name="handleCode" >${I18n.joblog_field_handleCode}</th>
 					                  	<th name="handleMsg" >${I18n.joblog_field_handleMsg}</th>
-					                  	<th name="handleMsg" >${I18n.system_opt}</th>
+                                        <th name="handleMsg" >${I18n.system_opt}</th>
 					                </tr>
 				                </thead>
 				                <tbody></tbody>
