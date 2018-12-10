@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cn.xmf.job.admin.code.dao.CodeTableColumnDao">
 
-    <sql id="codeTableColumnColumns">
-	    str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
-	   str_to_date(a.updatetime, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
+	<sql id="codeTableColumnColumns">
+	   str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
+	   str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
 		a.id AS "id",
 		a.table_id AS "tableId",
 		a.name AS "name",
@@ -23,496 +23,526 @@
 		a.dict_type AS "dictType",
 		a.settings AS "settings",
 		a.sort AS "sort",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
 		a.remark AS "remark",
+		a.flag AS "flag",
 		a.table_name AS "tableName",
 		a.is_editPage AS "isEditpage",
 		a.isInsertRequiredField AS "isinsertrequiredfield",
-		a.isUpdateRequiredField AS "isupdaterequiredfield"
+		a.isUpdateRequiredField AS "isupdaterequiredfield",
+		a.is_sort AS "isSort"
 	</sql>
 
-    <sql id="codeTableColumnJoins">
-    </sql>
+	<sql id="codeTableColumnJoins">
+	</sql>
 
-    <select id="getCodeTableColumnById" resultType="com.cn.xmf.job.admin.code.model.CodeTableColumn">
-        SELECT
-        <include refid="codeTableColumnColumns"/>
-        FROM t_code_table_column a
-        <include refid="codeTableColumnJoins"/>
-        WHERE a.id = #{id}
-    </select>
+	<select id="getCodeTableColumnById" resultType="com.cn.xmf.job.admin.code.model.CodeTableColumn">
+		SELECT
+			<include refid="codeTableColumnColumns"/>
+		FROM t_code_table_column a
+		<include refid="codeTableColumnJoins"/>
+		WHERE a.id = #{id}
+	</select>
 
-    <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
+	<select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
+		SELECT
+			count(*) as count
+		FROM t_code_table_column a
+		<include refid="codeTableColumnJoins"/>
+		<where>
+			1=1
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND a.flag = #{flag}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND a.table_name = #{tableName}
+			</if>
+		</where>
+	</select>
+
+	<select id="getList" resultType="com.cn.xmf.job.admin.code.model.CodeTableColumn" parameterType="com.alibaba.fastjson.JSONObject">
+		SELECT
+			<include refid="codeTableColumnColumns"/>
+		FROM
+		(SELECT id from  t_code_table_column t
+		<where>
+			1=1
+			<if test="name != null and name != ''">
+				AND t.name = #{name}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND t.flag = #{flag}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND t.table_name = #{tableName}
+			</if>
+		</where>
+		 limit #{startIndex},#{pageSize}) b inner join
+		t_code_table_column a  on b.id=a.id
+		 <choose>
+			<otherwise>
+                 ORDER BY createtime desc
+			</otherwise>
+		</choose>
+	</select>
+
+    <select id="getCodeTableColumnList" resultType="com.cn.xmf.job.admin.code.model.CodeTableColumn" parameterType="com.cn.xmf.job.admin.code.model.CodeTableColumn">
+		SELECT
+			<include refid="codeTableColumnColumns"/>
+		FROM (SELECT id from  t_code_table_column t
+		<where>
+			1=1
+			<if test="name != null and name != ''">
+				AND t.name = #{name}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND t.flag = #{flag}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND t.table_name = #{tableName}
+			</if>
+		</where>
+		) b  inner join t_code_table_column a  on b.id=a.id
+		 <choose>
+			<otherwise>
+                 ORDER BY createtime desc
+			</otherwise>
+		</choose>
+	</select>
+
+       <select id="getSignleCodeTableColumn" resultType="com.cn.xmf.job.admin.code.model.CodeTableColumn" parameterType="com.cn.xmf.job.admin.code.model.CodeTableColumn">
+		SELECT
+			<include refid="codeTableColumnColumns"/>
+		FROM
+		t_code_table_column a
+		<where>
+			1=1
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND a.flag = #{flag}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND a.table_name = #{tableName}
+			</if>
+		</where>
+		limit 1
+	</select>
+
+
+<insert id="add" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_code_table_column(
+		<if test="id != null and id != ''">
+		 id,
+		</if>
+		<if test="tableId != null and tableId != ''">
+		 table_id,
+		</if>
+		<if test="name != null and name != ''">
+		 name,
+		</if>
+		<if test="comments != null and comments != ''">
+		 comments,
+		</if>
+		<if test="jdbcType != null and jdbcType != ''">
+		 jdbc_type,
+		</if>
+		<if test="javaType != null and javaType != ''">
+		 java_type,
+		</if>
+		<if test="javaField != null and javaField != ''">
+		 java_field,
+		</if>
+		<if test="isPk != null and isPk != ''">
+		 is_pk,
+		</if>
+		<if test="isNull != null and isNull != ''">
+		 is_null,
+		</if>
+		<if test="isInsert != null and isInsert != ''">
+		 is_insert,
+		</if>
+		<if test="isEdit != null and isEdit != ''">
+		 is_edit,
+		</if>
+		<if test="isList != null and isList != ''">
+		 is_list,
+		</if>
+		<if test="isQuery != null and isQuery != ''">
+		 is_query,
+		</if>
+		<if test="queryType != null and queryType != ''">
+		 query_type,
+		</if>
+		<if test="showType != null and showType != ''">
+		 show_type,
+		</if>
+		<if test="dictType != null and dictType != ''">
+		 dict_type,
+		</if>
+		<if test="settings != null and settings != ''">
+		 settings,
+		</if>
+		<if test="sort != null and sort != ''">
+		 sort,
+		</if>
+		<if test="updatetime != null and updatetime != ''">
+		 updatetime,
+		</if>
+		<if test="remark != null and remark != ''">
+		 remark,
+		</if>
+		<if test="flag != null and flag != ''">
+		 flag,
+		</if>
+		<if test="tableName != null and tableName != ''">
+		 table_name,
+		</if>
+		<if test="isEditpage != null and isEditpage != ''">
+		 is_editPage,
+		</if>
+		<if test="isinsertrequiredfield != null and isinsertrequiredfield != ''">
+		 isInsertRequiredField,
+		</if>
+		<if test="isupdaterequiredfield != null and isupdaterequiredfield != ''">
+		 isUpdateRequiredField,
+		</if>
+		<if test="isSort != null and isSort != ''">
+		 is_sort,
+		</if>
+		 createtime
+		) VALUES (
+		 <if test="id != null and id != ''">
+		  #{id},
+		   </if>
+		 <if test="tableId != null and tableId != ''">
+		  #{tableId},
+		   </if>
+		 <if test="name != null and name != ''">
+		  #{name},
+		   </if>
+		 <if test="comments != null and comments != ''">
+		  #{comments},
+		   </if>
+		 <if test="jdbcType != null and jdbcType != ''">
+		  #{jdbcType},
+		   </if>
+		 <if test="javaType != null and javaType != ''">
+		  #{javaType},
+		   </if>
+		 <if test="javaField != null and javaField != ''">
+		  #{javaField},
+		   </if>
+		 <if test="isPk != null and isPk != ''">
+		  #{isPk},
+		   </if>
+		 <if test="isNull != null and isNull != ''">
+		  #{isNull},
+		   </if>
+		 <if test="isInsert != null and isInsert != ''">
+		  #{isInsert},
+		   </if>
+		 <if test="isEdit != null and isEdit != ''">
+		  #{isEdit},
+		   </if>
+		 <if test="isList != null and isList != ''">
+		  #{isList},
+		   </if>
+		 <if test="isQuery != null and isQuery != ''">
+		  #{isQuery},
+		   </if>
+		 <if test="queryType != null and queryType != ''">
+		  #{queryType},
+		   </if>
+		 <if test="showType != null and showType != ''">
+		  #{showType},
+		   </if>
+		 <if test="dictType != null and dictType != ''">
+		  #{dictType},
+		   </if>
+		 <if test="settings != null and settings != ''">
+		  #{settings},
+		   </if>
+		 <if test="sort != null and sort != ''">
+		  #{sort},
+		   </if>
+		 <if test="updatetime != null and updatetime != ''">
+		  #{updatetime},
+		   </if>
+		 <if test="remark != null and remark != ''">
+		  #{remark},
+		   </if>
+		 <if test="flag != null and flag != ''">
+		  #{flag},
+		   </if>
+		 <if test="tableName != null and tableName != ''">
+		  #{tableName},
+		   </if>
+		 <if test="isEditpage != null and isEditpage != ''">
+		  #{isEditpage},
+		   </if>
+		 <if test="isinsertrequiredfield != null and isinsertrequiredfield != ''">
+		  #{isinsertrequiredfield},
+		   </if>
+		 <if test="isupdaterequiredfield != null and isupdaterequiredfield != ''">
+		  #{isupdaterequiredfield},
+		   </if>
+		 <if test="isSort != null and isSort != ''">
+		  #{isSort},
+		   </if>
+		 #{createtime}
+		)
+	</insert>
+
+   <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
+     <selectKey resultType="long" keyProperty="id" order="AFTER">
         SELECT
-        count(*) as count
-        FROM t_code_table_column a
-        <include refid="codeTableColumnJoins"/>
-        <where>
-            1=1
+        LAST_INSERT_ID()
+     </selectKey>
+		INSERT INTO t_code_table_column(
+				 <if test="id != null and id != ''">
+		  #{id},
+		   </if>
+		 <if test="tableId != null and tableId != ''">
+		  #{tableId},
+		   </if>
+		 <if test="name != null and name != ''">
+		  #{name},
+		   </if>
+		 <if test="comments != null and comments != ''">
+		  #{comments},
+		   </if>
+		 <if test="jdbcType != null and jdbcType != ''">
+		  #{jdbcType},
+		   </if>
+		 <if test="javaType != null and javaType != ''">
+		  #{javaType},
+		   </if>
+		 <if test="javaField != null and javaField != ''">
+		  #{javaField},
+		   </if>
+		 <if test="isPk != null and isPk != ''">
+		  #{isPk},
+		   </if>
+		 <if test="isNull != null and isNull != ''">
+		  #{isNull},
+		   </if>
+		 <if test="isInsert != null and isInsert != ''">
+		  #{isInsert},
+		   </if>
+		 <if test="isEdit != null and isEdit != ''">
+		  #{isEdit},
+		   </if>
+		 <if test="isList != null and isList != ''">
+		  #{isList},
+		   </if>
+		 <if test="isQuery != null and isQuery != ''">
+		  #{isQuery},
+		   </if>
+		 <if test="queryType != null and queryType != ''">
+		  #{queryType},
+		   </if>
+		 <if test="showType != null and showType != ''">
+		  #{showType},
+		   </if>
+		 <if test="dictType != null and dictType != ''">
+		  #{dictType},
+		   </if>
+		 <if test="settings != null and settings != ''">
+		  #{settings},
+		   </if>
+		 <if test="sort != null and sort != ''">
+		  #{sort},
+		   </if>
+		 <if test="updatetime != null and updatetime != ''">
+		  #{updatetime},
+		   </if>
+		 <if test="remark != null and remark != ''">
+		  #{remark},
+		   </if>
+		 <if test="flag != null and flag != ''">
+		  #{flag},
+		   </if>
+		 <if test="tableName != null and tableName != ''">
+		  #{tableName},
+		   </if>
+		 <if test="isEditpage != null and isEditpage != ''">
+		  #{isEditpage},
+		   </if>
+		 <if test="isinsertrequiredfield != null and isinsertrequiredfield != ''">
+		  #{isinsertrequiredfield},
+		   </if>
+		 <if test="isupdaterequiredfield != null and isupdaterequiredfield != ''">
+		  #{isupdaterequiredfield},
+		   </if>
+		 <if test="isSort != null and isSort != ''">
+		  #{isSort},
+		   </if>
+		 #{createtime}
+		 ) VALUES
+ <foreach collection="list" item="item" index="index" separator="," >
+		(
+				 <if test="id != null">
+		  #{item.id},
+		 </if>
+		 <if test="tableId != null">
+		  #{item.tableId},
+		 </if>
+		 <if test="name != null">
+		  #{item.name},
+		 </if>
+		 <if test="comments != null">
+		  #{item.comments},
+		 </if>
+		 <if test="jdbcType != null">
+		  #{item.jdbcType},
+		 </if>
+		 <if test="javaType != null">
+		  #{item.javaType},
+		 </if>
+		 <if test="javaField != null">
+		  #{item.javaField},
+		 </if>
+		 <if test="isPk != null">
+		  #{item.isPk},
+		 </if>
+		 <if test="isNull != null">
+		  #{item.isNull},
+		 </if>
+		 <if test="isInsert != null">
+		  #{item.isInsert},
+		 </if>
+		 <if test="isEdit != null">
+		  #{item.isEdit},
+		 </if>
+		 <if test="isList != null">
+		  #{item.isList},
+		 </if>
+		 <if test="isQuery != null">
+		  #{item.isQuery},
+		 </if>
+		 <if test="queryType != null">
+		  #{item.queryType},
+		 </if>
+		 <if test="showType != null">
+		  #{item.showType},
+		 </if>
+		 <if test="dictType != null">
+		  #{item.dictType},
+		 </if>
+		 <if test="settings != null">
+		  #{item.settings},
+		 </if>
+		 <if test="sort != null">
+		  #{item.sort},
+		 </if>
+		 <if test="updatetime != null">
+		  #{item.updatetime},
+		 </if>
+		 <if test="remark != null">
+		  #{item.remark},
+		 </if>
+		 <if test="flag != null">
+		  #{item.flag},
+		 </if>
+		 <if test="tableName != null">
+		  #{item.tableName},
+		 </if>
+		 <if test="isEditpage != null">
+		  #{item.isEditpage},
+		 </if>
+		 <if test="isinsertrequiredfield != null">
+		  #{item.isinsertrequiredfield},
+		 </if>
+		 <if test="isupdaterequiredfield != null">
+		  #{item.isupdaterequiredfield},
+		 </if>
+		 <if test="isSort != null">
+		  #{item.isSort},
+		 </if>
+		  #{item.createtime}
+		)
+</foreach>
+	</insert>
+
+<update id="updateById">
+   UPDATE t_code_table_column SET
             <if test="tableId != null and tableId != ''">
-                AND a.table_id = #{tableId}
-            </if>
-            <if test="name != null and name != ''">
-                AND a.name = #{name}
-            </if>
-
-        </where>
-    </select>
-
-    <select id="getList" resultType="com.cn.xmf.job.admin.code.model.CodeTableColumn"
-            parameterType="com.alibaba.fastjson.JSONObject">
-        SELECT
-        <include refid="codeTableColumnColumns"/>
-        FROM
-        (SELECT id from t_code_table_column t
-        <where>
-            1=1
-            <if test="tableId != null and tableId != ''">
-                AND t.table_id = #{tableId}
-            </if>
-            <if test="name != null and name != ''">
-                AND t.name = #{name}
-            </if>
-        </where>
-        limit #{startIndex},#{pageSize}) b inner join
-        t_code_table_column a on b.id=a.id
-    </select>
-
-    <select id="getCodeTableColumnList" resultType="com.cn.xmf.job.admin.code.model.CodeTableColumn"
-            parameterType="com.cn.xmf.job.admin.code.model.CodeTableColumn">
-        SELECT
-        <include refid="codeTableColumnColumns"/>
-        FROM (SELECT id from t_code_table_column t
-        <where>
-            1=1
-            <if test="tableId != null and tableId != ''">
-                AND t.table_id = #{tableId}
-            </if>
-            <if test="name != null and name != ''">
-                AND t.name = #{name}
-            </if>
-        </where>
-        ) b inner join t_code_table_column a on b.id=a.id
-    </select>
-
-    <select id="getSignleCodeTableColumn" resultType="com.cn.xmf.job.admin.code.model.CodeTableColumn"
-            parameterType="com.cn.xmf.job.admin.code.model.CodeTableColumn">
-        SELECT
-        <include refid="codeTableColumnColumns"/>
-        FROM
-        t_code_table_column a
-        <where>
-            1=1
-            <if test="tableId != null and tableId != ''">
-                AND a.table_id = #{tableId}
-            </if>
-            <if test="name != null and name != ''">
-                AND a.name = #{name}
-            </if>
-        </where>
-        limit 1
-    </select>
-
-
-    <insert id="add" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_code_table_column(
-        <if test="id != null and id != ''">
-            id,
-        </if>
-        <if test="tableId != null and tableId != ''">
-            table_id,
-        </if>
-        <if test="name != null and name != ''">
-            name,
-        </if>
-        <if test="comments != null and comments != ''">
-            comments,
-        </if>
-        <if test="jdbcType != null and jdbcType != ''">
-            jdbc_type,
-        </if>
-        <if test="javaType != null and javaType != ''">
-            java_type,
-        </if>
-        <if test="javaField != null and javaField != ''">
-            java_field,
-        </if>
-        <if test="isPk != null and isPk != ''">
-            is_pk,
-        </if>
-        <if test="isNull != null and isNull != ''">
-            is_null,
-        </if>
-        <if test="isInsert != null and isInsert != ''">
-            is_insert,
-        </if>
-        <if test="isEdit != null and isEdit != ''">
-            is_edit,
-        </if>
-        <if test="isList != null and isList != ''">
-            is_list,
-        </if>
-        <if test="isQuery != null and isQuery != ''">
-            is_query,
-        </if>
-        <if test="queryType != null and queryType != ''">
-            query_type,
-        </if>
-        <if test="showType != null and showType != ''">
-            show_type,
-        </if>
-        <if test="dictType != null and dictType != ''">
-            dict_type,
-        </if>
-        <if test="settings != null and settings != ''">
-            settings,
-        </if>
-        <if test="sort != null and sort != ''">
-            sort,
-        </if>
-        <if test="updatetime != null">
-            updatetime,
-        </if>
-        <if test="remark != null and remark != ''">
-            remark,
-        </if>
-        <if test="flag != null and flag != ''">
-            flag,
-        </if>
-        <if test="tableName != null and tableName != ''">
-            table_name,
-        </if>
-        <if test="isEditpage != null and isEditpage != ''">
-            is_editPage,
-        </if>
-        <if test="isinsertrequiredfield != null and isinsertrequiredfield != ''">
-            isInsertRequiredField,
-        </if>
-        <if test="isupdaterequiredfield != null and isupdaterequiredfield != ''">
-            isUpdateRequiredField,
-        </if>
-        createtime
-        ) VALUES (
-        <if test="id != null and id != ''">
-            #{id},
-        </if>
-        <if test="tableId != null and tableId != ''">
-            #{tableId},
-        </if>
-        <if test="name != null and name != ''">
-            #{name},
-        </if>
-        <if test="comments != null and comments != ''">
-            #{comments},
-        </if>
-        <if test="jdbcType != null and jdbcType != ''">
-            #{jdbcType},
-        </if>
-        <if test="javaType != null and javaType != ''">
-            #{javaType},
-        </if>
-        <if test="javaField != null and javaField != ''">
-            #{javaField},
-        </if>
-        <if test="isPk != null and isPk != ''">
-            #{isPk},
-        </if>
-        <if test="isNull != null and isNull != ''">
-            #{isNull},
-        </if>
-        <if test="isInsert != null and isInsert != ''">
-            #{isInsert},
-        </if>
-        <if test="isEdit != null and isEdit != ''">
-            #{isEdit},
-        </if>
-        <if test="isList != null and isList != ''">
-            #{isList},
-        </if>
-        <if test="isQuery != null and isQuery != ''">
-            #{isQuery},
-        </if>
-        <if test="queryType != null and queryType != ''">
-            #{queryType},
-        </if>
-        <if test="showType != null and showType != ''">
-            #{showType},
-        </if>
-        <if test="dictType != null and dictType != ''">
-            #{dictType},
-        </if>
-        <if test="settings != null and settings != ''">
-            #{settings},
-        </if>
-        <if test="sort != null and sort != ''">
-            #{sort},
-        </if>
-        <if test="updatetime != null">
-            #{updatetime},
-        </if>
-        <if test="remark != null and remark != ''">
-            #{remark},
-        </if>
-        <if test="flag != null and flag != ''">
-            #{flag},
-        </if>
-        <if test="tableName != null and tableName != ''">
-            #{tableName},
-        </if>
-        <if test="isEditpage != null and isEditpage != ''">
-            #{isEditpage},
-        </if>
-        <if test="isinsertrequiredfield != null and isinsertrequiredfield != ''">
-            #{isinsertrequiredfield},
-        </if>
-        <if test="isupdaterequiredfield != null and isupdaterequiredfield != ''">
-            #{isupdaterequiredfield},
-        </if>
-        #{createtime}
-
-        )
-    </insert>
-
-    <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
-        <selectKey resultType="long" keyProperty="id" order="AFTER">
-            SELECT
-            LAST_INSERT_ID()
-        </selectKey>
-        INSERT INTO t_code_table_column(
-        <if test="id != null and id != ''">
-            #{id},
-        </if>
-        <if test="tableId != null and tableId != ''">
-            #{tableId},
-        </if>
-        <if test="name != null and name != ''">
-            #{name},
-        </if>
-        <if test="comments != null and comments != ''">
-            #{comments},
-        </if>
-        <if test="jdbcType != null and jdbcType != ''">
-            #{jdbcType},
-        </if>
-        <if test="javaType != null and javaType != ''">
-            #{javaType},
-        </if>
-        <if test="javaField != null and javaField != ''">
-            #{javaField},
-        </if>
-        <if test="isPk != null and isPk != ''">
-            #{isPk},
-        </if>
-        <if test="isNull != null and isNull != ''">
-            #{isNull},
-        </if>
-        <if test="isInsert != null and isInsert != ''">
-            #{isInsert},
-        </if>
-        <if test="isEdit != null and isEdit != ''">
-            #{isEdit},
-        </if>
-        <if test="isList != null and isList != ''">
-            #{isList},
-        </if>
-        <if test="isQuery != null and isQuery != ''">
-            #{isQuery},
-        </if>
-        <if test="queryType != null and queryType != ''">
-            #{queryType},
-        </if>
-        <if test="showType != null and showType != ''">
-            #{showType},
-        </if>
-        <if test="dictType != null and dictType != ''">
-            #{dictType},
-        </if>
-        <if test="settings != null and settings != ''">
-            #{settings},
-        </if>
-        <if test="sort != null and sort != ''">
-            #{sort},
-        </if>
-        <if test="updatetime != null">
-            #{updatetime},
-        </if>
-        <if test="remark != null and remark != ''">
-            #{remark},
-        </if>
-        <if test="flag != null and flag != ''">
-            #{flag},
-        </if>
-        <if test="tableName != null and tableName != ''">
-            #{tableName},
-        </if>
-        <if test="isEditpage != null and isEditpage != ''">
-            #{isEditpage},
-        </if>
-        <if test="isinsertrequiredfield != null and isinsertrequiredfield != ''">
-            #{isinsertrequiredfield},
-        </if>
-        <if test="isupdaterequiredfield != null and isupdaterequiredfield != ''">
-            #{isupdaterequiredfield},
-        </if>
-        createtime
-        ) VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
-            (
-            <if test="id != null">
-                #{item.id},
-            </if>
-            <if test="tableId != null">
-                #{item.tableId},
-            </if>
-            <if test="name != null">
-                #{item.name},
-            </if>
-            <if test="comments != null">
-                #{item.comments},
-            </if>
-            <if test="jdbcType != null">
-                #{item.jdbcType},
-            </if>
-            <if test="javaType != null">
-                #{item.javaType},
-            </if>
-            <if test="javaField != null">
-                #{item.javaField},
-            </if>
-            <if test="isPk != null">
-                #{item.isPk},
-            </if>
-            <if test="isNull != null">
-                #{item.isNull},
-            </if>
-            <if test="isInsert != null">
-                #{item.isInsert},
-            </if>
-            <if test="isEdit != null">
-                #{item.isEdit},
-            </if>
-            <if test="isList != null">
-                #{item.isList},
-            </if>
-            <if test="isQuery != null">
-                #{item.isQuery},
-            </if>
-            <if test="queryType != null">
-                #{item.queryType},
-            </if>
-            <if test="showType != null">
-                #{item.showType},
-            </if>
-            <if test="dictType != null">
-                #{item.dictType},
-            </if>
-            <if test="settings != null">
-                #{item.settings},
-            </if>
-            <if test="sort != null">
-                #{item.sort},
-            </if>
-            <if test="updatetime != null">
-                #{item.updatetime},
-            </if>
-            <if test="remark != null">
-                #{item.remark},
-            </if>
-            <if test="flag != null">
-                #{item.flag},
-            </if>
-            <if test="tableName != null">
-                #{item.tableName},
-            </if>
-            <if test="isEditpage != null">
-                #{item.isEditpage},
-            </if>
-            <if test="isinsertrequiredfield != null">
-                #{item.isinsertrequiredfield},
-            </if>
-            <if test="isupdaterequiredfield != null">
-                #{item.isupdaterequiredfield},
-            </if>
-            #{item.createtime}
-            )
-        </foreach>
-    </insert>
-
-    <update id="updateById">
-        UPDATE t_code_table_column SET
-        <if test="tableId != null and tableId != ''">
             table_id = #{tableId},
-        </if>
-        <if test="name != null and name != ''">
+           </if>
+            <if test="name != null and name != ''">
             name = #{name},
-        </if>
-        <if test="comments != null and comments != ''">
+           </if>
+            <if test="comments != null and comments != ''">
             comments = #{comments},
-        </if>
-        <if test="jdbcType != null and jdbcType != ''">
+           </if>
+            <if test="jdbcType != null and jdbcType != ''">
             jdbc_type = #{jdbcType},
-        </if>
-        <if test="javaType != null and javaType != ''">
+           </if>
+            <if test="javaType != null and javaType != ''">
             java_type = #{javaType},
-        </if>
-        <if test="javaField != null and javaField != ''">
+           </if>
+            <if test="javaField != null and javaField != ''">
             java_field = #{javaField},
-        </if>
-        <if test="isPk != null and isPk != ''">
+           </if>
+            <if test="isPk != null and isPk != ''">
             is_pk = #{isPk},
-        </if>
-        <if test="isNull != null and isNull != ''">
+           </if>
+            <if test="isNull != null and isNull != ''">
             is_null = #{isNull},
-        </if>
-        <if test="isInsert != null and isInsert != ''">
+           </if>
+            <if test="isInsert != null and isInsert != ''">
             is_insert = #{isInsert},
-        </if>
-        <if test="isEdit != null and isEdit != ''">
+           </if>
+            <if test="isEdit != null and isEdit != ''">
             is_edit = #{isEdit},
-        </if>
-        <if test="isList != null and isList != ''">
+           </if>
+            <if test="isList != null and isList != ''">
             is_list = #{isList},
-        </if>
-        <if test="isQuery != null and isQuery != ''">
+           </if>
+            <if test="isQuery != null and isQuery != ''">
             is_query = #{isQuery},
-        </if>
-        <if test="queryType != null and queryType != ''">
+           </if>
+            <if test="queryType != null and queryType != ''">
             query_type = #{queryType},
-        </if>
-        <if test="showType != null and showType != ''">
+           </if>
+            <if test="showType != null and showType != ''">
             show_type = #{showType},
-        </if>
-        <if test="dictType != null and dictType != ''">
+           </if>
+            <if test="dictType != null and dictType != ''">
             dict_type = #{dictType},
-        </if>
-        <if test="settings != null and settings != ''">
+           </if>
+            <if test="settings != null and settings != ''">
             settings = #{settings},
-        </if>
-        <if test="sort != null and sort != ''">
-            sort = #{sort},
-        </if>
-        <if test="remark != null and remark != ''">
+           </if>
+            <if test="remark != null and remark != ''">
             remark = #{remark},
-        </if>
-        <if test="flag != null and flag != ''">
-            flag = #{flag},
-        </if>
-        <if test="tableName != null and tableName != ''">
+           </if>
+            <if test="tableName != null and tableName != ''">
             table_name = #{tableName},
-        </if>
-        <if test="isEditpage != null and isEditpage != ''">
+           </if>
+            <if test="isEditpage != null and isEditpage != ''">
             is_editPage = #{isEditpage},
-        </if>
-        <if test="isinsertrequiredfield != null and isinsertrequiredfield != ''">
+           </if>
+            <if test="isinsertrequiredfield != null and isinsertrequiredfield != ''">
             isInsertRequiredField = #{isinsertrequiredfield},
-        </if>
-        <if test="isupdaterequiredfield != null and isupdaterequiredfield != ''">
+           </if>
+            <if test="isupdaterequiredfield != null and isupdaterequiredfield != ''">
             isUpdateRequiredField = #{isupdaterequiredfield},
-        </if>
-        updatetime = NOW()
-        WHERE id = #{id}
-    </update>
+           </if>
+            <if test="isSort != null and isSort != ''">
+            is_sort = #{isSort},
+           </if>
+         updatetime = #{updatetime}
+	WHERE id = #{id}
+</update>
 
-    <update id="delete">
+	<update id="delete">
 	UPDATE t_code_table_column SET
 	flag = -1
 		WHERE id = #{id}

@@ -17,6 +17,7 @@ $(function () {
         },
         "searching": false,
         "ordering": false,
+        scrollX: true,
         //"scrollX": true,	// scroll x，close self-adaption
         "columns": [
 
@@ -41,7 +42,7 @@ $(function () {
                 "width": '180'
             },
             {
-                "data": 'updatetime',
+                "data": 'updatetimestr',
                  "visible": true,
                 "width": '180'
             },

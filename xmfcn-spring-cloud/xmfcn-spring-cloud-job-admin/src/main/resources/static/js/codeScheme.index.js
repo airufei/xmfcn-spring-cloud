@@ -10,9 +10,8 @@ $(function () {
             data: function (d) {
                 var obj = {};
                 obj.name = $('#name').val();
-                obj.category = $('#category').val();
                 obj.tableName = $('#tableName').val();
-                obj.tableId = $('#tableId').val();
+                obj.remark = $('#remark').val();
                 obj.start = d.start;
                 obj.length = d.length;
                 return obj;
@@ -20,11 +19,82 @@ $(function () {
         },
         "searching": false,
         "ordering": false,
+        scrollX: true,
         //"scrollX": true,	// scroll x，close self-adaption
         "columns": [
 
             {
+                "data": 'id',
+                "visible": false,
+                "width": '180'
+            },
+            {
                 "data": 'name',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'category',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'packageName',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'moduleName',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'subModuleName',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'functionName',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'functionNameSimple',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'functionAuthor',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'tableName',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'tableId',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'updatetimestr',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'remark',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'modulePageName',
+                 "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'subPageName',
                  "visible": true,
                 "width": '180'
             },
@@ -155,8 +225,16 @@ $(function () {
         if (row != null && row != undefined) {
            $("#addModal .form input[name='name']").val(row.name);
            $("#addModal .form input[name='category']").val(row.category);
-           $("#addModal .form input[name='tableId']").val(row.tableId);
-           $("#addModal .form input[name='flag']").val(row.flag);
+           $("#addModal .form input[name='packageName']").val(row.packageName);
+           $("#addModal .form input[name='moduleName']").val(row.moduleName);
+           $("#addModal .form input[name='subModuleName']").val(row.subModuleName);
+           $("#addModal .form input[name='functionName']").val(row.functionName);
+           $("#addModal .form input[name='functionNameSimple']").val(row.functionNameSimple);
+           $("#addModal .form input[name='functionAuthor']").val(row.functionAuthor);
+           $("#addModal .form input[name='tableName']").val(row.tableName);
+           $("#addModal .form input[name='remark']").val(row.remark);
+           $("#addModal .form input[name='modulePageName']").val(row.modulePageName);
+           $("#addModal .form input[name='subPageName']").val(row.subPageName);
           $("#addModal .form input[name='id']").val(row.id);
         }
         // show
@@ -180,7 +258,34 @@ $(function () {
             category: {
                 required: true
             },
-            tableId: {
+            packageName: {
+                required: true
+            },
+            moduleName: {
+                required: true
+            },
+            subModuleName: {
+                required: true
+            },
+            functionName: {
+                required: true
+            },
+            functionNameSimple: {
+                required: true
+            },
+            functionAuthor: {
+                required: true
+            },
+            tableName: {
+                required: true
+            },
+            remark: {
+                required: true
+            },
+            modulePageName: {
+                required: true
+            },
+            subPageName: {
                 required: true
             },
         },
@@ -191,8 +296,35 @@ $(function () {
             category: {
                 required: I18n.system_please_input + "分类"
             },
-            tableId: {
-                required: I18n.system_please_input + "生成表编号"
+            packageName: {
+                required: I18n.system_please_input + "生成包路径"
+            },
+            moduleName: {
+                required: I18n.system_please_input + "生成模块名"
+            },
+            subModuleName: {
+                required: I18n.system_please_input + "生成子模块名"
+            },
+            functionName: {
+                required: I18n.system_please_input + "生成功能名"
+            },
+            functionNameSimple: {
+                required: I18n.system_please_input + "生成功能名（简写）"
+            },
+            functionAuthor: {
+                required: I18n.system_please_input + "生成功能作者"
+            },
+            tableName: {
+                required: I18n.system_please_input + "表名"
+            },
+            remark: {
+                required: I18n.system_please_input + "备注信息"
+            },
+            modulePageName: {
+                required: I18n.system_please_input + "页面模块"
+            },
+            subPageName: {
+                required: I18n.system_please_input + "子模块"
             },
         },
         highlight: function (element) {

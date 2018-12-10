@@ -28,13 +28,6 @@
                 <div class="col-xs-3">
 
                     <div class="input-group">
-                        <span class="input-group-addon">归属表编号</span>
-                        <input type="text" class="form-control" id="tableId" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
                         <span class="input-group-addon">名称</span>
                         <input type="text" class="form-control" id="name" autocomplete="on">
                     </div>
@@ -42,113 +35,8 @@
                 <div class="col-xs-3">
 
                     <div class="input-group">
-                        <span class="input-group-addon">描述</span>
-                        <input type="text" class="form-control" id="comments" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">列的数据类型的字节长度</span>
-                        <input type="text" class="form-control" id="jdbcType" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">JAVA类型</span>
-                        <input type="text" class="form-control" id="javaType" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">JAVA字段名</span>
-                        <input type="text" class="form-control" id="javaField" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">是否主键</span>
-                        <input type="text" class="form-control" id="isPk" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">是否可为空</span>
-                        <input type="text" class="form-control" id="isNull" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">是否为插入字段</span>
-                        <input type="text" class="form-control" id="isInsert" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">是否编辑字段</span>
-                        <input type="text" class="form-control" id="isEdit" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">是否列表字段</span>
-                        <input type="text" class="form-control" id="isList" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">是否查询字段</span>
-                        <input type="text" class="form-control" id="isQuery" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）</span>
-                        <input type="text" class="form-control" id="queryType" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）</span>
-                        <input type="text" class="form-control" id="showType" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">字典类型</span>
-                        <input type="text" class="form-control" id="dictType" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">其它设置（扩展字段JSON）</span>
-                        <input type="text" class="form-control" id="settings" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">排序（升序）</span>
-                        <input type="text" class="form-control" id="sort" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">备注信息</span>
-                        <input type="text" class="form-control" id="remark" autocomplete="on">
+                        <span class="input-group-addon">删除标记（0：正常；1：删除）</span>
+                        <input type="text" class="form-control" id="flag" autocomplete="on">
                     </div>
               </div>
                 <div class="col-xs-3">
@@ -156,27 +44,6 @@
                     <div class="input-group">
                         <span class="input-group-addon">表名称</span>
                         <input type="text" class="form-control" id="tableName" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">编辑字段</span>
-                        <input type="text" class="form-control" id="isEditpage" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">插入必须字段 1 非必须0</span>
-                        <input type="text" class="form-control" id="isinsertrequiredfield" autocomplete="on">
-                    </div>
-              </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">插入必须字段 1 非必须0</span>
-                        <input type="text" class="form-control" id="isupdaterequiredfield" autocomplete="on">
                     </div>
               </div>
                 <div class="col-xs-1">
@@ -194,10 +61,30 @@
                             <table id="codeTableColumn_table" class="table table-striped table-hover table-condensed" width="100%" style="white-space: nowrap;">
                                 <thead>
                                 <tr>
-                                    <th name="name">名称</th>
+                                    <th name="id">编号</th>
+                                    <th name="tableId">归属表编号</th>
+                                    <th name="comments">描述</th>
+                                    <th name="jdbcType">列的数据类型的字节长度</th>
+                                    <th name="javaType">JAVA类型</th>
+                                    <th name="javaField">JAVA字段名</th>
                                     <th name="isPk">是否主键</th>
+                                    <th name="isNull">是否可为空</th>
+                                    <th name="isInsert">是否为插入字段</th>
+                                    <th name="isEdit">是否编辑字段</th>
+                                    <th name="isList">是否列表字段</th>
+                                    <th name="isQuery">是否查询字段</th>
+                                    <th name="queryType">查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）</th>
+                                    <th name="showType">字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）</th>
+                                    <th name="dictType">字典类型</th>
+                                    <th name="settings">其它设置（扩展字段JSON）</th>
+                                    <th name="sort">排序（升序）</th>
                                     <th name="createtime">创建时间</th>
                                     <th name="remark">备注信息</th>
+                                    <th name="tableName">表名称</th>
+                                    <th name="isEditpage">编辑字段</th>
+                                    <th name="isinsertrequiredfield">插入必须字段 1 非必须0</th>
+                                    <th name="isupdaterequiredfield">插入必须字段 1 非必须0</th>
+                                    <th name="isSort">是否排序 1排序，0不排序</th>
                                     <th name="operate">操作</th>
                                 </tr>
                                 </thead>
@@ -236,6 +123,11 @@
             <div class="modal-body">
                 <form class="form-horizontal form" role="form">
                     <div class="form-group">
+                        <label for="id" class="col-sm-2 control-label">编号<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="id" placeholder="请输入..."
+                           maxlength="20"></div>
+                    </div>
+                    <div class="form-group">
                         <label for="tableId" class="col-sm-2 control-label">归属表编号<font color="red">*</font></label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="tableId" placeholder="请输入..."
                            maxlength="64"></div>
@@ -246,9 +138,109 @@
                            maxlength="200"></div>
                     </div>
                     <div class="form-group">
+                        <label for="comments" class="col-sm-2 control-label">描述<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="comments" placeholder="请输入..."
+                           maxlength="500"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="jdbcType" class="col-sm-2 control-label">列的数据类型的字节长度<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="jdbcType" placeholder="请输入..."
+                           maxlength="100"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="javaType" class="col-sm-2 control-label">JAVA类型<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="javaType" placeholder="请输入..."
+                           maxlength="500"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="javaField" class="col-sm-2 control-label">JAVA字段名<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="javaField" placeholder="请输入..."
+                           maxlength="200"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isPk" class="col-sm-2 control-label">是否主键<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="isPk" placeholder="请输入..."
+                           maxlength="1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isNull" class="col-sm-2 control-label">是否可为空<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="isNull" placeholder="请输入..."
+                           maxlength="1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isInsert" class="col-sm-2 control-label">是否为插入字段<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="isInsert" placeholder="请输入..."
+                           maxlength="1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isEdit" class="col-sm-2 control-label">是否编辑字段<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="isEdit" placeholder="请输入..."
+                           maxlength="1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isList" class="col-sm-2 control-label">是否列表字段<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="isList" placeholder="请输入..."
+                           maxlength="1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isQuery" class="col-sm-2 control-label">是否查询字段<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="isQuery" placeholder="请输入..."
+                           maxlength="1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="queryType" class="col-sm-2 control-label">查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="queryType" placeholder="请输入..."
+                           maxlength="200"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="showType" class="col-sm-2 control-label">字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="showType" placeholder="请输入..."
+                           maxlength="200"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="dictType" class="col-sm-2 control-label">字典类型<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="dictType" placeholder="请输入..."
+                           maxlength="200"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="settings" class="col-sm-2 control-label">其它设置（扩展字段JSON）<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="settings" placeholder="请输入..."
+                           maxlength="2000"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="updatetime" class="col-sm-2 control-label">更新时间<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="updatetime" placeholder="请输入..."
+                           maxlength="0"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="flag" class="col-sm-2 control-label">删除标记（0：正常；1：删除）<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="flag" placeholder="请输入..."
+                           maxlength="1"></div>
+                    </div>
+                    <div class="form-group">
                         <label for="tableName" class="col-sm-2 control-label">表名称<font color="red">*</font></label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="tableName" placeholder="请输入..."
                            maxlength="50"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isEditpage" class="col-sm-2 control-label">编辑字段<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="isEditpage" placeholder="请输入..."
+                           maxlength="1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isinsertrequiredfield" class="col-sm-2 control-label">插入必须字段 1 非必须0<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="isinsertrequiredfield" placeholder="请输入..."
+                           maxlength="1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isupdaterequiredfield" class="col-sm-2 control-label">插入必须字段 1 非必须0<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="isupdaterequiredfield" placeholder="请输入..."
+                           maxlength="1"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isSort" class="col-sm-2 control-label">是否排序 1排序，0不排序<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="isSort" placeholder="请输入..."
+                           maxlength="1"></div>
                     </div>
                     <hr>
                     <div class="form-group">

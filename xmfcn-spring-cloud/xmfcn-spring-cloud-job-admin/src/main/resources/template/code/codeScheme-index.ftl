@@ -31,20 +31,21 @@
                         <span class="input-group-addon">名称</span>
                         <input type="text" class="form-control" id="name" autocomplete="on">
                     </div>
-                </div>
+              </div>
                 <div class="col-xs-3">
 
                     <div class="input-group">
                         <span class="input-group-addon">表名</span>
                         <input type="text" class="form-control" id="tableName" autocomplete="on">
                     </div>
-                </div>
+              </div>
                 <div class="col-xs-3">
+
                     <div class="input-group">
-                        <span class="input-group-addon">表ID</span>
-                        <input type="text" class="form-control" id="tableId" autocomplete="on">
+                        <span class="input-group-addon">备注信息</span>
+                        <input type="text" class="form-control" id="remark" autocomplete="on">
                     </div>
-                </div>
+              </div>
                 <div class="col-xs-1">
                     <button class="btn btn-block btn-info" id="searchBtn">搜索</button>
                 </div>
@@ -57,11 +58,24 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-body">
-                            <table id="codeScheme_table" class="table table-striped table-hover table-condensed"
-                                   width="100%" style="white-space: nowrap;">
+                            <table id="codeScheme_table" class="table table-striped table-hover table-condensed" width="100%" style="white-space: nowrap;">
                                 <thead>
                                 <tr>
+                                    <th name="id">编号</th>
                                     <th name="name">名称</th>
+                                    <th name="category">分类</th>
+                                    <th name="packageName">生成包路径</th>
+                                    <th name="moduleName">生成模块名</th>
+                                    <th name="subModuleName">生成子模块名</th>
+                                    <th name="functionName">生成功能名</th>
+                                    <th name="functionNameSimple">生成功能名（简写）</th>
+                                    <th name="functionAuthor">生成功能作者</th>
+                                    <th name="tableName">表名</th>
+                                    <th name="tableId">生成表编号</th>
+                                    <th name="updatetimestr">更新时间</th>
+                                    <th name="remark">备注信息</th>
+                                    <th name="modulePageName">页面模块</th>
+                                    <th name="subPageName">子模块</th>
                                     <th name="operate">操作</th>
                                 </tr>
                                 </thead>
@@ -80,14 +94,14 @@
 </div>
 
 <!-- job新增.模态框 -->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document" id="modalDialog">
+<div class="modal fade" id="addModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document"  id="modalDialog">
         <div class="modal-content">
             <div class="modal-header">
                 <table width="99%">
                     <tr>
                         <td style="width: 15%">
-                            <h4 class="modal-title">保存代码生成方案</h4>
+                            <h4 class="modal-title">代码生成方案</h4>
                         </td>
                         <td style="width: 77%">
                         </td>
@@ -97,24 +111,67 @@
                     </tr>
                 </table>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal form" role="form">
+            <div class="modal-body" style="overflow-y: scroll;height: 500px">
+                <form class="form-horizontal form"  role="form">
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">名称<font color="red">*</font></label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="name" placeholder="请输入..."
-                                                      maxlength="200"></div>
+                           maxlength="200"></div>
                     </div>
                     <div class="form-group">
                         <label for="category" class="col-sm-2 control-label">分类<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="category"
-                                                      placeholder="请输入..."
-                                                      maxlength="2000"></div>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="category" placeholder="请输入..."
+                           maxlength="2000"></div>
                     </div>
                     <div class="form-group">
-                        <label for="tableId" class="col-sm-2 control-label">生成表编号<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="tableId"
-                                                      placeholder="请输入..."
-                                                      maxlength="20"></div>
+                        <label for="packageName" class="col-sm-2 control-label">生成包路径<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="packageName" placeholder="请输入..."
+                           maxlength="500"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="moduleName" class="col-sm-2 control-label">生成模块名<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="moduleName" placeholder="请输入..."
+                           maxlength="30"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subModuleName" class="col-sm-2 control-label">生成子模块名<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="subModuleName" placeholder="请输入..."
+                           maxlength="30"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="functionName" class="col-sm-2 control-label">生成功能名<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="functionName" placeholder="请输入..."
+                           maxlength="500"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="functionNameSimple" class="col-sm-2 control-label">生成功能名（简写）<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="functionNameSimple" placeholder="请输入..."
+                           maxlength="100"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="functionAuthor" class="col-sm-2 control-label">生成功能作者<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="functionAuthor" placeholder="请输入..."
+                           maxlength="100"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tableName" class="col-sm-2 control-label">表名<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="tableName" placeholder="请输入..."
+                           maxlength="100"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="remark" class="col-sm-2 control-label">备注信息<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="remark" placeholder="请输入..."
+                           maxlength="255"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="modulePageName" class="col-sm-2 control-label">页面模块<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="modulePageName" placeholder="请输入..."
+                           maxlength="100"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subPageName" class="col-sm-2 control-label">子模块<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="subPageName" placeholder="请输入..."
+                           maxlength="50"></div>
                     </div>
                     <hr>
                     <div class="form-group">
@@ -122,7 +179,7 @@
                             <button type="submit" class="btn btn-primary">${I18n.system_save}</button>
                             <button type="button" class="btn btn-default"
                                     data-dismiss="modal">${I18n.system_cancel}</button>
-                            <input type="hidden" name="id">
+                          <input type="hidden" name="id">
                         </div>
                     </div>
                 </form>
@@ -138,8 +195,7 @@
 <script src="/jobadmin/plugins/jquery/jquery.validate.min.js"></script>
 <!-- moment -->
 <script src="/jobadmin/adminlte/plugins/daterangepicker/moment.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>
-//拖拽
+<script src="/jobadmin/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>//拖拽
 <script src="/jobadmin/js/codeScheme.index.js"></script>
 
 <script>

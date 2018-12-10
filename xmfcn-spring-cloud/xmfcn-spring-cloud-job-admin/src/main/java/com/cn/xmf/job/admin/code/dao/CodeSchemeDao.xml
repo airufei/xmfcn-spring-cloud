@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cn.xmf.job.admin.code.dao.CodeSchemeDao">
 
-    <sql id="codeSchemeColumns">
-	    str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
-	   str_to_date(a.updatetime, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
+	<sql id="codeSchemeColumns">
+	   str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
+	   str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
 		a.id AS "id",
 		a.name AS "name",
 		a.category AS "category",
@@ -16,392 +16,379 @@
 		a.function_author AS "functionAuthor",
 		a.table_name AS "tableName",
 		a.table_id AS "tableId",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
 		a.remark AS "remark",
+		a.flag AS "flag",
 		a.module_page_name AS "modulePageName",
 		a.sub_page_name AS "subPageName"
 	</sql>
 
-    <sql id="codeSchemeJoins">
-    </sql>
+	<sql id="codeSchemeJoins">
+	</sql>
 
-    <select id="getCodeSchemeById" resultType="com.cn.xmf.job.admin.code.model.CodeScheme">
-        SELECT
-        <include refid="codeSchemeColumns"/>
-        FROM t_code_scheme a
-        <include refid="codeSchemeJoins"/>
-        WHERE a.id = #{id}
-    </select>
+	<select id="getCodeSchemeById" resultType="com.cn.xmf.job.admin.code.model.CodeScheme">
+		SELECT
+			<include refid="codeSchemeColumns"/>
+		FROM t_code_scheme a
+		<include refid="codeSchemeJoins"/>
+		WHERE a.id = #{id}
+	</select>
 
-    <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
+	<select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
+		SELECT
+			count(*) as count
+		FROM t_code_scheme a
+		<include refid="codeSchemeJoins"/>
+		<where>
+			1=1
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND a.table_name = #{tableName}
+			</if>
+			<if test="remark != null and remark != ''">
+				AND a.remark = #{remark}
+			</if>
+		</where>
+	</select>
+
+	<select id="getList" resultType="com.cn.xmf.job.admin.code.model.CodeScheme" parameterType="com.alibaba.fastjson.JSONObject">
+		SELECT
+			<include refid="codeSchemeColumns"/>
+		FROM
+		(SELECT id from  t_code_scheme t
+		<where>
+			1=1
+			<if test="name != null and name != ''">
+				AND t.name = #{name}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND t.table_name = #{tableName}
+			</if>
+			<if test="remark != null and remark != ''">
+				AND t.remark = #{remark}
+			</if>
+		</where>
+		 limit #{startIndex},#{pageSize}) b inner join
+		t_code_scheme a  on b.id=a.id
+		 <choose>
+			<otherwise>
+                 ORDER BY createtime desc
+			</otherwise>
+		</choose>
+	</select>
+
+    <select id="getCodeSchemeList" resultType="com.cn.xmf.job.admin.code.model.CodeScheme" parameterType="com.cn.xmf.job.admin.code.model.CodeScheme">
+		SELECT
+			<include refid="codeSchemeColumns"/>
+		FROM (SELECT id from  t_code_scheme t
+		<where>
+			1=1
+			<if test="name != null and name != ''">
+				AND t.name = #{name}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND t.table_name = #{tableName}
+			</if>
+			<if test="remark != null and remark != ''">
+				AND t.remark = #{remark}
+			</if>
+		</where>
+		) b  inner join t_code_scheme a  on b.id=a.id
+		 <choose>
+			<otherwise>
+                 ORDER BY createtime desc
+			</otherwise>
+		</choose>
+	</select>
+
+       <select id="getSignleCodeScheme" resultType="com.cn.xmf.job.admin.code.model.CodeScheme" parameterType="com.cn.xmf.job.admin.code.model.CodeScheme">
+		SELECT
+			<include refid="codeSchemeColumns"/>
+		FROM
+		t_code_scheme a
+		<where>
+			1=1
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
+			</if>
+			<if test="tableName != null and tableName != ''">
+				AND a.table_name = #{tableName}
+			</if>
+			<if test="remark != null and remark != ''">
+				AND a.remark = #{remark}
+			</if>
+		</where>
+		limit 1
+	</select>
+
+
+<insert id="add" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_code_scheme(
+		<if test="id != null and id != ''">
+		 id,
+		</if>
+		<if test="name != null and name != ''">
+		 name,
+		</if>
+		<if test="category != null and category != ''">
+		 category,
+		</if>
+		<if test="packageName != null and packageName != ''">
+		 package_name,
+		</if>
+		<if test="moduleName != null and moduleName != ''">
+		 module_name,
+		</if>
+		<if test="subModuleName != null and subModuleName != ''">
+		 sub_module_name,
+		</if>
+		<if test="functionName != null and functionName != ''">
+		 function_name,
+		</if>
+		<if test="functionNameSimple != null and functionNameSimple != ''">
+		 function_name_simple,
+		</if>
+		<if test="functionAuthor != null and functionAuthor != ''">
+		 function_author,
+		</if>
+		<if test="tableName != null and tableName != ''">
+		 table_name,
+		</if>
+		<if test="tableId != null and tableId != ''">
+		 table_id,
+		</if>
+		<if test="updatetime != null and updatetime != ''">
+		 updatetime,
+		</if>
+		<if test="remark != null and remark != ''">
+		 remark,
+		</if>
+		<if test="flag != null and flag != ''">
+		 flag,
+		</if>
+		<if test="modulePageName != null and modulePageName != ''">
+		 module_page_name,
+		</if>
+		<if test="subPageName != null and subPageName != ''">
+		 sub_page_name,
+		</if>
+		 createtime
+		) VALUES (
+		 <if test="id != null and id != ''">
+		  #{id},
+		   </if>
+		 <if test="name != null and name != ''">
+		  #{name},
+		   </if>
+		 <if test="category != null and category != ''">
+		  #{category},
+		   </if>
+		 <if test="packageName != null and packageName != ''">
+		  #{packageName},
+		   </if>
+		 <if test="moduleName != null and moduleName != ''">
+		  #{moduleName},
+		   </if>
+		 <if test="subModuleName != null and subModuleName != ''">
+		  #{subModuleName},
+		   </if>
+		 <if test="functionName != null and functionName != ''">
+		  #{functionName},
+		   </if>
+		 <if test="functionNameSimple != null and functionNameSimple != ''">
+		  #{functionNameSimple},
+		   </if>
+		 <if test="functionAuthor != null and functionAuthor != ''">
+		  #{functionAuthor},
+		   </if>
+		 <if test="tableName != null and tableName != ''">
+		  #{tableName},
+		   </if>
+		 <if test="tableId != null and tableId != ''">
+		  #{tableId},
+		   </if>
+		 <if test="updatetime != null and updatetime != ''">
+		  #{updatetime},
+		   </if>
+		 <if test="remark != null and remark != ''">
+		  #{remark},
+		   </if>
+		 <if test="flag != null and flag != ''">
+		  #{flag},
+		   </if>
+		 <if test="modulePageName != null and modulePageName != ''">
+		  #{modulePageName},
+		   </if>
+		 <if test="subPageName != null and subPageName != ''">
+		  #{subPageName},
+		   </if>
+		 #{createtime}
+		)
+	</insert>
+
+   <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
+     <selectKey resultType="long" keyProperty="id" order="AFTER">
         SELECT
-        count(*) as count
-        FROM t_code_scheme a
-        <include refid="codeSchemeJoins"/>
-        <where>
-            1=1
+        LAST_INSERT_ID()
+     </selectKey>
+		INSERT INTO t_code_scheme(
+				 <if test="id != null and id != ''">
+		  #{id},
+		   </if>
+		 <if test="name != null and name != ''">
+		  #{name},
+		   </if>
+		 <if test="category != null and category != ''">
+		  #{category},
+		   </if>
+		 <if test="packageName != null and packageName != ''">
+		  #{packageName},
+		   </if>
+		 <if test="moduleName != null and moduleName != ''">
+		  #{moduleName},
+		   </if>
+		 <if test="subModuleName != null and subModuleName != ''">
+		  #{subModuleName},
+		   </if>
+		 <if test="functionName != null and functionName != ''">
+		  #{functionName},
+		   </if>
+		 <if test="functionNameSimple != null and functionNameSimple != ''">
+		  #{functionNameSimple},
+		   </if>
+		 <if test="functionAuthor != null and functionAuthor != ''">
+		  #{functionAuthor},
+		   </if>
+		 <if test="tableName != null and tableName != ''">
+		  #{tableName},
+		   </if>
+		 <if test="tableId != null and tableId != ''">
+		  #{tableId},
+		   </if>
+		 <if test="updatetime != null and updatetime != ''">
+		  #{updatetime},
+		   </if>
+		 <if test="remark != null and remark != ''">
+		  #{remark},
+		   </if>
+		 <if test="flag != null and flag != ''">
+		  #{flag},
+		   </if>
+		 <if test="modulePageName != null and modulePageName != ''">
+		  #{modulePageName},
+		   </if>
+		 <if test="subPageName != null and subPageName != ''">
+		  #{subPageName},
+		   </if>
+		 #{createtime}
+		 ) VALUES
+ <foreach collection="list" item="item" index="index" separator="," >
+		(
+				 <if test="id != null">
+		  #{item.id},
+		 </if>
+		 <if test="name != null">
+		  #{item.name},
+		 </if>
+		 <if test="category != null">
+		  #{item.category},
+		 </if>
+		 <if test="packageName != null">
+		  #{item.packageName},
+		 </if>
+		 <if test="moduleName != null">
+		  #{item.moduleName},
+		 </if>
+		 <if test="subModuleName != null">
+		  #{item.subModuleName},
+		 </if>
+		 <if test="functionName != null">
+		  #{item.functionName},
+		 </if>
+		 <if test="functionNameSimple != null">
+		  #{item.functionNameSimple},
+		 </if>
+		 <if test="functionAuthor != null">
+		  #{item.functionAuthor},
+		 </if>
+		 <if test="tableName != null">
+		  #{item.tableName},
+		 </if>
+		 <if test="tableId != null">
+		  #{item.tableId},
+		 </if>
+		 <if test="updatetime != null">
+		  #{item.updatetime},
+		 </if>
+		 <if test="remark != null">
+		  #{item.remark},
+		 </if>
+		 <if test="flag != null">
+		  #{item.flag},
+		 </if>
+		 <if test="modulePageName != null">
+		  #{item.modulePageName},
+		 </if>
+		 <if test="subPageName != null">
+		  #{item.subPageName},
+		 </if>
+		  #{item.createtime}
+		)
+</foreach>
+	</insert>
+
+<update id="updateById">
+   UPDATE t_code_scheme SET
             <if test="name != null and name != ''">
-                AND a.name = #{name}
-            </if>
-            <if test="category != null and category != ''">
-                AND a.category = #{category}
-            </if>
-            <if test="tableName != null and tableName != ''">
-                AND a.table_name = #{tableName}
-            </if>
-            <if test="tableId != null and tableId != ''">
-                AND a.table_id = #{tableId}
-            </if>
-
-        </where>
-    </select>
-
-    <select id="getList" resultType="com.cn.xmf.job.admin.code.model.CodeScheme"
-            parameterType="com.alibaba.fastjson.JSONObject">
-        SELECT
-        <include refid="codeSchemeColumns"/>
-        FROM
-        (SELECT id from t_code_scheme t
-        <where>
-            1=1
-            <if test="name != null and name != ''">
-                AND t.name = #{name}
-            </if>
-            <if test="category != null and category != ''">
-                AND t.category = #{category}
-            </if>
-            <if test="tableName != null and tableName != ''">
-                AND t.table_name = #{tableName}
-            </if>
-            <if test="tableId != null and tableId != ''">
-                AND t.table_id = #{tableId}
-            </if>
-        </where>
-        limit #{startIndex},#{pageSize}) b inner join
-        t_code_scheme a on b.id=a.id
-        <choose>
-            <otherwise>
-                ORDER BY createtime desc
-            </otherwise>
-        </choose>
-    </select>
-
-    <select id="getCodeSchemeList" resultType="com.cn.xmf.job.admin.code.model.CodeScheme"
-            parameterType="com.cn.xmf.job.admin.code.model.CodeScheme">
-        SELECT
-        <include refid="codeSchemeColumns"/>
-        FROM (SELECT id from t_code_scheme t
-        <where>
-            1=1
-            <if test="name != null and name != ''">
-                AND t.name = #{name}
-            </if>
-            <if test="category != null and category != ''">
-                AND t.category = #{category}
-            </if>
-            <if test="tableName != null and tableName != ''">
-                AND t.table_name = #{tableName}
-            </if>
-            <if test="tableId != null and tableId != ''">
-                AND t.table_id = #{tableId}
-            </if>
-        </where>
-        ) b inner join t_code_scheme a on b.id=a.id
-        <choose>
-            <otherwise>
-                ORDER BY createtime desc
-            </otherwise>
-        </choose>
-    </select>
-
-    <select id="getSignleCodeScheme" resultType="com.cn.xmf.job.admin.code.model.CodeScheme"
-            parameterType="com.cn.xmf.job.admin.code.model.CodeScheme">
-        SELECT
-        <include refid="codeSchemeColumns"/>
-        FROM
-        t_code_scheme a
-        <where>
-            1=1
-            <if test="name != null and name != ''">
-                AND a.name = #{name}
-            </if>
-            <if test="category != null and category != ''">
-                AND a.category = #{category}
-            </if>
-            <if test="tableName != null and tableName != ''">
-                AND a.table_name = #{tableName}
-            </if>
-            <if test="tableId != null and tableId != ''">
-                AND a.table_id = #{tableId}
-            </if>
-        </where>
-        limit 1
-    </select>
-
-
-    <insert id="add" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_code_scheme(
-        <if test="id != null and id != ''">
-            id,
-        </if>
-        <if test="name != null and name != ''">
-            name,
-        </if>
-        <if test="category != null and category != ''">
-            category,
-        </if>
-        <if test="packageName != null and packageName != ''">
-            package_name,
-        </if>
-        <if test="moduleName != null and moduleName != ''">
-            module_name,
-        </if>
-        <if test="subModuleName != null and subModuleName != ''">
-            sub_module_name,
-        </if>
-        <if test="functionName != null and functionName != ''">
-            function_name,
-        </if>
-        <if test="functionNameSimple != null and functionNameSimple != ''">
-            function_name_simple,
-        </if>
-        <if test="functionAuthor != null and functionAuthor != ''">
-            function_author,
-        </if>
-        <if test="tableName != null and tableName != ''">
-            table_name,
-        </if>
-        <if test="tableId != null and tableId != ''">
-            table_id,
-        </if>
-        <if test="updatetime != null">
-            updatetime,
-        </if>
-        <if test="remark != null and remark != ''">
-            remark,
-        </if>
-        <if test="flag != null and flag != ''">
-            flag,
-        </if>
-        <if test="modulePageName != null and modulePageName != ''">
-            module_page_name,
-        </if>
-        <if test="subPageName != null and subPageName != ''">
-            sub_page_name,
-        </if>
-        createtime
-        ) VALUES (
-        <if test="id != null and id != ''">
-            #{id},
-        </if>
-        <if test="name != null and name != ''">
-            #{name},
-        </if>
-        <if test="category != null and category != ''">
-            #{category},
-        </if>
-        <if test="packageName != null and packageName != ''">
-            #{packageName},
-        </if>
-        <if test="moduleName != null and moduleName != ''">
-            #{moduleName},
-        </if>
-        <if test="subModuleName != null and subModuleName != ''">
-            #{subModuleName},
-        </if>
-        <if test="functionName != null and functionName != ''">
-            #{functionName},
-        </if>
-        <if test="functionNameSimple != null and functionNameSimple != ''">
-            #{functionNameSimple},
-        </if>
-        <if test="functionAuthor != null and functionAuthor != ''">
-            #{functionAuthor},
-        </if>
-        <if test="tableName != null and tableName != ''">
-            #{tableName},
-        </if>
-        <if test="tableId != null and tableId != ''">
-            #{tableId},
-        </if>
-        <if test="updatetime != null">
-            #{updatetime},
-        </if>
-        <if test="remark != null and remark != ''">
-            #{remark},
-        </if>
-        <if test="flag != null and flag != ''">
-            #{flag},
-        </if>
-        <if test="modulePageName != null and modulePageName != ''">
-            #{modulePageName},
-        </if>
-        <if test="subPageName != null and subPageName != ''">
-            #{subPageName},
-        </if>
-        #{createtime}
-        )
-    </insert>
-
-    <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
-        <selectKey resultType="long" keyProperty="id" order="AFTER">
-            SELECT
-            LAST_INSERT_ID()
-        </selectKey>
-        INSERT INTO t_code_scheme(
-        <if test="id != null and id != ''">
-            #{id},
-        </if>
-        <if test="name != null and name != ''">
-            #{name},
-        </if>
-        <if test="category != null and category != ''">
-            #{category},
-        </if>
-        <if test="packageName != null and packageName != ''">
-            #{packageName},
-        </if>
-        <if test="moduleName != null and moduleName != ''">
-            #{moduleName},
-        </if>
-        <if test="subModuleName != null and subModuleName != ''">
-            #{subModuleName},
-        </if>
-        <if test="functionName != null and functionName != ''">
-            #{functionName},
-        </if>
-        <if test="functionNameSimple != null and functionNameSimple != ''">
-            #{functionNameSimple},
-        </if>
-        <if test="functionAuthor != null and functionAuthor != ''">
-            #{functionAuthor},
-        </if>
-        <if test="tableName != null and tableName != ''">
-            #{tableName},
-        </if>
-        <if test="tableId != null and tableId != ''">
-            #{tableId},
-        </if>
-        <if test="updatetime != null">
-            #{updatetime},
-        </if>
-        <if test="remark != null and remark != ''">
-            #{remark},
-        </if>
-        <if test="flag != null and flag != ''">
-            #{flag},
-        </if>
-        <if test="modulePageName != null and modulePageName != ''">
-            #{modulePageName},
-        </if>
-        <if test="subPageName != null and subPageName != ''">
-            #{subPageName},
-        </if>
-        #{createtime}
-        ) VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
-            (
-            <if test="id != null">
-                #{item.id},
-            </if>
-            <if test="name != null">
-                #{item.name},
-            </if>
-            <if test="category != null">
-                #{item.category},
-            </if>
-            <if test="packageName != null">
-                #{item.packageName},
-            </if>
-            <if test="moduleName != null">
-                #{item.moduleName},
-            </if>
-            <if test="subModuleName != null">
-                #{item.subModuleName},
-            </if>
-            <if test="functionName != null">
-                #{item.functionName},
-            </if>
-            <if test="functionNameSimple != null">
-                #{item.functionNameSimple},
-            </if>
-            <if test="functionAuthor != null">
-                #{item.functionAuthor},
-            </if>
-            <if test="tableName != null">
-                #{item.tableName},
-            </if>
-            <if test="tableId != null">
-                #{item.tableId},
-            </if>
-            <if test="updatetime != null">
-                #{item.updatetime},
-            </if>
-            <if test="remark != null">
-                #{item.remark},
-            </if>
-            <if test="flag != null">
-                #{item.flag},
-            </if>
-            <if test="modulePageName != null">
-                #{item.modulePageName},
-            </if>
-            <if test="subPageName != null">
-                #{item.subPageName},
-            </if>
-            #{item.createtime}
-            )
-        </foreach>
-    </insert>
-
-    <update id="updateById">
-        UPDATE t_code_scheme SET
-        <if test="name != null and name != ''">
             name = #{name},
-        </if>
-        <if test="category != null and category != ''">
+           </if>
+            <if test="category != null and category != ''">
             category = #{category},
-        </if>
-        <if test="packageName != null and packageName != ''">
+           </if>
+            <if test="packageName != null and packageName != ''">
             package_name = #{packageName},
-        </if>
-        <if test="moduleName != null and moduleName != ''">
+           </if>
+            <if test="moduleName != null and moduleName != ''">
             module_name = #{moduleName},
-        </if>
-        <if test="subModuleName != null and subModuleName != ''">
+           </if>
+            <if test="subModuleName != null and subModuleName != ''">
             sub_module_name = #{subModuleName},
-        </if>
-        <if test="functionName != null and functionName != ''">
+           </if>
+            <if test="functionName != null and functionName != ''">
             function_name = #{functionName},
-        </if>
-        <if test="functionNameSimple != null and functionNameSimple != ''">
+           </if>
+            <if test="functionNameSimple != null and functionNameSimple != ''">
             function_name_simple = #{functionNameSimple},
-        </if>
-        <if test="functionAuthor != null and functionAuthor != ''">
+           </if>
+            <if test="functionAuthor != null and functionAuthor != ''">
             function_author = #{functionAuthor},
-        </if>
-        <if test="tableName != null and tableName != ''">
+           </if>
+            <if test="tableName != null and tableName != ''">
             table_name = #{tableName},
-        </if>
-        <if test="tableId != null and tableId != ''">
+           </if>
+            <if test="tableId != null and tableId != ''">
             table_id = #{tableId},
-        </if>
-        <if test="remark != null and remark != ''">
+           </if>
+            <if test="remark != null and remark != ''">
             remark = #{remark},
-        </if>
-        <if test="flag != null and flag != ''">
+           </if>
+            <if test="flag != null and flag != ''">
             flag = #{flag},
-        </if>
-        <if test="modulePageName != null and modulePageName != ''">
+           </if>
+            <if test="modulePageName != null and modulePageName != ''">
             module_page_name = #{modulePageName},
-        </if>
-        <if test="subPageName != null and subPageName != ''">
+           </if>
+            <if test="subPageName != null and subPageName != ''">
             sub_page_name = #{subPageName},
-        </if>
-        updatetime = NOW()
-        WHERE id = #{id}
-    </update>
+           </if>
+         updatetime = #{updatetime}
+	WHERE id = #{id}
+</update>
 
-    <update id="delete">
+	<update id="delete">
 	UPDATE t_code_scheme SET
 	flag = -1
 		WHERE id = #{id}

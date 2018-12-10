@@ -58,8 +58,7 @@
                                     <th name="name">名称</th>
                                     <th name="comments">描述</th>
                                     <th name="className">实体类名称</th>
-                                    <th name="createtime">创建时间</th>
-                                    <th name="updatetime">更新时间</th>
+                                    <th name="updatetimestr">更新时间</th>
                                     <th name="remark">备注信息</th>
                                     <th name="operate">操作</th>
                                 </tr>
@@ -96,7 +95,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: scroll;height: 500px">
                 <form class="form-horizontal form" role="form">
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">名称<font color="red">*</font></label>
