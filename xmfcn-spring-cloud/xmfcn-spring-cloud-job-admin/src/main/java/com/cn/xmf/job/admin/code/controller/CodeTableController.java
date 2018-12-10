@@ -56,7 +56,6 @@ public class CodeTableController {
             String startStr = request.getParameter("start");
             String length = request.getParameter("length");
             String name = request.getParameter("name");
-            ;
             int pageSize = 10;
             int pageNo = 1;
             int start = 0;

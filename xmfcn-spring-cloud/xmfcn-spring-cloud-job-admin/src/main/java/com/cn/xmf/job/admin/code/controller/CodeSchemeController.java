@@ -58,18 +58,7 @@ public class CodeSchemeController {
             String startStr = request.getParameter("start");
             String length = request.getParameter("length");
             String name = request.getParameter("name");
-            String category = request.getParameter("category");
-            String packageName = request.getParameter("packageName");
-            String moduleName = request.getParameter("moduleName");
-            String subModuleName = request.getParameter("subModuleName");
-            String functionName = request.getParameter("functionName");
-            String functionNameSimple = request.getParameter("functionNameSimple");
-            String functionAuthor = request.getParameter("functionAuthor");
             String tableName = request.getParameter("tableName");
-            String tableId = request.getParameter("tableId");
-            String remark = request.getParameter("remark");
-            String modulePageName = request.getParameter("modulePageName");
-            String subPageName = request.getParameter("subPageName");
             int pageSize = 10;
             int pageNo = 1;
             int start = 0;
@@ -84,20 +73,8 @@ public class CodeSchemeController {
             }
             param = StringUtil.getPageJSONObject(pageNo, pageSize);
             logger.info("getList:(获取代码生成方案分页查询接口) 开始  param={}", param);
-
             param.put("name", name);
-            param.put("category", category);
-            param.put("packageName", packageName);
-            param.put("moduleName", moduleName);
-            param.put("subModuleName", subModuleName);
-            param.put("functionName", functionName);
-            param.put("functionNameSimple", functionNameSimple);
-            param.put("functionAuthor", functionAuthor);
             param.put("tableName", tableName);
-            param.put("tableId", tableId);
-            param.put("remark", remark);
-            param.put("modulePageName", modulePageName);
-            param.put("subPageName", subPageName);
             Partion pt = codeSchemeService.getList(param);
             List<CodeScheme> list = null;
             int totalCount = 0;
