@@ -44,18 +44,20 @@
 		SELECT <include refid="Base_Column_List" />
 		FROM XXL_JOB_QRTZ_TRIGGER_LOG AS t
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+
+			<if test="executorHandler !=null and executorHandler!= ''">
+				AND t.executor_handler = #{executorHandler}
+			</if>
+			<if test="triggerTimeStart != null and triggerTimeEnd != null">
+				AND t.trigger_time <![CDATA[ >= ]]> #{triggerTimeStart} AND t.trigger_time <![CDATA[ <= ]]> #{triggerTimeEnd}
+			</if>
 			<if test="jobGroup gt 0">
 				AND t.job_group = #{jobGroup}
 			</if>
 			<if test="jobId gt 0">
 				AND t.job_id = #{jobId}
 			</if>
-			<if test="triggerTimeStart != null">
-				AND t.trigger_time <![CDATA[ >= ]]> #{triggerTimeStart}
-			</if>
-			<if test="triggerTimeEnd != null">
-				AND t.trigger_time <![CDATA[ <= ]]> #{triggerTimeEnd}
-			</if>
+
 			<if test="logStatus == 1" >
 				AND t.handle_code = 200
 			</if>
@@ -78,17 +80,18 @@
 		SELECT count(1)
 		FROM XXL_JOB_QRTZ_TRIGGER_LOG AS t
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+
+			<if test="executorHandler !=null and executorHandler!= ''">
+				AND t.executor_handler = #{executorHandler}
+			</if>
+			<if test="triggerTimeStart != null and triggerTimeEnd != null">
+				AND t.trigger_time <![CDATA[ >= ]]> #{triggerTimeStart} AND t.trigger_time <![CDATA[ <= ]]> #{triggerTimeEnd}
+			</if>
 			<if test="jobGroup gt 0">
 				AND t.job_group = #{jobGroup}
 			</if>
 			<if test="jobId gt 0">
 				AND t.job_id = #{jobId}
-			</if>
-			<if test="triggerTimeStart != null">
-				AND t.trigger_time <![CDATA[ >= ]]> #{triggerTimeStart}
-			</if>
-			<if test="triggerTimeEnd != null">
-				AND t.trigger_time <![CDATA[ <= ]]> #{triggerTimeEnd}
 			</if>
 			<if test="logStatus == 1" >
 				AND t.handle_code = 200
