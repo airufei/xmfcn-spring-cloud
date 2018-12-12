@@ -136,6 +136,9 @@
                     <li class="nav-click <#if pageName == "codeTable">active</#if>"><a
                             href="${request.contextPath}/jobadmin/codeTable"><i
                             class="fa fa-circle-o text-yellow"></i><span>数据表管理</span></a></li>
+                    <li class="nav-click <#if pageName == "codeTable">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/codeTableColumn"><i
+                            class="fa fa-circle-o text-yellow"></i><span>数据表字段</span></a></li>
                 </ul>
             </ul>
         <#-- <#list menuList as c>

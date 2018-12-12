@@ -75,5 +75,12 @@ public interface CodeTableColumnDao {
 	   * @return
 	   */
 	   public Integer  getTotalCount(Map map);
-	   
+
+	/**
+	 * deleteTable(物理删除表字段信息数据-服务)
+	 * @param tableName
+	 * @return
+	 * @author airufei
+	 */
+     void deleteTable(String tableName);
 }

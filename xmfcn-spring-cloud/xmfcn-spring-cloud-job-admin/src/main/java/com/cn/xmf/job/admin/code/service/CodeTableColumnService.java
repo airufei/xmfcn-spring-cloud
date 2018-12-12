@@ -168,4 +168,43 @@ public class CodeTableColumnService {
         logger.info("delete(逻辑删除表字段信息数据-服务)结束 id={},isSuccess={}", id, isSuccess);
         return isSuccess;
     }
+
+    /**
+     * deleteTable(物理删除表字段信息数据-服务)
+     *
+     * @param id
+     * @return
+     * @author airufei
+     */
+    public boolean deleteTable(String  tableName) {
+        logger.info("deleteTable(物理删除表字段信息数据-服务) 开始 tableName={}", tableName);
+        boolean isSuccess = false;
+        if (StringUtil.isBlank(tableName)) {
+            return isSuccess;
+        }
+        codeTableColumnDao.deleteTable(tableName);
+        isSuccess = true;
+        logger.info("delete(物理删除表字段信息数据-服务)结束 tableName={},isSuccess={}", tableName, isSuccess);
+        return isSuccess;
+    }
+
+    /**
+     * deleteTable(物理删除表字段信息数据-服务)
+     *
+     * @param id
+     * @return
+     * @author airufei
+     */
+    public boolean addTrainRecordBatch(List<CodeTableColumn> list) {
+        logger.info("deleteTable(物理删除表字段信息数据-服务) 开始 list={}", JSON.toJSONString(list));
+        boolean isSuccess = false;
+        if (list==null||list.size()<=0) {
+            return isSuccess;
+        }
+        codeTableColumnDao.addTrainRecordBatch(list);
+        isSuccess = true;
+        logger.info("delete(物理删除表字段信息数据-服务)结束isSuccess={}", isSuccess);
+        return isSuccess;
+    }
+
 }

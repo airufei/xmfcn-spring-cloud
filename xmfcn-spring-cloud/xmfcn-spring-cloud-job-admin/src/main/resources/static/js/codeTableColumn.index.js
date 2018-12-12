@@ -19,13 +19,14 @@ $(function () {
         },
         "searching": false,
         "ordering": false,
-        //"scrollX": true,	// scroll x，close self-adaption
+        "scrollX": true,	// scroll x，close self-adaption
         "columns": [
 
             {
                 "data": 'id',
                 "visible": false,
                 "width": '180'
+
             },
             {
                 "data": 'tableId',
@@ -140,21 +141,10 @@ $(function () {
             {
                 "data": 'isSort',
                  "visible": true,
-                "width": '180'
-            },
-            {
-                "data": I18n.system_opt,
-                "width": '15%',
-                "render": function (data, type, row) {
-                    return function () {
-                        tableData['key'+row.id] = row;
-                        return '<p id="' + row.id + '" >' +
-                            '<button class="btn btn-warning btn-xs job_operate" _type="codeTableColumn_save"" type="button">' + I18n.system_opt_edit + '</button>  ' +
-                            '<button class="btn btn-danger btn-xs job_operate" _type="codeTableColumn_del" type="button">' + I18n.system_opt_del + '</button>  ' +
-                            '</p>';
-                    };
-                }
+                "width": '180',
+                "sCellType":"input"
             }
+
         ],
         "language": {
             "sProcessing": I18n.dataTable_sProcessing,
@@ -254,9 +244,19 @@ $(function () {
         }
     });
 
-    //双击弹出编辑
-    $('#codeTableColumn_table').on('dblclick','tr',function(){
-        edit(this);
+    $("#codeTableColumn_table").on("dblclick","tr",function(){
+        var tds=$(this).children();
+        $.each(tds, function(i,val){
+            var jqob=$(val);
+            if(i < 1 || jqob.has('button').length ){return true;}//跳过第1项 序号,按钮
+            var txt=jqob.text();
+            var put=$("<input type='text'>");
+            put.val(txt);
+            jqob.html(put);
+        });
+        //$(this).html("保存");
+        //$(this).toggleClass("edit-btn");
+       // $(this).toggleClass("save-btn");
     });
 
     //处理编辑页面的数据

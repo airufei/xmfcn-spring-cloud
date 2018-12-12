@@ -64,7 +64,7 @@
                                     <th name="id">编号</th>
                                     <th name="tableId">归属表编号</th>
                                     <th name="comments">描述</th>
-                                    <th name="jdbcType">列的数据类型的字节长度</th>
+                                    <th name="jdbcType">列的数据类型</th>
                                     <th name="javaType">JAVA类型</th>
                                     <th name="javaField">JAVA字段名</th>
                                     <th name="isPk">是否主键</th>
@@ -73,18 +73,18 @@
                                     <th name="isEdit">是否编辑字段</th>
                                     <th name="isList">是否列表字段</th>
                                     <th name="isQuery">是否查询字段</th>
-                                    <th name="queryType">查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）</th>
-                                    <th name="showType">字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）</th>
+                                    <th name="queryType">查询方式</th>
+                                    <th name="showType">字段生成方案</th>
                                     <th name="dictType">字典类型</th>
-                                    <th name="settings">其它设置（扩展字段JSON）</th>
+                                    <th name="settings">其它设置</th>
                                     <th name="sort">排序（升序）</th>
-                                    <th name="createtime">创建时间</th>
+                                    <th name="updatetimestr">更新时间</th>
                                     <th name="remark">备注信息</th>
                                     <th name="tableName">表名称</th>
                                     <th name="isEditpage">编辑字段</th>
-                                    <th name="isinsertrequiredfield">插入必须字段 1 非必须0</th>
-                                    <th name="isupdaterequiredfield">插入必须字段 1 非必须0</th>
-                                    <th name="isSort">是否排序 1排序，0不排序</th>
+                                    <th name="isinsertrequiredfield">插入必须字段 </th>
+                                    <th name="isupdaterequiredfield">插入必须字段 </th>
+                                    <th name="isSort">是否排序</th>
                                     <th name="operate">操作</th>
                                 </tr>
                                 </thead>
@@ -120,7 +120,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: scroll;height: 500px">
                 <form class="form-horizontal form" role="form">
                     <div class="form-group">
                         <label for="id" class="col-sm-2 control-label">编号<font color="red">*</font></label>

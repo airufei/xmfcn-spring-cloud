@@ -12,7 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +38,38 @@ public class CodeTableColumnController {
     private SysCommonService sysCommonService;
 
     @RequestMapping
-    public String index() {
-        return "code/codeTableColumn-index";
+    public String index(HttpServletRequest request, Model model) {
+
+        String startStr = "1";
+        String length = "20";
+        String tableId = request.getParameter("tableId");
+        String tableName ="t_mgt_user" ;//request.getParameter("tableName");
+        int pageSize = 10;
+        int pageNo = 1;
+        int start = 0;
+        if (StringUtil.isNotBlank(startStr)) {
+            start = StringUtil.stringToInt(startStr);
+        }
+        if (StringUtil.isNotBlank(length)) {
+            pageSize = StringUtil.stringToInt(length);
+        }
+        if (start > 0) {
+            pageNo = (start / pageSize) + 1;
+        }
+        JSONObject param = StringUtil.getPageJSONObject(pageNo, pageSize);
+        logger.info("getList:(获取表字段信息分页查询接口) 开始  param={}", param);
+        param.put("flag", 0);
+        param.put("tableName", tableName);
+        // param.put("name", name);
+        Partion pt = codeTableColumnService.getList(param);
+        List<CodeTableColumn> list = null;
+        int totalCount = 0;
+        if (pt != null) {
+            list = (List<CodeTableColumn>) pt.getList();
+            totalCount = pt.getTotalCount();
+        }
+        model.addAttribute("colist",list);
+        return "code/codeTableColumn-index123";
     }
 
     /**
@@ -56,7 +88,7 @@ public class CodeTableColumnController {
             String startStr = request.getParameter("start");
             String length = request.getParameter("length");
             String tableId = request.getParameter("tableId");
-            String name = request.getParameter("name");
+            String tableName ="t_mgt_user" ;//request.getParameter("tableName");
             int pageSize = 10;
             int pageNo = 1;
             int start = 0;
@@ -71,10 +103,9 @@ public class CodeTableColumnController {
             }
             param = StringUtil.getPageJSONObject(pageNo, pageSize);
             logger.info("getList:(获取表字段信息分页查询接口) 开始  param={}", param);
-
-            param.put("tableId", tableId);
-            param.put("name", name);
-
+            param.put("flag", 0);
+            param.put("tableName", tableName);
+           // param.put("name", name);
             Partion pt = codeTableColumnService.getList(param);
             List<CodeTableColumn> list = null;
             int totalCount = 0;
@@ -174,5 +205,63 @@ public class CodeTableColumnController {
         logger.info("save 结束============>" + JSON.toJSONString(returnT));
         return returnT;
     }
+
+
+    /**
+     * saveList:(保存表字段信息数据接口)
+     *
+     * @param request
+     * @param parms
+     * @return
+     * @Author airufei
+     */
+    @RequestMapping(value = "saveList")
+    @ResponseBody
+    public ReturnT<String> saveList(@RequestParam(value = "list",required=false) List<CodeTableColumn> list) {
+        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
+        String parms = null;
+        try {
+            parms = JSON.toJSONString(list);
+            logger.info("saveList:(保存表字段信息数据接口) 开始  parms={}", parms);
+            if (list == null||list.size()<=0) {
+                returnT.setMsg("参数为空");
+                return returnT;
+            }
+            CodeTableColumn codeTableColumn = list.get(0);
+            if(codeTableColumn==null)
+            {
+                returnT.setMsg("参数为空");
+                return returnT;
+            }
+            String tableName = codeTableColumn.getTableName();
+            if(StringUtil.isBlank(tableName))
+            {
+                returnT.setMsg("表名称为空");
+                return returnT;
+            }
+            boolean batch =false;
+            boolean b = codeTableColumnService.deleteTable(tableName);
+            if(b)
+            {
+                batch=codeTableColumnService.addTrainRecordBatch(list);
+            }
+            CodeTableColumn ret = codeTableColumnService.save(codeTableColumn);
+            if (!batch) {
+                returnT.setMsg("保存数据失败");
+                return returnT;
+            }
+            returnT.setCode(ReturnT.SUCCESS_CODE);
+            returnT.setMsg("成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            String msg = "saveList:(保存表字段信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
+            logger.error(msg);
+            sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(returnT), msg, this.getClass());
+            returnT.setMsg("服务器繁忙，请稍后再试");
+        }
+        logger.info("save 结束============>" + JSON.toJSONString(returnT));
+        return returnT;
+    }
+
 
 }

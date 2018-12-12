@@ -547,4 +547,9 @@
 	flag = -1
 		WHERE id = #{id}
 	</update>
+	<update id="deleteTable">
+
+	delete from t_code_table_column
+		WHERE table_name = #{tableName}
+	</update>
 </mapper>
