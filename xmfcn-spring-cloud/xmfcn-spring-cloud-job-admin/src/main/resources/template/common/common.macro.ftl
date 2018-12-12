@@ -124,6 +124,10 @@
                     <li class="nav-click <#if pageName == "dict">active</#if>"><a
                             href="${request.contextPath}/jobadmin/jobMenu"><i
                             class="fa fa-circle-o text-orange"></i><span>菜单</span></a></li>
+
+                    <li class="nav-click <#if pageName == "dict">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/redis"><i
+                            class="fa fa-circle-o text-orange"></i><span>redis</span></a></li>
                 </ul>
             </ul>
 

@@ -1,5 +1,6 @@
 package com.cn.xmf.job.sys;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,5 +81,13 @@ public interface RedisService {
      */
     @RequestMapping(value="getQueueLength",consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long getQueueLength(@RequestParam(value = "key") String key);
+
+    /**
+     * getRedisInfo（redis 运行健康信息)
+     * @param key
+     * @return
+     */
+    @RequestMapping(value ="getRedisInfo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public JSONObject getRedisInfo();
 
 }

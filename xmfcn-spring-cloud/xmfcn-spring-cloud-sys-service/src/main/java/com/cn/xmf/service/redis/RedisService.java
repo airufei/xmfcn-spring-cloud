@@ -1,5 +1,6 @@
 package com.cn.xmf.service.redis;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.util.StringUtil;
 import org.apache.commons.httpclient.util.DateUtil;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 @SuppressWarnings("all")
 @RestController
@@ -29,6 +31,29 @@ public class RedisService {
         return connection;
     }
 
+    /**
+     * getRedisInfo（redis 运行健康信息)
+     * @param key
+     * @return
+     */
+    @RequestMapping("getRedisInfo")
+    public JSONObject getRedisInfo() {
+        logger.info("getRedisInfo（redis 运行健康信息) 开始 ");
+        JSONObject result=new JSONObject();
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
+            return result;
+        }
+        boolean broken = false;
+        try {
+            Properties info = conn.info();
+            result.put("info",info.toString());
+        } catch (Exception e) {
+            logger.error(StringUtil.getExceptionMsg(e));
+        }
+        logger.info("getRedisInfo（redis 运行健康信息)redis 结束 " + result);
+        return result;
+    }
     /**
      * getQueueLength（获取队列长度)key 是消息频道
      * @param key

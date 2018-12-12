@@ -17,15 +17,14 @@ import org.springframework.stereotype.Service;
  * <p>公共处理方法模块 $DESCRIPTION</p>
  */
 @Service
+@SuppressWarnings("all")
 public class SysCommonService {
 
-
+    private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
     @Autowired
     private DingTalkService dingTalkService;
     @Autowired
     private RedisService redisService;
-
-    private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
     @Autowired
     private Environment environment;
 
@@ -205,5 +204,22 @@ public class SysCommonService {
             e.printStackTrace();
         }
         return lock;
+    }
+
+    /**
+     * getRedisInfo（redis 运行健康信息)
+     *
+     * @param key
+     * @return
+     */
+    public JSONObject getRedisInfo() {
+        JSONObject result = null;
+        try {
+            result = redisService.getRedisInfo();
+        } catch (Exception e) {
+            logger.error("getRedisInfo（redis 运行健康信息):" + StringUtil.getExceptionMsg(e));
+            e.printStackTrace();
+        }
+        return result;
     }
 }
