@@ -18,6 +18,19 @@
 	<sql id="codeTableJoins">
 	</sql>
 
+	<select id="getTableList" resultType="com.cn.xmf.job.admin.code.model.CodeTable">
+		SELECT t.table_name AS name,t.TABLE_COMMENT AS comments ,t.TABLE_SCHEMA
+		FROM information_schema.`TABLES` t
+		WHERE 1=1
+		<if test="dbName != null and dbName != ''">
+			AND t.TABLE_SCHEMA = (#{dbName})
+		</if>
+		<if test="tableName != null and tableName != ''">
+			AND t.TABLE_NAME = (#{tableName})
+		</if>
+		ORDER BY t.TABLE_NAME
+	</select>
+
 	<select id="getCodeTableById" resultType="com.cn.xmf.job.admin.code.model.CodeTable">
 		SELECT
 			<include refid="codeTableColumns"/>

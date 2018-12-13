@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.job.admin.code.model.CodeTableColumn;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 表字段信息DAO接口
@@ -83,4 +84,11 @@ public interface CodeTableColumnDao {
 	 * @author airufei
 	 */
      void deleteTable(String tableName);
+
+	/**
+	 * 获取表字段信息 mysql
+	 * @param tableName
+	 * @return
+	 */
+	public  List<CodeTableColumn> getTableColumnList(@Param("tableName") String tableName);
 }

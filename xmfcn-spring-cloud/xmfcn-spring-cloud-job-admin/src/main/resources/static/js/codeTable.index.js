@@ -28,27 +28,27 @@ $(function () {
             },
             {
                 "data": 'name',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'comments',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'className',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'updatetimestr',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'remark',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
@@ -56,9 +56,10 @@ $(function () {
                 "width": '15%',
                 "render": function (data, type, row) {
                     return function () {
-                        tableData['key'+row.id] = row;
+                        tableData['key' + row.id] = row;
                         return '<p id="' + row.id + '" >' +
-                            '<button class="btn btn-warning btn-xs job_operate" _type="codeTable_save"" type="button">' + I18n.system_opt_edit + '</button>  ' +
+                            '<button class="btn btn-warning btn-xs job_operate" _type="codeTable_save"" type="button">编辑表</button>  ' +
+                            '<button class="btn btn-danger btn-xs job_operate" _type="codeTable_save_col" type="button">编辑列</button>' +
                             '<button class="btn btn-danger btn-xs job_operate" _type="codeTable_del" type="button">' + I18n.system_opt_del + '</button>  ' +
                             '</p>';
                     };
@@ -106,14 +107,22 @@ $(function () {
         var url;
         var needFresh = false;
         var type = $(this).attr("_type");
+        var id = $(this).parent('p').attr("id");
         if ("codeTable_del" == type) {
             typeName = I18n.system_opt_del;
             url = base_url + "/codeTable/delete";
             needFresh = true;
-        } else {
-            return;
+            deleteById(id,typeName,url,needFresh);
+        } else if ("codeTable_save" == type){
+            edit(this);
+        }else if ("codeTable_save_col" == type) {
+            goToPage(this);
         }
-        var id = $(this).parent('p').attr("id");
+    });
+
+    //删除
+    function deleteById(id,typeName,url,needFresh)
+    {
         layer.confirm(I18n.system_ok + typeName + '?', {
             icon: 3,
             title: I18n.system_tips,
@@ -136,7 +145,6 @@ $(function () {
                             icon: '1',
                             end: function (layero, index) {
                                 if (needFresh) {
-                                    //window.location.reload();
                                     codeTableTable.fnDraw(false);
                                 }
                             }
@@ -152,43 +160,49 @@ $(function () {
                 }
             });
         });
-    });
-
-
-   //编辑按钮事件
-    $("#codeTable_table").on('click', '.job_operate', function () {
-        var type = $(this).attr("_type");
-        if ("codeTable_save" == type) {
-            edit(this);
-        }
-    });
+    }
 
     //双击弹出编辑
-    $('#codeTable_table').on('dblclick','tr',function(){
+    $('#codeTable_table').on('dblclick', 'tr', function () {
         edit(this);
     });
 
-    //处理编辑页面的数据
-    function edit(target) {
+
+    //跳转列编辑页面
+    function goToPage(target) {
         var id = $(target).parent('p').attr("id");
-        if(id==null||id==undefined||id<0) {
+        if (id == null || id == undefined || id < 0) {
             id = $(target).children('td').children('p').attr("id");
         }
         var row = tableData['key' + id];
         if (row != null && row != undefined) {
-           $("#addModal .form input[name='name']").val(row.name);
-           $("#addModal .form input[name='comments']").val(row.comments);
-           $("#addModal .form input[name='className']").val(row.className);
-           $("#addModal .form input[name='remark']").val(row.remark);
-          $("#addModal .form input[name='id']").val(row.id);
+            tableName = row.name;
+            var url = base_url + "/codeTableColumn?tableName="+tableName;
+            window.location.href = url;
+        }
+    }
+
+    //处理编辑页面的数据
+    function edit(target) {
+        var id = $(target).parent('p').attr("id");
+        if (id == null || id == undefined || id < 0) {
+            id = $(target).children('td').children('p').attr("id");
+        }
+        var row = tableData['key' + id];
+        if (row != null && row != undefined) {
+            $("#addModal .form input[name='name']").val(row.name);
+            $("#addModal .form input[name='comments']").val(row.comments);
+            $("#addModal .form input[name='className']").val(row.className);
+            $("#addModal .form input[name='remark']").val(row.remark);
+            $("#addModal .form input[name='id']").val(row.id);
         }
         // show
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
-     }
+    }
 
     // 添加页面按钮事件
     $(".add").click(function () {
-         edit(this);
+        edit(this);
     });
 
     //验证保存数据并且提交
@@ -236,7 +250,7 @@ $(function () {
         },
         submitHandler: function (form) {
             $.post(base_url + "/codeTable/save", $("#addModal .form").serialize(), function (data, status) {
-                if (data.code ==200) {
+                if (data.code == 200) {
                     $('#addModal').modal('hide');
                     layer.open({
                         title: I18n.system_tips,

@@ -46,7 +46,17 @@ public class CodeTableColumnController {
         }
         CodeTableColumn column = new CodeTableColumn();
         column.setTableName(tableName);
-        List<CodeTableColumn> list = codeTableColumnService.getCodeTableColumnList(column);
+        CodeTableColumn codeTableColumn = codeTableColumnService.getCodeTableColumn(column);
+        List<CodeTableColumn> list = null;
+        if (codeTableColumn != null) {
+            list = codeTableColumnService.getCodeTableColumnList(column);
+        } else {
+            list=codeTableColumnService.getTableColumnList(tableName);
+        }
+        if (list == null || list.size() <= 0) {
+            model.addAttribute("errorMsg", tableName + "表不存在");
+            return "common/common-error";
+        }
         model.addAttribute("colist", list);
         return "code/codeTableColumn-index";
     }

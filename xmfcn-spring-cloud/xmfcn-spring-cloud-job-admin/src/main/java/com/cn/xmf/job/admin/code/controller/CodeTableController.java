@@ -11,6 +11,7 @@ import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +35,8 @@ public class CodeTableController {
     private CodeTableService codeTableService;
     @Autowired
     private SysCommonService sysCommonService;
+    @Value("spring.datasource.name")
+    private String dbName;
 
     @RequestMapping
     public String index() {
@@ -128,6 +131,29 @@ public class CodeTableController {
         }
         logger.info("delete 结束============>" + JSON.toJSONString(returnT));
         return returnT;
+    }
+
+    /**
+     * 获取当前数据库的所有表信息（不包含系统表）
+     *
+     * @param dbName
+     * @param tableName
+     * @return
+     */
+    @RequestMapping(value = "getTableList")
+    @ResponseBody
+    public List<CodeTable> getTableList(String tableName) {
+        List<CodeTable> tableList = null;
+        if (StringUtil.isBlank(tableName)) {
+            return tableList;
+        }
+        try {
+            tableList = codeTableService.getTableList(dbName, tableName);
+        } catch (Exception e) {
+            logger.error(StringUtil.getExceptionMsg(e));
+            e.printStackTrace();
+        }
+        return tableList;
     }
 
     /**

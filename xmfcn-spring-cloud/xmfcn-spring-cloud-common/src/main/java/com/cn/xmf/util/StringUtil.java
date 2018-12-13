@@ -25,7 +25,7 @@ import java.util.UUID;
 @SuppressWarnings("all")
 public class StringUtil extends StringUtils {
     private static Logger logger = LoggerFactory.getLogger(StringUtil.class);
-
+    private static final char SEPARATOR = '_';
     public static boolean isBlank(final CharSequence cs) {
         if ("null".equals(StringUtils.trim(String.valueOf(cs)))) {
             return true;
@@ -48,6 +48,34 @@ public class StringUtil extends StringUtils {
         return StringUtils.isNotEmpty(cs);
     }
 
+    /**
+     * 驼峰命名法工具
+     *
+     * @return toCamelCase("hello_world") == "helloWorld"
+     *         toCapitalizeCamelCase("hello_world") == "HelloWorld"
+     *         toUnderScoreCase("helloWorld") = "hello_world"
+     */
+    public static String toCamelCase(String s) {
+        if (s == null) {
+            return null;
+        }
+        s = s.toLowerCase();
+        StringBuilder sb = new StringBuilder(s.length());
+        boolean upperCase = false;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (c == SEPARATOR) {
+                upperCase = true;
+            } else if (upperCase) {
+                sb.append(Character.toUpperCase(c));
+                upperCase = false;
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
     /**
      * stringToFloat:(String转float 默认值0)
      *
