@@ -64,7 +64,7 @@ spring:
         max-idle: 3000
         max-wait: 3000ms
       shutdown-timeout: 5000ms
-    host: 10.105.10.113
+    host: 127.0.0.1
     password: testredis
     port: 6379
     timeout: 5000ms

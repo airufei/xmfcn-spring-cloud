@@ -39,37 +39,16 @@ public class CodeTableColumnController {
 
     @RequestMapping
     public String index(HttpServletRequest request, Model model) {
-
-        String startStr = "1";
-        String length = "20";
-        String tableId = request.getParameter("tableId");
-        String tableName ="t_mgt_user" ;//request.getParameter("tableName");
-        int pageSize = 10;
-        int pageNo = 1;
-        int start = 0;
-        if (StringUtil.isNotBlank(startStr)) {
-            start = StringUtil.stringToInt(startStr);
+        String tableName = request.getParameter("tableName");
+        if (StringUtil.isBlank(tableName)) {
+            model.addAttribute("errorMsg", "表名tableName不能为空");
+            return "common/common-error";
         }
-        if (StringUtil.isNotBlank(length)) {
-            pageSize = StringUtil.stringToInt(length);
-        }
-        if (start > 0) {
-            pageNo = (start / pageSize) + 1;
-        }
-        JSONObject param = StringUtil.getPageJSONObject(pageNo, pageSize);
-        logger.info("getList:(获取表字段信息分页查询接口) 开始  param={}", param);
-        param.put("flag", 0);
-        param.put("tableName", tableName);
-        // param.put("name", name);
-        Partion pt = codeTableColumnService.getList(param);
-        List<CodeTableColumn> list = null;
-        int totalCount = 0;
-        if (pt != null) {
-            list = (List<CodeTableColumn>) pt.getList();
-            totalCount = pt.getTotalCount();
-        }
-        model.addAttribute("colist",list);
-        return "code/codeTableColumn-index123";
+        CodeTableColumn column = new CodeTableColumn();
+        column.setTableName(tableName);
+        List<CodeTableColumn> list = codeTableColumnService.getCodeTableColumnList(column);
+        model.addAttribute("colist", list);
+        return "code/codeTableColumn-index";
     }
 
     /**
@@ -88,7 +67,7 @@ public class CodeTableColumnController {
             String startStr = request.getParameter("start");
             String length = request.getParameter("length");
             String tableId = request.getParameter("tableId");
-            String tableName ="t_mgt_user" ;//request.getParameter("tableName");
+            String tableName = "t_mgt_user";//request.getParameter("tableName");
             int pageSize = 10;
             int pageNo = 1;
             int start = 0;
@@ -105,7 +84,7 @@ public class CodeTableColumnController {
             logger.info("getList:(获取表字段信息分页查询接口) 开始  param={}", param);
             param.put("flag", 0);
             param.put("tableName", tableName);
-           // param.put("name", name);
+            // param.put("name", name);
             Partion pt = codeTableColumnService.getList(param);
             List<CodeTableColumn> list = null;
             int totalCount = 0;
@@ -217,33 +196,30 @@ public class CodeTableColumnController {
      */
     @RequestMapping(value = "saveList")
     @ResponseBody
-    public ReturnT<String> saveList(@RequestParam(value = "list",required=false) List<CodeTableColumn> list) {
+    public ReturnT<String> saveList(@RequestParam(value = "list", required = false) List<CodeTableColumn> list) {
         ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
         String parms = null;
         try {
             parms = JSON.toJSONString(list);
             logger.info("saveList:(保存表字段信息数据接口) 开始  parms={}", parms);
-            if (list == null||list.size()<=0) {
+            if (list == null || list.size() <= 0) {
                 returnT.setMsg("参数为空");
                 return returnT;
             }
             CodeTableColumn codeTableColumn = list.get(0);
-            if(codeTableColumn==null)
-            {
+            if (codeTableColumn == null) {
                 returnT.setMsg("参数为空");
                 return returnT;
             }
             String tableName = codeTableColumn.getTableName();
-            if(StringUtil.isBlank(tableName))
-            {
+            if (StringUtil.isBlank(tableName)) {
                 returnT.setMsg("表名称为空");
                 return returnT;
             }
-            boolean batch =false;
+            boolean batch = false;
             boolean b = codeTableColumnService.deleteTable(tableName);
-            if(b)
-            {
-                batch=codeTableColumnService.addTrainRecordBatch(list);
+            if (b) {
+                batch = codeTableColumnService.addTrainRecordBatch(list);
             }
             CodeTableColumn ret = codeTableColumnService.save(codeTableColumn);
             if (!batch) {
