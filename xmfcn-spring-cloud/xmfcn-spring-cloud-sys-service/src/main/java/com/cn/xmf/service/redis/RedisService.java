@@ -1,5 +1,6 @@
 package com.cn.xmf.service.redis;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.util.StringUtil;
 import org.apache.commons.httpclient.util.DateUtil;
@@ -12,10 +13,8 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
+
 @SuppressWarnings("all")
 @RestController
 @RequestMapping("/server/redis/")
@@ -46,8 +45,17 @@ public class RedisService {
         }
         boolean broken = false;
         try {
-            Properties info = conn.info();
-            result.put("info",info.toString());
+            Hashtable info = conn.info();
+            if(info==null)
+            {
+                return result;
+            }
+            String jsonString = JSON.toJSONString(info);
+            if(StringUtil.isBlank(jsonString))
+            {
+                return result;
+            }
+            result.put("info",jsonString);
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
