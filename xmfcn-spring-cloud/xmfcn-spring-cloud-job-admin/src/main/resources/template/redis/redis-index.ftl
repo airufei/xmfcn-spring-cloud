@@ -5,7 +5,7 @@
 	<@netCommon.commonStyle />
     <!-- DataTables -->
     <link rel="stylesheet" href="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.css">
-    <title>Redis运行情况</title>
+    <title>redis运行监控</title>
 </head>
 <body class="hold-transition skin-blue sidebar-mini  <#if cookieMap?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if>">
 <div class="wrapper">
@@ -16,6 +16,9 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+        <section class="content-header">
+            <h1>redis运行监控</h1>
+        </section>
         <section class="content">
             <table style="width:98%; border-width: 1px" >
                 <#assign length=0 />
