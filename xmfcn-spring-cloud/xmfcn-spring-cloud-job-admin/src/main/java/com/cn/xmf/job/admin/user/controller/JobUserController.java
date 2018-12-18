@@ -11,6 +11,7 @@ import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,9 +28,8 @@ import java.util.Map;
  * @author airufei
  * @version 2018-09-18
  */
-@RestController
-@RequestMapping("/user/")
-@SuppressWarnings("all")
+@Controller
+@RequestMapping("/user")
 public class JobUserController {
 
     private static Logger logger = LoggerFactory.getLogger(JobUserController.class);
@@ -38,11 +38,15 @@ public class JobUserController {
     @Autowired
     private SysCommonService sysCommonService;
 
+    @RequestMapping
+    public String index() {
+        return "user/jobUser-index";
+    }
     /**
      * getList:(获取调度系统用户分页查询接口)
      *
      * @param request
-     * @param parms
+     * @param request
      * @return
      * @Author airufei
      */
