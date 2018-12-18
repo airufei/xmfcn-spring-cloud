@@ -9,19 +9,9 @@ $(function () {
             type: "post",
             data: function (d) {
                 var obj = {};
-                obj.id = $('#id').val();
                 obj.username = $('#username').val();
-                obj.password = $('#password').val();
-                obj.age = $('#age').val();
                 obj.email = $('#email').val();
                 obj.phone = $('#phone').val();
-                obj.address = $('#address').val();
-                obj.qq = $('#qq').val();
-                obj.wechart = $('#wechart').val();
-                obj.createTime = $('#createTime').val();
-                obj.updateTime = $('#updateTime').val();
-                obj.flag = $('#flag').val();
-                obj.remark = $('#remark').val();
                 obj.start = d.start;
                 obj.length = d.length;
                 return obj;
