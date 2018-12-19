@@ -3,11 +3,9 @@ package com.cn.xmf.job.admin.user.service;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.RetCode;
 import com.cn.xmf.base.model.RetData;
-import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
 import com.cn.xmf.job.admin.user.dao.JobUserDao;
 import com.cn.xmf.model.user.JobUser;
-import com.cn.xmf.util.MD5Util;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,9 +102,9 @@ public class JobUserHelperService {
      * @param password
      * @return
      */
-    public RetData login(String username, String password) {
+    public RetData login(String phone, String password) {
         RetData retData = new RetData();
-        if (StringUtil.isBlank(username)) {
+        if (StringUtil.isBlank(phone)) {
             retData.setMessage(I18nUtil.getString("login_param_empty"));
             return retData;
         }
@@ -114,16 +112,28 @@ public class JobUserHelperService {
             retData.setMessage(I18nUtil.getString("login_param_empty"));
             return retData;
         }
+        if (!StringUtil.isPhone(phone)) {
+            retData.setMessage("手机号不正确");
+            return retData;
+        }
+        int length = password.length();
+        if (length != -1 && (length < 6 || length > 20)) {
+            retData.setMessage("密码长度6-20位");
+            return retData;
+        }
         try {
-            password = MD5Util.getMD5(password);
+            password = StringUtil.getEncryptPassword(password);
             JobUser jobUser = new JobUser();
-            jobUser.setUsername(username);
+            jobUser.setPhone(phone);
             jobUser.setPassword(password);
             JobUser u = getSignleJobUser(jobUser);
             if (u != null && u.getId() > 0) {
                 retData.setCode(RetCode.SUCCESS);
                 retData.setData(u);
                 retData.setMessage("成功");
+            } else {
+                retData.setCode(RetCode.SYS_ERROR);
+                retData.setMessage("账户或者密码不正确");
             }
         } catch (Exception e) {
             String msg = "login(登录) 异常====>" + StringUtil.getExceptionMsg(e);

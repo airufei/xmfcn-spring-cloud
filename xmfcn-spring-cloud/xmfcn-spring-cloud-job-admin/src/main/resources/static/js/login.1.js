@@ -12,8 +12,8 @@ $(function(){
 		errorElement : 'span',  
         errorClass : 'help-block',
         focusInvalid : true,  
-        rules : {  
-        	userName : {  
+        rules : {
+            phone : {
         		required : true ,
                 minlength: 5,
                 maxlength: 18
@@ -24,15 +24,15 @@ $(function(){
                 maxlength: 18
             } 
         }, 
-        messages : {  
-        	userName : {  
-                required  : I18n.login_username_empty,
-                minlength : I18n.login_username_lt_5
+        messages : {
+            phone : {
+                required  :"请输入手机号",
+                minlength : I18n.login_username_lt_11
             },
             password : {
             	required  : I18n.login_password_empty  ,
-                minlength : I18n.login_password_lt_5
-                /*,maxlength:"登录密码不应超过18位"*/
+                minlength : I18n.login_password_lt_6,
+                maxlength:"登录密码不应超过20位"
             }
         }, 
 		highlight : function(element) {  

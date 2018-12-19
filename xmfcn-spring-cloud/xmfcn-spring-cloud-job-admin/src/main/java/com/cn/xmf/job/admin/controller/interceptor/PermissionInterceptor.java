@@ -25,7 +25,7 @@ public class PermissionInterceptor {
 	private static final String LOGIN_IDENTITY_KEY = "XXL_JOB_LOGIN_IDENTITY";
 	private static final String LOGIN_IDENTITY_TOKEN=StringUtil.getUuId();
 
-	public static boolean login(HttpServletResponse response, String username, String password, boolean ifRemember) {
+	public static boolean login(HttpServletResponse response, boolean ifRemember) {
 		// do login
 		CookieUtil.set(response, LOGIN_IDENTITY_KEY, LOGIN_IDENTITY_TOKEN, ifRemember);
 		return true;

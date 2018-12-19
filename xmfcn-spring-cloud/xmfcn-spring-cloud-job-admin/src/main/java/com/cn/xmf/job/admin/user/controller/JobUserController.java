@@ -7,6 +7,7 @@ import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.user.service.JobUserService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.model.user.JobUser;
+import com.cn.xmf.util.MD5Util;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,6 +109,7 @@ public class JobUserController {
      * @Author airufei
      */
     @RequestMapping("delete")
+    @ResponseBody
     public ReturnT<String> delete(HttpServletRequest request, String parms) {
         ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "删除失败");
         try {
@@ -144,32 +146,60 @@ public class JobUserController {
      * save:(保存调度系统用户数据接口)
      *
      * @param request
-     * @param parms
+     * @param jobUser
      * @return
      * @Author airufei
      */
-    @RequestMapping(value = "save")
-    public ReturnT<String> save(HttpServletRequest request, String parms) {
+    @RequestMapping("save")
+    @ResponseBody
+    public ReturnT<String> save(HttpServletRequest request, JobUser jobUser) {
         ReturnT<String> dataReturn = new ReturnT<String>();
         try {
-            logger.info("save:(保存调度系统用户数据接口) 开始  parms={}", parms);
-            if (StringUtil.isBlank(parms)) {
-                dataReturn.setMsg("参数为空");
-                return dataReturn;
-            }
-            JSONObject json = JSONObject.parseObject(parms);
-            if (json == null) {
-                dataReturn.setMsg("参数为空");
-                return dataReturn;
-            }
-            JobUser jobUser = json.toJavaObject(JobUser.class);
             // 无保存内容
             if (jobUser == null) {
                 dataReturn.setMsg("无保存内容");
                 return dataReturn;
             }
-            jobUser.setCreateTime(new Date());
-            jobUser.setUpdateTime(new Date());
+            String username = jobUser.getUsername();
+            String phone = jobUser.getPhone();
+            if(StringUtil.isBlank(username))
+            {
+                dataReturn.setMsg("用户名不能为空");
+                return dataReturn;
+            }
+            if(StringUtil.isBlank(phone))
+            {
+                dataReturn.setMsg("手机号不能为空");
+                return dataReturn;
+            }
+            if(!StringUtil.isPhone(phone))
+            {
+                dataReturn.setMsg("手机号格式不正确");
+                return dataReturn;
+            }
+            Long id = jobUser.getId();
+            String password = jobUser.getPassword();
+            if(id!=null&&id>=0)
+            {
+                jobUser.setCreateTime(new Date());
+                jobUser.setUpdateTime(new Date());
+            }else if(StringUtil.isBlank(password))
+            {
+                dataReturn.setMsg("密码不能为空");
+                return dataReturn;
+            }
+            int length =-1;
+            if(StringUtil.isNotBlank(password))
+            {
+                length = password.length();
+                password = StringUtil.getEncryptPassword(password);
+                jobUser.setPassword(password);
+            }
+            if(length!=-1&&(length<6||length>20))
+            {
+                dataReturn.setMsg("密码长度6-20位");
+                return dataReturn;
+            }
             // 保存数据库
             JobUser ret = jobUserService.save(jobUser);
             if (ret != null) {
@@ -180,12 +210,14 @@ public class JobUserController {
             e.printStackTrace();
             String msg = "save:(保存调度系统用户数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(dataReturn), msg, this.getClass());
+            sysCommonService.sendDingMessage("save", null, JSON.toJSONString(dataReturn), msg, this.getClass());
             dataReturn.setMsg("服务器繁忙，请稍后再试");
             return dataReturn;
         }
-        logger.info("save:(保存调度系统用户数据接口) 结束  parms={}", parms);
+        logger.info("save:(保存调度系统用户数据接口) 结束");
         return dataReturn;
     }
+
+
 
 }

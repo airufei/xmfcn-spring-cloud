@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("all")
 public class StringUtil extends StringUtils {
@@ -246,31 +248,28 @@ public class StringUtil extends StringUtils {
     }
 
     /**
-     * isMobile :(判断字符是否为手机号)
+     * isPhone :(判断字符是否为手机号)
      *
      * @param
      * @return
      * @author airufei
      * @Date 2017/11/23 15:32
      **/
-    public static boolean isMobile(String s) {
-        if (s == null) {
-            return false;
+    public static boolean isPhone(String s) {
+        boolean result = false;
+        if (StringUtil.isBlank(s)) {
+            return result;
         }
-        if (!s.startsWith("13") && !s.startsWith("15") && !s.startsWith("14") && !s.startsWith("18") && !s.startsWith("17")) {
-            return false;
-        }
-
-        if (s.length() != 11) {
-            return false;
-        }
-
+        String mobile = "^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$";
         try {
-            Long.parseLong(s);
-        } catch (NumberFormatException e) {
-            return false;
+            Pattern pattern = Pattern.compile(mobile);
+            Matcher matcher = pattern.matcher(s);
+            result = matcher.matches();
+        } catch (Exception e) {
+            result = false;
+            e.printStackTrace();
         }
-        return true;
+        return result;
     }
 
 
@@ -757,6 +756,29 @@ public class StringUtil extends StringUtils {
         }
         String jsonString = JSON.toJSONString(esLog);
         return jsonString;
+    }
+
+    /**
+     * 密码加密
+     * @param password
+     * @return
+     * @throws Exception
+     */
+    public static String getEncryptPassword(String password){
+        String ret=null;
+        try {
+            password= MD5Util.getMD5(password);
+            ret=new StringBuilder(password).reverse().toString();//反转
+        } catch (Exception e) {
+            ret=null;
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    public static void main(String[] args) {
+        String password = StringUtil.getEncryptPassword("abc123");
+        System.out.println(password);
     }
 
 }

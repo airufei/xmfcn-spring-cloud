@@ -28,7 +28,7 @@
                 <div class="col-xs-3">
 
                     <div class="input-group">
-                        <span class="input-group-addon">账号</span>
+                        <span class="input-group-addon">名字</span>
                         <input type="text" class="form-control" id="username" autocomplete="on">
                     </div>
               </div>
@@ -62,13 +62,13 @@
                                 <thead>
                                 <tr>
                                     <th name="id">id</th>
-                                    <th name="username">账号</th>
+                                    <th name="username">名字</th>
+                                    <th name="phone">手机</th>
+                                    <th name="wechart">微信号</th>
                                     <th name="age">年龄</th>
                                     <th name="email">邮箱</th>
-                                    <th name="phone">手机</th>
                                     <th name="address">地址</th>
                                     <th name="qq">QQ</th>
-                                    <th name="wechart">微信号</th>
                                     <th name="updatetimestr">更新时间</th>
                                     <th name="operate">操作</th>
                                 </tr>
@@ -108,9 +108,14 @@
             <div class="modal-body" style="overflow-y: scroll;height: 500px">
                 <form class="form-horizontal form" role="form">
                     <div class="form-group">
-                        <label for="username" class="col-sm-2 control-label">账号<font color="red">*</font></label>
+                        <label for="username" class="col-sm-2 control-label">名字<font color="red">*</font></label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="username" placeholder="请输入..."
                                                       maxlength="20"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="col-sm-2 control-label">手机<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="phone" placeholder="请输入..."
+                                                      maxlength="11"></div>
                     </div>
                     <div class="form-group">
                         <label for="password" class="col-sm-2 control-label">密码<font color="red">*</font></label>
@@ -120,35 +125,31 @@
                     <div class="form-group">
                         <label for="age" class="col-sm-2 control-label">年龄<font color="red">*</font></label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="age" placeholder="请输入..."
-                                                      maxlength="11"></div>
+                                                      maxlength="3"></div>
                     </div>
                     <div class="form-group">
                         <label for="email" class="col-sm-2 control-label">邮箱<font color="red">*</font></label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="email" placeholder="请输入..."
                                                       maxlength="50"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="phone" class="col-sm-2 control-label">手机<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="phone" placeholder="请输入..."
-                                                      maxlength="11"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="address" class="col-sm-2 control-label">地址<font color="red">*</font></label>
+                        <label for="address" class="col-sm-2 control-label">地址</label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="address" placeholder="请输入..."
                                                       maxlength="50"></div>
                     </div>
                     <div class="form-group">
-                        <label for="qq" class="col-sm-2 control-label">QQ<font color="red">*</font></label>
+                        <label for="qq" class="col-sm-2 control-label">QQ</label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="qq" placeholder="请输入..."
                                                       maxlength="12"></div>
                     </div>
                     <div class="form-group">
-                        <label for="wechart" class="col-sm-2 control-label">微信号<font color="red">*</font></label>
+                        <label for="wechart" class="col-sm-2 control-label">微信号</label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="wechart" placeholder="请输入..."
                                                       maxlength="35"></div>
                     </div>
                     <div class="form-group">
-                        <label for="remark" class="col-sm-2 control-label">备注<font color="red">*</font></label>
+                        <label for="remark" class="col-sm-2 control-label">备注</label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="remark" placeholder="请输入..."
                                                       maxlength="200"></div>
                     </div>

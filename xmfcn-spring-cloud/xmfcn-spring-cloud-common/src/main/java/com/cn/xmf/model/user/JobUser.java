@@ -14,15 +14,15 @@ import java.util.Date;
 public class JobUser extends BaseEntitys {
 
     private static final long serialVersionUID = 1L;
-    private String username;        // 账号
+    private String username;        // 名字
+
+    private String phone;        // 手机/账户
 
     private String password;        // 密码
 
     private Integer age;        // 年龄
 
     private String email;        // 邮箱
-
-    private String phone;        // 手机
 
     private String address;        // 地址
 

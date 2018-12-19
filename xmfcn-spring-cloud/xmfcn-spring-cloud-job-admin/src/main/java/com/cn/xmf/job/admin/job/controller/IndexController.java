@@ -66,9 +66,9 @@ public class IndexController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String userName, String password, String ifRemember) {
+    public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String phone, String password, String ifRemember) {
         // param
-        if (StringUtils.isBlank(userName) || StringUtils.isBlank(password)) {
+        if (StringUtils.isBlank(phone) || StringUtils.isBlank(password)) {
             return new ReturnT<String>(500, I18nUtil.getString("login_param_empty"));
         }
         HttpSession session = request.getSession();
@@ -79,22 +79,23 @@ public class IndexController {
         // do login
         RetData retData = null;
         try {
-            retData = jobUserHelperService.login(userName, password);
+            retData = jobUserHelperService.login(phone, password);
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
         int code = retData.getCode();
+        String message = retData.getMessage();
         Object data = retData.getData();
-        if (code == RetCode.SYS_ERROR) {
-            return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
+        if (code == RetCode.SYS_ERROR||code ==RetCode.PARMS_ERROR) {
+            return new ReturnT<String>(500, message);
         }
         JobUser user = (JobUser) data;
         if (user == null) {
             return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
         }
         boolean ifRem = StringUtils.isNotBlank(ifRemember) && "on".equals(ifRemember);
-        PermissionInterceptor.login(response, userName, password, ifRem);
+        PermissionInterceptor.login(response, ifRem);
         logger.info("-----------------------------------5");
         request.getSession().setAttribute("user", user);
         return ReturnT.SUCCESS;

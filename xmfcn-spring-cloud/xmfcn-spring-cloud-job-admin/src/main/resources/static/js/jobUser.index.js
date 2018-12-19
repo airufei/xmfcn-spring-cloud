@@ -29,42 +29,42 @@ $(function () {
             },
             {
                 "data": 'username',
-                 "visible": true,
-                "width": '180'
-            },
-            {
-                "data": 'age',
-                 "visible": true,
-                "width": '180'
-            },
-            {
-                "data": 'email',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'phone',
-                 "visible": true,
-                "width": '180'
-            },
-            {
-                "data": 'address',
-                 "visible": true,
-                "width": '180'
-            },
-            {
-                "data": 'qq',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'wechart',
-                 "visible": true,
+                "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'age',
+                "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'email',
+                "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'address',
+                "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'qq',
+                "visible": true,
                 "width": '180'
             },
             {
                 "data": 'updatetimestr',
-                 "visible": true,
+                "visible": true,
                 "width": '180'
             },
             {
@@ -72,7 +72,7 @@ $(function () {
                 "width": '15%',
                 "render": function (data, type, row) {
                     return function () {
-                        tableData['key'+row.id] = row;
+                        tableData['key' + row.id] = row;
                         return '<p id="' + row.id + '" >' +
                             '<button class="btn btn-warning btn-xs job_operate" _type="jobUser_save"" type="button">' + I18n.system_opt_edit + '</button>  ' +
                             '<button class="btn btn-danger btn-xs job_operate" _type="jobUser_del" type="button">' + I18n.system_opt_del + '</button>  ' +
@@ -171,7 +171,7 @@ $(function () {
     });
 
 
-   //编辑按钮事件
+    //编辑按钮事件
     $("#jobUser_table").on('click', '.job_operate', function () {
         var type = $(this).attr("_type");
         if ("jobUser_save" == type) {
@@ -180,20 +180,21 @@ $(function () {
     });
 
     //双击弹出编辑
-    $('#jobUser_table').on('dblclick','tr',function(){
+    $('#jobUser_table').on('dblclick', 'tr', function () {
         edit(this);
     });
 
     //处理编辑页面的数据
     function edit(target) {
         var id = $(target).parent('p').attr("id");
-        if(id==null||id==undefined||id<0) {
+        if (id == null || id == undefined || id < 0) {
             id = $(target).children('td').children('p').attr("id");
         }
         var row = tableData['key' + id];
         if (row != null && row != undefined) {
             if (row != null && row != undefined) {
                 $("#addModal .form input[name='username']").val(row.username);
+                $("#addModal .form input[name='password']").val("");
                 $("#addModal .form input[name='age']").val(row.age);
                 $("#addModal .form input[name='email']").val(row.email);
                 $("#addModal .form input[name='phone']").val(row.phone);
@@ -206,13 +207,13 @@ $(function () {
         }
         // show
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
-     }
+    }
 
     // 添加页面按钮事件
     $(".add").click(function () {
-         $("#addModal .form input[name='id']").val(-1);
-         $("#addModal .form")[0].reset();
-         edit(this);
+        $("#addModal .form input[name='id']").val(-1);
+        $("#addModal .form")[0].reset();
+        edit(this);
     });
 
     //验证保存数据并且提交
@@ -224,10 +225,22 @@ $(function () {
             username: {
                 required: true
             },
+            phone: {
+                required: true
+            },
+            password: {
+                required: true
+            },
         },
         messages: {
             username: {
-                required: I18n.system_please_input + "账号"
+                required: I18n.system_please_input + "名字"
+            },
+            phone: {
+                required: I18n.system_please_input + "手机号"
+            },
+            password: {
+                required: I18n.system_please_input + "密码"
             },
         },
         highlight: function (element) {
@@ -242,7 +255,7 @@ $(function () {
         },
         submitHandler: function (form) {
             $.post(base_url + "/user/save", $("#addModal .form").serialize(), function (data, status) {
-                if (data.code ==200) {
+                if (data.code == 200) {
                     $('#addModal').modal('hide');
                     layer.open({
                         title: I18n.system_tips,

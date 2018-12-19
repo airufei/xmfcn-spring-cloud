@@ -15,11 +15,11 @@
 			<div class="login-box-body">
 				<p class="login-box-msg">${I18n.admin_name}</p>
 				<div class="form-group has-feedback">
-	            	<input type="text" name="userName" class="form-control" placeholder="${I18n.login_username_placeholder}" value="admin" maxlength="18" >
+	            	<input type="text" name="phone" class="form-control" placeholder="请输入手机号"  maxlength="11" >
 	            	<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 				</div>
 	          	<div class="form-group has-feedback">
-	            	<input type="password" name="password" class="form-control" placeholder="${I18n.login_password_placeholder}" value="123456" maxlength="18" >
+	            	<input type="password" name="password" class="form-control" placeholder="${I18n.login_password_placeholder}"  maxlength="20" >
 	            	<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 	          	</div>
 				<div class="row">
