@@ -219,11 +219,10 @@ CREATE TABLE `XXL_JOB_QRTZ_TRIGGER_GROUP` (
 INSERT INTO `XXL_JOB_QRTZ_TRIGGER_GROUP` ( `app_name`, `title`, `order`, `address_type`, `address_list`) values ( 'xxl-job-executor-sample', '示例执行器', '1', '0', null);
 
 commit;
-
-CREATE TABLE `t_sys_admin_menu` (
+CREATE TABLE `t_sys_job_menu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(20) DEFAULT NULL COMMENT '菜单名称',
-  `url` varchar(50) DEFAULT NULL COMMENT '菜单地址',
+  `name` varchar(200) DEFAULT NULL COMMENT '菜单名称',
+  `url` varchar(2000) DEFAULT NULL COMMENT '菜单地址',
   `isbutton` int(1) DEFAULT '0' COMMENT '是否button按钮 0不是 1是',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
@@ -232,7 +231,7 @@ CREATE TABLE `t_sys_admin_menu` (
   `fid` bigint(20) DEFAULT '-1' COMMENT '父级菜单ID',
   `level` int(11) DEFAULT '1' COMMENT '菜单等级',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字典数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='字典数据表';
 
 CREATE TABLE `t_sys_job_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
