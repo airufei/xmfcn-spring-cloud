@@ -217,8 +217,10 @@ CREATE TABLE `XXL_JOB_QRTZ_TRIGGER_GROUP` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `XXL_JOB_QRTZ_TRIGGER_GROUP` ( `app_name`, `title`, `order`, `address_type`, `address_list`) values ( 'xxl-job-executor-sample', '示例执行器', '1', '0', null);
-
 commit;
+
+
+
 CREATE TABLE `t_sys_job_menu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(200) DEFAULT NULL COMMENT '菜单名称',
@@ -227,12 +229,13 @@ CREATE TABLE `t_sys_job_menu` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `flag` int(1) DEFAULT '-1' COMMENT '删除标记 -1删除 1正常',
-  `remark` text COMMENT '备注',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
   `fid` bigint(20) DEFAULT '-1' COMMENT '父级菜单ID',
   `level` int(11) DEFAULT '1' COMMENT '菜单等级',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='字典数据表';
 
+-----------------------------------------------用户----------------------------------------------
 CREATE TABLE `t_sys_job_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(20) DEFAULT NULL COMMENT '账号',
@@ -243,10 +246,48 @@ CREATE TABLE `t_sys_job_user` (
   `address` varchar(50) DEFAULT NULL COMMENT '地址',
   `qq` varchar(12) DEFAULT NULL COMMENT 'QQ',
   `wechart` varchar(35) DEFAULT NULL COMMENT '微信号',
-  `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
-  `UPDATE_TIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `flag` int(11) DEFAULT '-1' COMMENT '删除标记 1正常 -1删除',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`)
+  `role_id` bigint(20) DEFAULT '0' COMMENT '角色ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_user_phone` (`phone`) USING BTREE,
+  KEY `idx_user_updatetime` (`update_time`) USING BTREE,
+  KEY `idx_user_role` (`role_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='调度中心用户表';
-INSERT INTO `t_sys_job_user` VALUES ('1', 'admin', 'e99a18c428cb38d5f260853678922e03', '18', '199199688@qq.com', '18610000006', null, null, null, null, null, '-1', null);
+
+--ALTER TABLE `t_sys_job_user`
+--ADD UNIQUE INDEX `idx_user_phone` (`phone`) USING BTREE ,
+--ADD INDEX `idx_user_updatetime` (`update_time`) USING BTREE ,
+--ADD INDEX `idx_user_role` (`role_id`) USING BTREE ;
+
+INSERT INTO `t_sys_job_user` VALUES ('1', 'admin', 'e99a18c428cb38d5f260853678922e03', '18', '199199688@qq.com', '18610000006', null, null, null, null, null, '-1', null,0);
+-----------------------------------------------用户----------------------------------------------
+
+
+CREATE TABLE `t_sys_job_role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(200) DEFAULT NULL COMMENT '角色名称',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `flag` int(1) DEFAULT '-1' COMMENT '删除标记 -1删除 1正常',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  KEY `idx_role_updatetime` (`update_time`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='角色据表';
+
+
+CREATE TABLE `t_sys_job_menu_role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
+  `menu_id` bigint(20) DEFAULT NULL COMMENT '菜单ID',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `flag` int(1) DEFAULT '-1' COMMENT '删除标记 -1删除 1正常',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  KEY `idx_role_menu_id` (`menu_id`) USING BTREE,
+  KEY `idx_role_role_id` (`role_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='菜单-角色关系表';
+
