@@ -38,7 +38,7 @@
         FROM t_base_user a
         <include refid="userJoins"/>
         <where>
-            1=1
+            flag=#{flag}
             <if test="username != null and username != ''">
                 AND a.username = #{username}
             </if>
@@ -54,7 +54,7 @@
         FROM
         (SELECT id from t_base_user t
         <where>
-            1=1
+            flag=#{flag}
             <if test="username != null and username != ''">
                 AND t.username = #{username}
             </if>
@@ -76,7 +76,7 @@
         <include refid="userColumns"/>
         (SELECT id from t_base_user t
         <where>
-            1=1
+            flag=#{flag}
             <if test="username != null and username != ''">
                 AND t.username = #{username}
             </if>
@@ -99,7 +99,7 @@
         FROM
         (SELECT id from t_base_user t
         <where>
-            1=1
+            flag=#{flag}
             <if test="username != null and username != ''">
                 AND t.username = #{username}
             </if>

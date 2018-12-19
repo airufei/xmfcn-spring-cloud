@@ -37,7 +37,7 @@
         FROM t_sys_job_user a
         <include refid="jobUserJoins"/>
         <where>
-            1=1
+            flag=#{flag}
             <if test="username != null and username != ''">
                 AND a.username  like CONCAT('%',#{username},'%')
             </if>
@@ -56,7 +56,7 @@
         FROM
         (SELECT id from t_sys_job_user t
         <where>
-            1=1
+            flag=#{flag}
             <if test="username != null and username != ''">
                 AND a.username  like CONCAT('%',#{username},'%')
             </if>
@@ -82,7 +82,7 @@
         <include refid="jobUserColumns"/>
         (SELECT id from t_sys_job_user t
         <where>
-            1=1
+            flag=#{flag}
             <if test="username != null and username != ''">
                 AND a.username  like CONCAT('%',#{username},'%')
             </if>
@@ -109,7 +109,7 @@
         FROM
         (SELECT id from t_sys_job_user t
         <where>
-            1=1
+            flag=#{flag}
             <if test="username != null and username != ''">
                 AND a.username  like CONCAT('%',#{username},'%')
             </if>

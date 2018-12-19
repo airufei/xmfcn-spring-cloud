@@ -41,7 +41,7 @@
 		FROM t_code_scheme a
 		<include refid="codeSchemeJoins"/>
 		<where>
-			1=1
+			flag=#{flag}
 			<if test="name != null and name != ''">
 				AND a.name = #{name}
 			</if>
@@ -60,7 +60,7 @@
 		FROM
 		(SELECT id from  t_code_scheme t
 		<where>
-			1=1
+			flag=#{flag}
 			<if test="name != null and name != ''">
 				AND t.name = #{name}
 			</if>
@@ -85,7 +85,7 @@
 			<include refid="codeSchemeColumns"/>
 		FROM (SELECT id from  t_code_scheme t
 		<where>
-			1=1
+			flag=#{flag}
 			<if test="name != null and name != ''">
 				AND t.name = #{name}
 			</if>
@@ -110,7 +110,7 @@
 		FROM
 		t_code_scheme a
 		<where>
-			1=1
+			flag=#{flag}
 			<if test="name != null and name != ''">
 				AND a.name = #{name}
 			</if>

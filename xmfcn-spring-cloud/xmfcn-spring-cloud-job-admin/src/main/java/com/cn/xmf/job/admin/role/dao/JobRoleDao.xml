@@ -1,78 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cn.xmf.job.admin.menu.dao.JobMenuDao">
+<mapper namespace="com.cn.xmf.job.admin.role.dao.JobRoleDao">
 
-    <sql id="jobMenuColumns">
+    <sql id="jobRoleColumns">
 	   str_to_date(a.CREATE_TIME, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
 	   str_to_date(a.UPDATE_TIME, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
 		a.id AS "id",
 		a.name AS "name",
-		a.url AS "url",
-		a.isbutton AS "isbutton",
 		a.create_time AS "createTime",
 		a.update_time AS "updateTime",
 		a.flag AS "flag",
-		a.remark AS "remark",
-		a.fid AS "fid",
-		a.level AS "level"
+		a.remark AS "remark"
 	</sql>
 
-    <sql id="jobMenuJoins">
+    <sql id="jobRoleJoins">
     </sql>
 
-    <select id="getJobMenuById" resultType="com.cn.xmf.job.admin.menu.model.JobMenu">
+    <select id="getJobRoleById" resultType="com.cn.xmf.job.admin.role.model.JobRole">
         SELECT
-        <include refid="jobMenuColumns"/>
-        FROM t_sys_job_menu a
-        <include refid="jobMenuJoins"/>
-        WHERE a.id = #{id}
+        <include refid="jobRoleColumns"/>
+        FROM t_sys_job_role a
+        <include refid="jobRoleJoins"/>
+        WHERE  flag=#{flag} and a.id = #{id}
     </select>
 
     <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
         SELECT
         count(*) as count
-        FROM t_sys_job_menu a
-        <include refid="jobMenuJoins"/>
+        FROM t_sys_job_role a
+        <include refid="jobRoleJoins"/>
         <where>
             flag=#{flag}
-            <if test="flag != null and flag != ''">
-                AND a.flag = #{flag}
-            </if>
             <if test="name != null and name != ''">
                 AND a.name = #{name}
-            </if>
-            <if test="fid != null and fid != ''">
-                AND a.fid = #{fid}
-            </if>
-            <if test="level != null and level != ''">
-                AND a.level = #{level}
             </if>
         </where>
     </select>
 
-    <select id="getList" resultType="com.cn.xmf.job.admin.menu.model.JobMenu"
+    <select id="getList" resultType="com.cn.xmf.job.admin.role.model.JobRole"
             parameterType="com.alibaba.fastjson.JSONObject">
         SELECT
-        <include refid="jobMenuColumns"/>
+        <include refid="jobRoleColumns"/>
         FROM
-        (SELECT id from t_sys_job_menu t
+        (SELECT id from t_sys_job_role t
         <where>
             flag=#{flag}
-            <if test="flag != null and flag != ''">
-                AND t.flag = #{flag}
-            </if>
             <if test="name != null and name != ''">
                 AND t.name = #{name}
-            </if>
-            <if test="fid != null and fid != ''">
-                AND t.fid = #{fid}
-            </if>
-            <if test="level != null and level != ''">
-                AND t.level = #{level}
             </if>
         </where>
         limit #{startIndex},#{pageSize}) b inner join
-        t_sys_job_menu a on b.id=a.id
+        t_sys_job_role a on b.id=a.id
         <choose>
             <otherwise>
                 ORDER BY update_time desc
@@ -80,24 +58,18 @@
         </choose>
     </select>
 
-    <select id="getJobMenuList" resultType="com.cn.xmf.job.admin.menu.model.JobMenu"
-            parameterType="com.cn.xmf.job.admin.menu.model.JobMenu">
+    <select id="getJobRoleList" resultType="com.cn.xmf.job.admin.role.model.JobRole"
+            parameterType="com.cn.xmf.job.admin.role.model.JobRole">
         SELECT
-        <include refid="jobMenuColumns"/>
-        FROM (SELECT id from t_sys_job_menu t
+        <include refid="jobRoleColumns"/>
+        FROM (SELECT id from t_sys_job_role t
         <where>
             flag=#{flag}
             <if test="name != null and name != ''">
                 AND t.name = #{name}
             </if>
-            <if test="fid != null and fid != ''">
-                AND t.fid = #{fid}
-            </if>
-            <if test="level != null and level != ''">
-                AND t.level = #{level}
-            </if>
         </where>
-        ) b inner join t_sys_job_menu a on b.id=a.id
+        ) b inner join t_sys_job_role a on b.id=a.id
         <choose>
             <otherwise>
                 ORDER BY update_time desc
@@ -105,22 +77,16 @@
         </choose>
     </select>
 
-    <select id="getSignleJobMenu" resultType="com.cn.xmf.job.admin.menu.model.JobMenu"
-            parameterType="com.cn.xmf.job.admin.menu.model.JobMenu">
+    <select id="getSignleJobRole" resultType="com.cn.xmf.job.admin.role.model.JobRole"
+            parameterType="com.cn.xmf.job.admin.role.model.JobRole">
         SELECT
-        <include refid="jobMenuColumns"/>
+        <include refid="jobRoleColumns"/>
         FROM
-        t_sys_job_menu a
+        t_sys_job_role a
         <where>
             flag=#{flag}
             <if test="name != null and name != ''">
                 AND a.name = #{name}
-            </if>
-            <if test="fid != null and fid != ''">
-                AND a.fid = #{fid}
-            </if>
-            <if test="level != null and level != ''">
-                AND a.level = #{level}
             </if>
         </where>
         limit 1
@@ -128,18 +94,16 @@
 
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_sys_job_menu(
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_sys_job_role(
         <if test="id != null and id != ''">
             id,
         </if>
         <if test="name != null and name != ''">
             name,
-        </if>
-        <if test="url != null and url != ''">
-            url,
-        </if>
-        <if test="isbutton != null and isbutton != ''">
-            isbutton,
         </if>
         <if test="updateTime != null ">
             update_time,
@@ -150,12 +114,6 @@
         <if test="remark != null and remark != ''">
             remark,
         </if>
-        <if test="fid != null and fid != ''">
-            fid,
-        </if>
-        <if test="level != null and level != ''">
-            level,
-        </if>
         create_time
         ) VALUES (
         <if test="id != null and id != ''">
@@ -164,13 +122,7 @@
         <if test="name != null and name != ''">
             #{name},
         </if>
-        <if test="url != null and url != ''">
-            #{url},
-        </if>
-        <if test="isbutton != null and isbutton != ''">
-            #{isbutton},
-        </if>
-        <if test="updateTime != null">
+        <if test="updateTime != null ">
             #{updateTime},
         </if>
         <if test="flag != null and flag != ''">
@@ -178,12 +130,6 @@
         </if>
         <if test="remark != null and remark != ''">
             #{remark},
-        </if>
-        <if test="fid != null and fid != ''">
-            #{fid},
-        </if>
-        <if test="level != null and level != ''">
-            #{level},
         </if>
         #{createTime}
         )
@@ -194,20 +140,14 @@
             SELECT
             LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO t_sys_job_menu(
+        INSERT INTO t_sys_job_role(
         <if test="id != null and id != ''">
             #{id},
         </if>
         <if test="name != null and name != ''">
             #{name},
         </if>
-        <if test="url != null and url != ''">
-            #{url},
-        </if>
-        <if test="isbutton != null and isbutton != ''">
-            #{isbutton},
-        </if>
-        <if test="updateTime != null">
+        <if test="updateTime != null ">
             #{updateTime},
         </if>
         <if test="flag != null and flag != ''">
@@ -215,12 +155,6 @@
         </if>
         <if test="remark != null and remark != ''">
             #{remark},
-        </if>
-        <if test="fid != null and fid != ''">
-            #{fid},
-        </if>
-        <if test="level != null and level != ''">
-            #{level},
         </if>
         #{createTime}
         ) VALUES
@@ -232,12 +166,6 @@
             <if test="name != null">
                 #{item.name},
             </if>
-            <if test="url != null">
-                #{item.url},
-            </if>
-            <if test="isbutton != null">
-                #{item.isbutton},
-            </if>
             <if test="updateTime != null">
                 #{item.updateTime},
             </if>
@@ -247,27 +175,15 @@
             <if test="remark != null">
                 #{item.remark},
             </if>
-            <if test="fid != null">
-                #{item.fid},
-            </if>
-            <if test="level != null">
-                #{item.level},
-            </if>
             #{item.createTime}
             )
         </foreach>
     </insert>
 
     <update id="updateById">
-        UPDATE t_sys_job_menu SET
+        UPDATE t_sys_job_role SET
         <if test="name != null and name != ''">
             name = #{name},
-        </if>
-        <if test="url != null and url != ''">
-            url = #{url},
-        </if>
-        <if test="isbutton != null and isbutton != ''">
-            isbutton = #{isbutton},
         </if>
         <if test="flag != null and flag != ''">
             flag = #{flag},
@@ -275,18 +191,12 @@
         <if test="remark != null and remark != ''">
             remark = #{remark},
         </if>
-        <if test="fid != null and fid != ''">
-            fid = #{fid},
-        </if>
-        <if test="level != null and level != ''">
-            level = #{level},
-        </if>
         update_time = #{updateTime}
         WHERE id = #{id}
     </update>
 
     <update id="delete">
-	UPDATE t_sys_job_menu SET
+	UPDATE t_sys_job_role SET
 	flag = -1
 		WHERE id = #{id}
 	</update>

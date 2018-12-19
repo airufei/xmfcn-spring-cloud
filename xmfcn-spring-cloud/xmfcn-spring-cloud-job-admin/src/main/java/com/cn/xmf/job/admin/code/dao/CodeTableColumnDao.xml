@@ -62,7 +62,7 @@
         FROM t_code_table_column a
         <include refid="codeTableColumnJoins"/>
         <where>
-            1=1
+            flag=#{flag}
             <if test="name != null and name != ''">
                 AND a.name = #{name}
             </if>
@@ -82,7 +82,7 @@
         FROM
         (SELECT id from t_code_table_column t
         <where>
-            1=1
+            flag=#{flag}
             <if test="name != null and name != ''">
                 AND t.name = #{name}
             </if>
@@ -108,7 +108,7 @@
         <include refid="codeTableColumnColumns"/>
         FROM (SELECT id from t_code_table_column t
         <where>
-            1=1
+            flag=#{flag}
             <if test="name != null and name != ''">
                 AND t.name = #{name}
             </if>
@@ -134,7 +134,7 @@
         FROM
         t_code_table_column a
         <where>
-            1=1
+            flag=#{flag}
             <if test="name != null and name != ''">
                 AND a.name = #{name}
             </if>

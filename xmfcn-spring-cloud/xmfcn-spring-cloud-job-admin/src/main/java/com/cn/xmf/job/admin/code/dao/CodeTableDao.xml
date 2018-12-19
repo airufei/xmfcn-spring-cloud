@@ -21,7 +21,7 @@
 	<select id="getTableList" resultType="com.cn.xmf.job.admin.code.model.CodeTable">
 		SELECT t.table_name AS name,t.TABLE_COMMENT AS comments ,t.TABLE_SCHEMA
 		FROM information_schema.`TABLES` t
-		WHERE 1=1
+		WHERE flag=#{flag}
 		<if test="dbName != null and dbName != ''">
 			AND t.TABLE_SCHEMA = (#{dbName})
 		</if>
@@ -45,7 +45,7 @@
 		FROM t_code_table a
 		<include refid="codeTableJoins"/>
 		<where>
-			1=1
+			flag=#{flag}
 			<if test="name != null and name != ''">
 				AND a.name = #{name}
 			</if>
@@ -58,7 +58,7 @@
 		FROM
 		(SELECT id from  t_code_table t
 		<where>
-			1=1
+			flag=#{flag}
 			<if test="name != null and name != ''">
 				AND t.name = #{name}
 			</if>
@@ -77,7 +77,7 @@
 			<include refid="codeTableColumns"/>
 		FROM (SELECT id from  t_code_table t
 		<where>
-			1=1
+			flag=#{flag}
 			<if test="name != null and name != ''">
 				AND t.name = #{name}
 			</if>
@@ -96,7 +96,7 @@
 		FROM
 		t_code_table a
 		<where>
-			1=1
+			flag=#{flag}
 			<if test="name != null and name != ''">
 				AND a.name = #{name}
 			</if>

@@ -122,12 +122,11 @@
                             href="${request.contextPath}/jobadmin/dict"><i
                             class="fa fa-circle-o text-orange"></i><span>${I18n.dict_name}</span></a></li>
                     <li class="nav-click <#if pageName == "dict">active</#if>"><a
-                            href="${request.contextPath}/jobadmin/jobMenu"><i
-                            class="fa fa-circle-o text-orange"></i><span>菜单</span></a></li>
-
-                    <li class="nav-click <#if pageName == "dict">active</#if>"><a
                             href="${request.contextPath}/jobadmin/redis"><i
                             class="fa fa-circle-o text-orange"></i><span>redis</span></a></li>
+                    <li class="nav-click <#if pageName == "dict">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/jobRole"><i
+                            class="fa fa-circle-o text-orange"></i><span>角色</span></a></li>
                 </ul>
             </ul>
 
