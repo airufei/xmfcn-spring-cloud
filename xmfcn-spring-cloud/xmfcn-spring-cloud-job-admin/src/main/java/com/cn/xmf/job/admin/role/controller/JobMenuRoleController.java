@@ -56,9 +56,7 @@ public class JobMenuRoleController {
             String startStr = request.getParameter("start");
             String length = request.getParameter("length");
             String roleId = request.getParameter("roleId");
-            ;
             String menuId = request.getParameter("menuId");
-            ;
             int pageSize = 10;
             int pageNo = 1;
             int start = 0;
