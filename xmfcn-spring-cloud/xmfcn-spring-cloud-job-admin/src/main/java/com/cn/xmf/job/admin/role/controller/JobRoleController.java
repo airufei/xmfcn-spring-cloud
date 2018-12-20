@@ -37,7 +37,7 @@ public class JobRoleController {
 
     @RequestMapping
     public String index() {
-        return "role/jobRole-tree";
+        return "role/jobRole-index";
     }
 
     /**

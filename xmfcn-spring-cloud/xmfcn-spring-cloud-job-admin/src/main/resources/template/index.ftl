@@ -19,13 +19,6 @@
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
 			<h1>${I18n.job_dashboard_name}</h1>
-			<!--
-			<h1>运行报表<small>任务调度中心</small></h1>
-			<ol class="breadcrumb">
-				<li><a><i class="fa fa-dashboard"></i>调度中心</a></li>
-				<li class="active">使用教程</li>
-			</ol>
-			-->
 		</section>
 
 		<!-- Main content -->

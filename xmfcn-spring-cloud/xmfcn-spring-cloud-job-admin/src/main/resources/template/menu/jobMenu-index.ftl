@@ -35,15 +35,24 @@
                 <div class="col-xs-3">
 
                     <div class="input-group">
-                        <span class="input-group-addon">父级菜单ID</span>
-                        <input type="text" class="form-control" id="fid" autocomplete="on">
+                        <span class="input-group-addon">父级菜单</span>
+                        <select class="form-control" id="fid" name="fid">
+								<#list menuList as item>
+                                    <option value="${item.id}">${item.name}</option>
+                                </#list>
+                        </select>
                     </div>
                 </div>
                 <div class="col-xs-3">
 
                     <div class="input-group">
                         <span class="input-group-addon">菜单等级</span>
-                        <input type="text" class="form-control" id="level" autocomplete="on">
+                        <select class="form-control" id="level" name="level">
+                            <option value="">全部</option>
+                            <option value="1">第一级</option>
+                            <option value="2">第二级</option>
+                            <option value="3">第三级</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-xs-1">
@@ -111,18 +120,23 @@
                                                       maxlength="50"></div>
                     </div>
                     <div class="form-group">
-                        <label for="url" class="col-sm-2 control-label">菜单地址<font color="red">*</font></label>
+                        <label for="url" class="col-sm-2 control-label">菜单地址</label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="url" placeholder="请输入..."
                                                       maxlength="100"></div>
                     </div>
 
                     <div class="form-group">
-                        <label for="fid" class="col-sm-2 control-label">父级菜单ID</label>
-                        <div class="col-sm-10"><input type="text" class="form-control"  value="-1" name="fid" placeholder="请输入..."
-                                                      maxlength="20"></div>
+                        <label for="fid" class="col-sm-2 control-label">父级菜单<font color="red">*</font></label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="fid">
+								<#list menuList as item>
+                                    <option value="${item.id}">${item.name}</option>
+                                </#list>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="level" class="col-sm-2 control-label">菜单等级</label>
+                        <label for="level" class="col-sm-2 control-label">菜单等级<font color="red">*</font></label>
                         <div class="col-sm-10">
                             <select class="form-control" name="level">
                                 <option value="1">第一级</option>
@@ -132,7 +146,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="isbutton" class="col-sm-2 control-label">是否button按钮</label>
+                        <label for="isbutton" class="col-sm-2 control-label">是否按钮<font color="red">*</font></label>
                         <div class="col-sm-10">
                             <select class="form-control" name="isbutton">
                                 <option value="0">不是</option>

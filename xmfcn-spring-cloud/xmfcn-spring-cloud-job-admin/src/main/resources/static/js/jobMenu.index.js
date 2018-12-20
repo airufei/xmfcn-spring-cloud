@@ -36,7 +36,7 @@ $(function () {
                     return function () {
                         tableData['key' + row.id] = row;
                         return '<p id="' + row.id + '" >' +
-                            '<button class="btn btn-warning btn-xs job_operate" _type="jobMenu_edit"" type="button">' + I18n.system_opt_edit + '</button>  ' +
+                            '<button class="btn btn-warning btn-xs job_operate" _type="jobMenu_edit" type="button">' + I18n.system_opt_edit + '</button>  ' +
                             '<button class="btn btn-danger btn-xs job_operate" _type="jobMenu_del" type="button">' + I18n.system_opt_del + '</button>  ' +
                             '</p>';
                     };
@@ -162,7 +162,7 @@ $(function () {
     //编辑按钮事件
     $("#jobMenu_list").on('click', '.job_operate', function () {
         var type = $(this).attr("_type");
-        if ("{className}_edit" == type) {
+        if ("jobMenu_edit" == type) {
             edit(this);
         }
     });
@@ -207,9 +207,6 @@ $(function () {
             name: {
                 required: true
             },
-            url: {
-                required: true
-            },
             isbutton: {
                 required: true
             },
@@ -221,11 +218,8 @@ $(function () {
             name: {
                 required: I18n.system_please_input + "菜单名称"
             },
-            url: {
-                required: I18n.system_please_input + "菜单地址"
-            },
             isbutton: {
-                required: I18n.system_please_input + "是否button按钮 0不是 1是"
+                required: I18n.system_please_input + "是否button按钮"
             },
             level: {
                 required: I18n.system_please_input + "菜单等级"

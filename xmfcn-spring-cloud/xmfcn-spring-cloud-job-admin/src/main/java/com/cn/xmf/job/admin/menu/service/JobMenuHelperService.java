@@ -5,6 +5,7 @@ import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.menu.dao.JobMenuDao;
 import com.cn.xmf.job.admin.menu.model.JobMenu;
 import com.cn.xmf.job.admin.menu.model.MenuNode;
+import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

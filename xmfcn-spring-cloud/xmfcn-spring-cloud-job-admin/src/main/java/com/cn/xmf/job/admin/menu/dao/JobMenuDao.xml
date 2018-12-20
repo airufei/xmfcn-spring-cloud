@@ -232,9 +232,7 @@
             <if test="name != null">
                 #{item.name},
             </if>
-            <if test="url != null">
                 #{item.url},
-            </if>
             <if test="isbutton != null">
                 #{item.isbutton},
             </if>
@@ -263,9 +261,7 @@
         <if test="name != null and name != ''">
             name = #{name},
         </if>
-        <if test="url != null and url != ''">
             url = #{url},
-        </if>
         <if test="isbutton != null and isbutton != ''">
             isbutton = #{isbutton},
         </if>

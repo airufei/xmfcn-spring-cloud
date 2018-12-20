@@ -13,10 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +40,22 @@ public class JobMenuController {
     private SysCommonService sysCommonService;
 
     @RequestMapping
-    public String index() {
+    public String index(HttpServletRequest request, Model model) {
+        JobMenu jobMenu = new JobMenu();
+        jobMenu.setLevel(1);
+        List<JobMenu> menuList = jobMenuService.getJobMenuList(jobMenu);
+        if (menuList == null) {
+            menuList = new ArrayList<>();
+        }
+        List<JobMenu> list = new ArrayList<>();
+        jobMenu.setName("无上级");
+        long id = -1;
+        jobMenu.setId(id);
+        list.add(0, jobMenu);
+        for (JobMenu item : menuList) {
+            list.add(item);
+        }
+        model.addAttribute("menuList", list);
         return "menu/jobMenu-index";
     }
 
@@ -52,7 +69,7 @@ public class JobMenuController {
     @RequestMapping("getTreeList")
     @ResponseBody
     public List<MenuNode> getTreeList() {
-        return jobMenuService.getTreeList(1,null);
+        return jobMenuService.getTreeList(1, null);
     }
 
     /**
@@ -74,6 +91,9 @@ public class JobMenuController {
             String name = request.getParameter("name");
             String fid = request.getParameter("fid");
             String level = request.getParameter("level");
+            if ("-1".equals(fid)) {
+                fid = null;
+            }
             int pageSize = 10;
             int pageNo = 1;
             int start = 0;
@@ -172,6 +192,15 @@ public class JobMenuController {
             if (jobMenu == null) {
                 returnT.setMsg("参数错误");
                 return returnT;
+            }
+            String url = jobMenu.getUrl();
+            Integer level = jobMenu.getLevel();
+            if (level == null) {
+                returnT.setMsg("菜单级别level不能为空");
+                return returnT;
+            }
+            if (level == 1) {
+                jobMenu.setUrl(null);
             }
             jobMenu.setCreateTime(new Date());
             jobMenu.setUpdateTime(new Date());
