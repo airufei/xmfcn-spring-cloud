@@ -225,7 +225,7 @@ CREATE TABLE `t_sys_job_menu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(200) DEFAULT NULL COMMENT '菜单名称',
   `url` varchar(2000) DEFAULT NULL COMMENT '菜单地址',
-  `isbutton` int(1) DEFAULT '0' COMMENT '是否button按钮 0不是 1是',
+  `isbutton` int(1) DEFAULT '0' COMMENT '是否按钮 0不是 1是',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `flag` int(1) DEFAULT '-1' COMMENT '删除标记 -1删除 1正常',
@@ -233,8 +233,22 @@ CREATE TABLE `t_sys_job_menu` (
   `fid` bigint(20) DEFAULT '-1' COMMENT '父级菜单ID',
   `level` int(11) DEFAULT '1' COMMENT '菜单等级',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='字典数据表';
-
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='菜单数据表';
+-- ----------------------------
+-- Records of t_sys_job_menu
+-- ----------------------------
+INSERT INTO `t_sys_job_menu` VALUES ('1', '系统管理', null, '0', '2018-12-20 21:45:31', '2018-12-20 23:02:55', '1', '系统管理', '-1', '1');
+INSERT INTO `t_sys_job_menu` VALUES ('2', '菜单管理', '/jobadmin/jobMenu', '0', '2018-12-20 21:46:20', '2018-12-20 21:46:23', '1', '菜单管理', '1', '2');
+INSERT INTO `t_sys_job_menu` VALUES ('3', '调度管理', null, '0', '2018-12-20 22:32:27', '2018-12-20 22:39:04', '1', '调度任务', '-1', '1');
+INSERT INTO `t_sys_job_menu` VALUES ('4', '调度任务', '/jobadmin/jobinfo', '0', '2018-12-20 22:56:43', '2018-12-20 22:56:43', '1', '调度任务', '3', '2');
+INSERT INTO `t_sys_job_menu` VALUES ('5', '调度日志', '/jobadmin/joblog', '0', '2018-12-20 22:57:29', '2018-12-20 22:57:29', '1', '调度日志', '3', '2');
+INSERT INTO `t_sys_job_menu` VALUES ('6', '调度报表', '/jobadmin', '0', '2018-12-20 22:58:29', '2018-12-20 22:58:29', '1', '调度报表', '3', '2');
+INSERT INTO `t_sys_job_menu` VALUES ('7', '系统监控', null, '0', '2018-12-20 23:00:54', '2018-12-20 23:00:54', '1', '系统监控', '-1', '1');
+INSERT INTO `t_sys_job_menu` VALUES ('8', 'redis监控', '/jobadmin/redis', '0', '2018-12-20 23:02:02', '2018-12-20 23:02:25', '1', 'redis监控', '7', '2');
+INSERT INTO `t_sys_job_menu` VALUES ('9', '执行器管理', '/jobadmin/jobgroup', '0', '2018-12-20 23:23:17', '2018-12-20 23:23:17', '1', '执行器管理', '3', '2');
+INSERT INTO `t_sys_job_menu` VALUES ('10', '字典管理', '/jobadmin/dict', '0', '2018-12-20 23:24:23', '2018-12-20 23:24:23', '1', '字典管理', '1', '2');
+INSERT INTO `t_sys_job_menu` VALUES ('11', '用户管理', '/jobadmin/user', '0', '2018-12-20 23:25:37', '2018-12-20 23:25:37', '1', '用户管理', '1', '2');
+INSERT INTO `t_sys_job_menu` VALUES ('12', '角色管理', '/jobadmin/jobRole', '0', '2018-12-20 23:26:10', '2018-12-20 23:26:10', '1', '角色管理', '1', '2');
 -----------------------------------------------用户----------------------------------------------
 CREATE TABLE `t_sys_job_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -261,8 +275,7 @@ CREATE TABLE `t_sys_job_user` (
 --ADD UNIQUE INDEX `idx_user_phone` (`phone`) USING BTREE ,
 --ADD INDEX `idx_user_updatetime` (`update_time`) USING BTREE ,
 --ADD INDEX `idx_user_role` (`role_id`) USING BTREE ;
-
-INSERT INTO `t_sys_job_user` VALUES ('1', 'admin', 'e99a18c428cb38d5f260853678922e03', '18', '199199688@qq.com', '18610000006', null, null, null, null, null, '-1', null,0);
+INSERT INTO `t_sys_job_user` VALUES ('1', 'admin', '30e229876358062f5d83bc824c81a99e', '18', '199199688@qq.com', '18610000006', null, null, null, '2018-12-19 22:17:19', '2018-12-19 22:17:16', '1', '222', null);
 -----------------------------------------------用户----------------------------------------------
 
 
