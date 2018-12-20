@@ -1,6 +1,6 @@
 # xmfcn-spring-cloud 重要变动
 1、账号变更、登陆账号改为手机登陆 18610000006 密码：abc123
-2、菜单变更，菜单读取数据库，正在开发菜单权限功能
+2、菜单变更，菜单读取数据库，正在开发菜单权限功能。
 
 # xmfcn-spring-cloud 简介
 1、springcloud 微服务，基于spring-cloud Finchley.SR1,spring boot 2.0.1.RELEASE 。
