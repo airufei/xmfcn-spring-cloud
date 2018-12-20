@@ -68,8 +68,8 @@
         var I18n = ${I18nUtil.getMultString()};
 
         $(function () {
-            console.log("1");
-            getdata();
+            // console.log("1");
+            //getdata();
         });
 
         function getdata() {
@@ -103,8 +103,7 @@
                     var parentNode = $("#treeview").treeview("getNode", node.parentId);
                     setParentNodeCheck(node);
                 },
-                onNodeSelected:function(event, node)
-                {
+                onNodeSelected: function (event, node) {
                     var nodeId = node.nodeId;
                     alert("nodeId")
                 },
@@ -151,58 +150,58 @@
         <section class="sidebar">
 
             <div id="treeview"></div>
-        <#--            <ul class="sidebar-menu">
-                        <li class="menu_header">菜单</li>
-                        <ul class="sidebar_menu_list">
-                            <li class="nav-click <#if pageName == "index">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/"><i
-                                    class="fa fa-circle-o text-aqua"></i><span>${I18n.job_dashboard_name}</span></a></li>
-                            <li class="nav-click <#if pageName == "jobinfo">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/jobinfo"><i
-                                    class="fa fa-circle-o text-yellow"></i><span>${I18n.jobinfo_name}</span></a></li>
-                            <li class="nav-click <#if pageName == "joblog">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/joblog"><i
-                                    class="fa fa-circle-o text-green"></i><span>${I18n.joblog_name}</span></a></li>
-                            <li class="nav-click <#if pageName == "jobgroup">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/jobgroup"><i
-                                    class="fa fa-circle-o text-red"></i><span>${I18n.jobgroup_name}</span></a></li>
-                            <li class="nav-click <#if pageName == "help">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/help"><i
-                                    class="fa fa-circle-o text-gray"></i><span>${I18n.job_help}</span></a></li>
-                            <li class="nav-click <#if pageName == "dict">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/dict"><i
-                                    class="fa fa-circle-o text-orange"></i><span>${I18n.dict_name}</span></a></li>
+            <ul class="sidebar-menu">
+                <li class="menu_header">菜单</li>
+                <ul class="sidebar_menu_list">
+                    <li class="nav-click <#if pageName == "index">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/"><i
+                            class="fa fa-circle-o text-aqua"></i><span>${I18n.job_dashboard_name}</span></a></li>
+                    <li class="nav-click <#if pageName == "jobinfo">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/jobinfo"><i
+                            class="fa fa-circle-o text-yellow"></i><span>${I18n.jobinfo_name}</span></a></li>
+                    <li class="nav-click <#if pageName == "joblog">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/joblog"><i
+                            class="fa fa-circle-o text-green"></i><span>${I18n.joblog_name}</span></a></li>
+                    <li class="nav-click <#if pageName == "jobgroup">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/jobgroup"><i
+                            class="fa fa-circle-o text-red"></i><span>${I18n.jobgroup_name}</span></a></li>
+                    <li class="nav-click <#if pageName == "help">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/help"><i
+                            class="fa fa-circle-o text-gray"></i><span>${I18n.job_help}</span></a></li>
+                    <li class="nav-click <#if pageName == "dict">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/dict"><i
+                            class="fa fa-circle-o text-orange"></i><span>${I18n.dict_name}</span></a></li>
 
-                            <li class="nav-click <#if pageName == "menu">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/jobMenu"><i
-                                    class="fa fa-circle-o text-orange"></i><span>${I18n.menu_name}</span></a></li>
+                    <li class="nav-click <#if pageName == "menu">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/jobMenu"><i
+                            class="fa fa-circle-o text-orange"></i><span>${I18n.menu_name}</span></a></li>
 
-                            <li class="nav-click <#if pageName == "dict">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/redis"><i
-                                    class="fa fa-circle-o text-orange"></i><span>redis</span></a></li>
-                            <li class="nav-click <#if pageName == "dict">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/jobRole"><i
-                                    class="fa fa-circle-o text-orange"></i><span>角色</span></a></li>
-                        </ul>
-                    </ul>
+                    <li class="nav-click <#if pageName == "dict">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/redis"><i
+                            class="fa fa-circle-o text-orange"></i><span>redis</span></a></li>
+                    <li class="nav-click <#if pageName == "dict">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/jobRole"><i
+                            class="fa fa-circle-o text-orange"></i><span>角色</span></a></li>
+                </ul>
+            </ul>
 
-                    <ul class="sidebar-menu">
-                        <li class="menu_header">代码</li>
-                        <ul class="sidebar_menu_list">
-                            <li class="nav-click <#if pageName == "codeScheme">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/codeScheme"><i
-                                    class="fa fa-circle-o text-aqua"></i><span>代码方案管理</span></a></li>
-                            <li class="nav-click <#if pageName == "codeTable">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/codeTable"><i
-                                    class="fa fa-circle-o text-yellow"></i><span>数据表管理</span></a></li>
-                            <li class="nav-click <#if pageName == "codeTable">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/codeTableColumn"><i
-                                    class="fa fa-circle-o text-yellow"></i><span>数据表字段</span></a></li>
-                            <li class="nav-click <#if pageName == "codeTable">active</#if>"><a
-                                    href="${request.contextPath}/jobadmin/user"><i
-                                    class="fa fa-circle-o text-yellow"></i><span>用户</span></a></li>
-                        </ul>
-                    </ul>-->
+            <ul class="sidebar-menu">
+                <li class="menu_header">代码</li>
+                <ul class="sidebar_menu_list">
+                    <li class="nav-click <#if pageName == "codeScheme">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/codeScheme"><i
+                            class="fa fa-circle-o text-aqua"></i><span>代码方案管理</span></a></li>
+                    <li class="nav-click <#if pageName == "codeTable">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/codeTable"><i
+                            class="fa fa-circle-o text-yellow"></i><span>数据表管理</span></a></li>
+                    <li class="nav-click <#if pageName == "codeTable">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/codeTableColumn"><i
+                            class="fa fa-circle-o text-yellow"></i><span>数据表字段</span></a></li>
+                    <li class="nav-click <#if pageName == "codeTable">active</#if>"><a
+                            href="${request.contextPath}/jobadmin/user"><i
+                            class="fa fa-circle-o text-yellow"></i><span>用户</span></a></li>
+                </ul>
+            </ul>
         </section>
         <!-- /.sidebar -->
     </aside>
