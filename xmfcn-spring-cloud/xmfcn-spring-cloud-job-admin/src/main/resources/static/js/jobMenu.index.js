@@ -213,12 +213,6 @@ $(function () {
             isbutton: {
                 required: true
             },
-            remark: {
-                required: true
-            },
-            fid: {
-                required: true
-            },
             level: {
                 required: true
             },
@@ -232,12 +226,6 @@ $(function () {
             },
             isbutton: {
                 required: I18n.system_please_input + "是否button按钮 0不是 1是"
-            },
-            remark: {
-                required: I18n.system_please_input + "备注"
-            },
-            fid: {
-                required: I18n.system_please_input + "父级菜单ID"
             },
             level: {
                 required: I18n.system_please_input + "菜单等级"

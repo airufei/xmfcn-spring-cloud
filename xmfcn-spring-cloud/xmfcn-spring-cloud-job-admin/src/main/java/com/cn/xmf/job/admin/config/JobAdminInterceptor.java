@@ -31,7 +31,7 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         super.postHandle(request, response, handler, modelAndView);
         String webRoot = getWebRootUrl();
         if (StringUtil.isBlank(webRoot)) {
-            return;
+            throw  new Exception("未获取服务域名/IP");
         }
         String loginUrl = webRoot + "/jobadmin/toLogin";
         String strUrl = request.getRequestURI();
@@ -45,10 +45,11 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         try {
             session = request.getSession();
         } catch (Exception e) {
-            e.printStackTrace();
+            StringUtil.redirect(response, loginUrl);
             return;
         }
         if (session == null) {
+            StringUtil.redirect(response, loginUrl);
             return;
         }
         Object user = request.getSession().getAttribute("user");

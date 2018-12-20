@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.menu.model.JobMenu;
+import com.cn.xmf.job.admin.menu.model.MenuNode;
 import com.cn.xmf.job.admin.menu.service.JobMenuService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.util.StringUtil;
@@ -39,6 +40,19 @@ public class JobMenuController {
     @RequestMapping
     public String index() {
         return "menu/jobMenu-index";
+    }
+
+
+    /**
+     * 获取参数树
+     *
+     * @param uId
+     * @return
+     */
+    @RequestMapping("getTreeList")
+    @ResponseBody
+    public List<MenuNode> getTreeList() {
+        return jobMenuService.getTreeList(1,null);
     }
 
     /**

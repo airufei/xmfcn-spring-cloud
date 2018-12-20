@@ -6,12 +6,15 @@ import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.menu.dao.JobMenuDao;
 import com.cn.xmf.job.admin.menu.model.JobMenu;
+import com.cn.xmf.job.admin.menu.model.MenuNode;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +42,7 @@ public class JobMenuService {
      * @return
      * @author airufei
      */
-    public Partion getList(@RequestBody JSONObject json) {
+    public Partion getList( JSONObject json) {
         logger.info("getList(获取job-菜单带分页数据-服务) 开始 json={}", json);
         if (json == null || json.size() < 1) {
             return null;
@@ -73,7 +76,7 @@ public class JobMenuService {
      * @return
      * @author airufei
      */
-    public List<JobMenu> getJobMenuList(@RequestBody JobMenu jobMenu) {
+    public List<JobMenu> getJobMenuList(JobMenu jobMenu) {
         String parms = JSON.toJSONString(jobMenu);
         List<JobMenu> list = null;
         logger.info("getJobMenuList(获取job-菜单 不带分页数据-服务) 开始 parms={}", parms);
@@ -100,7 +103,7 @@ public class JobMenuService {
      * @return
      * @author airufei
      */
-    public JobMenu save(@RequestBody JobMenu jobMenu) {
+    public JobMenu save( JobMenu jobMenu) {
         String parms = JSON.toJSONString(jobMenu);
         logger.info("save (保存job-菜单 数据-服务) 开始 parms={}", parms);
         if (jobMenu == null) {
@@ -125,7 +128,7 @@ public class JobMenuService {
      * @return
      * @author airufei
      */
-    public JobMenu getJobMenu(@RequestBody JobMenu jobMenu) {
+    public JobMenu getJobMenu( JobMenu jobMenu) {
         JobMenu ret = null;
         String parms = JSON.toJSONString(jobMenu);
         List<JobMenu> list = null;
@@ -166,5 +169,48 @@ public class JobMenuService {
         isSuccess = true;
         logger.info("delete(逻辑删除job-菜单数据-服务)结束 id={},isSuccess={}", id, isSuccess);
         return isSuccess;
+    }
+
+    /**
+     * 获取参数树
+     *
+     * @param uId
+     * @return
+     */
+    public List<MenuNode> getTreeList(int leave,Long  fid) {
+        List<MenuNode> list = null;
+        JobMenu parms = new JobMenu();
+        parms.setLevel(leave);
+        if(fid!=null&&fid>0)
+        {
+            parms.setFid(fid);
+        }
+        List<JobMenu> menuList = getJobMenuList(parms);
+        if (menuList == null || menuList.size() <= 0) {
+            return list;
+        }
+        int size = menuList.size();
+        list=new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            JobMenu jobMenu = menuList.get(i);
+            if(jobMenu==null)
+            {
+                continue;
+            }
+            Long id = jobMenu.getId();
+            leave=jobMenu.getLevel()+1;
+            List<MenuNode> nodeList= getTreeList(leave,id);
+            MenuNode node=new MenuNode();
+            if(nodeList!=null&&nodeList.size()>0)
+            {
+                node.setNodes(nodeList);
+            }
+            node.setText(jobMenu.getName());
+            node.setHref(jobMenu.getUrl());
+            node.setSelectable(false);
+            node.setNodeid(jobMenu.getId());
+            list.add(node);
+        }
+        return list;
     }
 }

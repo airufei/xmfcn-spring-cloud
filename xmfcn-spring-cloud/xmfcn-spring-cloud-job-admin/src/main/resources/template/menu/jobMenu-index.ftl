@@ -93,7 +93,7 @@
                 <table width="99%">
                     <tr>
                         <td style="width: 15%">
-                            <h4 class="modal-title">保存-菜单</h4>
+                            <h4 class="modal-title">菜单</h4>
                         </td>
                         <td style="width: 77%">
                         </td>
@@ -108,34 +108,43 @@
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">菜单名称<font color="red">*</font></label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="name" placeholder="请输入..."
-                                                      maxlength="20"></div>
+                                                      maxlength="50"></div>
                     </div>
                     <div class="form-group">
                         <label for="url" class="col-sm-2 control-label">菜单地址<font color="red">*</font></label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="url" placeholder="请输入..."
-                                                      maxlength="50"></div>
+                                                      maxlength="100"></div>
                     </div>
+
                     <div class="form-group">
-                        <label for="isbutton" class="col-sm-2 control-label">是否button按钮 0不是 1是<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="isbutton"
-                                                      placeholder="请输入..."
-                                                      maxlength="1"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="remark" class="col-sm-2 control-label">备注<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="remark"
-                                                      placeholder="请输入..."
-                                                      maxlength="200"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="fid" class="col-sm-2 control-label">父级菜单ID<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="fid" placeholder="请输入..."
+                        <label for="fid" class="col-sm-2 control-label">父级菜单ID</label>
+                        <div class="col-sm-10"><input type="text" class="form-control"  value="-1" name="fid" placeholder="请输入..."
                                                       maxlength="20"></div>
                     </div>
                     <div class="form-group">
-                        <label for="level" class="col-sm-2 control-label">菜单等级<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="level" placeholder="请输入..."
-                                                      maxlength="11"></div>
+                        <label for="level" class="col-sm-2 control-label">菜单等级</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="level">
+                                <option value="1">第一级</option>
+                                <option value="2">第二级</option>
+                                <option value="3">第三级</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="isbutton" class="col-sm-2 control-label">是否button按钮</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="isbutton">
+                                <option value="0">不是</option>
+                                <option value="1">是</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="remark" class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="remark"
+                                                      placeholder="请输入..."
+                                                      maxlength="200"></div>
                     </div>
                     <hr>
                     <div class="form-group">
