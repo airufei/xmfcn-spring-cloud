@@ -8,6 +8,7 @@ import com.cn.xmf.job.admin.menu.model.JobMenu;
 import com.cn.xmf.job.admin.menu.model.MenuNode;
 import com.cn.xmf.job.admin.menu.service.JobMenuService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
+import com.cn.xmf.model.user.JobUser;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -68,8 +70,17 @@ public class JobMenuController {
      */
     @RequestMapping("getTreeList")
     @ResponseBody
-    public List<MenuNode> getTreeList() {
-        return jobMenuService.getTreeList(1, null);
+    public List<MenuNode> getTreeList(HttpServletRequest request) {
+        List<MenuNode> list=null;
+        HttpSession session = request.getSession();
+        JobUser user = (JobUser) session.getAttribute("user");
+        if(user==null)
+        {
+            return list;
+        }
+        long roleId = user.getRoleId();
+        list= jobMenuService.getTreeList(1, null,roleId);
+        return list;
     }
 
     /**

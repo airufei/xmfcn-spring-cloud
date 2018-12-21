@@ -17,6 +17,7 @@
 		a.CREATE_TIME AS "createTime",
 		a.UPDATE_TIME AS "updateTime",
 		a.flag AS "flag",
+		a.role_id as "roleId",
 		a.remark AS "remark"
 	</sql>
 
@@ -39,7 +40,7 @@
         <where>
             flag=#{flag}
             <if test="username != null and username != ''">
-                AND a.username  like CONCAT('%',#{username},'%')
+                AND a.username like CONCAT('%',#{username},'%')
             </if>
             <if test="wechart != null and wechart != ''">
                 AND t.wechart = #{wechart}
@@ -47,6 +48,10 @@
             <if test="phone != null and phone != ''">
                 AND a.phone = #{phone}
             </if>
+            <if test="roleId != null and roleId != ''">
+                AND a.role_id = #{roleId}
+            </if>
+
         </where>
     </select>
 
@@ -58,13 +63,16 @@
         <where>
             flag=#{flag}
             <if test="username != null and username != ''">
-                AND a.username  like CONCAT('%',#{username},'%')
+                AND a.username like CONCAT('%',#{username},'%')
             </if>
             <if test="wechart != null and wechart != ''">
                 AND t.wechart = #{wechart}
             </if>
             <if test="phone != null and phone != ''">
                 AND t.phone = #{phone}
+            </if>
+            <if test="roleId != null and roleId != ''">
+                AND a.role_id = #{roleId}
             </if>
         </where>
         <choose>
@@ -84,13 +92,16 @@
         <where>
             flag=#{flag}
             <if test="username != null and username != ''">
-                AND a.username  like CONCAT('%',#{username},'%')
+                AND a.username like CONCAT('%',#{username},'%')
             </if>
             <if test="wechart != null and wechart != ''">
                 AND t.wechart = #{wechart}
             </if>
             <if test="phone != null and phone != ''">
                 AND t.phone = #{phone}
+            </if>
+            <if test="roleId != null and roleId != ''">
+                AND a.role_id = #{roleId}
             </if>
         </where>
         <choose>
@@ -111,13 +122,16 @@
         <where>
             flag=#{flag}
             <if test="username != null and username != ''">
-                AND a.username  like CONCAT('%',#{username},'%')
+                AND a.username like CONCAT('%',#{username},'%')
             </if>
             <if test="password != null and password != ''">
                 AND t.password = #{password}
             </if>
             <if test="phone != null and phone != ''">
                 AND t.phone = #{phone}
+            </if>
+            <if test="roleId != null and roleId != ''">
+                AND a.role_id = #{roleId}
             </if>
         </where>
         <choose>
@@ -143,6 +157,7 @@
 			CREATE_TIME,
 			UPDATE_TIME,
 			flag,
+			role_id,
 			remark
 		) VALUES (
 			#{id},
@@ -157,6 +172,7 @@
 			#{createTime},
 			#{updateTime},
 			#{flag},
+			#{roleId},
 			#{remark}
 		)
 	</insert>
@@ -180,6 +196,7 @@
         CREATE_TIME,
         UPDATE_TIME,
         flag,
+        role_id,
         remark
         ) VALUES
         <foreach collection="list" item="item" index="index" separator=",">
@@ -196,6 +213,7 @@
             #{item.createTime},
             #{item.updateTime},
             #{item.flag},
+            #{item.roleId},
             #{item.remark}
             )
         </foreach>
@@ -232,6 +250,9 @@
         </if>
         <if test="remark != null and remark != '' ">
             remark = #{remark},
+        </if>
+        <if test="roleId != null and roleId != '' ">
+            role_id = #{roleId},
         </if>
         UPDATE_TIME= NOW()
         WHERE id = #{id}

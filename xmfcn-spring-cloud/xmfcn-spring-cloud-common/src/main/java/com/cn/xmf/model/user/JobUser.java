@@ -34,6 +34,7 @@ public class JobUser extends BaseEntitys {
 
     private Date updateTime;        // 更新时间
 
+    private long roleId;//角色ID
 
     public JobUser() {
 
@@ -118,5 +119,13 @@ public class JobUser extends BaseEntitys {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
     }
 }

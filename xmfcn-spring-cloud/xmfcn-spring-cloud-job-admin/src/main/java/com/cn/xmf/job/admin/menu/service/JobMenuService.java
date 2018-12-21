@@ -12,10 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service(job-菜单)
@@ -42,7 +43,7 @@ public class JobMenuService {
      * @return
      * @author airufei
      */
-    public Partion getList( JSONObject json) {
+    public Partion getList(JSONObject json) {
         logger.info("getList(获取job-菜单带分页数据-服务) 开始 json={}", json);
         if (json == null || json.size() < 1) {
             return null;
@@ -103,7 +104,7 @@ public class JobMenuService {
      * @return
      * @author airufei
      */
-    public JobMenu save( JobMenu jobMenu) {
+    public JobMenu save(JobMenu jobMenu) {
         String parms = JSON.toJSONString(jobMenu);
         logger.info("save (保存job-菜单 数据-服务) 开始 parms={}", parms);
         if (jobMenu == null) {
@@ -128,7 +129,7 @@ public class JobMenuService {
      * @return
      * @author airufei
      */
-    public JobMenu getJobMenu( JobMenu jobMenu) {
+    public JobMenu getJobMenu(JobMenu jobMenu) {
         JobMenu ret = null;
         String parms = JSON.toJSONString(jobMenu);
         List<JobMenu> list = null;
@@ -177,32 +178,31 @@ public class JobMenuService {
      * @param uId
      * @return
      */
-    public List<MenuNode> getTreeList(int leave,Long  fid) {
+    public List<MenuNode> getTreeList(int level, Long fid, long roleId) {
         List<MenuNode> list = null;
-        JobMenu parms = new JobMenu();
-        parms.setLevel(leave);
-        if(fid!=null&&fid>0)
-        {
-            parms.setFid(fid);
+        Map parms = new HashMap();
+        parms.put("flag",1);
+        parms.put("level",level);
+        parms.put("roleId",roleId);
+        if (fid != null && fid > 0) {
+            parms.put("fid",fid);
         }
-        List<JobMenu> menuList = getJobMenuList(parms);
+        List<JobMenu> menuList = jobMenuDao.getRoleMenuList(parms);
         if (menuList == null || menuList.size() <= 0) {
             return list;
         }
         int size = menuList.size();
-        list=new ArrayList<>();
+        list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             JobMenu jobMenu = menuList.get(i);
-            if(jobMenu==null)
-            {
+            if (jobMenu == null) {
                 continue;
             }
             Long id = jobMenu.getId();
-            leave=jobMenu.getLevel()+1;
-            List<MenuNode> nodeList= getTreeList(leave,id);
-            MenuNode node=new MenuNode();
-            if(nodeList!=null&&nodeList.size()>0)
-            {
+            level = jobMenu.getLevel() + 1;
+            List<MenuNode> nodeList = getTreeList(level, id, roleId);
+            MenuNode node = new MenuNode();
+            if (nodeList != null && nodeList.size() > 0) {
                 node.setNodes(nodeList);
             }
             node.setText(jobMenu.getName());

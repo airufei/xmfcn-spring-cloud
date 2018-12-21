@@ -3,8 +3,8 @@
 <mapper namespace="com.cn.xmf.job.admin.menu.dao.JobMenuDao">
 
     <sql id="jobMenuColumns">
-	   str_to_date(a.CREATE_TIME, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
-	   str_to_date(a.UPDATE_TIME, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
+	   str_to_date(a.create_time, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
+	   str_to_date(a.update_time, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
 		a.id AS "id",
 		a.name AS "name",
 		a.url AS "url",
@@ -101,6 +101,28 @@
         <choose>
             <otherwise>
                 ORDER BY update_time desc
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <select id="getRoleMenuList" resultType="com.cn.xmf.job.admin.menu.model.JobMenu"
+            parameterType="java.util.Map">
+        SELECT
+        <include refid="jobMenuColumns"/>
+        FROM
+        t_sys_job_menu a left join t_sys_job_menu_role r on r.menu_id=a.id
+        <where>
+            a.flag=#{flag}
+            AND r.role_id = #{roleId}
+            AND a.level = #{level}
+            <if test="fid != null and fid != ''">
+                AND a.fid = #{fid}
+            </if>
+        </where>
+        <choose>
+            <otherwise>
+                ORDER BY a.update_time desc
             </otherwise>
         </choose>
     </select>
@@ -232,7 +254,7 @@
             <if test="name != null">
                 #{item.name},
             </if>
-                #{item.url},
+            #{item.url},
             <if test="isbutton != null">
                 #{item.isbutton},
             </if>
@@ -261,7 +283,7 @@
         <if test="name != null and name != ''">
             name = #{name},
         </if>
-            url = #{url},
+        url = #{url},
         <if test="isbutton != null and isbutton != ''">
             isbutton = #{isbutton},
         </if>
