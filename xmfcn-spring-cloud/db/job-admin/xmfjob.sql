@@ -260,25 +260,24 @@ CREATE TABLE `t_sys_job_user` (
   `address` varchar(50) DEFAULT NULL COMMENT '地址',
   `qq` varchar(12) DEFAULT NULL COMMENT 'QQ',
   `wechart` varchar(35) DEFAULT NULL COMMENT '微信号',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
+  `UPDATE_TIME` datetime DEFAULT NULL COMMENT '更新时间',
   `flag` int(11) DEFAULT '-1' COMMENT '删除标记 1正常 -1删除',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `role_id` bigint(20) DEFAULT '0' COMMENT '角色ID',
+  `role_code` varchar(20) DEFAULT NULL COMMENT '角色代码',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_user_phone` (`phone`) USING BTREE,
-  KEY `idx_user_updatetime` (`update_time`) USING BTREE,
-  KEY `idx_user_role` (`role_id`) USING BTREE
+  KEY `idx_user_updatetime` (`UPDATE_TIME`) USING BTREE,
+  KEY `idx_user_role` (`role_code`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='调度中心用户表';
 
 --ALTER TABLE `t_sys_job_user`
 --ADD UNIQUE INDEX `idx_user_phone` (`phone`) USING BTREE ,
 --ADD INDEX `idx_user_updatetime` (`update_time`) USING BTREE ,
---ADD INDEX `idx_user_role` (`role_id`) USING BTREE ;
-INSERT INTO `t_sys_job_user` VALUES ('1', 'admin', '30e229876358062f5d83bc824c81a99e', '18', '199199688@qq.com', '18610000006', null, null, null, '2018-12-19 22:17:19', '2018-12-19 22:17:16', '1', '222', null);
------------------------------------------------用户----------------------------------------------
+--ADD INDEX `idx_user_role` (`role_code`) USING BTREE ;
+INSERT INTO `t_sys_job_user` VALUES ('1', 'admin', '30e229876358062f5d83bc824c81a99e', '18', '199199688@qq.com', '18610000006', null, null, null, '2018-12-19 22:17:19', '2018-12-24 00:22:16', '1', '222', 'admin_role');
 
-
+-----------------------------------------------角色表----------------------------------------------
 CREATE TABLE `t_sys_job_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(200) DEFAULT NULL COMMENT '角色名称',
@@ -286,21 +285,36 @@ CREATE TABLE `t_sys_job_role` (
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `flag` int(1) DEFAULT '-1' COMMENT '删除标记 -1删除 1正常',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `role_code` varchar(20) DEFAULT NULL COMMENT '角色代码',
   PRIMARY KEY (`id`),
   KEY `idx_role_updatetime` (`update_time`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='角色据表';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='角色表';
+INSERT INTO `t_sys_job_role` VALUES ('19', '管理员', '2018-12-19 22:44:55', '2018-12-24 00:30:24', '1', '管理员', 'admin_role');
 
-
+---------------------------------------------------菜单-角色关系表-------------------------------------------------------------------
 CREATE TABLE `t_sys_job_menu_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint(20) DEFAULT NULL COMMENT '菜单ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `flag` int(1) DEFAULT '-1' COMMENT '删除标记 -1删除 1正常',
+  `flag` int(1) DEFAULT '1' COMMENT '删除标记 -1删除 1正常',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `role_code` varchar(20) DEFAULT NULL COMMENT '角色代码',
   PRIMARY KEY (`id`),
   KEY `idx_role_menu_id` (`menu_id`) USING BTREE,
   KEY `idx_role_role_id` (`role_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='菜单-角色关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COMMENT='菜单-角色关系表';
 
+INSERT INTO `t_sys_job_menu_role` VALUES ('42', '19', '1', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('43', '19', '12', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('44', '19', '11', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('45', '19', '10', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('46', '19', '2', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('47', '19', '7', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('48', '19', '8', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('49', '19', '3', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('50', '19', '9', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('51', '19', '6', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('52', '19', '5', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+INSERT INTO `t_sys_job_menu_role` VALUES ('53', '19', '4', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
