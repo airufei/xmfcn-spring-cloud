@@ -7,6 +7,7 @@
 	   str_to_date(a.UPDATE_TIME, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
 		a.id AS "id",
 		a.role_id AS "roleId",
+		a.role_code as "roleCode",
 		a.menu_id AS "menuId",
 		a.create_time AS "createTime",
 		a.update_time AS "updateTime",
@@ -38,6 +39,9 @@
             <if test="menuId != null and menuId != ''">
                 AND a.menu_id = #{menuId}
             </if>
+            <if test="roleCode != null and roleCode != ''">
+                role_code= #{roleCode},
+            </if>
         </where>
     </select>
 
@@ -54,6 +58,9 @@
             </if>
             <if test="menuId != null and menuId != ''">
                 AND t.menu_id = #{menuId}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                role_code= #{roleCode},
             </if>
         </where>
         limit #{startIndex},#{pageSize}) b inner join
@@ -78,6 +85,9 @@
             <if test="menuId != null and menuId != ''">
                 AND t.menu_id = #{menuId}
             </if>
+            <if test="roleCode != null and roleCode != ''">
+                role_code= #{roleCode},
+            </if>
         </where>
         ) b inner join t_sys_job_menu_role a on b.id=a.id
         <choose>
@@ -100,6 +110,9 @@
             </if>
             <if test="menuId != null and menuId != ''">
                 AND a.menu_id = #{menuId}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                role_code= #{roleCode},
             </if>
         </where>
         limit 1
@@ -130,6 +143,9 @@
         <if test="remark != null and remark != ''">
             remark,
         </if>
+        <if test="roleCode != null and roleCode != ''">
+            role_code,
+        </if>
         create_time
         ) VALUES (
         <if test="id != null and id != ''">
@@ -150,6 +166,9 @@
         <if test="remark != null and remark != ''">
             #{remark},
         </if>
+        <if test="roleCode != null and roleCode != ''">
+            #{roleCode},
+        </if>
         #{createTime}
         )
     </insert>
@@ -160,46 +179,24 @@
             LAST_INSERT_ID()
         </selectKey>
         INSERT INTO t_sys_job_menu_role(
-        <if test="id != null and id != ''">
-            #{id},
-        </if>
-        <if test="roleId != null and roleId != ''">
-            #{roleId},
-        </if>
-        <if test="menuId != null and menuId != ''">
-            #{menuId},
-        </if>
-        <if test="updateTime != null ">
-            #{updateTime},
-        </if>
-        <if test="flag != null and flag != ''">
-            #{flag},
-        </if>
-        <if test="remark != null and remark != ''">
-            #{remark},
-        </if>
-        #{createTime}
+        id,
+        role_Id,
+        menu_Id,
+        update_time,
+        flag,
+        remark,
+        role_code,
+        create_time
         ) VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             (
-            <if test="id != null">
-                #{item.id},
-            </if>
-            <if test="roleId != null">
-                #{item.roleId},
-            </if>
-            <if test="menuId != null">
-                #{item.menuId},
-            </if>
-            <if test="updateTime != null">
-                #{item.updateTime},
-            </if>
-            <if test="flag != null">
-                #{item.flag},
-            </if>
-            <if test="remark != null">
-                #{item.remark},
-            </if>
+            #{item.id},
+            #{item.roleId},
+            #{item.menuId},
+            #{item.updateTime},
+            #{item.flag},
+            #{item.remark},
+            #{item.roleCode},
             #{item.createTime}
             )
         </foreach>
@@ -219,13 +216,15 @@
         <if test="remark != null and remark != ''">
             remark = #{remark},
         </if>
+        <if test="roleCode != null and roleCode != ''">
+            role_code=#{roleCode},
+        </if>
         update_time = #{updateTime}
         WHERE id = #{id}
     </update>
 
     <update id="delete">
-	UPDATE t_sys_job_menu_role SET
-	flag = -1
-		WHERE id = #{id}
+	delete  from t_sys_job_menu_role
+		WHERE role_id = #{roleId}
 	</update>
 </mapper>

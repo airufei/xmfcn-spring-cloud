@@ -17,7 +17,7 @@ public interface JobMenuRoleDao {
 	 * @param question
 	 * @return
 	 */
-	public void delete(long id);
+	public void delete(long roleId);
     /**
 	 * 单条数据增加
 	 * @param jobMenuRole

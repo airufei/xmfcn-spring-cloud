@@ -7,6 +7,7 @@
 	   str_to_date(a.UPDATE_TIME, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
 		a.id AS "id",
 		a.name AS "name",
+		a.role_code as "roleCode",
 		a.create_time AS "createTime",
 		a.update_time AS "updateTime",
 		a.flag AS "flag",
@@ -21,7 +22,7 @@
         <include refid="jobRoleColumns"/>
         FROM t_sys_job_role a
         <include refid="jobRoleJoins"/>
-        WHERE  flag=#{flag} and a.id = #{id}
+        WHERE flag=#{flag} and a.id = #{id}
     </select>
 
     <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
@@ -33,6 +34,9 @@
             flag=#{flag}
             <if test="name != null and name != ''">
                 AND a.name = #{name}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                AND a.role_code = #{roleCode}
             </if>
         </where>
     </select>
@@ -47,6 +51,9 @@
             flag=#{flag}
             <if test="name != null and name != ''">
                 AND t.name = #{name}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                AND t.role_code = #{roleCode}
             </if>
         </where>
         limit #{startIndex},#{pageSize}) b inner join
@@ -68,6 +75,9 @@
             <if test="name != null and name != ''">
                 AND t.name = #{name}
             </if>
+            <if test="roleCode != null and roleCode != ''">
+                AND t.role_code = #{roleCode}
+            </if>
         </where>
         ) b inner join t_sys_job_role a on b.id=a.id
         <choose>
@@ -87,6 +97,9 @@
             flag=#{flag}
             <if test="name != null and name != ''">
                 AND a.name = #{name}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                AND a.role_code = #{roleCode}
             </if>
         </where>
         limit 1
@@ -114,6 +127,9 @@
         <if test="remark != null and remark != ''">
             remark,
         </if>
+        <if test="roleCode != null and roleCode != ''">
+            role_code,
+        </if>
         create_time
         ) VALUES (
         <if test="id != null and id != ''">
@@ -131,59 +147,21 @@
         <if test="remark != null and remark != ''">
             #{remark},
         </if>
+        <if test="roleCode != null and roleCode != ''">
+            #{roleCode},
+        </if>
         #{createTime}
         )
     </insert>
 
-    <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
-        <selectKey resultType="long" keyProperty="id" order="AFTER">
-            SELECT
-            LAST_INSERT_ID()
-        </selectKey>
-        INSERT INTO t_sys_job_role(
-        <if test="id != null and id != ''">
-            #{id},
-        </if>
-        <if test="name != null and name != ''">
-            #{name},
-        </if>
-        <if test="updateTime != null ">
-            #{updateTime},
-        </if>
-        <if test="flag != null and flag != ''">
-            #{flag},
-        </if>
-        <if test="remark != null and remark != ''">
-            #{remark},
-        </if>
-        #{createTime}
-        ) VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
-            (
-            <if test="id != null">
-                #{item.id},
-            </if>
-            <if test="name != null">
-                #{item.name},
-            </if>
-            <if test="updateTime != null">
-                #{item.updateTime},
-            </if>
-            <if test="flag != null">
-                #{item.flag},
-            </if>
-            <if test="remark != null">
-                #{item.remark},
-            </if>
-            #{item.createTime}
-            )
-        </foreach>
-    </insert>
 
     <update id="updateById">
         UPDATE t_sys_job_role SET
         <if test="name != null and name != ''">
             name = #{name},
+        </if>
+        <if test="roleCode != null and roleCode != ''">
+            role_code= #{roleCode},
         </if>
         <if test="flag != null and flag != ''">
             flag = #{flag},

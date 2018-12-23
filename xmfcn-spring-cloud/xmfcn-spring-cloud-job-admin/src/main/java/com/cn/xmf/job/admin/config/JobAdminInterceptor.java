@@ -2,10 +2,14 @@ package com.cn.xmf.job.admin.config;
 
 import com.cn.xmf.job.admin.core.util.FtlUtil;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
+import com.cn.xmf.job.admin.menu.model.JobMenu;
+import com.cn.xmf.job.admin.menu.service.JobMenuService;
+import com.cn.xmf.model.user.JobUser;
 import com.cn.xmf.util.SpringUtil;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -13,6 +17,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * push cookies to model as cookieMap
@@ -21,6 +27,7 @@ import javax.servlet.http.HttpSession;
  */
 public class JobAdminInterceptor extends HandlerInterceptorAdapter {
     private static Logger logger = LoggerFactory.getLogger(JobAdminInterceptor.class);
+
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
@@ -31,12 +38,11 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         super.postHandle(request, response, handler, modelAndView);
         String webRoot = getWebRootUrl();
         if (StringUtil.isBlank(webRoot)) {
-            throw  new Exception("未获取服务域名/IP");
+            throw new Exception("未获取服务域名/IP");
         }
         String loginUrl = webRoot + "/jobadmin/toLogin";
         String strUrl = request.getRequestURI();
-        if(strUrl!=null&&(strUrl.contains("/toLogin")||strUrl.contains("/login")||strUrl.contains("/logout")||strUrl.contains("/api")))
-        {
+        if (strUrl != null && (strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api"))) {
             return;
         }
         logger.info("请求地址============================" + strUrl);
@@ -52,9 +58,18 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
             StringUtil.redirect(response, loginUrl);
             return;
         }
-        Object user = request.getSession().getAttribute("user");
+        JobUser user = (JobUser) request.getSession().getAttribute("user");
         if (user == null) {
             StringUtil.redirect(response, loginUrl);
+            return;
+        }
+        String roleCode = user.getRoleCode();
+        boolean interceptUrl = isInterceptUrl(roleCode, strUrl);
+        if (!interceptUrl) {
+            String msg = "权限不足";
+            msg = URLEncoder.encode(msg, "utf-8");
+            String errorUrl = webRoot + "/jobadmin/sysError?errorMsg=" + msg;
+            StringUtil.redirect(response, errorUrl);
             return;
         }
     }
@@ -72,25 +87,42 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         return environment.getProperty("xmf.job.login.webRoot");
     }
 
-    /*   *//**
-     * 获取菜单数据
+    /**
+     * 判断当前节点是否需要选中
      *
+     * @param roleCode
+     * @param url
      * @return
-     *//*
-    public void getMunuList(ModelAndView modelAndView,JobUser u) {
+     */
+    public boolean isInterceptUrl(String roleCode, String url) {
+        boolean isInterceptUrl = false;
         JobMenuService jobMenuService = (JobMenuService) SpringUtil.getBean("jobMenuService");
         if (jobMenuService == null) {
-            return ;
+            return false;
         }
-        JobMenu menu = new JobMenu();
-        menu.setLevel(1);
-        List<JobMenu> menuList = jobMenuService.getJobMenuList(menu);
-        JobMenu secMenu = new JobMenu();
-        secMenu.setLevel(2);
-        List<JobMenu> secList = jobMenuService.getJobMenuList(secMenu);
-        if (modelAndView != null) {
-            modelAndView.addObject("menuList", menuList);
-            modelAndView.addObject("menuSecList", secList);
+        if (StringUtil.isBlank(url)) {
+            return true;
         }
-    }*/
+        if(url.contains("sysError"))
+        {
+            return true;
+        }
+        List<JobMenu> roleList = jobMenuService.getJobMenuRoles(0, roleCode);
+        if (roleList == null || roleList.size() <= 0) {
+            return isInterceptUrl;
+        }
+        int size = roleList.size();
+        for (int i = 0; i < size; i++) {
+            JobMenu menuRole = roleList.get(i);
+            String roleUrl = menuRole.getUrl();
+            if (StringUtil.isBlank(roleUrl)) {
+                continue;
+            }
+            if (url.contains(roleUrl) || roleUrl.contains(url)) {
+                isInterceptUrl = true;
+                break;
+            }
+        }
+        return isInterceptUrl;
+    }
 }

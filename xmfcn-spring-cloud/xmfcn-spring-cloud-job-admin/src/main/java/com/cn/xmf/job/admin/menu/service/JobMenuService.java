@@ -7,7 +7,11 @@ import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.menu.dao.JobMenuDao;
 import com.cn.xmf.job.admin.menu.model.JobMenu;
 import com.cn.xmf.job.admin.menu.model.MenuNode;
+import com.cn.xmf.job.admin.role.model.JobMenuRole;
+import com.cn.xmf.job.admin.role.service.JobMenuRoleService;
+import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.StringUtil;
+import org.apache.tomcat.util.bcel.classfile.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +36,9 @@ public class JobMenuService {
     private JobMenuDao jobMenuDao;
     @Autowired
     private JobMenuHelperService jobMenuHelperService;
+    @Autowired
+    private JobMenuRoleService jobMenuRoleService;
+
     @Autowired
     private SysCommonService sysCommonService;
     private static Logger logger = LoggerFactory.getLogger(JobMenuService.class);
@@ -175,19 +182,33 @@ public class JobMenuService {
     /**
      * 获取参数树
      *
-     * @param uId
+     * @param level        菜单等级
+     * @param fid          父级ID
+     * @param roleId       角色ID 用于查询所具备的权限菜单信息
+     * @param pageType     当前查询的页面
+     * @param selecdRoleId //角色ID  用于查询这个角色下的需要选中的菜单
      * @return
      */
-    public List<MenuNode> getTreeList(int level, Long fid, long roleId) {
+    public List<MenuNode> getTreeList(int level, Long fid, long roleId, String pageType, long selecdRoleId) {
         List<MenuNode> list = null;
-        Map parms = new HashMap();
-        parms.put("flag",1);
-        parms.put("level",level);
-        parms.put("roleId",roleId);
-        if (fid != null && fid > 0) {
-            parms.put("fid",fid);
+        List<JobMenu> menuList = null;
+        if ("left_menu".equals(pageType)) {
+            Map parms = new HashMap();
+            parms.put("flag", 1);
+            parms.put("level", level);
+            parms.put("roleId", roleId);
+            if (fid != null && fid > 0) {
+                parms.put("fid", fid);
+            }
+            menuList = jobMenuDao.getRoleMenuList(parms);
+        } else {
+            JobMenu job = new JobMenu();
+            job.setLevel(level);
+            if (fid != null && fid > 0) {
+                job.setFid(fid);
+            }
+            menuList = jobMenuDao.getJobMenuList(job);
         }
-        List<JobMenu> menuList = jobMenuDao.getRoleMenuList(parms);
         if (menuList == null || menuList.size() <= 0) {
             return list;
         }
@@ -200,16 +221,77 @@ public class JobMenuService {
             }
             Long id = jobMenu.getId();
             level = jobMenu.getLevel() + 1;
-            List<MenuNode> nodeList = getTreeList(level, id, roleId);
+            List<MenuNode> nodeList = getTreeList(level, id, roleId, pageType, selecdRoleId);
             MenuNode node = new MenuNode();
             if (nodeList != null && nodeList.size() > 0) {
                 node.setNodes(nodeList);
             }
+            boolean isChecked = isNodeChecked(selecdRoleId, id);
+            JSONObject state = new JSONObject();
+            state.put("checked", isChecked);
             node.setText(jobMenu.getName());
-            node.setHref(jobMenu.getUrl());
+            node.setState(state);
+            if ("left_menu".equals(pageType)) {
+                node.setHref(jobMenu.getUrl());
+            }
             node.setSelectable(false);
             node.setNodeid(jobMenu.getId());
             list.add(node);
+        }
+        return list;
+    }
+
+    /**
+     * 判断当前节点是否需要选中
+     * @param roleId
+     * @param menuId
+     * @return
+     */
+    public boolean isNodeChecked(long roleId, Long menuId) {
+        boolean isChecked = false;
+        List<JobMenu> roleList = getJobMenuRoles(roleId,null);
+        if (roleList == null || roleList.size() <= 0) {
+            return isChecked;
+        }
+        int size = roleList.size();
+        for (int i = 0; i < size; i++) {
+            JobMenu menuRole = roleList.get(i);
+            Long roleMenuId = menuRole.getId();
+            if (roleMenuId == menuId) {
+                isChecked = true;
+                break;
+            }
+        }
+        return isChecked;
+    }
+
+    /**
+     * 根据角色ID获取需要选中的菜单数据
+     *
+     * @param roleId
+     * @return
+     */
+    public List<JobMenu> getJobMenuRoles(long roleId,String roleCode) {
+        List<JobMenu> list = null;
+        String key = ConstantUtil.CACHE_KEY_PREFIX_MENU_ + roleId+roleCode;
+        String cache = sysCommonService.getCache(key);
+        list = JSONObject.parseArray(cache, JobMenu.class);
+        if (list != null && list.size() > 0) {
+            return list;
+        }
+        Map parms = new HashMap();
+        parms.put("flag", 1);
+        if(roleId>0)
+        {
+            parms.put("roleId", roleId);
+        }
+        if(StringUtil.isNotBlank(roleCode))
+        {
+            parms.put("roleCode", roleCode);
+        }
+        list = jobMenuDao.getRoleMenuList(parms);
+        if (list != null && list.size() > 0) {
+            sysCommonService.save(key, JSON.toJSONString(list), 30);
         }
         return list;
     }

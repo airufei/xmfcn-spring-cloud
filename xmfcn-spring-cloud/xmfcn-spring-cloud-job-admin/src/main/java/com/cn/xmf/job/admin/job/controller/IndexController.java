@@ -87,7 +87,7 @@ public class IndexController {
         int code = retData.getCode();
         String message = retData.getMessage();
         Object data = retData.getData();
-        if (code == RetCode.SYS_ERROR||code ==RetCode.PARMS_ERROR) {
+        if (code == RetCode.SYS_ERROR || code == RetCode.PARMS_ERROR) {
             return new ReturnT<String>(500, message);
         }
         JobUser user = (JobUser) data;
@@ -115,6 +115,11 @@ public class IndexController {
         return "help";
     }
 
+    @RequestMapping("/sysError")
+    public String error(String errorMsg, Model model) {
+        model.addAttribute("errorMsg", errorMsg);
+        return "common/common-error";
+    }
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

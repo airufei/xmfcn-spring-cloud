@@ -25,13 +25,19 @@
         <section class="content">
 
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-xs-4">
 
                     <div class="input-group">
                         <span class="input-group-addon">角色名称</span>
                         <input type="text" class="form-control" id="name" autocomplete="on">
                     </div>
               </div>
+                <div class="col-xs-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">角色代码</span>
+                        <input type="text" class="form-control" id="roleCode" autocomplete="on">
+                    </div>
+                </div>
                 <div class="col-xs-1">
                     <button class="btn btn-block btn-info" id="searchBtn">搜索</button>
                 </div>
@@ -49,6 +55,7 @@
                                 <tr>
                                     <th name="id">主键ID</th>
                                     <th name="name">角色名称</th>
+                                    <th name="roleCode">角色代码</th>
                                     <th name="updatetimestr">修改时间</th>
                                     <th name="remark">备注</th>
                                     <th name="operate">操作</th>
@@ -76,7 +83,7 @@
                 <table width="99%">
                     <tr>
                         <td style="width: 15%">
-                            <h4 class="modal-title">保存角色数据</h4>
+                            <h4 class="modal-title">角色数据</h4>
                         </td>
                         <td style="width: 77%">
                         </td>
@@ -86,7 +93,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: scroll;height: 500px">
                 <form class="form-horizontal form" role="form">
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">角色名称<font color="red">*</font></label>
@@ -94,9 +101,18 @@
                            maxlength="200"></div>
                     </div>
                     <div class="form-group">
-                        <label for="remark" class="col-sm-2 control-label">备注<font color="red">*</font></label>
+                        <label for="roleCode" class="col-sm-2 control-label">角色代码<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" class="form-control" name="roleCode" placeholder="请输入..."
+                                                      maxlength="200"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="remark" class="col-sm-2 control-label">备注</label>
                         <div class="col-sm-10"><input type="text" class="form-control" name="remark" placeholder="请输入..."
                            maxlength="200"></div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <div id="roletreeview"></div>
                     </div>
                     <hr>
                     <div class="form-group">
@@ -115,6 +131,7 @@
 
  <@netCommon.commonScript />
 <!-- DataTables -->
+
 <script src="/jobadmin/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="/jobadmin/plugins/jquery/jquery.validate.min.js"></script>

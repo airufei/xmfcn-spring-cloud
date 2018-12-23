@@ -7,6 +7,8 @@ import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.menu.model.JobMenu;
 import com.cn.xmf.job.admin.menu.model.MenuNode;
 import com.cn.xmf.job.admin.menu.service.JobMenuService;
+import com.cn.xmf.job.admin.role.model.JobRole;
+import com.cn.xmf.job.admin.role.service.JobRoleService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.model.user.JobUser;
 import com.cn.xmf.util.StringUtil;
@@ -20,9 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * JobMenuController(job-菜单)
@@ -40,6 +40,9 @@ public class JobMenuController {
     private JobMenuService jobMenuService;
     @Autowired
     private SysCommonService sysCommonService;
+    @Autowired
+    private JobRoleService jobRoleService;
+
 
     @RequestMapping
     public String index(HttpServletRequest request, Model model) {
@@ -71,15 +74,31 @@ public class JobMenuController {
     @RequestMapping("getTreeList")
     @ResponseBody
     public List<MenuNode> getTreeList(HttpServletRequest request) {
-        List<MenuNode> list=null;
+        List<MenuNode> list = null;
         HttpSession session = request.getSession();
+        logger.info("1==========================================================1");
         JobUser user = (JobUser) session.getAttribute("user");
-        if(user==null)
-        {
+        if (user == null) {
             return list;
         }
-        long roleId = user.getRoleId();
-        list= jobMenuService.getTreeList(1, null,roleId);
+        String roleCode = user.getRoleCode();
+        if (StringUtil.isBlank(roleCode)) {
+            return list;
+        }
+        String pageType = request.getParameter("pageType");
+        long  selecdRoleId = StringUtil.stringToLong(request.getParameter("roleId"));
+        if (!"left_menu".equals(pageType)) {
+            roleCode = "admin_role";
+        }
+        JobRole role = new JobRole();
+        role.setRoleCode(roleCode);
+        JobRole jobRole = jobRoleService.getJobRole(role);
+        if (jobRole == null) {
+            return list;
+        }
+        Long roleId = jobRole.getId();
+        int level = 1;//默认从根节点开始查询
+        list = jobMenuService.getTreeList(1, null, roleId, pageType,selecdRoleId);
         return list;
     }
 
@@ -190,10 +209,12 @@ public class JobMenuController {
      */
     @RequestMapping(value = "save")
     @ResponseBody
-    public ReturnT<String> save(JobMenu jobMenu) {
+    public ReturnT<String> save(JobMenu jobMenu, HttpServletRequest request) {
         ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
         String parms = null;
         try {
+            Map<String, String[]> map = request.getParameterMap();
+            logger.info(JSON.toJSONString(map));
             parms = JSON.toJSONString(jobMenu);
             logger.info("save:(保存job-菜单数据接口) 开始  parms={}", parms);
             if (jobMenu == null) {

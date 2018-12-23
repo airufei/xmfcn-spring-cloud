@@ -66,6 +66,11 @@
             base_url = base_url.replace('http', 'https')
         }
         var I18n = ${I18nUtil.getMultString()};
+        $(function () {
+            var pageType = "left_menu";//"left_menu";
+            getdata(pageType);
+        });
+
     </script>
 
 </#macro>

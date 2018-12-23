@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Service(角色菜单关系)
  *
@@ -47,7 +49,7 @@ public class JobMenuRoleHelperService {
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public JobMenuRole save(JobMenuRole jobMenuRole) {
+    public JobMenuRole save(JobMenuRole jobMenuRole) throws  Exception {
         JobMenuRole ret = null;
         if (jobMenuRole == null) {
             return ret;
@@ -64,9 +66,22 @@ public class JobMenuRoleHelperService {
         } else {
             jobMenuRole.setId(null);
             jobMenuRoleDao.add(jobMenuRole);
+
             ret = jobMenuRole;
         }
         return ret;
+    }
+
+    /*
+     * addTrainRecordBatch(批量新增角色菜单关系数据)
+     * @param jobMenuRole
+     * @author airufei
+     * @date 2018/1/30 14:59
+     */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void addTrainRecordBatch(List<JobMenuRole> list) throws  Exception
+    {
+        jobMenuRoleDao.addTrainRecordBatch(list);
     }
 
     /**

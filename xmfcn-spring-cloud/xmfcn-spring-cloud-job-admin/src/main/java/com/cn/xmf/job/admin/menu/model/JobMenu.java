@@ -4,6 +4,7 @@ import com.cn.xmf.base.model.BaseEntitys;
 
 import java.util.Date;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * job-菜单Entity

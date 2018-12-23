@@ -17,7 +17,7 @@
 		a.CREATE_TIME AS "createTime",
 		a.UPDATE_TIME AS "updateTime",
 		a.flag AS "flag",
-		a.role_id as "roleId",
+		a.role_code as "roleCode",
 		a.remark AS "remark"
 	</sql>
 
@@ -48,10 +48,9 @@
             <if test="phone != null and phone != ''">
                 AND a.phone = #{phone}
             </if>
-            <if test="roleId != null and roleId != ''">
-                AND a.role_id = #{roleId}
+            <if test="roleCode != null and roleCode != ''">
+                AND a.role_code = #{roleCode}
             </if>
-
         </where>
     </select>
 
@@ -71,8 +70,8 @@
             <if test="phone != null and phone != ''">
                 AND t.phone = #{phone}
             </if>
-            <if test="roleId != null and roleId != ''">
-                AND a.role_id = #{roleId}
+            <if test="roleCode != null and roleCode != ''">
+                AND a.role_code = #{roleCode}
             </if>
         </where>
         <choose>
@@ -100,8 +99,8 @@
             <if test="phone != null and phone != ''">
                 AND t.phone = #{phone}
             </if>
-            <if test="roleId != null and roleId != ''">
-                AND a.role_id = #{roleId}
+            <if test="roleCode != null and roleCode != ''">
+                AND a.role_code = #{roleCode}
             </if>
         </where>
         <choose>
@@ -130,8 +129,8 @@
             <if test="phone != null and phone != ''">
                 AND t.phone = #{phone}
             </if>
-            <if test="roleId != null and roleId != ''">
-                AND a.role_id = #{roleId}
+            <if test="roleCode != null and roleCode != ''">
+                AND a.role_code = #{roleCode}
             </if>
         </where>
         <choose>
@@ -157,7 +156,7 @@
 			CREATE_TIME,
 			UPDATE_TIME,
 			flag,
-			role_id,
+			role_code,
 			remark
 		) VALUES (
 			#{id},
@@ -172,7 +171,7 @@
 			#{createTime},
 			#{updateTime},
 			#{flag},
-			#{roleId},
+			#{roleCode},
 			#{remark}
 		)
 	</insert>
@@ -196,7 +195,7 @@
         CREATE_TIME,
         UPDATE_TIME,
         flag,
-        role_id,
+        role_code,
         remark
         ) VALUES
         <foreach collection="list" item="item" index="index" separator=",">
@@ -213,7 +212,7 @@
             #{item.createTime},
             #{item.updateTime},
             #{item.flag},
-            #{item.roleId},
+            #{item.roleCode},
             #{item.remark}
             )
         </foreach>
@@ -251,8 +250,8 @@
         <if test="remark != null and remark != '' ">
             remark = #{remark},
         </if>
-        <if test="roleId != null and roleId != '' ">
-            role_id = #{roleId},
+        <if test="roleCode != null and roleCode != '' ">
+            role_code = #{roleCode},
         </if>
         UPDATE_TIME= NOW()
         WHERE id = #{id}

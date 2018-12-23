@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.role.model.JobRole;
+import com.cn.xmf.job.admin.role.service.JobMenuRoleService;
 import com.cn.xmf.job.admin.role.service.JobRoleService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.util.StringUtil;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * JobRoleController(角色数据)
@@ -34,6 +36,8 @@ public class JobRoleController {
     private JobRoleService jobRoleService;
     @Autowired
     private SysCommonService sysCommonService;
+    @Autowired
+    private JobMenuRoleService jobMenuRoleService;
 
     @RequestMapping
     public String index() {
@@ -140,7 +144,7 @@ public class JobRoleController {
      */
     @RequestMapping(value = "save")
     @ResponseBody
-    public ReturnT<String> save(JobRole jobRole) {
+    public ReturnT<String> save(JobRole jobRole,HttpServletRequest request) {
         ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
         String parms = null;
         try {
@@ -152,6 +156,17 @@ public class JobRoleController {
             }
             if (jobRole == null) {
                 returnT.setMsg("参数错误");
+                return returnT;
+            }
+            Long roleId = jobRole.getId();
+            boolean isDelete=true;
+            if(roleId!=null&&roleId>0)
+            {
+                isDelete= jobMenuRoleService.delete(roleId);
+            }
+            if(!isDelete)
+            {
+                returnT.setMsg("保存数据失败");
                 return returnT;
             }
             JobRole ret = jobRoleService.save(jobRole);

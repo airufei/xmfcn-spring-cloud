@@ -159,13 +159,6 @@ public class JobMenuRoleService  {
 	 {
 	    logger.info("delete(逻辑删除角色菜单关系数据-服务) 开始 id={}", id);
         boolean isSuccess = false;
-        if (id < 1) {
-            return isSuccess;
-        }
-        JobMenuRole dt = jobMenuRoleHelperService.getJobMenuRoleById(id);
-        if (dt == null) {
-            return isSuccess;
-        }
 	    jobMenuRoleDao.delete(id);
 	    isSuccess = true;
         logger.info("delete(逻辑删除角色菜单关系数据-服务)结束 id={},isSuccess={}", id, isSuccess);

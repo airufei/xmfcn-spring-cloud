@@ -1,3 +1,5 @@
+// table data
+var tableData = {};
 $(function () {
     //查询表格数据
     var jobRoleTable = $("#jobRole_table").dataTable({
@@ -10,6 +12,7 @@ $(function () {
             data: function (d) {
                 var obj = {};
                 obj.name = $('#name').val();
+                obj.roleCode = $('#roleCode').val();
                 obj.start = d.start;
                 obj.length = d.length;
                 return obj;
@@ -27,6 +30,11 @@ $(function () {
             },
             {
                 "data": 'name',
+                "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'roleCode',
                 "visible": true,
                 "width": '180'
             },
@@ -80,8 +88,6 @@ $(function () {
         }
     });
 
-    // table data
-    var tableData = {};
 
     // 查询按钮事件
     $('#searchBtn').on('click', function () {
@@ -157,21 +163,6 @@ $(function () {
         edit(this);
     });
 
-    //处理编辑页面的数据
-    function edit(target) {
-        var id = $(target).parent('p').attr("id");
-        if (id == null || id == undefined || id < 0) {
-            id = $(target).children('td').children('p').attr("id");
-        }
-        var row = tableData['key' + id];
-        if (row != null && row != undefined) {
-            $("#addModal .form input[name='name']").val(row.name);
-            $("#addModal .form input[name='remark']").val(row.remark);
-            $("#addModal .form input[name='id']").val(row.id);
-        }
-        // show
-        $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
-    }
 
     // 添加页面按钮事件
     $(".add").click(function () {
@@ -189,7 +180,7 @@ $(function () {
             name: {
                 required: true
             },
-            remark: {
+            roleCode: {
                 required: true
             },
         },
@@ -197,8 +188,8 @@ $(function () {
             name: {
                 required: I18n.system_please_input + "角色名称"
             },
-            remark: {
-                required: I18n.system_please_input + "备注"
+            roleCode: {
+                required: I18n.system_please_input + "角色代码"
             },
         },
         highlight: function (element) {
@@ -212,7 +203,29 @@ $(function () {
             element.parent('div').append(error);
         },
         submitHandler: function (form) {
-            $.post(base_url + "/jobRole/save", $("#addModal .form").serialize(), function (data, status) {
+            var url = base_url + "/jobRole/save";
+            var name = $("#addModal .form input[name='name']").val();
+            var remark = $("#addModal .form input[name='remark']").val();
+            var roleCode = $("#addModal .form input[name='roleCode']").val();
+            var id = $("#addModal .form input[name='id']").val();
+            var parms = $('#roletreeview').treeview('getChecked');
+            if (parms == null || parms == undefined) {
+                return false;
+            }
+            var len=parms.length;
+            var array = new Array(len);
+            for (var i = 0; i < len; i++) {
+                var obj = parms[i];
+                if (obj == null) {
+                    continue;
+                }
+                var json = {"id": obj.nodeid};
+                array[i] = json;
+            }
+            //var list=array.toJSONString();
+            var list=JSON.stringify(array);
+            var parms = {"name": name, "remark": remark, "roleCode": roleCode, "id": id, "list": list};
+            $.post(url, parms, function (data, status) {
                 if (data.code == 200) {
                     $('#addModal').modal('hide');
                     layer.open({
@@ -238,9 +251,107 @@ $(function () {
     //重置编辑页面数据
     $("#addModal").on('hide.bs.modal', function () {
         $("#addModal .form")[0].reset();
-        addModalValidate.resetForm();
         $("#addModal .form .form-group").removeClass("has-error");
         $(".remote_panel").show();	// remote
 
     });
 });
+
+//处理编辑页面的数据
+function edit(target) {
+    var id = $(target).parent('p').attr("id");
+    if (id == null || id == undefined || id < 0) {
+        id = $(target).children('td').children('p').attr("id");
+    }
+    var row = tableData['key' + id];
+    var roleId=-1;
+    if (row != null && row != undefined) {
+        $("#addModal .form input[name='name']").val(row.name);
+        $("#addModal .form input[name='remark']").val(row.remark);
+        $("#addModal .form input[name='roleCode']").val(row.roleCode);
+        $("#addModal .form input[name='id']").val(row.id);
+        roleId=row.id;
+    }
+    var pageType = "role_menu";
+    getdata(pageType,roleId);
+    $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
+}
+
+function getdata(pageType,roleId) {
+    $.ajax({
+        type: "POST",
+        contentType: 'application/json;charset=utf-8', //设置请求头信息
+        url: base_url + "/jobMenu/getTreeList?pageType=" + pageType+"&roleId="+roleId,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            initTree(data)
+        }
+    });
+}
+
+function initTree(data) {
+    $('#roletreeview').treeview({
+        data: data,         // data is not optional
+        levels: 2,//默认打开的级别
+        showCheckbox: true,
+        multiSelect: false,
+        enableLinks: false,
+        onNodeChecked: function (event, node) {
+            var selectNodes = getChildNodeIdArr(node); //获取所有子节点
+            if (selectNodes) { //子节点不为空，则选中所有子节点
+                $('#roletreeview').treeview('checkNode', [selectNodes, {silent: true}]);
+            }
+            var parentNode = $("#roletreeview").treeview("getNode", node.parentId);
+            setParentNodeCheck(node);
+        },
+        onNodeSelected: function (event, node) {
+            var nodeId = node.nodeId;
+            alert("nodeId")
+        },
+        onNodeUnchecked: function (event, node) { //取消选中节点
+            var selectNodes = getChildNodeIdArr(node); //获取所有子节点
+            if (selectNodes) { //子节点不为空，则取消选中所有子节点
+                $('#roletreeview').treeview('uncheckNode', [selectNodes, {silent: true}]);
+            }
+        }
+    });
+}
+
+//选中/取消父节点时选中/取消所有子节点
+function getChildNodeIdArr(node) {
+    var ts = [];
+    if (node.nodes) {
+        for (x in node.nodes) {
+            ts.push(node.nodes[x].nodeId);
+            if (node.nodes[x].nodes) {
+                var getNodeDieDai = getChildNodeIdArr(node.nodes[x]);
+                for (j in getNodeDieDai) {
+                    ts.push(getNodeDieDai[j]);
+                }
+            }
+        }
+    } else {
+        ts.push(node.nodeId);
+    }
+    return ts;
+}
+
+//选中所有子节点时选中父节点
+function setParentNodeCheck(node) {
+    var parentNode = $("#roletreeview").treeview("getNode", node.parentId);
+    if (parentNode.nodes) {
+        var checkedCount = 0;
+        for (x in parentNode.nodes) {
+            if (parentNode.nodes[x].state.checked) {
+                checkedCount++;
+            } else {
+                break;
+            }
+        }
+        if (checkedCount === parentNode.nodes.length) {
+            $("#roletreeview").treeview("checkNode", parentNode.nodeId);
+            setParentNodeCheck(parentNode);
+        }
+    }
+}

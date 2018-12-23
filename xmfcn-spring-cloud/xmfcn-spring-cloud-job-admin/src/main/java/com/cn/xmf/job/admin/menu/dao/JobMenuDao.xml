@@ -114,10 +114,17 @@
         t_sys_job_menu a left join t_sys_job_menu_role r on r.menu_id=a.id
         <where>
             a.flag=#{flag}
-            AND r.role_id = #{roleId}
-            AND a.level = #{level}
+            <if test="level != null and level != ''">
+                AND a.level = #{level}
+            </if>
             <if test="fid != null and fid != ''">
                 AND a.fid = #{fid}
+            </if>
+            <if test="roleCode != null and roleCode != ''">
+                AND r.role_code = #{roleCode}
+            </if>
+            <if test="roleId != null and roleId>0">
+                AND r.role_id = #{roleId}
             </if>
         </where>
         <choose>
