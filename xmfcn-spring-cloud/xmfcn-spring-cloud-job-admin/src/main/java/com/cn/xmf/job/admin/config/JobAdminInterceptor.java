@@ -64,7 +64,7 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
             return;
         }
         String roleCode = user.getRoleCode();
-        boolean interceptUrl = isInterceptUrl(roleCode, strUrl);
+        boolean interceptUrl = isInterceptUrl(roleCode, strUrl);//检查权限
         if (!interceptUrl) {
             String msg = "权限不足";
             msg = URLEncoder.encode(msg, "utf-8");
