@@ -220,7 +220,8 @@ INSERT INTO `XXL_JOB_QRTZ_TRIGGER_GROUP` ( `app_name`, `title`, `order`, `addres
 commit;
 
 
-
+-- ----------------------------------------菜单-------------------------------
+DROP TABLE IF EXISTS `t_sys_job_menu`;
 CREATE TABLE `t_sys_job_menu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(200) DEFAULT NULL COMMENT '菜单名称',
@@ -249,7 +250,9 @@ INSERT INTO `t_sys_job_menu` VALUES ('9', '执行器管理', '/jobadmin/jobgroup
 INSERT INTO `t_sys_job_menu` VALUES ('10', '字典管理', '/jobadmin/dict', '0', '2018-12-20 23:24:23', '2018-12-20 23:24:23', '1', '字典管理', '1', '2');
 INSERT INTO `t_sys_job_menu` VALUES ('11', '用户管理', '/jobadmin/user', '0', '2018-12-20 23:25:37', '2018-12-20 23:25:37', '1', '用户管理', '1', '2');
 INSERT INTO `t_sys_job_menu` VALUES ('12', '角色管理', '/jobadmin/jobRole', '0', '2018-12-20 23:26:10', '2018-12-20 23:26:10', '1', '角色管理', '1', '2');
------------------------------------------------用户----------------------------------------------
+commit;
+-- ---------------------------------------------用户----------------------------------------------
+DROP TABLE IF EXISTS `t_sys_job_user`;
 CREATE TABLE `t_sys_job_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(20) DEFAULT NULL COMMENT '账号',
@@ -271,13 +274,14 @@ CREATE TABLE `t_sys_job_user` (
   KEY `idx_user_role` (`role_code`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='调度中心用户表';
 
---ALTER TABLE `t_sys_job_user`
---ADD UNIQUE INDEX `idx_user_phone` (`phone`) USING BTREE ,
---ADD INDEX `idx_user_updatetime` (`update_time`) USING BTREE ,
---ADD INDEX `idx_user_role` (`role_code`) USING BTREE ;
+-- ALTER TABLE `t_sys_job_user`
+-- ADD UNIQUE INDEX `idx_user_phone` (`phone`) USING BTREE ,
+-- ADD INDEX `idx_user_updatetime` (`update_time`) USING BTREE ,
+-- ADD INDEX `idx_user_role` (`role_code`) USING BTREE ;
 INSERT INTO `t_sys_job_user` VALUES ('1', 'admin', '30e229876358062f5d83bc824c81a99e', '18', '199199688@qq.com', '18610000006', null, null, null, '2018-12-19 22:17:19', '2018-12-24 00:22:16', '1', '222', 'admin_role');
-
------------------------------------------------角色表----------------------------------------------
+commit;
+-- ---------------------------------------------角色表----------------------------------------------
+DROP TABLE IF EXISTS `t_sys_job_role`;
 CREATE TABLE `t_sys_job_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(200) DEFAULT NULL COMMENT '角色名称',
@@ -290,8 +294,9 @@ CREATE TABLE `t_sys_job_role` (
   KEY `idx_role_updatetime` (`update_time`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='角色表';
 INSERT INTO `t_sys_job_role` VALUES ('19', '管理员', '2018-12-19 22:44:55', '2018-12-24 00:30:24', '1', '管理员', 'admin_role');
-
----------------------------------------------------菜单-角色关系表-------------------------------------------------------------------
+commit;
+-- -------------------------------------------------菜单-角色关系表-------------------------------------------------------------------
+DROP TABLE IF EXISTS `t_sys_job_menu_role`;
 CREATE TABLE `t_sys_job_menu_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
@@ -318,3 +323,4 @@ INSERT INTO `t_sys_job_menu_role` VALUES ('50', '19', '9', '2018-12-24 00:30:24'
 INSERT INTO `t_sys_job_menu_role` VALUES ('51', '19', '6', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
 INSERT INTO `t_sys_job_menu_role` VALUES ('52', '19', '5', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
 INSERT INTO `t_sys_job_menu_role` VALUES ('53', '19', '4', '2018-12-24 00:30:24', '2018-12-24 00:30:24', '1', null, 'admin_role');
+commit;
