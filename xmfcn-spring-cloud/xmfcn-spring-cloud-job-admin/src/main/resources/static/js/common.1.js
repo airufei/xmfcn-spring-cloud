@@ -13,10 +13,12 @@ $(function () {
             btn: [I18n.system_ok, I18n.system_cancel]
         }, function (index) {
             layer.close(index);
-            window.location.href = base_url + "/logout";
+            clearSession()
+            window.location.href = base_url + "/toLogin";
         });
 
     });
+
 
     // slideToTop
     var slideToTop = $("<div />");
@@ -80,3 +82,18 @@ $(function () {
      */
 
 });
+
+function clearSession()
+{
+    $.ajax({
+        type: "POST",
+        contentType: 'application/json;charset=utf-8', //设置请求头信息
+        url: base_url + "/logout",
+        async: false,//异步为true
+        dataType: "json",
+        success: function (data) {
+            console.log(data)
+        }
+    });
+}
+

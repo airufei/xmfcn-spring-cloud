@@ -34,14 +34,13 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         if (modelAndView != null) {
             modelAndView.addObject("I18nUtil", FtlUtil.generateStaticModel(I18nUtil.class.getName()));
         }
-        super.postHandle(request, response, handler, modelAndView);
         String webRoot = getWebRootUrl();
         if (StringUtil.isBlank(webRoot)) {
             throw new Exception("未获取服务域名/IP");
         }
         String loginUrl = webRoot + "/jobadmin/toLogin";
         String strUrl = request.getRequestURI();
-        if (strUrl != null && (strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api"))) {
+        if (strUrl != null && (strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api")|| strUrl.contains("/logout"))) {
             return;
         }
         logger.info("登录地址============================" + loginUrl);
@@ -57,7 +56,7 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
             return;
         }
         JobUser user = (JobUser) request.getSession().getAttribute("user");
-        if (user == null) {
+        if (user == null||user.getId()==null||user.getId()<=0) {
             StringUtil.redirect(response, loginUrl);
             return;
         }
@@ -137,7 +136,7 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
             if (StringUtil.isBlank(roleUrl)) {
                 continue;
             }
-            if (url.contains(roleUrl) || roleUrl.contains(url)||1==1) {
+            if (url.contains(roleUrl) || roleUrl.contains(url)) {
                 isInterceptUrl = true;
                 break;
             }
