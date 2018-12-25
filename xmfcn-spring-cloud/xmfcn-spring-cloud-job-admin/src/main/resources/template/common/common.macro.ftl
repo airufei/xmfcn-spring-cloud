@@ -36,8 +36,6 @@
         display: block;
         padding: 10px 15px;
         margin-bottom: -1px;
-        background-color: #888888;
-        border: 1px solid #999;
         font-size: 15px;
         color: #06050e;
     }
