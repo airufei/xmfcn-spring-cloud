@@ -1,7 +1,7 @@
 package com.cn.xmf.job.admin.user.dao;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.model.user.JobUser;
+import com.cn.xmf.job.admin.user.model.JobUser;
 
 import java.util.List;
 import java.util.Map;

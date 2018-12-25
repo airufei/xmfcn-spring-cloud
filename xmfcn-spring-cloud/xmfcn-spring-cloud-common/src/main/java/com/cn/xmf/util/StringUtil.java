@@ -248,14 +248,14 @@ public class StringUtil extends StringUtils {
     }
 
     /**
-     * isPhone :(判断字符是否为手机号)
+     * isMobilePhone :(判断字符是否为手机号)
      *
      * @param
      * @return
      * @author airufei
      * @Date 2017/11/23 15:32
      **/
-    public static boolean isPhone(String s) {
+    public static boolean isMobilePhone(String s) {
         boolean result = false;
         if (StringUtil.isBlank(s)) {
             return result;

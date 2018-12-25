@@ -24,7 +24,7 @@
     <sql id="jobUserJoins">
     </sql>
 
-    <select id="getJobUserById" resultType="com.cn.xmf.model.user.JobUser">
+    <select id="getJobUserById" resultType="com.cn.xmf.job.admin.user.model.JobUser">
         SELECT
         <include refid="jobUserColumns"/>
         FROM t_sys_job_user a
@@ -54,7 +54,7 @@
         </where>
     </select>
 
-    <select id="getList" resultType="com.cn.xmf.model.user.JobUser" parameterType="com.alibaba.fastjson.JSONObject">
+    <select id="getList" resultType="com.cn.xmf.job.admin.user.model.JobUser" parameterType="com.alibaba.fastjson.JSONObject">
         SELECT
         <include refid="jobUserColumns"/>
         FROM
@@ -83,8 +83,8 @@
         t_sys_job_user a on b.id=a.id
     </select>
 
-    <select id="getJobUserList" resultType="com.cn.xmf.model.user.JobUser"
-            parameterType="com.cn.xmf.model.user.JobUser">
+    <select id="getJobUserList" resultType="com.cn.xmf.job.admin.user.model.JobUser"
+            parameterType="com.cn.xmf.job.admin.user.model.JobUser">
         SELECT
         <include refid="jobUserColumns"/>
         (SELECT id from t_sys_job_user t
@@ -112,8 +112,8 @@
         <include refid="jobUserJoins"/>
     </select>
 
-    <select id="getSignleJobUser" resultType="com.cn.xmf.model.user.JobUser"
-            parameterType="com.cn.xmf.model.user.JobUser">
+    <select id="getSignleJobUser" resultType="com.cn.xmf.job.admin.user.model.JobUser"
+            parameterType="com.cn.xmf.job.admin.user.model.JobUser">
         SELECT
         <include refid="jobUserColumns"/>
         FROM

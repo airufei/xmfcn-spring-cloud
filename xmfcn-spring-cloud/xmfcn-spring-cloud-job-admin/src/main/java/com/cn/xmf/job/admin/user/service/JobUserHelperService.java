@@ -5,7 +5,7 @@ import com.cn.xmf.base.model.RetCode;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
 import com.cn.xmf.job.admin.user.dao.JobUserDao;
-import com.cn.xmf.model.user.JobUser;
+import com.cn.xmf.job.admin.user.model.JobUser;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,7 +112,7 @@ public class JobUserHelperService {
             retData.setMessage(I18nUtil.getString("login_param_empty"));
             return retData;
         }
-        if (!StringUtil.isPhone(phone)) {
+        if (!StringUtil.isMobilePhone(phone)) {
             retData.setMessage("手机号不正确");
             return retData;
         }

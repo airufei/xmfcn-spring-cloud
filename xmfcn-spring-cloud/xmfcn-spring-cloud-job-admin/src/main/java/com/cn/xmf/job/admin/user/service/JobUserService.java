@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.user.dao.JobUserDao;
-import com.cn.xmf.model.user.JobUser;
+import com.cn.xmf.job.admin.user.model.JobUser;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

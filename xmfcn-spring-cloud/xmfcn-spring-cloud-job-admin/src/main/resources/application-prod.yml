@@ -8,7 +8,7 @@ server:
     uri-encoding: UTF-8
     accesslog:
       enabled: true
-      directory: /opt/logs/job-handler/
+      directory: /opt/logs/job-admin/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
   # 本服务需要调用的服务和授权信息-service层
 base-service:

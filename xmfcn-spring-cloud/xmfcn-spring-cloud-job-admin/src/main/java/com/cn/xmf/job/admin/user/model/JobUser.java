@@ -1,4 +1,4 @@
-package com.cn.xmf.model.user;
+package com.cn.xmf.job.admin.user.model;
 
 
 import com.cn.xmf.base.model.BaseEntitys;
