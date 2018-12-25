@@ -12,7 +12,7 @@
     <!-- header -->
 	<@netCommon.commonHeader />
     <!-- left -->
-	<@netCommon.commonLeft "${className}" />
+	<@netCommon.commonLeft "jobMenu" />
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">

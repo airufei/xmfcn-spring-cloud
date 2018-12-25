@@ -231,6 +231,11 @@ public class JobMenuService {
             state.put("checked", isChecked);
             node.setText(jobMenu.getName());
             node.setState(state);
+            if (i % 2 == 0) {
+                node.setIcon("fa fa-circle-o text-red");
+            } else {
+                node.setIcon("fa fa-circle-o text-aqua");
+            }
             if ("left_menu".equals(pageType)) {
                 node.setHref(jobMenu.getUrl());
             }
@@ -243,13 +248,14 @@ public class JobMenuService {
 
     /**
      * 判断当前节点是否需要选中
+     *
      * @param roleId
      * @param menuId
      * @return
      */
     public boolean isNodeChecked(long roleId, Long menuId) {
         boolean isChecked = false;
-        List<JobMenu> roleList = getJobMenuRoles(roleId,null);
+        List<JobMenu> roleList = getJobMenuRoles(roleId, null);
         if (roleList == null || roleList.size() <= 0) {
             return isChecked;
         }
@@ -271,9 +277,9 @@ public class JobMenuService {
      * @param roleId
      * @return
      */
-    public List<JobMenu> getJobMenuRoles(long roleId,String roleCode) {
+    public List<JobMenu> getJobMenuRoles(long roleId, String roleCode) {
         List<JobMenu> list = null;
-        String key = ConstantUtil.CACHE_KEY_PREFIX_MENU_ + roleId+roleCode;
+        String key = ConstantUtil.CACHE_KEY_PREFIX_MENU_ + roleId + roleCode;
         String cache = sysCommonService.getCache(key);
         list = JSONObject.parseArray(cache, JobMenu.class);
         if (list != null && list.size() > 0) {
@@ -281,12 +287,10 @@ public class JobMenuService {
         }
         Map parms = new HashMap();
         parms.put("flag", 1);
-        if(roleId>0)
-        {
+        if (roleId > 0) {
             parms.put("roleId", roleId);
         }
-        if(StringUtil.isNotBlank(roleCode))
-        {
+        if (StringUtil.isNotBlank(roleCode)) {
             parms.put("roleCode", roleCode);
         }
         list = jobMenuDao.getRoleMenuList(parms);

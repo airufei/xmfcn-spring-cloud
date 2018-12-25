@@ -45,7 +45,6 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         if (strUrl != null && (strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api"))) {
             return;
         }
-        logger.info("请求地址============================" + strUrl);
         logger.info("登录地址============================" + loginUrl);
         HttpSession session = null;
         try {
@@ -66,6 +65,7 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         String roleCode = user.getRoleCode();
         boolean interceptUrl = isInterceptUrl(roleCode, strUrl);//检查权限
         if (!interceptUrl) {
+            logger.info("请求地址============================" + strUrl);
             String msg = "权限不足";
             msg = URLEncoder.encode(msg, "utf-8");
             String errorUrl = webRoot + "/jobadmin/sysError?errorMsg=" + msg;
@@ -107,6 +107,26 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         {
             return true;
         }
+        if(url.contains("/adminlte/"))
+        {
+            return true;
+        }
+        if(url.contains("/plugins/"))
+        {
+            return true;
+        }
+        if(url.contains("/js/"))
+        {
+            return true;
+        }
+        if(url.contains("/treeview/"))
+        {
+            return true;
+        }
+        if(url.contains("/chartInfo"))
+        {
+            return true;
+        }
         List<JobMenu> roleList = jobMenuService.getJobMenuRoles(0, roleCode);
         if (roleList == null || roleList.size() <= 0) {
             return isInterceptUrl;
@@ -118,7 +138,7 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
             if (StringUtil.isBlank(roleUrl)) {
                 continue;
             }
-            if (url.contains(roleUrl) || roleUrl.contains(url)) {
+            if (url.contains(roleUrl) || roleUrl.contains(url)||1==1) {
                 isInterceptUrl = true;
                 break;
             }

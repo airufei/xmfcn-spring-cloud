@@ -30,6 +30,18 @@
 	<!-- pace -->
 	<link rel="stylesheet" href="/jobadmin/plugins/pace/themes/pace-theme-flash.css">
 
+<style>
+    .list-group-item {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+        margin-bottom: -1px;
+        background-color: #888888;
+        border: 1px solid #999;
+        font-size: 15px;
+        color: #06050e;
+    }
+</style>
 <#-- i18n -->
     <#global I18n = I18nUtil.getMultString()?eval />
 
@@ -66,10 +78,7 @@
             base_url = base_url.replace('http', 'https')
         }
         var I18n = ${I18nUtil.getMultString()};
-        $(function () {
-            var pageType = "left_menu";//"left_menu";
-            getdata(pageType);
-        });
+
 
     </script>
 
