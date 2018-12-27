@@ -1,6 +1,5 @@
 package com.cn.xmf.job.admin.job.controller;
 
-import com.cn.xmf.job.admin.common.PermessionLimit;
 import com.cn.xmf.job.core.biz.AdminBiz;
 import com.cn.xmf.job.core.rpc.codec.RpcRequest;
 import com.cn.xmf.job.core.rpc.codec.RpcResponse;
@@ -47,7 +46,6 @@ public class JobApiController {
     }
 
     @RequestMapping(AdminBiz.MAPPING)
-    @PermessionLimit(limit=false)
     public void api(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         // invoke
