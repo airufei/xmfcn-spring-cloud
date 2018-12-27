@@ -1,13 +1,16 @@
-package com.cn.xmf.api.exception;
+package com.cn.xmf.job.common;
 
 import com.cn.xmf.base.model.RetCode;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,11 +25,17 @@ import java.util.Map;
  * @auther airufei
  * @return
  */
+@SuppressWarnings("all")
 @ControllerAdvice
-public class UserApiException {
-    private static Logger logger = LoggerFactory.getLogger(UserApiException.class);
-    @ExceptionHandler({Exception.class,Throwable.class,Error.class,IOException.class,RuntimeException.class})
-    public
+public class UnifiedException {
+    private static Logger logger = LoggerFactory.getLogger(UnifiedException.class);
+    @Value("${spring.application.name}")
+    private String serviceName;
+
+    @Autowired
+    private SysCommonService sysCommonService;
+
+    @ExceptionHandler({Exception.class, Throwable.class, Error.class, IOException.class, RuntimeException.class})
     @ResponseBody
     RetData handleException(Throwable e, HttpServletRequest request, HttpServletResponse response){
         RetData mobileData  = new RetData();;
@@ -56,7 +65,7 @@ public class UserApiException {
         }
         String stackMessage = StringUtil.getExceptionMsg(throwable);
         String url = StringUtil.getSystemUrl(request) + requestURI;
-       // sysCommonService.sendDingMessage(url,sb.toString(),stackMessage,null, GrabApiException.class);
+        sysCommonService.sendDingMessage(url,sb.toString(),stackMessage,null, UnifiedException.class);
         logger.error(stackMessage);
     }
 }

@@ -1,10 +1,12 @@
-package com.cn.xmf.job.exception;
+package com.cn.xmf.service.common;
 
-import com.cn.xmf.base.model.RetCode;
-import com.cn.xmf.base.model.RetData;
+import com.cn.xmf.enums.DingMessageType;
+import com.cn.xmf.model.ding.DingMessage;
+import com.cn.xmf.service.dingtalk.DingTalkService;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Enumeration;
-import java.util.Map;
 
 
 /**
@@ -24,25 +26,25 @@ import java.util.Map;
  * @auther airufei
  * @return
  */
-@SuppressWarnings("all")
 @ControllerAdvice
-public class JobHandlerExceptionResolver {
-    private static Logger logger = LoggerFactory.getLogger(JobHandlerExceptionResolver.class);
+@SuppressWarnings("all")
+public class UnifiedException {
+
+    @Autowired
+    private DingTalkService dingTalkService;
+
     @Value("${spring.application.name}")
     private String serviceName;
 
-    @ExceptionHandler({Exception.class, Throwable.class, Error.class, IOException.class, RuntimeException.class})
+    private static Logger logger = LoggerFactory.getLogger(UnifiedException.class);
+
+    @ExceptionHandler({Exception.class, Throwable.class, Error.class, IOException.class, RuntimeException.class, SQLException.class})
+    public
     @ResponseBody
-    RetData handleException(Throwable e, HttpServletRequest request, HttpServletResponse response){
-        RetData mobileData  = new RetData();;
-        Map<String, Object> data = null;
-        String message = "服务器繁忙，请稍后再试";
-        mobileData.setCode(RetCode.SYS_ERROR);
-        mobileData.setMessage(message);
-        mobileData.setData(data);
+    Object handleException(Throwable e, HttpServletRequest request, HttpServletResponse response) {
         dingTalkMessage(request, e);
         e.printStackTrace();
-        return mobileData;
+        return null;
     }
 
     /*
@@ -61,7 +63,19 @@ public class JobHandlerExceptionResolver {
         }
         String stackMessage = StringUtil.getExceptionMsg(throwable);
         String url = StringUtil.getSystemUrl(request) + requestURI;
-        // sysCommonService.sendDingMessage(url,sb.toString(),stackMessage,null, GrabApiException.class);
+        try {
+            DingMessage dingMessage = new DingMessage();
+            dingMessage.setDingMessageType(DingMessageType.MARKDWON);
+            dingMessage.setSysName(serviceName);
+            dingMessage.setModuleName(url);
+            dingMessage.setMethodName(requestURI);
+            dingMessage.setParms(sb.toString());
+            dingMessage.setExceptionMessage(stackMessage);
+            dingMessage.setRetData(null);
+            dingTalkService.sendMessageToDingTalk(dingMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         logger.error(stackMessage);
     }
 }
