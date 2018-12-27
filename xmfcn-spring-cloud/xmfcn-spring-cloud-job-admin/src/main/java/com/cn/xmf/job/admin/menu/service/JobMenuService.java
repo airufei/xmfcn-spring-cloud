@@ -255,6 +255,10 @@ public class JobMenuService {
      */
     public boolean isNodeChecked(long roleId, Long menuId) {
         boolean isChecked = false;
+        if(roleId<=0)
+        {
+            return isChecked;
+        }
         List<JobMenu> roleList = getJobMenuRoles(roleId, null);
         if (roleList == null || roleList.size() <= 0) {
             return isChecked;
