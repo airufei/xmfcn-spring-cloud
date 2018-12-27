@@ -1,4 +1,4 @@
-package com.cn.xmf.job.admin.controller.resolver;
+package com.cn.xmf.job.admin.common;
 
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.job.core.util.JacksonUtil;
@@ -17,8 +17,8 @@ import java.io.IOException;
  * common exception resolver
  * @author xuxueli 2016-1-6 19:22:18
  */
-public class WebExceptionResolver implements HandlerExceptionResolver {
-	private static transient Logger logger = LoggerFactory.getLogger(WebExceptionResolver.class);
+public class ExceptionResolver implements HandlerExceptionResolver {
+	private static transient Logger logger = LoggerFactory.getLogger(ExceptionResolver.class);
 
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request,

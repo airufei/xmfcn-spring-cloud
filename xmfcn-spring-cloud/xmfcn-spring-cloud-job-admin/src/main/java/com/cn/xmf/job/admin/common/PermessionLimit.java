@@ -1,4 +1,4 @@
-package com.cn.xmf.job.admin.controller.annotation;
+package com.cn.xmf.job.admin.common;
 
 
 import java.lang.annotation.ElementType;

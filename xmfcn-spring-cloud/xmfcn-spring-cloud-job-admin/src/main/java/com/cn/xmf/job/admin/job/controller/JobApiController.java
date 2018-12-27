@@ -1,7 +1,6 @@
-package com.cn.xmf.job.admin.controller;
+package com.cn.xmf.job.admin.job.controller;
 
-import com.cn.xmf.job.admin.controller.annotation.PermessionLimit;
-import com.cn.xmf.job.admin.controller.annotation.PermessionLimit;
+import com.cn.xmf.job.admin.common.PermessionLimit;
 import com.cn.xmf.job.core.biz.AdminBiz;
 import com.cn.xmf.job.core.rpc.codec.RpcRequest;
 import com.cn.xmf.job.core.rpc.codec.RpcResponse;

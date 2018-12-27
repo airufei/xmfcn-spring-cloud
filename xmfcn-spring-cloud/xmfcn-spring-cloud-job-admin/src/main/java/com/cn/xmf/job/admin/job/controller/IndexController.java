@@ -2,7 +2,7 @@ package com.cn.xmf.job.admin.job.controller;
 
 import com.cn.xmf.base.model.RetCode;
 import com.cn.xmf.base.model.RetData;
-import com.cn.xmf.job.admin.controller.interceptor.PermissionInterceptor;
+import com.cn.xmf.job.admin.common.PermissionInterceptor;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
 import com.cn.xmf.job.admin.job.service.XxlJobService;
 import com.cn.xmf.job.admin.user.model.JobUser;
