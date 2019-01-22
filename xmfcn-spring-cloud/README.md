@@ -21,10 +21,13 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
 
 7、user-api和user-service，当前两个服务已经可用。
 
-8、配合开源代码生成工具更能提高开发效率。地址：https://github.com/airufei/xCode
-   根据数据库表生成基本功能代码，包含Mybatis文件，dao、servic、entity、controller以及查询页面、增加编辑页。
-   springcloud生成模型是特定为springcloud体系开发的代码生成模型、可以同时生成model、api层的接口代码和调用user-service的接口代码
-   service层的接口代码、数据库SQL语句等。
+8、配合开源代码生成工具更能提高开发效率。地址：https://github.com/airufei/xCode。
+
+   &nbsp;&nbsp;1）根据数据库表生成基本功能代码，包含Mybatis文件，dao、servic、entity、controller以及查询页面、增加编辑页。
+   
+   &nbsp;&nbsp;2) 根据不同代码模型生成不同的代码结构和代码风格。
+   
+   &nbsp;&nbsp;3）springcloud生成模型是特定为springcloud体系开发的代码生成模型、可以同时生成model、api层的接口代码和调用user-service的接口代码 service层的接口代码、数据库SQL语句等
    
 9、xxl-job 改造为spring cloud版本后已经在生产环境正常调度超过100万次。详见：https://github.com/airufei/xmfcn-spring-cloud/issues/1
 
