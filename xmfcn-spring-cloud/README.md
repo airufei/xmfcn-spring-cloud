@@ -3,6 +3,8 @@
 
 2、菜单变更，菜单读取数据库，正在开发菜单权限功能。
 
+#架构
+
 # xmfcn-spring-cloud 简介
 1、springcloud 微服务，基于spring-cloud Finchley.SR1,spring boot 2.0.1.RELEASE 。
 
