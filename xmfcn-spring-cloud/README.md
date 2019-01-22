@@ -3,7 +3,7 @@
 
 2、菜单变更，菜单读取数据库，正在开发菜单权限功能。
 
-#框架结构图
+# 框架结构图
 ![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/xmfcn-spring-cloud/imgs/4AB893CF-8AAE-4a49-A961-B6D153644027.png)
 
 # xmfcn-spring-cloud 简介
