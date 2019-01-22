@@ -4,7 +4,7 @@
 2、菜单变更，菜单读取数据库，正在开发菜单权限功能。
 
 #框架结构图
-![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/xmfcn-spring-cloud/imgs/20190122103707.png)
+![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/xmfcn-spring-cloud/imgs/4AB893CF-8AAE-4a49-A961-B6D153644027.png)
 
 # xmfcn-spring-cloud 简介
 1、springcloud 微服务，基于spring-cloud Finchley.SR1,spring boot 2.0.1.RELEASE 。
