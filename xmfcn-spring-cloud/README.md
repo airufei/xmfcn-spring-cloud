@@ -1,7 +1,3 @@
-# xmfcn-spring-cloud 重要变动
-1、账号变更、登陆账号改为手机登陆 18610000006 密码：abc123
-
-2、菜单变更，菜单读取数据库，正在开发菜单权限功能。
 
 # 框架结构图
 ![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/xmfcn-spring-cloud/imgs/4AB893CF-8AAE-4a49-A961-B6D153644027.png)
@@ -52,8 +48,22 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
 7、xmfcn-spring-cloud-job-core 是xxl-job的基础核心工具类工程，修改工程名称和包路径是为了整体统一，内部实现还是基于xxl-job
 
 8、xmfcn-spring-cloud-job-admin 作为任务调度中心，也是由xxl-job-admin 演化而来，原版是MVC项目，为了项目统一架构，全部改成了微服务系统。
-   启动所需要的数据库文件在父项目的db文件夹 xmfcn-spring-cloud/db/job-admin/xmfjob.sql启动之后经过zuul访问的路径是http://localhost:8085/jobadmin
+
+   1）在原项目基础上进行了UI层的优化，代码优化和数据库表扩展
+   
+   2）修改原有报警方式，采用钉钉邮件报警，可配置。
+   
+   3）变更了登录方式，采用手机号登录18610000006 密码abc123
+   
+   4）新增了用户管理功能、菜单功能、角色功能、字典功能
+    
+   5）需要配置根域名或者IP，在application-prod或者dev中配置，如：webRoot: http://localhost:8082
+   
+   6）所需要的数据库文件在父项目的db文件夹 xmfcn-spring-cloud/db/job-admin/xmfjob.sql启动
+   
+   7）启动之后经过zuul访问的路径是http://localhost:8085/jobadmin
    
 9、xmfcn-spring-cloud-job-handler 作为任务执行器，执行具体的任务，比如定时任务等等。
-
+   1）引入sys-service，引入包括队列、缓存以及分布式锁功能
+   2）需要配置调度中心地址，如：http://localhost:8085/jobadmin
 10、欢迎留言讨论：https://github.com/airufei/xmfcn-spring-cloud/issues/1
