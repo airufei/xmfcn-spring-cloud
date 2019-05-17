@@ -14,7 +14,7 @@ import java.util.Date;
 /**
  * ClassName:BaseEntity (用一句话描述这个变量表示什么)
  * Date:     2017年1月15日 下午3:37:22
- * @Author airufei
+ * @author rufei.cn
  * @Version 1.0
  * @see
  */

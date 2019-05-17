@@ -12,7 +12,7 @@ public class AmountUtil {
     /*
      * getStrDecimal(金额保留N位小数-返回字符串类型)
      * @param tags
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/3/7 16:07
      */
     public static String getStrDecimal(String amount, int num) {
@@ -33,7 +33,7 @@ public class AmountUtil {
     /*
      * getDecimal(金额保留N位小数-返回数字类型)
      * @param tags
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/3/7 16:07
      */
     public static BigDecimal getDecimal(String amount, int num) {
@@ -54,7 +54,7 @@ public class AmountUtil {
     /*
      * getString(金额保留N位小数-返回数字类型)
      * @param tags
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/3/7 16:07
      */
     public static String getString(BigDecimal amount, int num) {
@@ -73,7 +73,7 @@ public class AmountUtil {
     /*
      * getDecimal(金额保留N位小数-返回数字类型)
      * @param tags
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/3/7 16:07
      */
     public static BigDecimal getDecimal(BigDecimal amount, int num) {
@@ -93,7 +93,7 @@ public class AmountUtil {
     /*
      * getDecimal(字符串转金额类型)
      * @param tags
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/3/7 16:07
      */
     public static BigDecimal getDecimal(String amount) {

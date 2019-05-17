@@ -32,7 +32,7 @@ import java.util.Map.Entry;
 /**
  * ClassName:HttpClientUtil 发起抓取数据请求
  *
- * @Author airufei
+ * @author rufei.cn
  * @Version 1.0
  * @see
  */
@@ -232,7 +232,7 @@ public class HttpClientUtil {
      * @param map
      * @param charset
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static JSONObject HttpsPost(String url, JSONObject map) {
         HttpClient httpClient = null;
@@ -286,7 +286,7 @@ public class HttpClientUtil {
      *
      * @param url
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static String httpsGet(String url) {
         String charset = "utf-8";
@@ -317,7 +317,7 @@ public class HttpClientUtil {
      *
      * @param properties
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/16 18:13
      **/
     private static void setGetHeader(Map<String, Object> headerList, HttpGet httpGet) {
@@ -341,7 +341,7 @@ public class HttpClientUtil {
      *
      * @param url
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static String httpsGet(String url, Map headerList) {
         String charset = "utf-8";

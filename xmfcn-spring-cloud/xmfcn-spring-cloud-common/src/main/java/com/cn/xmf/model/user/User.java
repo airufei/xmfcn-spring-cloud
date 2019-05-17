@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 /**
  * 用户信息Entity
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-11
  */
 public class User extends BaseEntitys {

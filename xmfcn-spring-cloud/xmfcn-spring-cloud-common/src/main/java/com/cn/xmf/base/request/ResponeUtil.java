@@ -17,7 +17,7 @@ public class ResponeUtil {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/1 16:56
      **/
     public static JSONObject getParms(HttpServletRequest request) {

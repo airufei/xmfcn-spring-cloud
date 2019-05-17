@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.model.ding.EsLogMessage;
 import com.cn.xmf.model.ding.MarkdownMessage;
+import com.cn.xmf.model.log.LogMessage;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -17,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,7 +86,7 @@ public class StringUtil extends StringUtils {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/23 15:19
      **/
     public static float stringToFloat(String s) {
@@ -102,7 +105,7 @@ public class StringUtil extends StringUtils {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/23 15:20
      **/
     public static double stringToDouble(String s) {
@@ -118,7 +121,7 @@ public class StringUtil extends StringUtils {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/23 15:21
      **/
     public static int stringToInt(String strId) {
@@ -135,7 +138,7 @@ public class StringUtil extends StringUtils {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/23 15:21
      **/
     public static long stringToLong(String strId) {
@@ -152,7 +155,7 @@ public class StringUtil extends StringUtils {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/23 15:25
      **/
     public static String obectToString(Object obj) {
@@ -177,7 +180,7 @@ public class StringUtil extends StringUtils {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/23 15:30
      **/
     public static boolean stringToBoolean(String s) {
@@ -215,7 +218,7 @@ public class StringUtil extends StringUtils {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/23 15:26
      **/
     public static String getFileExt(String filePath) {
@@ -236,7 +239,7 @@ public class StringUtil extends StringUtils {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/23 15:31
      **/
     public static boolean isNumber(String str) {
@@ -252,7 +255,7 @@ public class StringUtil extends StringUtils {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/23 15:32
      **/
     public static boolean isMobilePhone(String s) {
@@ -278,7 +281,7 @@ public class StringUtil extends StringUtils {
      *
      * @param
      * @return
-     * @author airufei
+     * @author rufei.cn
      * @Date 2017/11/23 15:33
      **/
     public static String padLeft(String input, char c, int length) {
@@ -296,7 +299,7 @@ public class StringUtil extends StringUtils {
      * @param url
      * @param ENCODE
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static String getURLDecoderString(String url, String encode) {
         String result = "";
@@ -317,7 +320,7 @@ public class StringUtil extends StringUtils {
      * @param session
      * @param key
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static String getSessionStr(HttpSession session, String key) {
         String str = "";
@@ -334,7 +337,7 @@ public class StringUtil extends StringUtils {
      * @param session
      * @param key
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static String getSessionObj(HttpSession session, String key) {
         String str = "";
@@ -351,7 +354,7 @@ public class StringUtil extends StringUtils {
      * @param url
      * @param ENCODE
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static String getURLEncoderString(String url, String ENCODE) {
         String result = "";
@@ -374,7 +377,7 @@ public class StringUtil extends StringUtils {
      * @param request
      * @param isHttps 是否https 链接
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static String getSystemUrl(HttpServletRequest request) {
         // 用于获取服务器IP 端口号 项目名
@@ -412,7 +415,7 @@ public class StringUtil extends StringUtils {
      * getUuId:(获取唯一标识)
      *
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static String getUuId() {
 
@@ -444,7 +447,7 @@ public class StringUtil extends StringUtils {
      * @param page        当前页
      * @param pageSizeStr 每页记录
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static Map getQueryParms(String page, String pageSizeStr) {
         Map map = new HashMap();
@@ -474,7 +477,7 @@ public class StringUtil extends StringUtils {
      *
      * @param amount
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static double StrToDouble(String amount) {
         double result = 0.00;
@@ -495,7 +498,7 @@ public class StringUtil extends StringUtils {
      *
      * @param amount
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static boolean strToBoolean(String str) {
         boolean result = false;
@@ -555,7 +558,7 @@ public class StringUtil extends StringUtils {
      *
      * @param response
      * @param url
-     * @Author airufei
+     * @author rufei.cn
      */
     public static void redirect(HttpServletResponse response, String url) {
         try {
@@ -586,7 +589,7 @@ public class StringUtil extends StringUtils {
      *
      * @param pageStr
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
 
     public static Map getPageMap(int currentCount, int pageSize) {
@@ -614,7 +617,7 @@ public class StringUtil extends StringUtils {
      *
      * @param pageStr
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
 
     public static JSONObject getPageJSONObject(int currentCount, int pageSize) {
@@ -642,7 +645,7 @@ public class StringUtil extends StringUtils {
      *
      * @param pageStr
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
 
     public static Map getPageMap(int currentCount) {
@@ -684,7 +687,7 @@ public class StringUtil extends StringUtils {
      *
      * @param throwable
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     public static String getExceptionMsg(Throwable throwable) {
         StringBuilder stackMessage = new StringBuilder();
@@ -722,7 +725,7 @@ public class StringUtil extends StringUtils {
      * getEsLogData(组织日志信息)
      * @param loggingEvent 日志信息
      * @param subSysName 子系统名称
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/2/27 11:21
      */
     public static String getEsLogData(LoggingEvent loggingEvent, String subSysName) {
@@ -774,6 +777,59 @@ public class StringUtil extends StringUtils {
             e.printStackTrace();
         }
         return ret;
+    }
+
+    /*
+     * getLogData(组织日志信息)
+     * @param loggingEvent 日志信息
+     * @param subSysName 子系统名称
+     * @author rufei.cn
+     * @date 2018/2/27 11:21
+     */
+    public static String getLogData(LoggingEvent loggingEvent, String subSysName, String traceId) {
+        InetAddress addr = null;
+        try {
+            addr = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        Map<String, String> mdcPropertyMap = loggingEvent.getMDCPropertyMap();
+
+        String ip = addr.getHostAddress().toString(); //获取本机ip
+        String hostName = addr.getHostName().toString(); //获取本机计算机名称
+        String formattedMessage = loggingEvent.getFormattedMessage();
+        Level level = loggingEvent.getLevel();
+        String loggerName = loggingEvent.getLoggerName();
+        String threadName = loggingEvent.getThreadName();
+        StackTraceElement[] callerData = loggingEvent.getCallerData();
+        StringBuilder stackMessage = null;//堆栈信息
+        String methodName = "";
+        if (callerData != null && callerData.length > 0) {
+            methodName = callerData[0].getMethodName();
+            if (level != null && level == Level.ERROR) {
+                stackMessage = new StringBuilder();//堆栈信息
+                for (int i = 0; i < callerData.length; i++) {
+                    if (i > 50) {
+                        break;
+                    }
+                    stackMessage.append(callerData[i] + "\n");
+                }
+            }
+        }
+        LogMessage milog = new LogMessage();
+        milog.setSubSysName(subSysName);
+        milog.setModuleName(loggerName);
+        milog.setLevel(level.toString());
+        milog.setMethodName(methodName);
+        milog.setMessage(formattedMessage);
+        milog.setThreadName(threadName);
+        milog.setSysIp(ip);
+        milog.setTraceId(traceId);
+        if (stackMessage != null && stackMessage.toString().length() > 0) {
+            milog.setStackMessage(stackMessage.toString());
+        }
+        String jsonString = JSON.toJSONString(milog);
+        return jsonString;
     }
 
     /**

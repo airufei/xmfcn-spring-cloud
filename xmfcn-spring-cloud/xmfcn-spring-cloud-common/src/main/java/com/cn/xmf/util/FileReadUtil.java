@@ -3,18 +3,18 @@ package com.cn.xmf.util;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class FisleReadUtil {
+public class FileReadUtil {
 
-    private static FisleReadUtil instance = null;
+    private static FileReadUtil instance = null;
     private Properties props = null;
     private static String FILEPATH = "";
 
-    private static FisleReadUtil getInstatance(String filePath) {
-        instance = new FisleReadUtil("/" + filePath);
+    private static FileReadUtil getInstatance(String filePath) {
+        instance = new FileReadUtil("/" + filePath);
         return instance;
     }
 
-    private FisleReadUtil(String filePath) {
+    private FileReadUtil(String filePath) {
         loadProps(filePath);
     }
 

@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * ClassName:Partion Date: 2016年7月6日 下午1:51:37
  * 
- * @Author airufei
+ * @author rufei.cn
  * @Version 1.0
  * @see
  */
@@ -78,7 +78,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * getCurrentCount:(当前页页码)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public int getCurrentCount() {
@@ -88,7 +88,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * setCurrentCount:(当前页页码)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public void setCurrentCount(int currentCount) {
@@ -98,7 +98,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * getPageSize:(每页记录数)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public int getPageSize() {
@@ -108,7 +108,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * setPageSize:(每页记录数)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public void setPageSize(int pageSize) {
@@ -118,7 +118,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * getPageCount:(总页数)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public int getPageCount() {
@@ -128,7 +128,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * setPageCount:(总页数)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public void setPageCount(int pageCount) {
@@ -138,7 +138,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * getNevPage:(上一页页码)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public int getNevPage() {
@@ -148,7 +148,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * setNevPage:(上一页页码)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public void setNevPage(int nevPage) {
@@ -158,7 +158,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * getNextPage:(下一页页码)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public int getNextPage() {
@@ -168,7 +168,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * setNextPage:(下一页页码)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public void setNextPage(int nextPage) {
@@ -178,7 +178,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * getIsNext:(是否显示下一页按钮 -1显示  1不显示)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public int getIsNext() {
@@ -188,7 +188,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * setIsNext:(是否显示下一页按钮)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public void setIsNext(int isNext) {
@@ -198,7 +198,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * getIsNev:(是否显示上一页按钮 -1显示  1不显示)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public int getIsNev() {
@@ -208,7 +208,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * setIsNev:(是否显示上一页按钮)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public void setIsNev(int isNev) {
@@ -218,7 +218,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * getList:(查询数据集)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public Object getList() {
@@ -228,7 +228,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * setList:(查询数据集)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public void setList(Object list) {
@@ -238,7 +238,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * getTotalCount:(总记录数)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public int getTotalCount() {
@@ -248,7 +248,7 @@ public class Partion implements java.io.Serializable {
 	/**
 	 * setTotalCount:(总记录数)
 	 * 
-	 * @Author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	public void setTotalCount(int totalCount) {
