@@ -10,7 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 /**
  * job-菜单DAO接口
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-10-10
  */
 @SuppressWarnings("all")

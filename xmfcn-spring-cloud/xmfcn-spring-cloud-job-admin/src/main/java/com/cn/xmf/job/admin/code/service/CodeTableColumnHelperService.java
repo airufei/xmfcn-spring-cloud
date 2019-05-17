@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 /**
  * Service(表字段信息)
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 @Service
@@ -41,7 +41,7 @@ public class CodeTableColumnHelperService  {
     /*
      * save(保存表字段信息)
      * @param codeTableColumn
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
@@ -70,7 +70,7 @@ public class CodeTableColumnHelperService  {
     /**
 	 * 获取单条数据
 	 * @param codeTableColumn
-	 * @author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	 public CodeTableColumn getSignleCodeTableColumn(CodeTableColumn codeTableColumn)

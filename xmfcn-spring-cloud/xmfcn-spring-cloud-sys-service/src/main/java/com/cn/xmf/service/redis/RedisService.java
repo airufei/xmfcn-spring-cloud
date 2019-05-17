@@ -241,7 +241,7 @@ public class RedisService {
      * @param value
      * @param seconds 有效时间 单位（秒）
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("save")
     public long saveCache(String key, String value, long seconds) {

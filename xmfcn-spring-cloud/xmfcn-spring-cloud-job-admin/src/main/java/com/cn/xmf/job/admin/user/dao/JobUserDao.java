@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * 调度系统用户DAO接口
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-18
  */
 @SuppressWarnings("all")

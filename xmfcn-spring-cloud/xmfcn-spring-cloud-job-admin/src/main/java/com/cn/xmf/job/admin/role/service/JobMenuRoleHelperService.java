@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Service(角色菜单关系)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-19
  */
 @Service
@@ -45,7 +45,7 @@ public class JobMenuRoleHelperService {
     /*
      * save(保存角色菜单关系)
      * @param jobMenuRole
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -75,7 +75,7 @@ public class JobMenuRoleHelperService {
     /*
      * addTrainRecordBatch(批量新增角色菜单关系数据)
      * @param jobMenuRole
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -99,7 +99,7 @@ public class JobMenuRoleHelperService {
      *
      * @param jobMenuRole
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public JobMenuRole getSignleJobMenuRole(JobMenuRole jobMenuRole) {
         return jobMenuRoleDao.getSignleJobMenuRole(jobMenuRole);

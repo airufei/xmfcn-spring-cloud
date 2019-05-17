@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Service(数据表信息)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 @Service
@@ -38,7 +38,7 @@ public class CodeTableService {
      *
      * @param json
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public Partion getList(JSONObject json) {
         logger.info("getList(获取数据表信息带分页数据-服务) 开始 json={}", json);
@@ -72,7 +72,7 @@ public class CodeTableService {
      *
      * @param codeTable
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public List<CodeTable> getCodeTableList(CodeTable codeTable) {
         String parms = JSON.toJSONString(codeTable);
@@ -99,7 +99,7 @@ public class CodeTableService {
      *
      * @param codeTable
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public CodeTable save(CodeTable codeTable) {
         String parms = JSON.toJSONString(codeTable);
@@ -124,7 +124,7 @@ public class CodeTableService {
      *
      * @param codeTable
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public CodeTable getCodeTable(CodeTable codeTable) {
         CodeTable ret = null;
@@ -163,7 +163,7 @@ public class CodeTableService {
      *
      * @param id
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public boolean delete(Long id) {
         logger.info("delete(逻辑删除数据表信息数据-服务) 开始 id={}", id);

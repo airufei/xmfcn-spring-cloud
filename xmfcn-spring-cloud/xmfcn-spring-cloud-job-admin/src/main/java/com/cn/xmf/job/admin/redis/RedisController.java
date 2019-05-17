@@ -25,7 +25,7 @@ import java.util.Set;
 /**
  * JobMenuController(job-菜单)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-10-17
  */
 @Controller

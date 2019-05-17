@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Service(调度系统用户)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-18
  */
 @Service
@@ -39,7 +39,7 @@ public class JobUserService {
      *
      * @param json
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public Partion getList(@RequestBody JSONObject json) {
         logger.info("getList(获取调度系统用户带分页数据-服务) 开始 json={}", json);
@@ -73,7 +73,7 @@ public class JobUserService {
      *
      * @param jobUser
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public List<JobUser> getJobUserList(@RequestBody JobUser jobUser) {
         String parms = JSON.toJSONString(jobUser);
@@ -100,7 +100,7 @@ public class JobUserService {
      *
      * @param jobUser
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public JobUser save(@RequestBody JobUser jobUser) {
         String parms = JSON.toJSONString(jobUser);
@@ -126,7 +126,7 @@ public class JobUserService {
      *
      * @param jobUser
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public JobUser getJobUser(@RequestBody JobUser jobUser) {
         JobUser ret = null;
@@ -154,7 +154,7 @@ public class JobUserService {
      *
      * @param id
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public boolean delete(Long id) {
         logger.info("delete(逻辑删除调度系统用户数据-服务) 开始 id={}", id);

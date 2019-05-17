@@ -13,7 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
- * @author airufei
+ * @author rufei.cn
  * <p>公共处理方法模块 $DESCRIPTION</p>
  */
 @Service

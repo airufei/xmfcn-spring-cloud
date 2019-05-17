@@ -23,7 +23,7 @@ import com.cn.xmf.job.admin.code.service.*;
 /**
  * CodeSchemeController(代码生成方案)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 @Controller
@@ -47,7 +47,7 @@ public class CodeSchemeController {
      *
      * @param request
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("pageList")
     @ResponseBody
@@ -101,7 +101,7 @@ public class CodeSchemeController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("delete")
     @ResponseBody
@@ -139,7 +139,7 @@ public class CodeSchemeController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "save")
     @ResponseBody

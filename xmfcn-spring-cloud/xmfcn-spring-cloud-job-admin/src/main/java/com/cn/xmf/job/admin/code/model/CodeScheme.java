@@ -6,7 +6,7 @@ import java.util.Date;
 import java.math.BigDecimal;
  /**
  * 代码生成方案Entity
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 public class CodeScheme extends BaseEntitys {

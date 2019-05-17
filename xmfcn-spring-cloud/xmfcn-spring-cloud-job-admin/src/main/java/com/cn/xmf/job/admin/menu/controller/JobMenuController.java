@@ -27,7 +27,7 @@ import java.util.*;
 /**
  * JobMenuController(job-菜单)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-10-17
  */
 @Controller
@@ -107,7 +107,7 @@ public class JobMenuController {
      *
      * @param request
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("pageList")
     @ResponseBody
@@ -167,7 +167,7 @@ public class JobMenuController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("delete")
     @ResponseBody
@@ -205,7 +205,7 @@ public class JobMenuController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "save")
     @ResponseBody

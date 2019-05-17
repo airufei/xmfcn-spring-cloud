@@ -22,7 +22,7 @@ import java.util.Enumeration;
 /**
  * 全局异常处理
  *
- * @author airufei
+ * @author rufei.cn
  * @create 2017-11-24 10:54
  **/
 @Component

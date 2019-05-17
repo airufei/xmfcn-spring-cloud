@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 /**
  * Service(数据表信息)
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 @Service
@@ -41,7 +41,7 @@ public class CodeTableHelperService  {
     /*
      * save(保存数据表信息)
      * @param codeTable
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
@@ -70,7 +70,7 @@ public class CodeTableHelperService  {
     /**
 	 * 获取单条数据
 	 * @param codeTable
-	 * @author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	 public CodeTable getSignleCodeTable(CodeTable codeTable)

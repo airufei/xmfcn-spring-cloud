@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * JobRoleController(角色数据)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-19
  */
 @Controller
@@ -49,7 +49,7 @@ public class JobRoleController {
      *
      * @param request
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("pageList")
     @ResponseBody
@@ -102,7 +102,7 @@ public class JobRoleController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("delete")
     @ResponseBody
@@ -140,7 +140,7 @@ public class JobRoleController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "save")
     @ResponseBody

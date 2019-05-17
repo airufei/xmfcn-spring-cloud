@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Service(用户信息)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-11
  */
 @SuppressWarnings("all")
@@ -28,7 +28,7 @@ public interface UserService {
      * list:(查询用户信息 带分页数据)
      *
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "getList", consumes = MediaType.APPLICATION_JSON_VALUE)
     Partion getList(@RequestBody JSONObject map);
@@ -38,7 +38,7 @@ public interface UserService {
      * getUserList:(查询用户信息 不带分页数据)
      *
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "getUserList", consumes = MediaType.APPLICATION_JSON_VALUE)
     List<User> getUserList(@RequestBody User user);
@@ -48,7 +48,7 @@ public interface UserService {
      * getUser:(查询用户信息单个实体数据)
      *
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "getUser", consumes = MediaType.APPLICATION_JSON_VALUE)
     public User getUser(@RequestBody User user);
@@ -57,7 +57,7 @@ public interface UserService {
      * save:(保存用户信息数据)
      *
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
     User save(@RequestBody User user);
@@ -67,7 +67,7 @@ public interface UserService {
      * delete:(删除用户信息数据)
      *
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "delete", consumes = MediaType.APPLICATION_JSON_VALUE)
     boolean delete(@RequestParam("id") Long id);

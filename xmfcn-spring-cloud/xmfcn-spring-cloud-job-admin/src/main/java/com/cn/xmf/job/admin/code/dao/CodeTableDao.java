@@ -9,7 +9,7 @@ import com.cn.xmf.job.admin.code.model.CodeTable;
 /**
  * 数据表信息DAO接口
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 @SuppressWarnings("all")

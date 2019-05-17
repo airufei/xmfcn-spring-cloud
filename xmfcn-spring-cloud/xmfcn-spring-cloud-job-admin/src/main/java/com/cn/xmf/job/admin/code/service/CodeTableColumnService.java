@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Service(表字段信息)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 @Service
@@ -45,7 +45,7 @@ public class CodeTableColumnService {
      *
      * @param json
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public Partion getList(@RequestBody JSONObject json) {
         logger.info("getList(获取表字段信息带分页数据-服务) 开始 json={}", json);
@@ -79,7 +79,7 @@ public class CodeTableColumnService {
      *
      * @param codeTableColumn
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public List<CodeTableColumn> getCodeTableColumnList(@RequestBody CodeTableColumn codeTableColumn) {
         String parms = JSON.toJSONString(codeTableColumn);
@@ -106,7 +106,7 @@ public class CodeTableColumnService {
      *
      * @param codeTableColumn
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public CodeTableColumn save(@RequestBody CodeTableColumn codeTableColumn) {
         String parms = JSON.toJSONString(codeTableColumn);
@@ -131,7 +131,7 @@ public class CodeTableColumnService {
      *
      * @param codeTableColumn
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public CodeTableColumn getCodeTableColumn(@RequestBody CodeTableColumn codeTableColumn) {
         CodeTableColumn ret = null;
@@ -158,7 +158,7 @@ public class CodeTableColumnService {
      *
      * @param id
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public boolean delete(Long id) {
         logger.info("delete(逻辑删除表字段信息数据-服务) 开始 id={}", id);
@@ -181,7 +181,7 @@ public class CodeTableColumnService {
      *
      * @param id
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public boolean deleteTable(String tableName) {
         logger.info("deleteTable(物理删除表字段信息数据-服务) 开始 tableName={}", tableName);
@@ -200,7 +200,7 @@ public class CodeTableColumnService {
      *
      * @param id
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public boolean addTrainRecordBatch(List<CodeTableColumn> list) {
         logger.info("deleteTable(物理删除表字段信息数据-服务) 开始 list={}", JSON.toJSONString(list));

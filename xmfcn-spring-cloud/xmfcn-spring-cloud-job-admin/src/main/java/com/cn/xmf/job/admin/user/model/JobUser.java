@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * 调度系统用户Entity
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-18
  */
 public class JobUser extends BaseEntitys {

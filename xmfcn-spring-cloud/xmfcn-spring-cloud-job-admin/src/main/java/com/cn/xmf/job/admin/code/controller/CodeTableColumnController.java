@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * CodeTableColumnController(表字段信息)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 @Controller
@@ -66,7 +66,7 @@ public class CodeTableColumnController {
      *
      * @param request
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("pageList")
     @ResponseBody
@@ -121,7 +121,7 @@ public class CodeTableColumnController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("delete")
     @ResponseBody
@@ -159,7 +159,7 @@ public class CodeTableColumnController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "save")
     @ResponseBody
@@ -202,7 +202,7 @@ public class CodeTableColumnController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "saveList")
     @ResponseBody

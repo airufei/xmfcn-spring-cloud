@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 /**
  * 数据表信息Entity
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 public class CodeTable extends BaseEntitys {

@@ -23,7 +23,7 @@ import com.cn.xmf.api.user.service.*;
 /**
  * UserController(用户信息)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-16
  */
 @RestController
@@ -42,7 +42,7 @@ public class UserController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("getList")
     public RetData getList(HttpServletRequest request, String parms) {
@@ -99,7 +99,7 @@ public class UserController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("getUserList")
     public RetData getUserList(HttpServletRequest request, String parms) {
@@ -142,7 +142,7 @@ public class UserController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("getUser")
     public RetData getUser(HttpServletRequest request, String parms) {
@@ -185,7 +185,7 @@ public class UserController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("delete")
     public RetData delete(HttpServletRequest request, String parms) {
@@ -227,7 +227,7 @@ public class UserController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "save")
     public RetData save(HttpServletRequest request, String parms) {

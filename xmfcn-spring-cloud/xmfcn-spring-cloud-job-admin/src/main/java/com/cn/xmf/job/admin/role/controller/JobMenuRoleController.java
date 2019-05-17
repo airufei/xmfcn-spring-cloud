@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * JobMenuRoleController(角色菜单关系)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-19
  */
 @Controller
@@ -45,7 +45,7 @@ public class JobMenuRoleController {
      *
      * @param request
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("pageList")
     @ResponseBody
@@ -100,7 +100,7 @@ public class JobMenuRoleController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("delete")
     @ResponseBody
@@ -138,7 +138,7 @@ public class JobMenuRoleController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping(value = "save")
     @ResponseBody

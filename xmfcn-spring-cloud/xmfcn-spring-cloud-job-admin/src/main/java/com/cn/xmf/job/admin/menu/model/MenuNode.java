@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
 * 菜单树
-* @author airufei
+* @author rufei.cn
 * @version 2018-10-10
 */
 public class MenuNode implements Serializable {

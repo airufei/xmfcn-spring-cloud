@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author airufei
+ * @author rufei.cn
  * @date 2017-11-12 21:43
  * <p>Title: $TITLE</p>
  * <p>Description: 授权过滤器</p>

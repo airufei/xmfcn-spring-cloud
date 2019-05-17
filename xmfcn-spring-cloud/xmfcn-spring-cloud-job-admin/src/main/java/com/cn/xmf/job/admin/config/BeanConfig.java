@@ -17,7 +17,7 @@ import java.util.Properties;
 
 /**
  * 初始化bean
- * @author airufei
+ * @author rufei.cn
  * @date 2018-8-23 17:30
  * <p>Title: com.cn.xmf.job.admin.config</p>
  * <p></p>

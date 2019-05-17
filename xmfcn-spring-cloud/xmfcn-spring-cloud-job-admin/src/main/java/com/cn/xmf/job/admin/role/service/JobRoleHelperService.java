@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Service(角色数据)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-19
  */
 @Service
@@ -50,7 +50,7 @@ public class JobRoleHelperService {
     /*
      * save(保存角色数据)
      * @param jobRole
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -129,7 +129,7 @@ public class JobRoleHelperService {
      *
      * @param jobRole
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public JobRole getSignleJobRole(JobRole jobRole) {
         return jobRoleDao.getSignleJobRole(jobRole);

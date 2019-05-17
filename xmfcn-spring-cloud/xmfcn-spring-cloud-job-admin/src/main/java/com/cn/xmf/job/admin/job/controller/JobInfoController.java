@@ -72,7 +72,7 @@ public class JobInfoController {
 	 *
 	 * @param jobInfo
 	 * @return
-	 * @Author airufei
+	 * @author rufei.cn
 	 */
 	@RequestMapping(value = "save")
 	@ResponseBody

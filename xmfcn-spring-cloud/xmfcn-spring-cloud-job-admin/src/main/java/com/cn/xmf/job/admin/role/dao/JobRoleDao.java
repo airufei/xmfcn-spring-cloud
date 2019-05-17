@@ -6,7 +6,7 @@ import java.util.Map;
 import com.alibaba.fastjson.JSONObject;
 /**
  * 角色数据DAO接口
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-19
  */
 @SuppressWarnings("all")

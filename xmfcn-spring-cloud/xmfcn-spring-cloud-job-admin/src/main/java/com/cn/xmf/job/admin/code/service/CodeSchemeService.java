@@ -17,7 +17,7 @@ import com.cn.xmf.job.admin.code.dao.CodeSchemeDao;
 /**
  * Service(代码生成方案)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 @Service
@@ -38,7 +38,7 @@ public class CodeSchemeService {
      *
      * @param json
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public Partion getList(@RequestBody JSONObject json) {
         logger.info("getList(获取代码生成方案带分页数据-服务) 开始 json={}", json);
@@ -72,7 +72,7 @@ public class CodeSchemeService {
      *
      * @param codeScheme
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public List<CodeScheme> getCodeSchemeList(@RequestBody CodeScheme codeScheme) {
         String parms = JSON.toJSONString(codeScheme);
@@ -99,7 +99,7 @@ public class CodeSchemeService {
      *
      * @param codeScheme
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public CodeScheme save(@RequestBody CodeScheme codeScheme) {
         String parms = JSON.toJSONString(codeScheme);
@@ -124,7 +124,7 @@ public class CodeSchemeService {
      *
      * @param codeScheme
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public CodeScheme getCodeScheme(@RequestBody CodeScheme codeScheme) {
         CodeScheme ret = null;
@@ -151,7 +151,7 @@ public class CodeSchemeService {
      *
      * @param id
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public boolean delete(Long id) {
         logger.info("delete(逻辑删除代码生成方案数据-服务) 开始 id={}", id);

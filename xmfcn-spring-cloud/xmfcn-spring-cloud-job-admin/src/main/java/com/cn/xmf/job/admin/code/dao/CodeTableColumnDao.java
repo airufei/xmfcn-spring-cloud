@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * 表字段信息DAO接口
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 @SuppressWarnings("all")
@@ -81,7 +81,7 @@ public interface CodeTableColumnDao {
 	 * deleteTable(物理删除表字段信息数据-服务)
 	 * @param tableName
 	 * @return
-	 * @author airufei
+	 * @author rufei.cn
 	 */
      void deleteTable(String tableName);
 

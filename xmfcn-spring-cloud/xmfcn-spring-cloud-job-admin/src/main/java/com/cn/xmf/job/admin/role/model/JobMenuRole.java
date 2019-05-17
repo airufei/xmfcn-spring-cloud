@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 /**
  * 角色菜单关系Entity
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-19
  */
 public class JobMenuRole extends BaseEntitys {

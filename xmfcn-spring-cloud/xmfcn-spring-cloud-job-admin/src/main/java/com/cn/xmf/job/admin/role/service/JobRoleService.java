@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Service(角色数据)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-19
  */
 @Service
@@ -38,7 +38,7 @@ public class JobRoleService {
      *
      * @param json
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public Partion getList(@RequestBody JSONObject json) {
         logger.info("getList(获取角色数据带分页数据-服务) 开始 json={}", json);
@@ -72,7 +72,7 @@ public class JobRoleService {
      *
      * @param jobRole
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public List<JobRole> getJobRoleList(@RequestBody JobRole jobRole) {
         String parms = JSON.toJSONString(jobRole);
@@ -99,7 +99,7 @@ public class JobRoleService {
      *
      * @param jobRole
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public JobRole save(@RequestBody JobRole jobRole) {
         String parms = JSON.toJSONString(jobRole);
@@ -126,7 +126,7 @@ public class JobRoleService {
      *
      * @param jobRole
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public JobRole getJobRole(@RequestBody JobRole jobRole) {
         JobRole ret = null;
@@ -153,7 +153,7 @@ public class JobRoleService {
      *
      * @param id
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public boolean delete(Long id) {
         logger.info("delete(逻辑删除角色数据数据-服务) 开始 id={}", id);

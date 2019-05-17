@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * 任务处理
- * @author airufei
+ * @author rufei.cn
  */
 @SpringBootApplication
 @EnableEurekaClient

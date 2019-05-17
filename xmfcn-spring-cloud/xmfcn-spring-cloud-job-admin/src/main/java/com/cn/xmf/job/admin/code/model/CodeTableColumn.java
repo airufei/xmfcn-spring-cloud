@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 /**
  * 表字段信息Entity
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 public class CodeTableColumn extends BaseEntitys {

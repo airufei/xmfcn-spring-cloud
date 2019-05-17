@@ -1,6 +1,6 @@
 package com.cn.xmf.job.admin.core.util;
 
-import com.cn.xmf.util.FisleReadUtil;
+import com.cn.xmf.util.FileReadUtil;
 import com.cn.xmf.job.admin.config.XxlJobAdminConfig;
 import com.cn.xmf.job.core.util.JacksonUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +53,7 @@ public class I18nUtil {
      * @return
      */
     public static String getString(String key) {
-        String value= FisleReadUtil.getValue("i18n/message.properties", key);// 获取配置数据;
+        String value= FileReadUtil.getValue("i18n/message.properties", key);// 获取配置数据;
         return value;
     }
 

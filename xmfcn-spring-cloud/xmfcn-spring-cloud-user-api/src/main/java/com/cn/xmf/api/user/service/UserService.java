@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 /**
  * Service(用户信息)
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-16
  */
 @SuppressWarnings("all")
@@ -23,7 +23,7 @@ public interface UserService  {
 
     /**
      * list:(查询用户信息 带分页数据)
-     * @Author airufei
+     * @author rufei.cn
      * @return
      */
     @RequestMapping(value = "getList", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -31,7 +31,7 @@ public interface UserService  {
 
     /**
      * getUserList:(查询用户信息 不带分页数据)
-     * @Author airufei
+     * @author rufei.cn
      * @return
      */
     @RequestMapping(value = "getUserList", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -39,7 +39,7 @@ public interface UserService  {
 
      /**
      * getUser:(查询用户信息单个实体数据)
-     * @Author airufei
+     * @author rufei.cn
      * @return
      */
     @RequestMapping(value = "getUser", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -47,7 +47,7 @@ public interface UserService  {
 
     /**
      * save:(保存用户信息数据)
-     * @Author airufei
+     * @author rufei.cn
      * @return
      */
     @RequestMapping(value = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +56,7 @@ public interface UserService  {
 
     /**
      * delete:(删除用户信息数据)
-     * @Author airufei
+     * @author rufei.cn
      * @return
      */
     @RequestMapping(value = "delete", consumes = MediaType.APPLICATION_JSON_VALUE)

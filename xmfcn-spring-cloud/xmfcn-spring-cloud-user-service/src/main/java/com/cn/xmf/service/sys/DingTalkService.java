@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Service(钉钉提醒)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2017-12-21
  */
 
@@ -27,7 +27,7 @@ public interface DingTalkService {
      * sendTextMessageToDingTalk(发送文本信息到钉钉群)
      *
      * @return
-     * @Author airufei
+     * @author rufei.cn
      * String message,String webhook
      */
 

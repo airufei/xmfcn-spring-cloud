@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 角色数据Entity
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-19
  */
 public class JobRole extends BaseEntitys {

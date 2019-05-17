@@ -29,6 +29,7 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.SR1</spring-cloud.version>
         <logback.version>1.2.3</logback.version>
+        <fastjson.version>1.2.40</fastjson.version>
     </properties>
 
 
@@ -71,6 +72,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
         <!--logback-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -86,8 +91,9 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.40</version>
+            <version>${fastjson.version}</version>
         </dependency>
+
     </dependencies>
 
     <dependencyManagement>

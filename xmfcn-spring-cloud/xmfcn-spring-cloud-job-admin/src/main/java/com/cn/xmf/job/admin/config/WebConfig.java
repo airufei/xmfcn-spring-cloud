@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 /**
  * web 配置
- * @author airufei
+ * @author rufei.cn
  * @date 2018-8-23 17:47
  * <p>Title: com.cn.xmf.job.admin.config</p>
  * <p></p>

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 /**
  * Service(角色菜单关系)
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-19
  */
 @Service
@@ -32,7 +32,7 @@ public class JobMenuRoleService  {
      private static Logger logger = LoggerFactory.getLogger(JobMenuRoleService.class);
       /**
 	   * getList(获取角色菜单关系带分页数据-服务)
-       * @author airufei
+       * @author rufei.cn
        * @param json
 	   * @return
 	   */
@@ -69,7 +69,7 @@ public class JobMenuRoleService  {
 
 	   /**
 	   * getJobMenuRoleList(获取角色菜单关系 不带分页数据-服务)
-       * @author airufei
+       * @author rufei.cn
        * @param jobMenuRole
 	   * @return
 	   */
@@ -98,7 +98,7 @@ public class JobMenuRoleService  {
     /**
 	 * save (保存角色菜单关系 数据-服务)
 	 * @param jobMenuRole
-     * @author airufei
+     * @author rufei.cn
 	 * @return
 	 */
 	public JobMenuRole save(@RequestBody JobMenuRole jobMenuRole)
@@ -124,7 +124,7 @@ public class JobMenuRoleService  {
 
 	   /**
 	   * getJobMenuRole(获取角色菜单关系单条数据-服务)
-	   * @author airufei
+	   * @author rufei.cn
 	   * @param jobMenuRole
 	   * @return
 	   */
@@ -152,7 +152,7 @@ public class JobMenuRoleService  {
     /**
 	 * delete(逻辑删除角色菜单关系数据-服务)
 	 * @param id
-	 * @author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	 public boolean delete(Long id)

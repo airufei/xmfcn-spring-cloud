@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Service(job-菜单)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-10-10
  */
 @Service
@@ -48,7 +48,7 @@ public class JobMenuService {
      *
      * @param json
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public Partion getList(JSONObject json) {
         logger.info("getList(获取job-菜单带分页数据-服务) 开始 json={}", json);
@@ -82,7 +82,7 @@ public class JobMenuService {
      *
      * @param jobMenu
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public List<JobMenu> getJobMenuList(JobMenu jobMenu) {
         String parms = JSON.toJSONString(jobMenu);
@@ -109,7 +109,7 @@ public class JobMenuService {
      *
      * @param jobMenu
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public JobMenu save(JobMenu jobMenu) {
         String parms = JSON.toJSONString(jobMenu);
@@ -134,7 +134,7 @@ public class JobMenuService {
      *
      * @param jobMenu
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public JobMenu getJobMenu(JobMenu jobMenu) {
         JobMenu ret = null;
@@ -161,7 +161,7 @@ public class JobMenuService {
      *
      * @param id
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public boolean delete(Long id) {
         logger.info("delete(逻辑删除job-菜单数据-服务) 开始 id={}", id);

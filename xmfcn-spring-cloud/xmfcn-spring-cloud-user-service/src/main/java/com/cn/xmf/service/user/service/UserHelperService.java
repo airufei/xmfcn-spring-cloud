@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 /**
  * Service(用户信息)
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-16
  */
 @Service
@@ -42,7 +42,7 @@ public class UserHelperService  {
     /*
      * save(保存用户信息)
      * @param user
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
@@ -71,7 +71,7 @@ public class UserHelperService  {
     /**
 	 * 获取单条数据
 	 * @param user
-	 * @author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	 public User getSignleUser(User user)

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Service(用户信息)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-16
  */
 @RestController
@@ -41,7 +41,7 @@ public class UserService {
      *
      * @param json
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     @RequestMapping("getList")
     public Partion getList(@RequestBody JSONObject json) {
@@ -76,7 +76,7 @@ public class UserService {
      *
      * @param user
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     @RequestMapping("getUserList")
     public List<User> getUserList(@RequestBody User user) {
@@ -104,7 +104,7 @@ public class UserService {
      *
      * @param user
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     @RequestMapping("save")
     public User save(@RequestBody User user) {
@@ -131,7 +131,7 @@ public class UserService {
      *
      * @param user
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     @RequestMapping("getUser")
     public User getUser(@RequestBody User user) {
@@ -159,7 +159,7 @@ public class UserService {
      *
      * @param id
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     @RequestMapping("delete")
     public boolean delete(Long id) {

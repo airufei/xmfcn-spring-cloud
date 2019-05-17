@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Service(job-菜单)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-10-10
  */
 @Service
@@ -50,7 +50,7 @@ public class JobMenuHelperService {
     /*
      * save(保存job-菜单)
      * @param jobMenu
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -81,7 +81,7 @@ public class JobMenuHelperService {
      *
      * @param jobMenu
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public JobMenu getSignleJobMenu(JobMenu jobMenu) {
         return jobMenuDao.getSignleJobMenu(jobMenu);

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 /**
  * Service(代码生成方案)
- * @author airufei
+ * @author rufei.cn
  * @version 2018-12-10
  */
 @Service
@@ -44,7 +44,7 @@ public class CodeSchemeHelperService  {
     /*
      * save(保存代码生成方案)
      * @param codeScheme
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
@@ -73,7 +73,7 @@ public class CodeSchemeHelperService  {
     /**
 	 * 获取单条数据
 	 * @param codeScheme
-	 * @author airufei
+	 * @author rufei.cn
 	 * @return
 	 */
 	 public CodeScheme getSignleCodeScheme(CodeScheme codeScheme)

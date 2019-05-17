@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * JobUserController(调度系统用户)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-18
  */
 @Controller
@@ -47,7 +47,7 @@ public class JobUserController {
      * @param request
      * @param request
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("getList")
     @ResponseBody
@@ -104,7 +104,7 @@ public class JobUserController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("delete")
     @ResponseBody
@@ -146,7 +146,7 @@ public class JobUserController {
      * @param request
      * @param jobUser
      * @return
-     * @Author airufei
+     * @author rufei.cn
      */
     @RequestMapping("save")
     @ResponseBody

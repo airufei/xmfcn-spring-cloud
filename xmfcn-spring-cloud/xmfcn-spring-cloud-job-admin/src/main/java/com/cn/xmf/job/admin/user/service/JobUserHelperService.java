@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Service(调度系统用户)
  *
- * @author airufei
+ * @author rufei.cn
  * @version 2018-09-18
  */
 @Service
@@ -47,7 +47,7 @@ public class JobUserHelperService {
     /*
      * save(保存调度系统用户)
      * @param jobUser
-     * @author airufei
+     * @author rufei.cn
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -78,7 +78,7 @@ public class JobUserHelperService {
      *
      * @param jobUser
      * @return
-     * @author airufei
+     * @author rufei.cn
      */
     public JobUser getSignleJobUser(JobUser jobUser) {
         return jobUserDao.getSignleJobUser(jobUser);
