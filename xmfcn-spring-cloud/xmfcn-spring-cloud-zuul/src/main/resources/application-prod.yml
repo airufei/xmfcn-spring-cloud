@@ -50,7 +50,7 @@ zuul:
     socket-timeout-millis: 3000 #socket 超时时间
     connect-timeout-millis: 120000 #连接超时时间
   semaphore:  #Zuul的隔离策略为SEMAPHORE时
-   max-semaphores: 1000 #最大信号量
+    max-semaphores: 1000 #最大信号量
   sensitive-headers:  # 共享 Authorization 请求头
   add-host-header: true #传输真实请求主机信息到服务层
   retryable: true #是否开启重试功能
@@ -63,11 +63,8 @@ zuul:
       path: /user/**
       serviceId: user-api
     job-admin:
-      path: /jobadmin/**
-      serviceId: job-admin
-    job-handler:
       path: /job/**
-      serviceId: job-handler
+      serviceId: job-admin
 
 
 # 配置ribbon 配置下列值并非ribbon get set 属性，因此鼠标点击无用，但是ribbon会自动加载以下信息
@@ -105,4 +102,4 @@ hystrix:
 
 # LOGGING
 logging:
-    config: classpath:logback.xml
+  config: classpath:logback.xml

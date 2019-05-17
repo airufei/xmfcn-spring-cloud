@@ -11,7 +11,7 @@
         <module>xmfcn-spring-cloud-eureka</module>
         <module>xmfcn-spring-cloud-zuul</module>
         <module>xmfcn-spring-cloud-sys-service</module>
-        <module>xmfcn-spring-cloud-job-handler</module>
+        <module>xmfcn-spring-cloud-job-service</module>
         <module>xmfcn-spring-cloud-job-admin</module>
         <module>xmfcn-spring-cloud-user-api</module>
         <module>xmfcn-spring-cloud-user-service</module>
