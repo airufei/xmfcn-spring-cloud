@@ -1,4 +1,4 @@
-package com.cn.xmf.model.log;
+package com.cn.xmf.model.sys;
 
 import com.cn.xmf.util.DateUtil;
 import com.cn.xmf.util.StringUtil;

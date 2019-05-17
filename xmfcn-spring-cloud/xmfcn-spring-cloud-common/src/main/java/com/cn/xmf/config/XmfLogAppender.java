@@ -17,6 +17,11 @@ import org.springframework.cloud.sleuth.Tracer;
 
 import java.util.Properties;
 
+/**
+ * 扩展logback Appender 类 XmfLogAppender 实现log数据直接发送kafka队列
+ * @author rufei.cn
+ */
+@SuppressWarnings("all")
 public class XmfLogAppender extends AppenderBase<LoggingEvent> {
     private static Properties props;
     private static String topic = ConstantUtil.XMF_KAFKA_TOPIC_LOG;//日志主题
@@ -53,7 +58,7 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
             producer = new KafkaProducer<>(props);
         } catch (Exception exception) {
-           logger.error("KafkaAppender: Exception initializing Producer. " + exception + " : " + exception.getMessage());
+            logger.error("KafkaAppender: Exception initializing Producer. " + exception + " : " + exception.getMessage());
             exception.printStackTrace();
         }
     }
