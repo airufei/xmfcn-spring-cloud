@@ -1,6 +1,6 @@
 package com.cn.xmf.job.admin.job.controller;
 
-import com.cn.xmf.base.model.RetCode;
+import com.cn.xmf.base.model.RetCodeAndMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.admin.common.PermissionInterceptor;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
@@ -86,7 +86,7 @@ public class IndexController {
         int code = retData.getCode();
         String message = retData.getMessage();
         Object data = retData.getData();
-        if (code == RetCode.SYS_ERROR || code == RetCode.PARMS_ERROR) {
+        if (code == RetCodeAndMessage.SYS_ERROR || code == RetCodeAndMessage.PARMS_ERROR) {
             return new ReturnT<String>(500, message);
         }
         JobUser user = (JobUser) data;

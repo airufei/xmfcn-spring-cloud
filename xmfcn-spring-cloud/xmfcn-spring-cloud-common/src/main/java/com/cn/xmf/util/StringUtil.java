@@ -19,10 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -829,6 +826,25 @@ public class StringUtil extends StringUtils {
         }
         String jsonString = JSON.toJSONString(milog);
         return jsonString;
+    }
+
+    /**
+     * getRandNum:(生成随机数)
+     *
+     * @Author airufei
+     * @param min
+     *            最小值
+     * @param max
+     *            最大值
+     * @return
+     */
+    public static int getRandNum(int min, int max) {
+        Random random = new Random();
+        int num = random.nextInt(max);
+        if (min > num) {
+            num = max - min;
+        }
+        return num;
     }
 
     /**
