@@ -1,7 +1,7 @@
 package com.cn.xmf.service.dingtalk;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.RetCode;
+import com.cn.xmf.base.model.RetCodeAndMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.base.model.RetMessage;
 import com.cn.xmf.enums.DingMessageType;
@@ -78,7 +78,7 @@ public class DingTalkService {
     public RetData sendMessageToDingTalk(@RequestBody DingMessage dingMessage) {
         logger.info("sendMessageToDingTalk(发送不定格式信息到钉钉群) 开始");
         RetData result = new RetData();
-        result.setCode(RetCode.SYS_ERROR);
+        result.setCode(RetCodeAndMessage.SYS_ERROR);
         result.setMessage(RetMessage.SYS_ERROR);
         if (dingMessage == null) {
             result.setMessage("入参dingMessage为空");

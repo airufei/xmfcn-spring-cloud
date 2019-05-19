@@ -65,7 +65,7 @@ spring:
         max-wait: 3000ms
       shutdown-timeout: 5000ms
     host: 127.0.0.1
-    password: testredis
+    password: xmfred*&21^%1dd22
     port: 6379
     timeout: 5000ms
 

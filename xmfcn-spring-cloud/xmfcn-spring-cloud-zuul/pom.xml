@@ -17,18 +17,19 @@
 	<name>xmfcn-spring-cloud-zuul</name>
 	<description>xmfcn-spring-cloud-zuul</description>
 
+	<properties>
+		<xmfcn.common.version>1.1.1</xmfcn.common.version>
+	</properties>
 	<dependencies>
-
 		<dependency>
 			<groupId>xmf.cn.common</groupId>
-			<version>1.1.1</version>
+			<version>${xmfcn.common.version}</version>
 			<artifactId>xmfcn-spring-cloud-common</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-zuul</artifactId>
 		</dependency>
-
 	</dependencies>
 
 	<build>

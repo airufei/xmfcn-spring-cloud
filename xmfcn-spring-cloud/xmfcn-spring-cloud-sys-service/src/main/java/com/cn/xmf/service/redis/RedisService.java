@@ -4,12 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.util.StringUtil;
 import org.apache.commons.httpclient.util.DateUtil;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStringCommands;
+import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,24 +26,32 @@ import java.util.*;
 public class RedisService {
 
     private static Logger logger = LoggerFactory.getLogger(RedisService.class);
-
+    private static final String LOCK_SUCCESS = "OK";
+    private static final String SET_IF_NOT_EXIST = "NX";
+    private static final String SET_WITH_EXPIRE_TIME = "PX";
+    private static final Long RELEASE_SUCCESS = 1L;
     @Autowired
     private LettuceConnectionFactory lettuceConnectionFactory;
 
-    public RedisConnection getRedisConnection(){
+    @Autowired
+    private RedissonClient redissonClient;
+
+
+    public RedisConnection getRedisConnection() {
         RedisConnection connection = lettuceConnectionFactory.getConnection();
         return connection;
     }
 
     /**
      * getRedisInfo（redis 运行健康信息)
+     *
      * @param key
      * @return
      */
     @RequestMapping("getRedisInfo")
     public JSONObject getRedisInfo() {
         logger.info("getRedisInfo（redis 运行健康信息) 开始 ");
-        JSONObject result=new JSONObject();
+        JSONObject result = new JSONObject();
         RedisConnection conn = getRedisConnection();
         if (conn == null) {
             return result;
@@ -46,24 +59,24 @@ public class RedisService {
         boolean broken = false;
         try {
             Hashtable info = conn.info();
-            if(info==null)
-            {
+            if (info == null) {
                 return result;
             }
             String jsonString = JSON.toJSONString(info);
-            if(StringUtil.isBlank(jsonString))
-            {
+            if (StringUtil.isBlank(jsonString)) {
                 return result;
             }
-            result.put("info",jsonString);
+            result.put("info", jsonString);
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
         logger.info("getRedisInfo（redis 运行健康信息)redis 结束 " + result);
         return result;
     }
+
     /**
      * getQueueLength（获取队列长度)key 是消息频道
+     *
      * @param key
      * @return
      */
@@ -80,7 +93,7 @@ public class RedisService {
         }
         boolean broken = false;
         try {
-            result= conn.lLen(key.getBytes());
+            result = conn.lLen(key.getBytes());
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
@@ -111,7 +124,7 @@ public class RedisService {
         }
         boolean broken = false;
         try {
-            result = conn.lPush(key.getBytes(),value.getBytes());
+            result = conn.lPush(key.getBytes(), value.getBytes());
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
             broken = true;
@@ -139,9 +152,8 @@ public class RedisService {
         }
         try {
             byte[] bytes = conn.rPop(key.getBytes());
-            if(bytes!=null)
-            {
-                result=new String(bytes, "utf-8");
+            if (bytes != null) {
+                result = new String(bytes, "utf-8");
             }
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
@@ -149,7 +161,6 @@ public class RedisService {
         logger.info("getFromQueue（读取队列消息）redis 结束 " + result);
         return result;
     }
-
 
 
     /**
@@ -171,9 +182,8 @@ public class RedisService {
         }
         try {
             byte[] bytes = conn.get(key.getBytes());
-            if(bytes!=null)
-            {
-                result=new String(bytes, "utf-8");
+            if (bytes != null) {
+                result = new String(bytes, "utf-8");
             }
         } catch (Exception e) {
             logger.error("getCache:" + StringUtil.getExceptionMsg(e));
@@ -223,9 +233,8 @@ public class RedisService {
             return result;
         }
         try {
-            boolean ret= conn.expire(key.getBytes(), seconds);
-            if(ret)
-            {
+            boolean ret = conn.expire(key.getBytes(), seconds);
+            if (ret) {
                 result = (long) 1;
             }
         } catch (Exception e) {
@@ -245,7 +254,7 @@ public class RedisService {
      */
     @RequestMapping("save")
     public long saveCache(String key, String value, long seconds) {
-        logger.info("save:(设置缓存-带有效期) 开始 key={},seconds={}",key,seconds);
+        logger.info("save:(设置缓存-带有效期) 开始 key={},seconds={}", key, seconds);
         long result = -1;
         if (StringUtil.isBlank(key)) {
             return result;
@@ -256,18 +265,16 @@ public class RedisService {
         }
         try {
             Boolean ret = conn.set(key.getBytes(), value.getBytes());
-            if(ret)
-            {
+            if (ret) {
                 result = 1;
             }
-            if(seconds>0&&ret)
-            {
-                expire(key,seconds);
+            if (seconds > 0 && ret) {
+                expire(key, seconds);
             }
         } catch (Exception e) {
             logger.error("saveCache:" + StringUtil.getExceptionMsg(e));
         }
-        logger.info("saveCache:(设置缓存-带有效期) 结束 key={},result={}", key,result);
+        logger.info("saveCache:(设置缓存-带有效期) 结束 key={},result={}", key, result);
         return result;
     }
 
@@ -279,7 +286,7 @@ public class RedisService {
      */
     @RequestMapping("delete")
     public Long delete(String key) {
-        logger.info("delete（将 key 缓存数据删除） 开始 key={}",key);
+        logger.info("delete（将 key 缓存数据删除） 开始 key={}", key);
         Long result = null;
         if (StringUtil.isBlank(key)) {
             return result;
@@ -293,7 +300,7 @@ public class RedisService {
         } catch (Exception e) {
             logger.error("delete_error:" + StringUtil.getExceptionMsg(e));
         }
-        logger.info("delete（将 key 缓存数据删除）结束 key={},result={}", key,result);
+        logger.info("delete（将 key 缓存数据删除）结束 key={},result={}", key, result);
         return result;
     }
 
@@ -371,11 +378,10 @@ public class RedisService {
             }
             Iterator<byte[]> iterator = list.iterator();
             while (iterator.hasNext()) {
-                if(iterator.next()==null)
-                {
+                if (iterator.next() == null) {
                     continue;
                 }
-                String next=new String(iterator.next(), "utf-8");
+                String next = new String(iterator.next(), "utf-8");
                 if (StringUtil.isBlank(next)) {
                     continue;
                 }
@@ -414,37 +420,29 @@ public class RedisService {
     }
 
     /**
-     * getLock(获取分布式锁)
+     * getLock（分布式锁-正确方式）
      *
-     * @param key
-     * @param integer
-     * @return
+     * @param key  锁标识
+     * @return 锁对象
      */
     @RequestMapping("getLock")
-    public Long getLock(String key) {
+    public RLock getLock(String key) {
         logger.info("getLock(获取分布式锁) 开始：" + key);
-        Long result = null;
+        RLock lock = null;
         if (StringUtil.isBlank(key)) {
-            return result;
+            return lock;
         }
-        RedisConnection conn = getRedisConnection();
-        if (conn == null) {
-            return result;
+        if (redissonClient == null) {
+            return lock;
         }
         try {
-            result = conn.incr(key.getBytes());
+            lock = redissonClient.getLock(key);
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         }
-        int maxLockCount=300;
-        if(result>=maxLockCount)//清除死锁
-        {
-            delete(key);
-        }
-        logger.info("getLock(获取分布式锁) 结束：" + result);
-        return result;
+        logger.info("getLock(获取分布式锁) 结束：" + lock);
+        return lock;
     }
-
     /**
      * getOnlyNo(获取唯一编号)
      *
@@ -466,7 +464,7 @@ public class RedisService {
         if (conn == null) {
             return onlyNo;
         }
-        long number=-1;
+        long number = -1;
         try {
             number = conn.incr(key.getBytes());
         } catch (Exception e) {

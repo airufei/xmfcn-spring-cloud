@@ -2,7 +2,7 @@ package com.cn.xmf.service.es;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.RetCode;
+import com.cn.xmf.base.model.RetCodeAndMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.base.model.RetMessage;
 import com.cn.xmf.model.sys.EsModel;
@@ -31,6 +31,7 @@ import java.util.Map;
  * ES服务
  *
  * @author rufei.cn
+ * @version 2019-05-19
  */
 @RestController
 @RequestMapping(value = "/server/es/")
@@ -72,8 +73,8 @@ public class ElasticsearchService {
             JSONObject messageJson = JSONObject.parseObject(message);
             Index index = new Index.Builder(messageJson).index(indexName).type(type).build();
             jestClient.execute(index);
-            dataReturn.setCode(RetCode.SUCCESS);
-            dataReturn.setMessage(RetMessage.SUCCESS);
+            dataReturn.setCode(RetCodeAndMessage.SUCCESS);
+            dataReturn.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
         } catch (IOException e) {
             e.printStackTrace();
             String exceptionMsg = StringUtil.getExceptionMsg(e);
@@ -123,8 +124,8 @@ public class ElasticsearchService {
                 bulk.addAction(index);
             }
             jestClient.execute(bulk.build());
-            dataReturn.setCode(RetCode.SUCCESS);
-            dataReturn.setMessage(RetMessage.SUCCESS);
+            dataReturn.setCode(RetCodeAndMessage.SUCCESS);
+            dataReturn.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
         } catch (IOException e) {
             e.printStackTrace();
             String exceptionMsg = StringUtil.getExceptionMsg(e);

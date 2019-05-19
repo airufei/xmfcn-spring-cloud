@@ -2,7 +2,6 @@ package com.cn.xmf.api.user.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.cn.xmf.api.common.SysCommonService;
 import org.slf4j.Logger;
@@ -74,15 +73,15 @@ public class UserController {
             jsonObject.put("totalCount", totalCount);
             if (list == null||list.size()<=0) {
                 retData.setData(jsonObject);
-                retData.setCode(RetCode.NO_DATA);
+                retData.setCode(RetCodeAndMessage.NO_DATA);
                 retData.setMessage(RetMessage.NO_DATA);
                 return retData;
             }
             retData.setData(jsonObject);
-            retData.setCode(RetCode.SUCCESS);
+            retData.setCode(RetCodeAndMessage.SUCCESS);
             retData.setMessage(RetMessage.SUCCESS);
         } catch (Exception e) {
-            retData.setCode(RetCode.SYS_ERROR);
+            retData.setCode(RetCodeAndMessage.SYS_ERROR);
             retData.setMessage(RetMessage.SYS_ERROR);
             String msg = "getList:(获取用户信息分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
@@ -122,10 +121,10 @@ public class UserController {
             }
             List<User> list = userService.getUserList(user);
             retData.setData(list);
-            retData.setCode(RetCode.SUCCESS);
+            retData.setCode(RetCodeAndMessage.SUCCESS);
             retData.setMessage(RetMessage.SUCCESS);
         } catch (Exception e) {
-            retData.setCode(RetCode.SYS_ERROR);
+            retData.setCode(RetCodeAndMessage.SYS_ERROR);
             retData.setMessage(RetMessage.SYS_ERROR);
             String msg = "getUserList:(获取用户信息不分页查询接口)====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
@@ -165,10 +164,10 @@ public class UserController {
             }
             User retuser = userService.getUser(user);
             retData.setData(retuser);
-            retData.setCode(RetCode.SUCCESS);
+            retData.setCode(RetCodeAndMessage.SUCCESS);
             retData.setMessage(RetMessage.SUCCESS);
         } catch (Exception e) {
-            retData.setCode(RetCode.SYS_ERROR);
+            retData.setCode(RetCodeAndMessage.SYS_ERROR);
             retData.setMessage(RetMessage.SYS_ERROR);
             String msg = "getUser:(查询用户信息单条数据接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
@@ -204,14 +203,14 @@ public class UserController {
             Long id = json.getLong("id");
             if (id != null && id > 0) {
                 userService.delete(id);
-                retData.setCode(RetCode.SUCCESS);
+                retData.setCode(RetCodeAndMessage.SUCCESS);
                 retData.setMessage(RetMessage.SUCCESS);
             } else {
                 retData.setMessage("请选择需要删除的数据");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retData.setCode(RetCode.SYS_ERROR);
+            retData.setCode(RetCodeAndMessage.SYS_ERROR);
             retData.setMessage(RetMessage.SYS_ERROR);
             String msg = "delete:(逻辑删除用户信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
@@ -254,12 +253,12 @@ public class UserController {
             // 保存数据库
             User ret = userService.save(user);
             if (ret != null) {
-                retData.setCode(RetCode.SUCCESS);
+                retData.setCode(RetCodeAndMessage.SUCCESS);
                 retData.setMessage(RetMessage.SUCCESS);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retData.setCode(RetCode.SYS_ERROR);
+            retData.setCode(RetCodeAndMessage.SYS_ERROR);
             retData.setMessage(RetMessage.SYS_ERROR);
             String msg = "save:(保存用户信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);

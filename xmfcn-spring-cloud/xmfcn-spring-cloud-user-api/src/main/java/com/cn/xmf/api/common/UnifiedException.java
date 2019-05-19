@@ -1,6 +1,6 @@
 package com.cn.xmf.api.common;
 
-import com.cn.xmf.base.model.RetCode;
+import com.cn.xmf.base.model.RetCodeAndMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
@@ -41,7 +41,7 @@ public class UnifiedException {
         RetData mobileData  = new RetData();;
         Map<String, Object> data = null;
         String message = "服务器繁忙，请稍后再试";
-        mobileData.setCode(RetCode.SYS_ERROR);
+        mobileData.setCode(RetCodeAndMessage.SYS_ERROR);
         mobileData.setMessage(message);
         mobileData.setData(data);
         dingTalkMessage(request, e);

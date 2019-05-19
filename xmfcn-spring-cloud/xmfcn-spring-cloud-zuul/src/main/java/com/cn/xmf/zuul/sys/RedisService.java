@@ -1,5 +1,5 @@
 
-package com.cn.xmf.service.sys;
+package com.cn.xmf.zuul.sys;
 
 import org.redisson.api.RLock;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -13,6 +13,7 @@ public interface RedisService {
 
     /**
      * save:(设置缓存-带有效期)
+     *
      * @param key
      * @param value
      * @param seconds
@@ -23,6 +24,7 @@ public interface RedisService {
 
     /**
      * 获取单个值
+     *
      * @param key
      * @return
      */
@@ -45,16 +47,17 @@ public interface RedisService {
      * @param key
      * @return
      */
-    @RequestMapping(value = "getFromQueue",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "getFromQueue", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String getFromQueue(@RequestParam(value = "key") String key);
 
 
     /**
      * 将 key 缓存数据删除
+     *
      * @param key
      * @return
      */
-    @RequestMapping(value = "delete",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "delete", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long delete(@RequestParam(value = "key") String key);
 
     /**
@@ -63,7 +66,7 @@ public interface RedisService {
      * @param pattern
      * @return
      */
-    @RequestMapping(value = "deletes",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "deletes", consumes = MediaType.APPLICATION_JSON_VALUE)
     public long deletes(@RequestParam(value = "pattern") String pattern);
 
 

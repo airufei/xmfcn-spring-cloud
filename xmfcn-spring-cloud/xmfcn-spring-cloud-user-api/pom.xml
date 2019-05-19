@@ -16,10 +16,13 @@
     <name>xmfcn-spring-cloud-user-api</name>
     <description>xmfcn-spring-cloud-user-api</description>
 
+    <properties>
+        <xmfcn.common.version>1.1.1</xmfcn.common.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>xmf.cn.common</groupId>
-            <version>1.1.1</version>
+            <version>${xmfcn.common.version}</version>
             <artifactId>xmfcn-spring-cloud-common</artifactId>
         </dependency>
     </dependencies>

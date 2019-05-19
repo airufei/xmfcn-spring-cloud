@@ -1,6 +1,5 @@
 package com.cn.xmf.service.common;
 
-import com.cn.xmf.base.model.RetCode;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Map;
 
 
 /**

@@ -1,0 +1,46 @@
+clusterServersConfig:
+  # 连接空闲超时 如果当前连接池里的连接数量超过了最小空闲连接数，而同时有连接空闲时间超过了该数值，那么这些连接将会自动被关闭，并从连接池里去掉。时间单位是毫秒。
+  idleConnectionTimeout: 10000
+  pingTimeout: 1000
+  # 连接超时
+  connectTimeout: 10000
+  # 命令等待超时
+  timeout: 3000
+  # 命令失败重试次数
+  retryAttempts: 3
+  # 命令重试发送时间间隔
+  retryInterval: 1500
+  # 重新连接时间间隔
+  reconnectionTimeout: 3000
+  # failedAttempts
+  failedAttempts: 3
+  # 密码
+  password: null
+  # 单个连接最大订阅数量
+  subscriptionsPerConnection: 5
+  # 客户端名称
+  clientName: null
+  #负载均衡算法类的选择  默认轮询调度算法RoundRobinLoadBalancer
+  loadBalancer: !<org.redisson.connection.balancer.RoundRobinLoadBalancer> {}
+  slaveSubscriptionConnectionMinimumIdleSize: 1
+  slaveSubscriptionConnectionPoolSize: 50
+  # 从节点最小空闲连接数
+  slaveConnectionMinimumIdleSize: 32
+  # 从节点连接池大小
+  slaveConnectionPoolSize: 64
+  # 主节点最小空闲连接数
+  masterConnectionMinimumIdleSize: 32
+  # 主节点连接池大小
+  masterConnectionPoolSize: 64
+  # 只在从服务节点里读取
+  readMode: "SLAVE"
+  # 主节点信息
+  nodeAddresses:
+    - "redis://127.0.0.1:6379"
+    #- "redis://192.168.56.128:6379"
+    #- "redis://192.168.56.128:6379"
+  #集群扫描间隔时间 单位毫秒
+  scanInterval: 1000
+threads: 0
+nettyThreads: 0
+codec: !<org.redisson.codec.JsonJacksonCodec> {}
