@@ -5,6 +5,7 @@ import com.cn.xmf.api.sys.RedisService;
 import com.cn.xmf.enums.DingMessageType;
 import com.cn.xmf.model.ding.DingMessage;
 import com.cn.xmf.util.StringUtil;
+import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,16 +166,13 @@ public class SysCommonService {
      * @return
      * @author airuei
      */
-    public long getLock(String key) {
-        long lock = -1;
+    public RLock getLock(String key) {
+        RLock lock = null;
         if (StringUtil.isBlank(key)) {
             return lock;
         }
         try {
-            Long aLong = redisService.getLock(key);
-            if (aLong != null) {
-                lock = aLong;
-            }
+            lock = redisService.getLock(key);
         } catch (Exception e) {
             logger.error("getLock（获取分布式锁）:" + StringUtil.getExceptionMsg(e));
             e.printStackTrace();

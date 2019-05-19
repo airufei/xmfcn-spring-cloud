@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.RetCodeAndMessage;
 import com.cn.xmf.base.model.RetData;
-import com.cn.xmf.base.model.RetMessage;
 import com.cn.xmf.model.sys.EsModel;
 import com.cn.xmf.util.StringUtil;
 import io.searchbox.client.JestClient;

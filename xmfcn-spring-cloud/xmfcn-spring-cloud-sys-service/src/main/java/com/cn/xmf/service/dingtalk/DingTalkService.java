@@ -3,7 +3,6 @@ package com.cn.xmf.service.dingtalk;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.RetCodeAndMessage;
 import com.cn.xmf.base.model.RetData;
-import com.cn.xmf.base.model.RetMessage;
 import com.cn.xmf.enums.DingMessageType;
 import com.cn.xmf.model.ding.*;
 import com.cn.xmf.util.DingTalkUtil;
