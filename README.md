@@ -72,4 +72,15 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
    
    &nbsp;&nbsp;2）需要配置调度中心地址，如：http://localhost:8085/jobadmin
    
-10、欢迎留言讨论：https://github.com/airufei/xmfcn-spring-cloud/issues/1
+10、集成EFK统一日志系统方案：
+
+   &nbsp;&nbsp;1）logback收集的日志通过整理过滤直接写入kafka，logback需要扩展一个appender，通过自定义appender写入kafka队列。 
+   
+   &nbsp;&nbsp;2）job-service 执行kafka消费任务，处理日志队里数据到Elasticsearch系统中进行存储。
+   
+   &nbsp;&nbsp;3）job-admin 通过通用的api调用从sys-service中获取写入到Elasticsearch中的日志数据，然后展示在网页上，
+   当前支持系统名称、执行方法名、日志级别、日志关键词、日志标识（调用唯一标示）进行搜索。
+   
+   &nbsp;&nbsp;4）kibana 当前没有登录功能，因此暂时集成到job-admin进行日志搜索。
+   
+11、欢迎留言讨论：https://github.com/airufei/xmfcn-spring-cloud/issues/1
