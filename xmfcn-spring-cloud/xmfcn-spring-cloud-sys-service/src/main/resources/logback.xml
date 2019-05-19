@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+	<property name="LOG.PATTERN"
+			  value="%d{yyyy-MM-dd HH:mm:ss SSS,GMT+8} [%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] [%thread] %-5level %logger{50} - %msg%n" />
+
 	<!-- 控制台输出 -->
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<!-- 日志输出编码 --> 
 		<encoder charset="UTF-8">
-			<!--格式化输出：%d表示日期,%-5level级别从左显示5个字符宽度,%msg：日志消息,%n是换行符--> 
-			<pattern>%d{yyyy-MM-dd HH:mm:ss SSS,GMT+8} %-5p [%t] - %m%n
-			</pattern>
+			<!--格式化输出：%d表示日期,%-5level级别从左显示5个字符宽度,%msg：日志消息,%n是换行符-->
+			<pattern>${LOG.PATTERN}</pattern>
 		</encoder>
 	</appender>
 
 	<!-- 自定义日志写入方式和格式 -->
 	<appender name="esLog" class="com.cn.xmf.config.XmfLogAppender">
 		<subSysName>sys_service</subSysName><!-- 系统名称 -->
+		<kafkaAddress>10.105.10.12:9092</kafkaAddress>
 	</appender>
 	<!-- 按照每天生成日志文件 -->
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>/opt/mnt_file/logs/xmf_log_user-api.log</file><!--log4j.config.path-->
+		<file>/opt/mnt_file/logs/sys_service.log</file><!--log4j.config.path-->
 		<append>true</append>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!--日志文件输出的文件名-->
-			<fileNamePattern>/opt/mnt_file/logs/xmf_log_user-api-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<fileNamePattern>/opt/mnt_file/logs/sys_service-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
 			<!--日志文件最大的大小 -->
 			<timeBasedFileNamingAndTriggeringPolicy
 					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
@@ -31,7 +34,7 @@
 		</rollingPolicy>
 		<encoder>
 			<ImmediateFlush>false</ImmediateFlush>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss,GMT+8} %-5p [%t] - %m%n</pattern>
+			<pattern>${LOG.PATTERN}</pattern>
 			<charset class="java.nio.charset.Charset">UTF-8</charset>
 		</encoder>
 	</appender>
@@ -39,5 +42,6 @@
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="esLog" />
+		<appender-ref ref="FILE" />
 	</root>
 </configuration> 

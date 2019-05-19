@@ -32,6 +32,12 @@ spring:
     loadbalancer:
       retry:
         enabled: true
+  #Eelasticsearch
+  elasticsearch:
+    jest:
+      uris:
+        - http://10.105.10.113:9200
+      connection-timeout: 3000 #连接超时时间
   # 数据源
   datasource:
     name: cooxin
@@ -64,8 +70,8 @@ spring:
         max-idle: 3000
         max-wait: 3000ms
       shutdown-timeout: 5000ms
-    host: 127.0.0.1
-    password: xmfred*&21^%1dd22
+    host: 10.105.10.113
+    password: testredis
     port: 6379
     timeout: 5000ms
 
@@ -99,14 +105,14 @@ ribbon:
   eager-load:
     enabled: true
 
-#钉钉提醒配置
-dingTalk:
-  type: dev_dingtalk #开发群
-
-#elasticsearch链接配置
-#elasticsearch:
-#  ip: 192.168.1.18
-#  port: 9300
-#  cluster:
-#    name: elasticsearch
-#  pool: 10
+  kafka:
+    server: 10.105.10.12:9092
+    producer:
+      ack: all # 是判别请求是否为完整的条件（就是是判断是不是成功发送了）。我们指定了“all”将会阻塞消息，这种设置性能最低，但是是最可靠的。
+      retries: 5 # 如果请求返回可重试的错误，例如首领选举或网络连接异常等可在几秒钟内解决，生产者会自动发起重试。
+      batchSize: 16384 #缓存大小，值较大的话将会产生更大的批。并需要更多的内存（因为每个“活跃”的分区都有1个缓冲区）
+      lingerMs: 0 # 默认缓冲可立即发送，即便缓冲空间还没有满，但是，如果你想减少请求的数量，可以设置linger.ms大于0。这将指示生产者发送请求之前等待一段时间，希望更多的消息填补到未满的批中。需要注意的是，在高负载下，相近的时间一般也会组成批，即使是 linger.ms=0。在不处于高负载的情况下，如果设置比0大，以少量的延迟代价换取更少的，更有效的请求。
+      bufferMemory: 33554432 # 控制生产者可用的缓存总量，如果消息发送速度比其传输到服务器的快，将会耗尽这个缓存空间。当缓存空间耗尽，      其他发送调用将被阻塞，阻塞时间的阈值通过max.block.ms设定，之后它将抛出一个TimeoutException。
+      compressionType: gzip # 该参数可以设置为snappy、gzip、lz4，snappy占用CPU较少，可提供较好的性能和压缩比，gzip占用CPU多，但提供更高压缩比。
+      keySerializerClass: org.apache.kafka.common.serialization.StringSerializer
+      valueSerializerClass: org.apache.kafka.common.serialization.StringSerializer

@@ -79,7 +79,7 @@ public class DingTalkService {
         logger.info("sendMessageToDingTalk(发送不定格式信息到钉钉群) 开始");
         RetData result = new RetData();
         result.setCode(RetCodeAndMessage.SYS_ERROR);
-        result.setMessage(RetMessage.SYS_ERROR);
+        result.setMessage(RetCodeAndMessage.SYS_ERROR_MESSAGE);
         if (dingMessage == null) {
             result.setMessage("入参dingMessage为空");
             return result;

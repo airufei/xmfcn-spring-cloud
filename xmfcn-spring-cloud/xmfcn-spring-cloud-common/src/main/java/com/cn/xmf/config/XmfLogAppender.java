@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
-
 import java.util.Properties;
 
 /**
@@ -29,7 +28,7 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
 
     private String subSysName;
     private String kafkaAddress;
-    private Tracer tracer; // 默认注入的是DefaultTracer
+    //private Tracer tracer; // 默认注入的是DefaultTracer
     private Producer<String, String> producer;
 
     @Override
@@ -74,13 +73,10 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
                 return;
             }
             try {
-                tracer = (Tracer) SpringUtil.getBean(Tracer.class);
+               // tracer = (Tracer) SpringUtil.getBean(Tracer.class);
             } catch (Exception e) {
             }
             Span currentSpan = null;
-            if (tracer != null) {
-                currentSpan = tracer.getCurrentSpan();
-            }
             String traceId = "";
             if (currentSpan != null) {
                 traceId = currentSpan.traceIdString();
