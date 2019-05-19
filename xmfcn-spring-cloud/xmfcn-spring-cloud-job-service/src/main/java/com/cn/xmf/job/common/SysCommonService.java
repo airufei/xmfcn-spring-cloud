@@ -1,16 +1,31 @@
 package com.cn.xmf.job.common;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.enums.DingMessageType;
+import com.cn.xmf.job.kafka.IKafkaReader;
+import com.cn.xmf.job.sys.DictService;
+import com.cn.xmf.job.sys.KafKaProducerService;
 import com.cn.xmf.job.sys.RedisService;
 import com.cn.xmf.model.ding.DingMessage;
+import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.StringUtil;
 import com.cn.xmf.job.sys.DingTalkService;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.OffsetAndMetadata;
+import org.apache.kafka.common.TopicPartition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author rufei.cn
@@ -21,12 +36,19 @@ import org.springframework.stereotype.Service;
 public class SysCommonService {
 
     private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
+    public static Map<String, String> cacheMap = new HashMap<String, String>();//字典数据本机缓存，减少rpc 调用
+    private static ExecutorService cachedThreadPool = Executors.newFixedThreadPool(200);//线程池
     @Autowired
     private DingTalkService dingTalkService;
     @Autowired
     private RedisService redisService;
     @Autowired
     private Environment environment;
+    @Autowired
+    private DictService dictService;
+    @Autowired
+    private KafKaProducerService kafKaProducerService;
+
 
     /**
      * 获取当前运行的系统名称
@@ -105,13 +127,13 @@ public class SysCommonService {
      * @param key
      * @return
      */
-    public long  delete(String key) {
-        long result=-1;
+    public long delete(String key) {
+        long result = -1;
         try {
             if (StringUtil.isBlank(key)) {
                 return result;
             }
-            result=redisService.delete(key);
+            result = redisService.delete(key);
         } catch (Exception e) {
             logger.error("delete_error:" + StringUtil.getExceptionMsg(e));
             e.printStackTrace();
@@ -119,46 +141,6 @@ public class SysCommonService {
         return result;
     }
 
-    /**
-     * putToQueue(入队列)
-     *
-     * @param key
-     * @return
-     */
-    public void putToQueue(String key, String value) {
-        try {
-            if (StringUtil.isBlank(key)) {
-                return;
-            }
-            if (StringUtil.isBlank(value)) {
-                return;
-            }
-            redisService.putToQueue(key, value);
-        } catch (Exception e) {
-            logger.error("putToQueue_error:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * getFromQueue(获取队列)
-     *
-     * @param key
-     * @return
-     */
-    public String getFromQueue(String key) {
-        String value = null;
-        try {
-            if (StringUtil.isBlank(key)) {
-                return value;
-            }
-            value = redisService.getFromQueue(key);
-        } catch (Exception e) {
-            logger.error("putToQueue_error:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
-        }
-        return value;
-    }
 
     /**
      * getLock（获取分布式锁）
@@ -185,28 +167,6 @@ public class SysCommonService {
     }
 
     /**
-     * getQueueLength（获取队列长度)key 是消息频道
-     * @param key
-     * @return
-     */
-    public long getQueueLength(String key) {
-        long lock = -1;
-        if (StringUtil.isBlank(key)) {
-            return lock;
-        }
-        try {
-            Long aLong = redisService.getQueueLength(key);
-            if (aLong != null) {
-                lock = aLong;
-            }
-        } catch (Exception e) {
-            logger.error("getQueueLength（获取队列长度):" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
-        }
-        return lock;
-    }
-
-    /**
      * getRedisInfo（redis 运行健康信息)
      *
      * @param key
@@ -221,5 +181,228 @@ public class SysCommonService {
             e.printStackTrace();
         }
         return result;
+    }
+
+
+    /**
+     * 获取字典数据
+     *
+     * @param dictType
+     * @param dictKey
+     * @return
+     */
+    public String getDictValue(String dictType, String dictKey) {
+        String dictValue = null;
+        String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + dictType + dictKey;
+        try {
+            dictValue = cacheMap.get(key);
+            if (StringUtil.isNotBlank(dictValue)) {
+                cachedThreadPool.execute(() -> {
+                    cleanLoadCache(key);//定时清除缓存
+                });
+                dictValue = dictValue.replace("@0", "");
+                return dictValue;
+            }
+            dictValue = dictService.getDictValue(dictType, dictKey);
+            if (StringUtil.isBlank(dictValue)) {
+                cacheMap.put(key, "@0");
+            } else {
+                cacheMap.put(key, dictValue);
+            }
+        } catch (Exception e) {
+            logger.error(StringUtil.getExceptionMsg(e));
+            e.printStackTrace();
+        }
+        return dictValue;
+    }
+
+    /**
+     * 定时清除本地缓存
+     *
+     * @param key
+     */
+    private void cleanLoadCache(String key) {
+        try {
+            Thread.sleep(1000 * 60);
+            cacheMap.remove(key);
+            logger.info("清除本地缓存,key={}", key);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 处理失败后再次放入队列
+     *
+     * @param topic
+     * @param value
+     */
+    public void retry(String topic, JSONObject json) {
+        if (StringUtil.isBlank(topic)) {
+            return;
+        }
+        if (json == null) {
+            return;
+        }
+        int queueNum = json.getIntValue("queueNum");
+        int retryIntoQueueNum = StringUtil.stringToInt(getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "retry_into_queue_num"));
+        if (retryIntoQueueNum < 0) {
+            retryIntoQueueNum = 3;
+        }
+        if (queueNum > retryIntoQueueNum) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("topic:").append(topic).append("\n json:").append(json).append("\n msg:");
+            stringBuilder.append("队列数据已经超过").append(retryIntoQueueNum);
+            stringBuilder.append("次重试,需要人工处理");
+            logger.info(stringBuilder.toString());
+            sendDingMessage("retry", json.toString(), null, stringBuilder.toString(), this.getClass());
+            return;
+        }
+        try {
+            json.put("queueNum", queueNum + 1);
+            sendKafka(topic, null, json.toString());
+        } catch (Exception e) {
+            String parms = "  参数：topic=" + topic + " key=" + topic + " value=" + json.toString();
+            String exceptionMsg = "重入kafka队列失败：" + StringUtil.getExceptionMsg(e) + parms;
+            logger.error(exceptionMsg);
+            sendDingMessage("retry", parms, null, exceptionMsg, this.getClass());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 根据处理队列数据返回结果执行是否重入队列、清除缓存等操作
+     *
+     * @param topic
+     * @param json
+     * @param dataReturn
+     */
+    public void isRetryKafka(String topic, JSONObject json, RetData dataReturn) {
+        if (StringUtil.isBlank(topic)) {
+            logger.info("topic 为空");
+        }
+        if (json == null) {
+            logger.info("json 数据 为空");
+        }
+        if (dataReturn == null) {
+            String key = StringUtil.getUuId();
+            retry(topic, json);//重入异常队列
+            return;
+        }
+        int code = dataReturn.getCode();
+        if (code != RetCodeAndMessage.SYS_ERROR) {
+            return;
+        }
+        String value = json.getString("value");
+        JSONObject retryJosn = JSONObject.parseObject(value);
+        if (retryJosn == null) {
+            logger.info("retryJosn 数据 为空");
+            return;
+        }
+        String key = StringUtil.getUuId();
+        retry(topic, json);//重入异常队列
+    }
+
+    /**
+     * sendKafka（发送数据到kafka）
+     *
+     * @param topic
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean sendKafka(String topic, String key, String value) {
+        boolean result = false;
+        if (StringUtil.isBlank(topic)) {
+            logger.info("topic不能为空");
+        }
+        if (StringUtil.isBlank(value)) {
+            logger.info("value不能为空");
+        }
+        JSONObject sendJson = new JSONObject();
+        sendJson.put("topic", topic);
+        sendJson.put("key", key);
+        sendJson.put("value", value);
+        try {
+            result = kafKaProducerService.sendKafka(sendJson);
+        } catch (Exception e) {
+            logger.error("sendKafka（发送数据到kafka）:" + StringUtil.getExceptionMsg(e));
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 消费kafka队列数据
+     *
+     * @param kafkaConsumer 消费实例
+     * @param topic         消费主题
+     * @param kafkaReader   消费类实例
+     * @param taskName      任务名称
+     */
+    public void readKafkaData(KafkaConsumer<String, String> kafkaConsumer, String topic, IKafkaReader kafkaReader, String taskName) {
+        try {
+            if (kafkaConsumer == null) {
+                logger.info(taskName + "kafkaConsumer 消费者实例 为空");
+                return;
+            }
+            if (StringUtil.isBlank(topic)) {
+                logger.info(taskName + "topic 消费主题 为空");
+                return;
+            }
+            kafkaConsumer.subscribe(Collections.singletonList(topic));
+            while (true) {
+                ConsumerRecords<String, String> records = kafkaConsumer.poll(1000);
+                StringBuilder stringBuilder = new StringBuilder();
+                int randNum = StringUtil.getRandNum(500, 5000);
+                if (records == null) {
+                    stringBuilder.append(taskName).append(" records  没有队列数据");
+                    logger.info(stringBuilder.toString());
+                    Thread.sleep(randNum);
+                    continue;
+                }
+                Set<TopicPartition> partitions = records.partitions();
+                if (partitions == null || partitions.size() <= 0) {
+                    stringBuilder.append(taskName).append("  partitions 没有队列数据");
+                    logger.info(stringBuilder.toString());
+                    Thread.sleep(randNum);
+                    continue;
+                }
+                for (TopicPartition partition : partitions) {
+                    List<ConsumerRecord<String, String>> partitionRecords = records.records(partition);
+                    if (partitionRecords == null) {
+                        stringBuilder.append(taskName).append(" partitionRecords  没有队列数据");
+                        logger.info(stringBuilder.toString());
+                        Thread.sleep(randNum);
+                        continue;
+                    }
+                    for (ConsumerRecord<String, String> record : partitionRecords) {
+                        String value = record.value();//数据
+                        String key = record.key();
+                        long offset = record.offset();
+                        JSONObject json = new JSONObject();
+                        json.put("key", key);
+                        json.put("value", value);
+                        json.put("offset", offset);
+                        cachedThreadPool.execute(() -> {
+                            RetData aReturn = kafkaReader.execute(json);
+                            isRetryKafka(topic, json, aReturn);
+                        });
+                        // 逐个异步提交消费成功，避免异常导致无法提交而造成重复消费
+                        kafkaConsumer.commitAsync(Collections.singletonMap(partition, new OffsetAndMetadata(record.offset() + 1)), (map, e) -> {
+                            if (e != null) {
+                                logger.error(taskName + " 提交失败 offset={},e={}", record.offset(), e);
+                            }
+                        });
+                    }
+                }
+            }
+        } catch (InterruptedException e) {
+            logger.error(taskName + StringUtil.getExceptionMsg(e));
+            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error(taskName + StringUtil.getExceptionMsg(e));
+            e.printStackTrace();
+        }
     }
 }
