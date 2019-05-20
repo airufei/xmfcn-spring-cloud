@@ -14,10 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
+
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 扩展logback Appender 类 XmfLogAppender 实现log数据直接发送kafka队列
+ *
  * @author rufei.cn
  */
 @SuppressWarnings("all")
@@ -25,10 +29,11 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
     private static Properties props;
     private static String topic = ConstantUtil.XMF_KAFKA_TOPIC_LOG;//日志主题
     private static final Logger logger = LoggerFactory.getLogger(XmfLogAppender.class);
+    private static ExecutorService cachedThreadPool = Executors.newFixedThreadPool(200);//线程池
 
     private String subSysName;
     private String kafkaAddress;
-    //private Tracer tracer; // 默认注入的是DefaultTracer
+    private Tracer tracer; // 默认注入的是DefaultTracer
     private Producer<String, String> producer;
 
     @Override
@@ -39,7 +44,7 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             props = new Properties();
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
             // 是判别请求是否为完整的条件（就是是判断是不是成功发送了）。我们指定了“all”将会阻塞消息，这种设置性能最低，但是是最可靠的。
-            props.put(ProducerConfig.ACKS_CONFIG, "all");
+            props.put(ProducerConfig.ACKS_CONFIG, "1");
             // 如果请求返回可重试的错误，例如首领选举或网络连接异常等可在几秒钟内解决，生产者会自动发起重试。
             props.put(ProducerConfig.RETRIES_CONFIG, 0);
             // 缓存大小，值较大的话将会产生更大的批。并需要更多的内存（因为每个“活跃”的分区都有1个缓冲区）
@@ -64,10 +69,12 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
 
     @Override
     protected void append(LoggingEvent loggingEvent) {
+        cachedThreadPool.execute(() -> start(loggingEvent));//异步执行
+    }
+
+
+    public void start(LoggingEvent loggingEvent) {
         try {
-            if (producer == null) {
-                return;
-            }
             String loggerName = loggingEvent.getLoggerName();
             if (!loggerName.startsWith("com.cn.xmf")) {
                 return;
@@ -88,8 +95,11 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             logger.error(StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
-    }
+        if (producer == null) {
+            return;
+        }
 
+    }
 
     public String getSubSysName() {
         return subSysName;

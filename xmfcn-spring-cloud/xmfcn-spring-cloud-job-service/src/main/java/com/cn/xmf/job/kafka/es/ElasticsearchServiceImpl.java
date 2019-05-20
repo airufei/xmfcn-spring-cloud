@@ -47,8 +47,8 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
         String offset = jsonObject.getString("offset");
         try {
             EsModel es = new EsModel();
-            es.setIndex(ConstantUtil.SYS_LOG_INDEX);
-            es.setType(ConstantUtil.SYS_LOG_TYPE);
+            es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
+            es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
             es.setMessage(value);
             dataReturn = elasticsearchService.save(es);//kafka数据写入ES系统存储任务
         } catch (Exception e) {

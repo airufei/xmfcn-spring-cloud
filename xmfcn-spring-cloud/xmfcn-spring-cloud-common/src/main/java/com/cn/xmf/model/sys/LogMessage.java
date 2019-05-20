@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 @SuppressWarnings("all")
 public class LogMessage implements Serializable {
-
     private String id = StringUtil.getUuId();//日志ID
     private String sysName = "rufei.cn";//系统名称
     private String sysIp;//执行机器IP

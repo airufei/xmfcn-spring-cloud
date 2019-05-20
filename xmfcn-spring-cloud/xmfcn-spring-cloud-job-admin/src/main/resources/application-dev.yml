@@ -40,6 +40,8 @@ spring:
     loadbalancer:
       retry:
         enabled: true
+  main:
+    allow-bean-definition-overriding: true # 防止'${base-service.sys-service}.FeignClientSpecification', defined in null, could not be registered 多个接口请求服务名称相同
   # 数据源
   datasource:
     name: xmfjob

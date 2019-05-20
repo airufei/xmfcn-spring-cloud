@@ -89,9 +89,9 @@ public class LogSearchController {
             parms.put("keywords", searchKey);
             parms.put("highlights", list);
             EsModel es = new EsModel();
-            es.setParms(parms);
-            es.setIndex(ConstantUtil.SYS_LOG_INDEX);
-            es.setType(ConstantUtil.SYS_LOG_TYPE);
+            es.setKeyWord(parms);
+            es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
+            es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
             List<JSONObject> retList = elasticsearchService.search(es);
             int totalCount = 0;
             if (retList != null) {

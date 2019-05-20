@@ -41,11 +41,8 @@ spring:
     loadbalancer:
       retry:
         enabled: true
-#  security:   # 可连接 api 的用户和密码
-#    user:
-#      name: apiadmin
-#      password: api987423Ds887
-#      roles: admin
+  main:
+    allow-bean-definition-overriding: true # 防止'${base-service.sys-service}.FeignClientSpecification', defined in null, could not be registered 多个接口请求服务名称相同
 # LOGGING
 logging:
     config: classpath:logback.xml

@@ -25,8 +25,6 @@ public class DingTalkService {
     private static Logger logger = LoggerFactory.getLogger(DingTalkService.class);
     @Autowired
     private DingTalkHelperService dingTalkHelperService;
-    @Value("${dingTalk.type}")
-    private String dingTalkType;
 
     /**
      * sendTextMessageToDingTalk(发送文本信息到钉钉群)
@@ -49,8 +47,6 @@ public class DingTalkService {
         if (StringUtil.isBlank(webhook)) {
             //webhook = dictService.getDictValue(ConstantUtil.DICT_TYPE_DINGTALK_URL, dingTalkType);
         }
-        logger.info("钉钉类型：" + dingTalkType + " 钉钉地址:" + webhook);
-
         Message messageText = new TextMessage(message);
         try {
             SendResult send = DingTalkUtil.send(webhook, messageText);
@@ -106,7 +102,7 @@ public class DingTalkService {
         if (StringUtil.isBlank(webhook)) {
             //webhook = dictService.getDictValue(ConstantUtil.DICT_TYPE_DINGTALK_URL, dingTalkType);
         }
-        logger.info("钉钉类型：" + dingTalkType + " 钉钉地址:" + webhook);
+       // logger.info("钉钉类型：" + dingTalkType + " 钉钉地址:" + webhook);
         if (StringUtil.isBlank(webhook)) {
             logger.info("钉钉发送提醒消息失败 webhook 为空");
             result.setMessage("钉钉发送提醒消息失败 webhook 为空");

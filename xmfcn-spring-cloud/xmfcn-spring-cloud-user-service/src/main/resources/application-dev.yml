@@ -62,6 +62,8 @@ spring:
       name: serviceadmin
       password: service987423Ds887
       roles: admin
+  main:
+    allow-bean-definition-overriding: true # 防止'${base-service.sys-service}.FeignClientSpecification', defined in null, could not be registered 多个接口请求服务名称相同
 # myBatis配置
 mybatis:
   # mybatis主配置文件
