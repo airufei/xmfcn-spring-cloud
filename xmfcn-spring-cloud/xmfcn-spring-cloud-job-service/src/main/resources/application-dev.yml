@@ -83,7 +83,7 @@ xmf:
     accessToken: 123456  #执行器通讯TOKEN，非空时启用
 
 kafka:
-  server: 10.105.10.12:9092
+  server: 10.105.234.12:9092
   consumer:
     groupId: xmf_cn
     auto_offset_reset: latest # earliest 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费 latest 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据

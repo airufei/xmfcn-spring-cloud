@@ -15,7 +15,7 @@
 	<!-- 自定义日志写入方式和格式 -->
 	<appender name="esLog" class="com.cn.xmf.config.XmfLogAppender">
 		<subSysName>sys_service</subSysName><!-- 系统名称 -->
-		<kafkaAddress>10.105.10.12:9092</kafkaAddress>
+		<kafkaAddress>10.105.234.12:9092</kafkaAddress>
 	</appender>
 	<!-- 按照每天生成日志文件 -->
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">

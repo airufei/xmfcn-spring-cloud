@@ -35,19 +35,19 @@ spring:
   data:
     elasticsearch:   #Eelasticsearch
       cluster-name: elasticsearch
-      cluster-nodes: 10.105.10.113:9300
+      cluster-nodes: 10.105.234.12:9300
       repositories:
         enabled: true
   elasticsearch: #
     rest:
-      uris: ["http://10.105.10.113:9200"] #Eelasticsearch 健康检查地址
+      uris: ["http://10.105.234.12:9200"] #Eelasticsearch 健康检查地址
   # 数据源
   datasource:
     name: cooxin
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://10.105.10.46:3306/test_xcode?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    url: jdbc:mysql://10.105.234.12:3306/test_xcode?useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: dev_ydxsb
     password: dev_ydxsb
     initialSize: 10 #连接池初始化大小
@@ -73,7 +73,7 @@ spring:
         max-idle: 3000
         max-wait: 3000ms
       shutdown-timeout: 5000ms
-    host: 10.105.10.113
+    host: 10.105.234.12
     password: testredis
     port: 6379
     timeout: 5000ms
@@ -111,7 +111,7 @@ ribbon:
     enabled: true
 
 kafka:
-  server: 10.105.10.12:9092
+  server: 10.105.234.12:9092
   producer:
     ack: 1 # 是判别请求是否为完整的条件（就是是判断是不是成功发送了）。我们指定了“all”将会阻塞消息，这种设置性能最低，但是是最可靠的。
     retries: 0 # 如果请求返回可重试的错误，例如首领选举或网络连接异常等可在几秒钟内解决，生产者会自动发起重试。
