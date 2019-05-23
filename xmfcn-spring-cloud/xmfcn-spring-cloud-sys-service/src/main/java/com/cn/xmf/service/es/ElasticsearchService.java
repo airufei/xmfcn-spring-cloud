@@ -145,6 +145,7 @@ public class ElasticsearchService {
                 responseCode = result.getResponseCode();
             }
             if (responseCode != 200) {
+                logger.error("搜索错误：" + result);
                 return pt;
             }
             pt = elasticsearchHelperService.getSearchResult(result, esPage);
