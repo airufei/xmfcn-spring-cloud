@@ -58,8 +58,8 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             // 其他发送调用将被阻塞，阻塞时间的阈值通过max.block.ms设定，之后它将抛出一个TimeoutException。
             props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
             props.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, 104857600);//
-            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.StringDeserializer.class);
-            props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.StringDeserializer.class);
+            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
             producer = new KafkaProducer<>(props);
         } catch (Exception exception) {
             logger.error("KafkaAppender: Exception initializing Producer. " + exception + " : " + exception.getMessage());
@@ -80,7 +80,7 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
                 return;
             }
             try {
-               // tracer = (Tracer) SpringUtil.getBean(Tracer.class);
+                // tracer = (Tracer) SpringUtil.getBean(Tracer.class);
             } catch (Exception e) {
             }
             Span currentSpan = null;
@@ -88,17 +88,17 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             if (currentSpan != null) {
                 traceId = currentSpan.traceIdString();
             }
+            if (producer == null) {
+                return;
+            }
             String jsonString = StringUtil.getLogData(loggingEvent, subSysName, traceId);
+
             // 方法是异步的，添加消息到缓冲区等待发送，并立即返回。生产者将单个的消息批量在一起发送来提高效率。
             producer.send(new ProducerRecord<>(ConstantUtil.XMF_KAFKA_TOPIC_LOG, topic, jsonString));
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
             e.printStackTrace();
         }
-        if (producer == null) {
-            return;
-        }
-
     }
 
     public String getSubSysName() {

@@ -40,10 +40,10 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         }
         String loginUrl = webRoot + "/job/toLogin";
         String strUrl = request.getRequestURI();
-        if (strUrl != null && (strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api")|| strUrl.contains("/logout"))) {
+        if (strUrl != null && (strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api") || strUrl.contains("/logout"))) {
             return;
         }
-        logger.info("登录地址============================" + loginUrl);
+        //logger.info("登录地址============================" + loginUrl);
         HttpSession session = null;
         try {
             session = request.getSession();
@@ -56,12 +56,12 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
             return;
         }
         JobUser user = (JobUser) request.getSession().getAttribute("user");
-        if (user == null||user.getId()==null||user.getId()<=0) {
+        if (user == null || user.getId() == null || user.getId() <= 0) {
             StringUtil.redirect(response, loginUrl);
             return;
         }
         String roleCode = user.getRoleCode();
-        boolean interceptUrl = isInterceptUrl(roleCode, strUrl);//检查权限
+        boolean interceptUrl = true; //isInterceptUrl(roleCode, strUrl);//检查权限
         if (!interceptUrl) {
             logger.info("请求地址============================" + strUrl);
             String msg = "权限不足";
@@ -101,28 +101,22 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         if (StringUtil.isBlank(url)) {
             return true;
         }
-        if(url.contains("sysError"))
-        {
+        if (url.contains("sysError")) {
             return true;
         }
-        if(url.contains("/adminlte/"))
-        {
+        if (url.contains("/adminlte/")) {
             return true;
         }
-        if(url.contains("/plugins/"))
-        {
+        if (url.contains("/plugins/")) {
             return true;
         }
-        if(url.contains("/js/"))
-        {
+        if (url.contains("/js/")) {
             return true;
         }
-        if(url.contains("/treeview/"))
-        {
+        if (url.contains("/treeview/")) {
             return true;
         }
-        if(url.contains("/chartInfo"))
-        {
+        if (url.contains("/chartInfo")) {
             return true;
         }
         List<JobMenu> roleList = jobMenuService.getJobMenuRoles(0, roleCode);

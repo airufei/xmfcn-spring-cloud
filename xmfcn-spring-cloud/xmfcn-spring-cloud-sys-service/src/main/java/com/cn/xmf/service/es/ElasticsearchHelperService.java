@@ -135,7 +135,7 @@ public class ElasticsearchHelperService {
         searchSourceBuilder.explain(isAccuracySort);
         searchSourceBuilder.from(startIndex);
         searchSourceBuilder.size(pageSize);
-        Sort sort = new Sort("time.keyword", Sort.Sorting.DESC);
+        Sort sort = new Sort("time", Sort.Sorting.DESC);
         searchSourceBuilder.highlighter(highlightBuilder);
         search = new Search.Builder(searchSourceBuilder.toString())
                 .addIndex(indexName).addType(type).addSort(sort).build();

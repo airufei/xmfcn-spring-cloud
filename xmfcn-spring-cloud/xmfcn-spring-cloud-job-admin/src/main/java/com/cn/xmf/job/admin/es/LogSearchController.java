@@ -57,6 +57,9 @@ public class LogSearchController {
     @ResponseBody
     public JSONObject search(HttpServletRequest request) {
         JSONObject retJon = new JSONObject();
+        retJon.put("data", "");
+        retJon.put("recordsTotal", 0);
+        retJon.put("recordsFiltered", 0);
         JSONObject param = null;
         try {
             EsModel parms = logSearchHelperService.getParms(request);
@@ -75,7 +78,7 @@ public class LogSearchController {
             sysCommonService.sendDingMessage("search", param.toString(), JSON.toJSONString(retJon), msg, this.getClass());
             e.printStackTrace();
         }
-        logger.info("search:(系统日志搜索) 结束");
+        logger.info("search:(系统日志搜索) ==结束==");
         return retJon;
     }
 

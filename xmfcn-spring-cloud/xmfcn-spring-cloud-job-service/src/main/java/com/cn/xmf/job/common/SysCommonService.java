@@ -356,15 +356,11 @@ public class SysCommonService {
                 StringBuilder stringBuilder = new StringBuilder();
                 int randNum = StringUtil.getRandNum(500, 5000);
                 if (records == null) {
-                    stringBuilder.append(taskName).append(" records  没有队列数据");
-                    logger.info(stringBuilder.toString());
                     Thread.sleep(randNum);
                     continue;
                 }
                 Set<TopicPartition> partitions = records.partitions();
                 if (partitions == null || partitions.size() <= 0) {
-                    stringBuilder.append(taskName).append("  partitions 没有队列数据");
-                    logger.info(stringBuilder.toString());
                     Thread.sleep(randNum);
                     continue;
                 }
