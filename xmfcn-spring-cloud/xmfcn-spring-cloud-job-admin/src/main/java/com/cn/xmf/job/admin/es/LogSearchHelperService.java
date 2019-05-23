@@ -60,7 +60,7 @@ public class LogSearchHelperService {
         }
         JSONObject highlights = new JSONObject();
         highlights.put("message", message);
-        highlights.put("stackMessage", stackMessage);
+        //highlights.put("stackMessage", stackMessage);
 
         JSONObject searchKey = new JSONObject();
         searchKey.put("subSysName", subSysName);

@@ -17,16 +17,16 @@ import java.util.Date;
 public class LogMessage implements Serializable {
     private String id = StringUtil.getUuId();//日志ID
     private String sysName = "xmfcn";//系统名称
-    private String sysIp;//执行机器IP
-    private String subSysName;//子系统系统名称 sys-service /base-zuul等
-    private String moduleName;//模块名称
-    private String methodName;//方法名称
-    private String message;//信息
-    private String level;//日志级别
+    private String sysIp = "";//执行机器IP
+    private String subSysName = "";//子系统系统名称 sys-service /base-zuul等
+    private String moduleName = "";//模块名称
+    private String methodName = "";//方法名称
+    private String message = "";//信息
+    private String level = "";//日志级别
     private Date time = new Date();//发生时间
-    private String stackMessage;//堆栈信息 ERRROR级别才会有
-    private String threadName;//线程名称
-    private String traceId;//上下文追踪ID
+    private String stackMessage = "";//堆栈信息 ERRROR级别才会有
+    private String threadName = "";//线程名称
+    private String traceId = "";//上下文追踪ID
 
     public String getId() {
         return id;

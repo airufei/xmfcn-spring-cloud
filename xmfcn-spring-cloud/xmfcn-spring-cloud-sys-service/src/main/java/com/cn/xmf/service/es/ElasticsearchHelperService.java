@@ -154,11 +154,23 @@ public class ElasticsearchHelperService {
         EsPartion pt = null;
         int totalCount = result.getJsonObject().get("hits").getAsJsonObject().get("total").getAsInt();
         JsonArray asJsonArray = result.getJsonObject().get("hits").getAsJsonObject().get("hits").getAsJsonArray();
+        int len = 0;
+        if (asJsonArray != null) {
+            len = asJsonArray.size();
+        }
         List<JSONObject> list = new ArrayList<>();
-        for (int i = 0; i < asJsonArray.size(); i++) {
+        for (int i = 0; i < len; i++) {
             JsonElement jsonElement = asJsonArray.get(i);
-            JsonObject source = jsonElement.getAsJsonObject().getAsJsonObject("_source").getAsJsonObject();
-            JsonObject highlight = jsonElement.getAsJsonObject().getAsJsonObject("highlight");
+            if (jsonElement == null || jsonElement.isJsonNull()) {
+                continue;
+            }
+            JsonObject object = jsonElement.getAsJsonObject();
+            if (object == null || object.isJsonNull()) {
+                continue;
+            }
+            JsonObject source = object.getAsJsonObject("_source").getAsJsonObject();
+            JsonObject highlight = object.getAsJsonObject("highlight");
+            String esId = object.get("_id").getAsString();
             Set<Map.Entry<String, JsonElement>> entries = null;
             if (highlight != null) {
                 entries = highlight.entrySet();
@@ -168,6 +180,9 @@ public class ElasticsearchHelperService {
             }
             JSONObject jsonObject = JSONObject.parseObject(source.toString());
             jsonObject = addHightWord(entries, jsonObject);
+            if (jsonObject != null) {
+                jsonObject.put("esId", esId);
+            }
             list.add(jsonObject);
         }
         pt = new EsPartion(esPage, list, totalCount);
