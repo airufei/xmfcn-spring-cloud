@@ -6,7 +6,7 @@ import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.kafka.IKafkaReader;
 import com.cn.xmf.job.common.SysCommonService;
 import com.cn.xmf.job.sys.ElasticsearchService;
-import com.cn.xmf.model.sys.EsModel;
+import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
@@ -36,11 +36,11 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
      */
     @Override
     public RetData execute(JSONObject jsonObject) {
-        RetData dataReturn = new RetData();
-        dataReturn.setCode(RetCodeAndMessage.DATA_ERROR);
-        dataReturn.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
+        RetData retData = new RetData();
+        retData.setCode(RetCodeAndMessage.DATA_ERROR);
+        retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
         if (jsonObject == null) {
-            return dataReturn;
+            return retData;
         }
         String key = jsonObject.getString("key");
         String value = jsonObject.getString("value");
@@ -50,19 +50,19 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
             es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
             es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
             es.setMessage(value);
-            dataReturn = elasticsearchService.save(es);//kafka数据写入ES系统存储任务
+            retData = elasticsearchService.save(es);//kafka数据写入ES系统存储任务
         } catch (Exception e) {
             String msg = "【kafka数据写入ES系统存储任务】" + StringUtil.getExceptionMsg(e);
-            dataReturn.setCode(RetCodeAndMessage.SYS_ERROR);
-            dataReturn.setMessage(msg);
+            retData.setCode(RetCodeAndMessage.SYS_ERROR);
+            retData.setMessage(msg);
             logger.error(msg);
             e.printStackTrace();
         }
-        if (dataReturn == null) {
-            dataReturn = new RetData();
-            dataReturn.setCode(RetCodeAndMessage.SYS_ERROR);
-            dataReturn.setMessage(RetCodeAndMessage.SYS_ERROR_MESSAGE);
+        if (retData == null) {
+            retData = new RetData();
+            retData.setCode(RetCodeAndMessage.SYS_ERROR);
+            retData.setMessage(RetCodeAndMessage.SYS_ERROR_MESSAGE);
         }
-        return dataReturn;
+        return retData;
     }
 }

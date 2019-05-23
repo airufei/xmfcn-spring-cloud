@@ -1,14 +1,13 @@
-package com.cn.xmf.model.sys;
+package com.cn.xmf.model.es;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.Partion;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.awt.print.Pageable;
 import java.io.Serializable;
 
 /**
- * ES存储数据模型
+ * ES 参数模型
+ * @Author rufei.cn
  */
 public class EsModel implements Serializable {
 
@@ -19,6 +18,9 @@ public class EsModel implements Serializable {
     private JSONObject hightWord;//高亮词
     private JSONObject sortWord;//排序参数
     private EsPage esPage;//分页参数
+    private boolean isVague;//是否模糊搜索
+    private boolean isAccuracySort;//是否根据精确度排序
+    private boolean isAndSearch;//是否and搜索
 
     public String getIndex() {
         return index;
@@ -76,6 +78,30 @@ public class EsModel implements Serializable {
         this.message = message;
     }
 
+    public boolean isVague() {
+        return isVague;
+    }
+
+    public void setVague(boolean vague) {
+        isVague = vague;
+    }
+
+    public boolean isAccuracySort() {
+        return isAccuracySort;
+    }
+
+    public void setAccuracySort(boolean accuracySort) {
+        isAccuracySort = accuracySort;
+    }
+
+    public boolean isAndSearch() {
+        return isAndSearch;
+    }
+
+    public void setAndSearch(boolean andSearch) {
+        isAndSearch = andSearch;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -86,6 +112,9 @@ public class EsModel implements Serializable {
                 .append("hightWord", hightWord)
                 .append("sortWord", sortWord)
                 .append("esPage", esPage)
+                .append("isVague", isVague)
+                .append("isAccuracySort", isAccuracySort)
+                .append("isAndSearch", isAndSearch)
                 .toString();
     }
 }

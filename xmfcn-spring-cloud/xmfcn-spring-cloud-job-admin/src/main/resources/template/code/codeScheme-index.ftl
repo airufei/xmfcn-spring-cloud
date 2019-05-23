@@ -4,7 +4,7 @@
   	 <#import "/common/common.macro.ftl" as netCommon>
 	<@netCommon.commonStyle />
     <!-- DataTables -->
-    <link rel="stylesheet" href="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="/job/adminlte/plugins/datatables/dataTables.bootstrap.css">
     <title>代码生成方案管理</title>
 </head>
 <body class="hold-transition skin-blue sidebar-mini  <#if cookieMap?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if>">
@@ -190,13 +190,13 @@
 
  <@netCommon.commonScript />
 <!-- DataTables -->
-<script src="/jobadmin/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<script src="/jobadmin/plugins/jquery/jquery.validate.min.js"></script>
+<script src="/job/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/job/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="/job/plugins/jquery/jquery.validate.min.js"></script>
 <!-- moment -->
-<script src="/jobadmin/adminlte/plugins/daterangepicker/moment.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>//拖拽
-<script src="/jobadmin/js/codeScheme.index.js"></script>
+<script src="/job/adminlte/plugins/daterangepicker/moment.min.js"></script>
+<script src="/job/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>//拖拽
+<script src="/job/js/codeScheme.index.js"></script>
 
 <script>
     $(document).ready(function () {

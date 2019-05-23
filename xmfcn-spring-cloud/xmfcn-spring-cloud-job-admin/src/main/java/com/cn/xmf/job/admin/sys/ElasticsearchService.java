@@ -2,7 +2,8 @@ package com.cn.xmf.job.admin.sys;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.RetData;
-import com.cn.xmf.model.sys.EsModel;
+import com.cn.xmf.model.es.EsModel;
+import com.cn.xmf.model.es.EsPartion;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,5 +50,5 @@ public interface ElasticsearchService {
      * @return
      */
     @RequestMapping(value = "search", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<JSONObject> search(@RequestBody EsModel es);
+    public EsPartion search(@RequestBody EsModel es);
 }

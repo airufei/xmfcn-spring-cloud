@@ -4,7 +4,7 @@
   	 <#import "/common/common.macro.ftl" as netCommon>
 	<@netCommon.commonStyle />
     <!-- DataTables -->
-    <link rel="stylesheet" href="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="/job/adminlte/plugins/datatables/dataTables.bootstrap.css">
     <title>表字段信息管理</title>
     <style>
         tbody{
@@ -63,7 +63,7 @@
                                     <th name="jdbcType">列的数据类型</th>
                                 </tr>
                                 </thead>
-                                <form action="/jobadmin/codeTableColumn/saveList" method="post">
+                                <form action="/job/codeTableColumn/saveList" method="post">
                                     <tbody>
                                 <#list colist as  li>
                                 <tr>
@@ -219,10 +219,10 @@
 
  <@netCommon.commonScript />
 <!-- DataTables -->
-<script src="/jobadmin/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<script src="/jobadmin/plugins/jquery/jquery.validate.min.js"></script>
+<script src="/job/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/job/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="/job/plugins/jquery/jquery.validate.min.js"></script>
 <!-- moment -->
-<script src="/jobadmin/adminlte/plugins/daterangepicker/moment.min.js"></script>
+<script src="/job/adminlte/plugins/daterangepicker/moment.min.js"></script>
 </body>
 </html>

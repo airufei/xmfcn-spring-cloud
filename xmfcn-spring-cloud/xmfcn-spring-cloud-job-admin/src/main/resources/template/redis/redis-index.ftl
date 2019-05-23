@@ -4,7 +4,7 @@
   	 <#import "/common/common.macro.ftl" as netCommon>
 	<@netCommon.commonStyle />
     <!-- DataTables -->
-    <link rel="stylesheet" href="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="/job/adminlte/plugins/datatables/dataTables.bootstrap.css">
     <title>redis运行监控</title>
 </head>
 <body class="hold-transition skin-blue sidebar-mini  <#if cookieMap?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if>">

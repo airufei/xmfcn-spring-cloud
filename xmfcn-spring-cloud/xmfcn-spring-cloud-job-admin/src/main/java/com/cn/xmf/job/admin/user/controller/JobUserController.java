@@ -151,29 +151,29 @@ public class JobUserController {
     @RequestMapping("save")
     @ResponseBody
     public ReturnT<String> save(HttpServletRequest request, JobUser jobUser) {
-        ReturnT<String> dataReturn = new ReturnT<String>();
+        ReturnT<String> retData = new ReturnT<String>();
         try {
             // 无保存内容
             if (jobUser == null) {
-                dataReturn.setMsg("无保存内容");
-                return dataReturn;
+                retData.setMsg("无保存内容");
+                return retData;
             }
             String username = jobUser.getUsername();
             String phone = jobUser.getPhone();
             if(StringUtil.isBlank(username))
             {
-                dataReturn.setMsg("用户名不能为空");
-                return dataReturn;
+                retData.setMsg("用户名不能为空");
+                return retData;
             }
             if(StringUtil.isBlank(phone))
             {
-                dataReturn.setMsg("手机号不能为空");
-                return dataReturn;
+                retData.setMsg("手机号不能为空");
+                return retData;
             }
             if(!StringUtil.isMobilePhone(phone))
             {
-                dataReturn.setMsg("手机号格式不正确");
-                return dataReturn;
+                retData.setMsg("手机号格式不正确");
+                return retData;
             }
             Long id = jobUser.getId();
             String password = jobUser.getPassword();
@@ -183,8 +183,8 @@ public class JobUserController {
                 jobUser.setUpdateTime(new Date());
             }else if(StringUtil.isBlank(password))
             {
-                dataReturn.setMsg("密码不能为空");
-                return dataReturn;
+                retData.setMsg("密码不能为空");
+                return retData;
             }
             int length =-1;
             if(StringUtil.isNotBlank(password))
@@ -195,25 +195,25 @@ public class JobUserController {
             }
             if(length!=-1&&(length<6||length>20))
             {
-                dataReturn.setMsg("密码长度6-20位");
-                return dataReturn;
+                retData.setMsg("密码长度6-20位");
+                return retData;
             }
             // 保存数据库
             JobUser ret = jobUserService.save(jobUser);
             if (ret != null) {
-                dataReturn.setCode(ReturnT.SUCCESS_CODE);
-                dataReturn.setMsg("保存成功");
+                retData.setCode(ReturnT.SUCCESS_CODE);
+                retData.setMsg("保存成功");
             }
         } catch (Exception e) {
             e.printStackTrace();
             String msg = "save:(保存调度系统用户数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("save", null, JSON.toJSONString(dataReturn), msg, this.getClass());
-            dataReturn.setMsg("服务器繁忙，请稍后再试");
-            return dataReturn;
+            sysCommonService.sendDingMessage("save", null, JSON.toJSONString(retData), msg, this.getClass());
+            retData.setMsg("服务器繁忙，请稍后再试");
+            return retData;
         }
         logger.info("save:(保存调度系统用户数据接口) 结束");
-        return dataReturn;
+        return retData;
     }
 
 

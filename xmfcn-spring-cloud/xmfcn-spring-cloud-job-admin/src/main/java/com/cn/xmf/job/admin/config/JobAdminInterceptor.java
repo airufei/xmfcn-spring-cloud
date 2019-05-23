@@ -38,7 +38,7 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         if (StringUtil.isBlank(webRoot)) {
             throw new Exception("未获取服务域名/IP");
         }
-        String loginUrl = webRoot + "/jobadmin/toLogin";
+        String loginUrl = webRoot + "/job/toLogin";
         String strUrl = request.getRequestURI();
         if (strUrl != null && (strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api")|| strUrl.contains("/logout"))) {
             return;
@@ -66,7 +66,7 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
             logger.info("请求地址============================" + strUrl);
             String msg = "权限不足";
             msg = URLEncoder.encode(msg, "utf-8");
-            String errorUrl = webRoot + "/jobadmin/sysError?errorMsg=" + msg;
+            String errorUrl = webRoot + "/job/sysError?errorMsg=" + msg;
             StringUtil.redirect(response, errorUrl);
             return;
         }

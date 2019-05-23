@@ -1,6 +1,6 @@
 #Redisson配置
 singleServerConfig:
-  address: "redis://10.105.234.12:6379"
+  address: "redis://10.105.10.113:6379"
   password: testredis
   clientName: null
   database: 2 #选择使用哪个数据库0~15

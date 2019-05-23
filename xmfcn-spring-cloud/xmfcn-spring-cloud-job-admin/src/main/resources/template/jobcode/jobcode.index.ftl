@@ -3,8 +3,8 @@
 <head>
   	<#import "/common/common.macro.ftl" as netCommon>
 	<@netCommon.commonStyle />
-	<link rel="stylesheet" href="/jobadmin/plugins/codemirror/lib/codemirror.css">
-	<link rel="stylesheet" href="/jobadmin/plugins/codemirror/addon/hint/show-hint.css">
+	<link rel="stylesheet" href="/job/plugins/codemirror/lib/codemirror.css">
+	<link rel="stylesheet" href="/job/plugins/codemirror/addon/hint/show-hint.css">
     <title>${I18n.admin_name}</title>
 	<style type="text/css">
 		.CodeMirror {
@@ -115,41 +115,41 @@
 <@netCommon.commonScript />
 
 
-    <#assign glueTypeModeSrc = "/jobadmin/plugins/codemirror/mode/clike/clike.js" />
+    <#assign glueTypeModeSrc = "/job/plugins/codemirror/mode/clike/clike.js" />
     <#assign glueTypeIdeMode = "text/x-java" />
 
     <#if jobInfo.glueType == "GLUE_GROOVY" >
-        <#assign glueTypeModeSrc = "/jobadmin/plugins/codemirror/mode/clike/clike.js" />
+        <#assign glueTypeModeSrc = "/job/plugins/codemirror/mode/clike/clike.js" />
         <#assign glueTypeIdeMode = "text/x-java" />
     <#elseif jobInfo.glueType == "GLUE_SHELL" >
-        <#assign glueTypeModeSrc = "/jobadmin/plugins/codemirror/mode/shell/shell.js" />
+        <#assign glueTypeModeSrc = "/job/plugins/codemirror/mode/shell/shell.js" />
         <#assign glueTypeIdeMode = "text/x-sh" />
     <#elseif jobInfo.glueType == "GLUE_PYTHON" >
-        <#assign glueTypeModeSrc = "/jobadmin/plugins/codemirror/mode/python/python.js" />
+        <#assign glueTypeModeSrc = "/job/plugins/codemirror/mode/python/python.js" />
         <#assign glueTypeIdeMode = "text/x-python" />
     <#elseif jobInfo.glueType == "GLUE_PHP" >
-        <#assign glueTypeModeSrc = "/jobadmin/plugins/codemirror/mode/php/php.js" />
+        <#assign glueTypeModeSrc = "/job/plugins/codemirror/mode/php/php.js" />
         <#assign glueTypeIdeMode = "text/x-php" />
-        <#assign glueTypeModeSrc02 = "/jobadmin/plugins/codemirror/mode/clike/clike.js" />
+        <#assign glueTypeModeSrc02 = "/job/plugins/codemirror/mode/clike/clike.js" />
     <#elseif jobInfo.glueType == "GLUE_NODEJS" >
-        <#assign glueTypeModeSrc = "/jobadmin/plugins/codemirror/mode/javascript/javascript.js" />
+        <#assign glueTypeModeSrc = "/job/plugins/codemirror/mode/javascript/javascript.js" />
         <#assign glueTypeIdeMode = "text/javascript" />
     </#if>
 
 
-<script src="/jobadmin/plugins/codemirror/lib/codemirror.js"></script>
+<script src="/job/plugins/codemirror/lib/codemirror.js"></script>
 <script src="${glueTypeModeSrc}"></script>
 <#if glueTypeModeSrc02?exists>
     <script src="${glueTypeModeSrc02}"></script>
 </#if>
-<script src="/jobadmin/plugins/codemirror/addon/hint/show-hint.js"></script>
-<script src="/jobadmin/plugins/codemirror/addon/hint/anyword-hint.js"></script>
+<script src="/job/plugins/codemirror/addon/hint/show-hint.js"></script>
+<script src="/job/plugins/codemirror/addon/hint/anyword-hint.js"></script>
 
 <script>
 var id = '${jobInfo.id}';
 var ideMode = '${glueTypeIdeMode}';
 </script>
-<script src="/jobadmin/js/jobcode.index.1.js"></script>
+<script src="/job/js/jobcode.index.1.js"></script>
 
 </body>
 </html>

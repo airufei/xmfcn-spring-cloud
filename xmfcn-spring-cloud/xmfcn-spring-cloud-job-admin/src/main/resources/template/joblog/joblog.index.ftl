@@ -4,9 +4,9 @@
   	<#import "/common/common.macro.ftl" as netCommon>
 	<@netCommon.commonStyle />
 	<!-- DataTables -->
-  	<link rel="stylesheet" href="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.css">
+  	<link rel="stylesheet" href="/job/adminlte/plugins/datatables/dataTables.bootstrap.css">
   	<!-- daterangepicker -->
-  	<link rel="stylesheet" href="/jobadmin/adminlte/plugins/daterangepicker/daterangepicker.css">
+  	<link rel="stylesheet" href="/job/adminlte/plugins/daterangepicker/daterangepicker.css">
     <title>${I18n.admin_name}</title>
 </head>
 <body class="hold-transition skin-blue sidebar-mini <#if cookieMap?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if> ">
@@ -154,11 +154,11 @@
 
 <@netCommon.commonScript />
 <!-- DataTables -->
-<script src="/jobadmin/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="/job/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/job/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- daterangepicker -->
-<script src="/jobadmin/adminlte/plugins/daterangepicker/moment.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
-<script src="/jobadmin/js/joblog.index.1.js"></script>
+<script src="/job/adminlte/plugins/daterangepicker/moment.min.js"></script>
+<script src="/job/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="/job/js/joblog.index.1.js"></script>
 </body>
 </html>

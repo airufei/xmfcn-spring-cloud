@@ -4,7 +4,7 @@
     <#import "/common/common.macro.ftl" as netCommon>
     <@netCommon.commonStyle />
     <!-- DataTables -->
-    <link rel="stylesheet" href="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="/job/adminlte/plugins/datatables/dataTables.bootstrap.css">
     <title>日志搜索</title>
 </head>
 <body class="hold-transition skin-blue sidebar-mini  <#if cookieMap?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if>">
@@ -12,7 +12,7 @@
     <!-- header -->
     <@netCommon.commonHeader />
     <!-- left -->
-    <@netCommon.commonLeft "log" />
+    <@netCommon.commonLeft "jobRole" />
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -43,8 +43,7 @@
                         <select class="form-control" id="subSysName">
                             <option value="">--请选择--</option>
                             <#list sysList as sys>
-                                <option value="${sys.subSysName}"
-                                        <#if subSysName==group.subSysName>selected</#if> >${sys.subSysName}</option>
+                                <option value="${sys.subSysName}">${sys.subSysName}</option>
                             </#list>
                         </select>
                     </div>
@@ -87,15 +86,15 @@
                                     <thead>
                                     <tr>
                                         <th name="id">id</th>
-                                        <th name="sysIp">机器IP</th>
+                                        <th name="time">时间</th>
                                         <th name="subSysName">系统名称</th>
                                         <th name="moduleName">模块</th>
                                         <th name="traceId">日志标识</th>
                                         <th name="methodName">方法名称</th>
-                                        <th name="message">日志信息</th>
                                         <th name="level">日志级别</th>
-                                        <th name="time">时间</th>
+                                        <th name="message">日志信息</th>
                                         <th name="threadName">线程名称</th>
+                                        <th name="sysIp">机器IP</th>
                                         <th name="stackMessage">堆栈信息</th>
                                         <th name="operate"></th>
                                     </tr>
@@ -135,48 +134,48 @@
                 <form class="form-horizontal form" role="form">
                     <div class="form-group">
                         <label for="id" class="col-sm-2 control-label">日志ID</label>
-                        <div class="col-sm-10"><label   id="id_deatil"></label></div>
+                        <div class="col-sm-10"><label id="id_deatil"></label></div>
                     </div>
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">机器IP</label>
-                        <div class="col-sm-10"><label  id="sysIp"></label></div>
+                        <div class="col-sm-10"><label id="sysIp"></label></div>
                     </div>
                     <div class="form-group">
                         <label for="subSysName" class="col-sm-2 control-label">系统名称</label>
-                        <div class="col-sm-10"><label  id="subSysName_deatil"></label></div>
+                        <div class="col-sm-10"><label id="subSysName_deatil"></label></div>
                     </div>
                     <div class="form-group">
                         <label for="moduleName" class="col-sm-2 control-label">模块名称</label>
-                        <div class="col-sm-10"><label  id="moduleName"></label></div>
+                        <div class="col-sm-10"><label id="moduleName"></label></div>
                     </div>
                     <div class="form-group">
                         <label for="methodName" class="col-sm-2 control-label">方法名称</label>
-                        <div class="col-sm-10"><label  id="methodName__deatil"></label></div>
+                        <div class="col-sm-10"><label id="methodName__deatil"></label></div>
                     </div>
 
                     <div class="form-group">
                         <label for="traceId" class="col-sm-2 control-label">日志标识</label>
-                        <div class="col-sm-10"><label  id="traceId__deatil"></label></div>
+                        <div class="col-sm-10"><label id="traceId__deatil"></label></div>
                     </div>
                     <div class="form-group">
                         <label for="message" class="col-sm-2 control-label">日志信息</label>
-                        <div class="col-sm-10"><label  id="message__deatil"></label></div>
+                        <div class="col-sm-10"><label id="message__deatil"></label></div>
                     </div>
                     <div class="form-group">
                         <label for="time" class="col-sm-2 control-label">线程名称</label>
-                        <div class="col-sm-10"><label  id="threadName"></label></div>
+                        <div class="col-sm-10"><label id="threadName"></label></div>
                     </div>
                     <div class="form-group">
                         <label for="level" class="col-sm-2 control-label">日志级别</label>
-                        <div class="col-sm-10"><label  id="level__deatil"></label></div>
+                        <div class="col-sm-10"><label style="color: red" id="level__deatil"></label></div>
                     </div>
                     <div class="form-group">
                         <label for="time" class="col-sm-2 control-label">日志时间</label>
-                        <div class="col-sm-10"><label   id="time"></label></div>
+                        <div class="col-sm-10"><label id="time"></label></div>
                     </div>
                     <div class="form-group">
-                        <label for="time" class="col-sm-2 control-label">堆栈信息</label>
-                        <div class="col-sm-10"><label  id="stackMessage"></label></div>
+                        <label for="stackMessage" class="col-sm-2 control-label">堆栈信息</label>
+                        <div class="col-sm-10"><label style="color: red" id="stackMessage_deatil"></label></div>
                     </div>
                     <hr>
                     <div class="form-group">
@@ -191,14 +190,14 @@
 <@netCommon.commonScript />
 <!-- DataTables -->
 
-<script src="/jobadmin/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<script src="/jobadmin/plugins/jquery/jquery.validate.min.js"></script>
+<script src="/job/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/job/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="/job/plugins/jquery/jquery.validate.min.js"></script>
 <!-- moment -->
-<script src="/jobadmin/adminlte/plugins/daterangepicker/moment.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/job/adminlte/plugins/daterangepicker/moment.min.js"></script>
+<script src="/job/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>
 //拖拽
-<script src="/jobadmin/js/log.index.js"></script>
+<script src="/job/js/log.index.js"></script>
 
 <script>
     $(document).ready(function () {

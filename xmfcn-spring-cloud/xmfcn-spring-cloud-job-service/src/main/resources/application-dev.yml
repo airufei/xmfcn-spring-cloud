@@ -73,7 +73,7 @@ ribbon:
 xmf:
   job:
     admin:
-      addresses: http://localhost:8082/jobadmin #调度中心部署跟地址 多个逗号隔开
+      addresses: http://localhost:8082/job #调度中心部署跟地址 多个逗号隔开
     executor:
       appname: xmf-job-timer #执行器"AppName"和地址信息配置：AppName执行器心跳注册分组依据
       ip:        #执行器IP默认为空表示自动获取IP，多网卡时可手动设置指定IP，手动设置IP时将会绑定Host
@@ -83,7 +83,7 @@ xmf:
     accessToken: 123456  #执行器通讯TOKEN，非空时启用
 
 kafka:
-  server: 10.105.234.12:9092
+  server: 10.105.10.12:9092
   consumer:
     groupId: xmf_cn
     auto_offset_reset: latest # earliest 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费 latest 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
@@ -92,4 +92,4 @@ kafka:
     sessionTimeoutMs: 180000 # 如果消费者崩溃或无法在session.timeout.ms配置的时间内发送心跳，则消费者将被视为死亡，并且其分区将被重新分配。
     maxPollRecords: 300 # 单次拉取的最大消息数量
     keyDeserializerClass: org.apache.kafka.common.serialization.StringDeserializer
-    valueDeserializerClass: org.apache.kafka.common.serialization.StringDeserializeracks
+    valueDeserializerClass: org.apache.kafka.common.serialization.StringDeserializer

@@ -275,21 +275,21 @@ public class SysCommonService {
      *
      * @param topic
      * @param json
-     * @param dataReturn
+     * @param retData
      */
-    public void isRetryKafka(String topic, JSONObject json, RetData dataReturn) {
+    public void isRetryKafka(String topic, JSONObject json, RetData retData) {
         if (StringUtil.isBlank(topic)) {
             logger.info("topic 为空");
         }
         if (json == null) {
             logger.info("json 数据 为空");
         }
-        if (dataReturn == null) {
+        if (retData == null) {
             String key = StringUtil.getUuId();
             retry(topic, json);//重入异常队列
             return;
         }
-        int code = dataReturn.getCode();
+        int code = retData.getCode();
         if (code != RetCodeAndMessage.SYS_ERROR) {
             return;
         }

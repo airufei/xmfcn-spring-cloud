@@ -2,7 +2,7 @@ package com.cn.xmf.job.sys;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.RetData;
-import com.cn.xmf.model.sys.EsModel;
+import com.cn.xmf.model.es.EsModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;

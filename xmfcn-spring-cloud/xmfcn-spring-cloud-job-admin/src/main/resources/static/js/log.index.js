@@ -11,6 +11,8 @@ $(function () {
             type: "post",
             data: function (d) {
                 var obj = {};
+                obj.start = d.start;
+                obj.length = d.length;
                 obj.message = $('#message').val();
                 obj.subSysName = $('#subSysName').val();
                 obj.traceId = $('#traceId').val();
@@ -30,10 +32,11 @@ $(function () {
                 "width": '180'
             },
             {
-                "data": 'sysIp',
+                "data": 'time',
                 "visible": true,
-                "width": '180'
+                "width": '160'
             },
+
             {
                 "data": 'subSysName',
                 "visible": true,
@@ -55,24 +58,24 @@ $(function () {
                 "width": '180'
             },
             {
-                "data": 'message',
-                "visible": true,
-                "width": '250'
-            },
-            {
                 "data": 'level',
                 "visible": true,
                 "width": '80'
             },
             {
-                "data": 'time',
+                "data": 'message',
                 "visible": true,
-                "width": '160'
+                "width": '250'
             },
             {
                 "data": 'threadName',
                 "visible": true,
                 "width": '160'
+            },
+            {
+                "data": 'sysIp',
+                "visible": true,
+                "width": '180'
             },
             {
                 "data": 'stackMessage',
@@ -145,11 +148,10 @@ function deatil(target) {
         $("#message__deatil").html(row.message);
         $("#level__deatil").html(row.level);
         $("#time").html(row.time);
-        $("#stackMessage").html(row.stackMessage);
+        $("#stackMessage_deatil").html(row.stackMessage);
         $("#threadName").html(row.threadName);
         $("#traceId__deatil").html(row.traceId);
         $("#id_deatil").html(row.id);
     }
     $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
 }
-

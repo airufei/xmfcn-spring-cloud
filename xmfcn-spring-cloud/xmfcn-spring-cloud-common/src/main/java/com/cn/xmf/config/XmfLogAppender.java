@@ -58,8 +58,8 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             // 其他发送调用将被阻塞，阻塞时间的阈值通过max.block.ms设定，之后它将抛出一个TimeoutException。
             props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
             props.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, 104857600);//
-            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-            props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+            props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.StringDeserializer.class);
+            props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.StringDeserializer.class);
             producer = new KafkaProducer<>(props);
         } catch (Exception exception) {
             logger.error("KafkaAppender: Exception initializing Producer. " + exception + " : " + exception.getMessage());

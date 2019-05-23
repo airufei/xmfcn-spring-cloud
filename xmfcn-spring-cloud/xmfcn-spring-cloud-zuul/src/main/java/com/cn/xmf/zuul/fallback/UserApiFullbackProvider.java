@@ -72,12 +72,12 @@ public class UserApiFullbackProvider implements FallbackProvider {
             @Override
             public InputStream getBody() throws IOException {
                 logger.info(serviceName + "服务触发熔断");
-                RetData dataReturn = new RetData();
-                dataReturn.setCode(RetCodeAndMessage.SYS_ERROR);
-                dataReturn.setMessage("服务繁忙，请稍后再试！");
-                dataReturn.setData(null);
+                RetData retData = new RetData();
+                retData.setCode(RetCodeAndMessage.SYS_ERROR);
+                retData.setMessage("服务繁忙，请稍后再试！");
+                retData.setData(null);
                 SendMarkdownMessage();
-                return new ByteArrayInputStream(JSON.toJSONString(dataReturn).getBytes("utf-8"));
+                return new ByteArrayInputStream(JSON.toJSONString(retData).getBytes("utf-8"));
             }
 
             @Override

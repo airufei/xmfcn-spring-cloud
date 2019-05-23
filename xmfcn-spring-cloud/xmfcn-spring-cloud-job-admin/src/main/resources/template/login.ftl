@@ -3,7 +3,7 @@
 <head>
   	<#import "/common/common.macro.ftl" as netCommon>
 	<@netCommon.commonStyle />
-    <link rel="stylesheet" href="/jobadmin/adminlte/plugins/iCheck/square/blue.css">
+    <link rel="stylesheet" href="/job/adminlte/plugins/iCheck/square/blue.css">
 	<title>${I18n.admin_name}</title>
 </head>
 <body class="hold-transition login-page">
@@ -38,9 +38,9 @@
 		</form>
 	</div>
 <@netCommon.commonScript />
-<script src="/jobadmin/plugins/jquery/jquery.validate.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/iCheck/icheck.min.js"></script>
-<script src="/jobadmin/js/login.1.js"></script>
+<script src="/job/plugins/jquery/jquery.validate.min.js"></script>
+<script src="/job/adminlte/plugins/iCheck/icheck.min.js"></script>
+<script src="/job/js/login.1.js"></script>
 
 </body>
 </html>

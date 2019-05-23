@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.model.ding.EsLogMessage;
 import com.cn.xmf.model.ding.MarkdownMessage;
-import com.cn.xmf.model.sys.LogMessage;
+import com.cn.xmf.model.es.LogMessage;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -562,8 +562,6 @@ public class StringUtil extends StringUtils {
             response.sendRedirect(url);
             return;
         } catch (IOException e) {
-            logger.error("redirect:(重定向----跳转) error===>" + e + "========》url：" + url);
-            e.printStackTrace();
         }
     }
 
@@ -831,7 +829,7 @@ public class StringUtil extends StringUtils {
     /**
      * getRandNum:(生成随机数)
      *
-     * @Author airufei
+     * @Author rufei.cn
      * @param min
      *            最小值
      * @param max

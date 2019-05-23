@@ -1,11 +1,13 @@
-package com.cn.xmf.model.sys;
+package com.cn.xmf.model.es;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
 /**
- * ES 分页相关数据
+ *  ES 分页参数集
+ * @Author rufei.cn
+ * @see
  */
 public class EsPage implements Serializable {
     public int pageNo;

@@ -5,6 +5,7 @@ import com.cn.xmf.job.common.SysCommonService;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.StringUtil;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.Deserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,9 @@ import java.util.Properties;
 
 /**
  * kafka配置
- *  @author rufei.cn
- *  @version 2019-05-19
+ *
+ * @author rufei.cn
+ * @version 2019-05-19
  */
 @Component
 public class KafkaConfig {
@@ -87,8 +89,8 @@ public class KafkaConfig {
         consumerProps.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, consumer_maxPollRecords);
         // 如果消费者崩溃或无法在session.timeout.ms配置的时间内发送心跳，则消费者将被视为死亡，并且其分区将被重新分配。
         consumerProps.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, consumer_sessionTimeoutMs);
-        consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, Class.forName(environment.getProperty("kafka.consumer.keyDeserializerClass")));
-        consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, Class.forName(environment.getProperty("kafka.consumer.valueDeserializerClass")));
+        consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.StringDeserializer.class);
+        consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, org.apache.kafka.common.serialization.StringDeserializer.class);
         return consumerProps;
     }
 

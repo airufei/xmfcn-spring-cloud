@@ -66,11 +66,11 @@ public class ErrorExtFilter extends SendErrorFilter {
         dingTalkMessage(ctx, throwable);
         throwable.printStackTrace();
         // 构建返回信息
-        RetData dataReturn = new RetData();
-        dataReturn.setCode(RetCodeAndMessage.SYS_ERROR);
-        dataReturn.setMessage("服务繁忙，请稍后再试");
-        dataReturn.setData(new Object());
-        return dataReturn;
+        RetData retData = new RetData();
+        retData.setCode(RetCodeAndMessage.SYS_ERROR);
+        retData.setMessage("服务繁忙，请稍后再试");
+        retData.setData(new Object());
+        return retData;
     }
 
     /*
