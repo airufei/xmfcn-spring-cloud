@@ -17,6 +17,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
+import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,16 +150,13 @@ public class SysCommonService {
      * @return
      * @author airuei
      */
-    public long getLock(String key) {
-        long lock = -1;
+    public RLock getLock(String key) {
+        RLock lock = null;
         if (StringUtil.isBlank(key)) {
             return lock;
         }
         try {
-            Long aLong = redisService.getLock(key);
-            if (aLong != null) {
-                lock = aLong;
-            }
+            //lock = redisService.getLock(key);
         } catch (Exception e) {
             logger.error("getLock（获取分布式锁）:" + StringUtil.getExceptionMsg(e));
             e.printStackTrace();
@@ -352,9 +350,14 @@ public class SysCommonService {
             }
             kafkaConsumer.subscribe(Collections.singletonList(topic));
             while (true) {
-                ConsumerRecords<String, String> records = kafkaConsumer.poll(1000);
+                ConsumerRecords<String, String> records = null;
+                try {
+                    records = kafkaConsumer.poll(500);
+                } catch (Exception e) {
+                    logger.error(taskName + " kafkaConsumer.poll" + StringUtil.getExceptionMsg(e));
+                }
                 StringBuilder stringBuilder = new StringBuilder();
-                int randNum = StringUtil.getRandNum(500, 5000);
+                int randNum = StringUtil.getRandNum(500, 3000);
                 if (records == null) {
                     Thread.sleep(randNum);
                     continue;

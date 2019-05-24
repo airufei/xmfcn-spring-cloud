@@ -2,6 +2,7 @@ package com.cn.xmf.job.admin.sys;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.job.admin.common.HttpBasicAuthConfig;
+import org.redisson.api.RLock;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,8 +73,8 @@ public interface RedisService {
      * @param key
      * @return
      */
-    @RequestMapping(value ="getLock",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Long getLock(@RequestParam(value = "key") String key);
+    //@RequestMapping(value ="getLock",consumes = MediaType.APPLICATION_JSON_VALUE)
+    // public RLock getLock(@RequestParam(value = "key") String key);
     /**
      * getQueueLength（获取队列长度)key 是消息频道
      * @param key

@@ -172,7 +172,7 @@ public class SysCommonService {
             return lock;
         }
         try {
-            lock = redisService.getLock(key);
+            //lock = redisService.getLock(key);
         } catch (Exception e) {
             logger.error("getLock（获取分布式锁）:" + StringUtil.getExceptionMsg(e));
             e.printStackTrace();

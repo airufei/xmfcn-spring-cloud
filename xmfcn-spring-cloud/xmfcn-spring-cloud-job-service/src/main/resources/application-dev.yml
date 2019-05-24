@@ -41,6 +41,9 @@ spring:
         enabled: true
   main:
     allow-bean-definition-overriding: true # 防止'${base-service.sys-service}.FeignClientSpecification', defined in null, could not be registered 多个接口请求服务名称相同
+  sleuth:
+    sampler:
+      probability: 1 #收集日志比例 100%
 # LOGGING
 logging:
     config: classpath:logback.xml
@@ -90,6 +93,6 @@ kafka:
     enableAutoCommit: false
     maxPollIntervalMs: 120000 # 两次poll()的间隔若大于该配置时间，如果此超时时间期满之前poll()没有调用，则消费者被视为失败，并且分组将重新平衡，以便将分区重新分配给别的成员。
     sessionTimeoutMs: 180000 # 如果消费者崩溃或无法在session.timeout.ms配置的时间内发送心跳，则消费者将被视为死亡，并且其分区将被重新分配。
-    maxPollRecords: 300 # 单次拉取的最大消息数量
+    maxPollRecords: 30 # 单次拉取的最大消息数量
     keyDeserializerClass: org.apache.kafka.common.serialization.StringDeserializer
     valueDeserializerClass: org.apache.kafka.common.serialization.StringDeserializer

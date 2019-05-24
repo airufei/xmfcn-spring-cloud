@@ -42,6 +42,9 @@ spring:
         enabled: true
   main:
     allow-bean-definition-overriding: true # 防止'${base-service.sys-service}.FeignClientSpecification', defined in null, could not be registered 多个接口请求服务名称相同
+  sleuth:
+    sampler:
+      probability: 1 #收集日志比例 100%
   # 数据源
   datasource:
     name: xmfjob

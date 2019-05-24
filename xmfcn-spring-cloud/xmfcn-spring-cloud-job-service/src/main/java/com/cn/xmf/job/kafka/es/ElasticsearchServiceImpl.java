@@ -8,16 +8,22 @@ import com.cn.xmf.job.common.SysCommonService;
 import com.cn.xmf.job.sys.ElasticsearchService;
 import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.util.ConstantUtil;
+import com.cn.xmf.util.DateUtil;
 import com.cn.xmf.util.StringUtil;
+import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 /**
  * kafka数据写入ES系统存储任务
- *  @author rufei.cn
- *  @version 2019-05-19
+ *
+ * @author rufei.cn
+ * @version 2019-05-19
  */
 @SuppressWarnings("all")
 @Service
@@ -46,6 +52,11 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
         String value = jsonObject.getString("value");
         String offset = jsonObject.getString("offset");
         try {
+            if (value != null && value.contains("mdc_____")) {
+                retData.setCode(RetCodeAndMessage.SUCCESS);
+                retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
+                return retData;
+            }
             EsModel es = new EsModel();
             es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
             es.setType(ConstantUtil.ES_SYS_LOG_TYPE);

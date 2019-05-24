@@ -75,24 +75,21 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
 
     public void start(LoggingEvent loggingEvent) {
         try {
-            String loggerName = loggingEvent.getLoggerName();
-            if (!loggerName.startsWith("com.cn.xmf")) {
-                return;
-            }
-            try {
-                // tracer = (Tracer) SpringUtil.getBean(Tracer.class);
-            } catch (Exception e) {
-            }
-            Span currentSpan = null;
-            String traceId = "";
-            if (currentSpan != null) {
-                traceId = currentSpan.traceIdString();
-            }
             if (producer == null) {
                 return;
             }
-            String jsonString = StringUtil.getLogData(loggingEvent, subSysName, traceId);
-
+            String loggerName = loggingEvent.getLoggerName();
+            String message = loggingEvent.getFormattedMessage();
+            if (!loggerName.startsWith("com.cn.xmf")) {
+                return;
+            }
+            if (message.contains("mdc_______")) {
+                return;
+            }
+            if (message.contains("mdc_______")) {
+                return;
+            }
+            String jsonString = StringUtil.getLogData(loggingEvent, subSysName);
             // 方法是异步的，添加消息到缓冲区等待发送，并立即返回。生产者将单个的消息批量在一起发送来提高效率。
             producer.send(new ProducerRecord<>(ConstantUtil.XMF_KAFKA_TOPIC_LOG, topic, jsonString));
         } catch (Exception e) {

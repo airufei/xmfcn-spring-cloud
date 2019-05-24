@@ -76,7 +76,9 @@ spring:
     password: testredis
     port: 6379
     timeout: 5000ms
-
+  sleuth:
+    sampler:
+      probability: 1 #收集日志比例 100%
 
 
 # myBatis配置

@@ -58,7 +58,7 @@ public class AuthFilter extends ZuulFilter {
         String requestURI = request.getRequestURI();
         String url = StringUtil.getSystemUrl(request);
         logger.info("请求requestURI："+requestURI);
-        logger.info("请求url："+url);
+        logger.trace("请求url："+url);
         //添加Basic Auth认证信息
         if (requestURI.contains("/server/")) {
             requestContext.addZuulRequestHeader("Authorization", "Basic " + getBase64Credentials(serviceName, servicePassword));

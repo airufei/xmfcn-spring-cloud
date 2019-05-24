@@ -27,6 +27,7 @@ public class LogMessage implements Serializable {
     private String stackMessage = "";//堆栈信息 ERRROR级别才会有
     private String threadName = "";//线程名称
     private String traceId = "";//上下文追踪ID
+    private String traceMap = "";//trace 数据详情
 
     public String getId() {
         return id;
@@ -124,6 +125,14 @@ public class LogMessage implements Serializable {
         this.traceId = traceId;
     }
 
+    public String getTraceMap() {
+        return traceMap;
+    }
+
+    public void setTraceMap(String traceMap) {
+        this.traceMap = traceMap;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -139,6 +148,7 @@ public class LogMessage implements Serializable {
                 .append("stackMessage", stackMessage)
                 .append("threadName", threadName)
                 .append("traceId", traceId)
+                .append("traceMap", traceMap)
                 .toString();
     }
 }

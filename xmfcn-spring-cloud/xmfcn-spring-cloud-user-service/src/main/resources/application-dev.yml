@@ -38,6 +38,9 @@ spring:
     loadbalancer:
       retry:
         enabled: true
+  sleuth:
+    sampler:
+      probability: 1 #收集日志比例 100%
   # 数据源
   datasource:
     name: cooxin

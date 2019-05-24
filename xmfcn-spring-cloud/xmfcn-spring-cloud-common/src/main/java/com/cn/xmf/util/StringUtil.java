@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 public class StringUtil extends StringUtils {
     private static Logger logger = LoggerFactory.getLogger(StringUtil.class);
     private static final char SEPARATOR = '_';
+
     public static boolean isBlank(final CharSequence cs) {
         if ("null".equals(StringUtils.trim(String.valueOf(cs)))) {
             return true;
@@ -52,9 +53,9 @@ public class StringUtil extends StringUtils {
     /**
      * 驼峰命名法工具
      *
-     * @return toCamelCase("hello_world") == "helloWorld"
-     *         toCapitalizeCamelCase("hello_world") == "HelloWorld"
-     *         toUnderScoreCase("helloWorld") = "hello_world"
+     * @return toCamelCase(" hello_world ") == "helloWorld"
+     * toCapitalizeCamelCase("hello_world") == "HelloWorld"
+     * toUnderScoreCase("helloWorld") = "hello_world"
      */
     public static String toCamelCase(String s) {
         if (s == null) {
@@ -77,6 +78,7 @@ public class StringUtil extends StringUtils {
         }
         return sb.toString();
     }
+
     /**
      * stringToFloat:(String转float 默认值0)
      *
@@ -757,17 +759,18 @@ public class StringUtil extends StringUtils {
 
     /**
      * 密码加密
+     *
      * @param password
      * @return
      * @throws Exception
      */
-    public static String getEncryptPassword(String password){
-        String ret=null;
+    public static String getEncryptPassword(String password) {
+        String ret = null;
         try {
-            password= MD5Util.getMD5(password);
-            ret=new StringBuilder(password).reverse().toString();//反转
+            password = MD5Util.getMD5(password);
+            ret = new StringBuilder(password).reverse().toString();//反转
         } catch (Exception e) {
-            ret=null;
+            ret = null;
             e.printStackTrace();
         }
         return ret;
@@ -780,7 +783,7 @@ public class StringUtil extends StringUtils {
      * @author rufei.cn
      * @date 2018/2/27 11:21
      */
-    public static String getLogData(LoggingEvent loggingEvent, String subSysName, String traceId) {
+    public static String getLogData(LoggingEvent loggingEvent, String subSysName) {
         InetAddress addr = null;
         try {
             addr = InetAddress.getLocalHost();
@@ -795,46 +798,55 @@ public class StringUtil extends StringUtils {
         Level level = loggingEvent.getLevel();
         String loggerName = loggingEvent.getLoggerName();
         String threadName = loggingEvent.getThreadName();
+        Map<String, String> mdcMap = loggingEvent.getMDCPropertyMap();
         StackTraceElement[] callerData = loggingEvent.getCallerData();
         StringBuilder stackMessage = null;//堆栈信息
         String methodName = "";
+        String traceId = "";
+        String tranceMessage = "";
+        if (mdcMap != null) {
+            traceId = mdcMap.get("traceId");
+            tranceMessage = JSON.toJSONString(mdcMap);//trace 详细数据
+        }
+        int len = 0;
         if (callerData != null && callerData.length > 0) {
             methodName = callerData[0].getMethodName();
-            if (level != null && level == Level.ERROR) {
-                stackMessage = new StringBuilder();//堆栈信息
-                for (int i = 0; i < callerData.length; i++) {
-                    if (i > 50) {
-                        break;
-                    }
-                    stackMessage.append(callerData[i] + "\n");
-                }
+            len = callerData.length;
+        }
+        stackMessage = new StringBuilder();//堆栈信息
+        for (int i = 0; i < len; i++) {
+            if (level != null && level != Level.ERROR) {
+                continue;
             }
+            if (i > 50) {
+                break;
+            }
+            stackMessage.append(callerData[i] + "\n\n");
         }
-        LogMessage milog = new LogMessage();
-        milog.setSubSysName(subSysName);
-        milog.setModuleName(loggerName);
-        milog.setLevel(level.toString());
-        milog.setMethodName(methodName);
-        milog.setMessage(formattedMessage);
-        milog.setThreadName(threadName);
-        milog.setSysIp(ip);
-        milog.setTraceId(traceId);
+        LogMessage logMessage = new LogMessage();
+        logMessage.setSubSysName(subSysName);
+        logMessage.setModuleName(loggerName);
+        logMessage.setLevel(level.toString());
+        logMessage.setMethodName(methodName);
+        logMessage.setMessage(formattedMessage);
+        logMessage.setThreadName(threadName);
+        logMessage.setSysIp(ip);
+        logMessage.setTraceId(traceId);
+        logMessage.setTraceMap(tranceMessage);
         if (stackMessage != null && stackMessage.toString().length() > 0) {
-            milog.setStackMessage(stackMessage.toString());
+            logMessage.setStackMessage(stackMessage.toString());
         }
-        String jsonString = JSON.toJSONString(milog);
+        String jsonString = JSON.toJSONString(logMessage);
         return jsonString;
     }
 
     /**
      * getRandNum:(生成随机数)
      *
-     * @Author rufei.cn
-     * @param min
-     *            最小值
-     * @param max
-     *            最大值
+     * @param min 最小值
+     * @param max 最大值
      * @return
+     * @Author rufei.cn
      */
     public static int getRandNum(int min, int max) {
         Random random = new Random();
@@ -874,6 +886,7 @@ public class StringUtil extends StringUtils {
             return request.getRemoteAddr();
         }
     }
+
     public static void main(String[] args) {
         String password = StringUtil.getEncryptPassword("abc123");
         System.out.println(password);

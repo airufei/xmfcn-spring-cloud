@@ -76,7 +76,7 @@ public interface RedisService {
      * @param key
      * @return
      */
-    @RequestMapping(value = "getLock", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public RLock getLock(@RequestParam(value = "key") String key);
+    //@RequestMapping(value = "getLock", consumes = MediaType.APPLICATION_JSON_VALUE)
+    // public RLock getLock(@RequestParam(value = "key") String key);
 
 }

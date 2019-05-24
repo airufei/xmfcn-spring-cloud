@@ -367,6 +367,9 @@ public class RedisService {
         if (StringUtil.isBlank(pattern)) {
             return result;
         }
+        if (pattern.equals("*")) {
+            return result;
+        }
         RedisConnection conn = getRedisConnection();
         if (conn == null) {
             return result;
@@ -422,8 +425,7 @@ public class RedisService {
     /**
      * getLock（分布式锁-正确方式）
      *
-     * @param key  锁标识
-     * @return 锁对象
+     * @param key 锁标识
      */
     @RequestMapping("getLock")
     public RLock getLock(String key) {
@@ -443,6 +445,7 @@ public class RedisService {
         logger.info("getLock(获取分布式锁) 结束：" + lock);
         return lock;
     }
+
     /**
      * getOnlyNo(获取唯一编号)
      *
