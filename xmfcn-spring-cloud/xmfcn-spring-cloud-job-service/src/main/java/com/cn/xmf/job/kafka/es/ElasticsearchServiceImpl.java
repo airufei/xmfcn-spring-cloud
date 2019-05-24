@@ -1,5 +1,6 @@
 package com.cn.xmf.job.kafka.es;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.RetCodeAndMessage;
 import com.cn.xmf.base.model.RetData;
@@ -10,13 +11,16 @@ import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.DateUtil;
 import com.cn.xmf.util.StringUtil;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,45 +38,41 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
     @Autowired
     private ElasticsearchService elasticsearchService;
 
-    /**
-     * 获取kafka数据，执行业务操作
-     *
-     * @param jsonObject
-     * @return
-     */
     @Override
-    public RetData execute(JSONObject jsonObject) {
+    public RetData execute(List<ConsumerRecord<String, String>> partitionRecords, String topic) {
         RetData retData = new RetData();
         retData.setCode(RetCodeAndMessage.DATA_ERROR);
         retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
-        if (jsonObject == null) {
+        if (partitionRecords == null || partitionRecords.size() <= 0) {
             return retData;
         }
-        String key = jsonObject.getString("key");
-        String value = jsonObject.getString("value");
-        String offset = jsonObject.getString("offset");
-        try {
-            if (value != null && value.contains("mdc_____")) {
-                retData.setCode(RetCodeAndMessage.SUCCESS);
-                retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
-                return retData;
-            }
-            EsModel es = new EsModel();
-            es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
-            es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
-            es.setMessage(value);
-            retData = elasticsearchService.save(es);//kafka数据写入ES系统存储任务
-        } catch (Exception e) {
-            String msg = "【kafka数据写入ES系统存储任务】" + StringUtil.getExceptionMsg(e);
-            retData.setCode(RetCodeAndMessage.SYS_ERROR);
-            retData.setMessage(msg);
-            logger.error(msg);
-            e.printStackTrace();
+        if (StringUtil.isBlank(topic)) {
+            return retData;
         }
-        if (retData == null) {
-            retData = new RetData();
+        List<JSONObject> list = new ArrayList<>();
+        for (ConsumerRecord<String, String> record : partitionRecords) {
+            String value = record.value();//数据
+            String key = record.key();
+            long offset = record.offset();
+            JSONObject json = JSONObject.parseObject(value);
+            list.add(json);
+            int size = list.size();
+            if (size % 20 == 0) {
+                EsModel es = new EsModel();
+                es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
+                es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
+                es.setMessage(JSON.toJSONString(list));
+                retData = elasticsearchService.saveBatch(es);//kafka数据写入ES系统存储任务
+            }
+        }
+        try {
+
+        } catch (Exception e) {
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
             retData.setCode(RetCodeAndMessage.SYS_ERROR);
-            retData.setMessage(RetCodeAndMessage.SYS_ERROR_MESSAGE);
+            retData.setMessage(exceptionMsg);
+            logger.error(exceptionMsg);
+            e.printStackTrace();
         }
         return retData;
     }

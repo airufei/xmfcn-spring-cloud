@@ -350,14 +350,21 @@ public class SysCommonService {
             }
             kafkaConsumer.subscribe(Collections.singletonList(topic));
             while (true) {
+                int randNum = 200;
+                boolean isSleep = false;
+                long startTime = System.currentTimeMillis();
                 ConsumerRecords<String, String> records = null;
                 try {
+                    if (isSleep) {
+                        randNum = StringUtil.getRandNum(500, 2000);
+                        Thread.sleep(randNum);
+                    }
                     records = kafkaConsumer.poll(500);
                 } catch (Exception e) {
                     logger.error(taskName + " kafkaConsumer.poll" + StringUtil.getExceptionMsg(e));
                 }
                 StringBuilder stringBuilder = new StringBuilder();
-                int randNum = StringUtil.getRandNum(500, 3000);
+                randNum = StringUtil.getRandNum(500, 3000);
                 if (records == null) {
                     Thread.sleep(randNum);
                     continue;
@@ -369,31 +376,24 @@ public class SysCommonService {
                 }
                 for (TopicPartition partition : partitions) {
                     List<ConsumerRecord<String, String>> partitionRecords = records.records(partition);
-                    if (partitionRecords == null) {
+                    if (partitionRecords == null || partitionRecords.size() <= 0) {
                         stringBuilder.append(taskName).append(" partitionRecords  没有队列数据");
                         logger.info(stringBuilder.toString());
                         Thread.sleep(randNum);
                         continue;
                     }
-                    for (ConsumerRecord<String, String> record : partitionRecords) {
-                        String value = record.value();//数据
-                        String key = record.key();
-                        long offset = record.offset();
-                        JSONObject json = new JSONObject();
-                        json.put("key", key);
-                        json.put("value", value);
-                        json.put("offset", offset);
-                        cachedThreadPool.execute(() -> {
-                            RetData aReturn = kafkaReader.execute(json);
-                            isRetryKafka(topic, json, aReturn);
-                        });
-                        // 逐个异步提交消费成功，避免异常导致无法提交而造成重复消费
-                        kafkaConsumer.commitAsync(Collections.singletonMap(partition, new OffsetAndMetadata(record.offset() + 1)), (map, e) -> {
-                            if (e != null) {
-                                logger.error(taskName + " 提交失败 offset={},e={}", record.offset(), e);
-                            }
-                        });
-                    }
+                    int len = partitionRecords.size();
+                    ConsumerRecord<String, String> record = partitionRecords.get(0);
+                    long newOffset = record.offset() + len;
+                    cachedThreadPool.execute(() -> {
+                        RetData aReturn = kafkaReader.execute(partitionRecords, topic);
+                    });
+                    // 逐个异步提交消费成功，避免异常导致无法提交而造成重复消费
+                    kafkaConsumer.commitAsync(Collections.singletonMap(partition, new OffsetAndMetadata(newOffset)), (map, e) -> {
+                        if (e != null) {
+                            logger.error(taskName + " 提交失败 offset={},e={}", record.offset(), e);
+                        }
+                    });
                 }
             }
         } catch (InterruptedException e) {
