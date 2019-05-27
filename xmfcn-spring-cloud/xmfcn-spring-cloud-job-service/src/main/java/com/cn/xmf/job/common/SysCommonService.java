@@ -386,7 +386,7 @@ public class SysCommonService {
                     ConsumerRecord<String, String> record = partitionRecords.get(0);
                     long newOffset = record.offset() + len;
                     cachedThreadPool.execute(() -> {
-                        RetData aReturn = kafkaReader.execute(partitionRecords, topic);
+                        RetData aReturn = kafkaReader.executeList(partitionRecords, topic);
                     });
                     // 逐个异步提交消费成功，避免异常导致无法提交而造成重复消费
                     kafkaConsumer.commitAsync(Collections.singletonMap(partition, new OffsetAndMetadata(newOffset)), (map, e) -> {

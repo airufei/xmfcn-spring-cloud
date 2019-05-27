@@ -19,7 +19,17 @@ public interface IKafkaReader {
      *
      * @param partitionRecords 数据集
      * @param topic            主题
+     * @Author airufei
      * @return
      */
-    public RetData execute(List<ConsumerRecord<String, String>> partitionRecords, String topic);
+    RetData executeList(List<ConsumerRecord<String, String>> partitionRecords, String topic);
+
+    /**
+     * 获取kafka数据，执行业务操作
+     *
+     * @param jsonObject
+     * @Author airufei
+     * @return
+     */
+    RetData execute(JSONObject jsonObject);
 }

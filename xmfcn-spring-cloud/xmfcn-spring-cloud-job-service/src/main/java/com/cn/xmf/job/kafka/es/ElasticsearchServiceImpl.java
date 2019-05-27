@@ -38,8 +38,16 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
     @Autowired
     private ElasticsearchService elasticsearchService;
 
+    /**
+     * 获取kafka数据，执行业务操作
+     *
+     * @param partitionRecords 数据集
+     * @param topic            主题
+     * @Author airufei
+     * @return
+     */
     @Override
-    public RetData execute(List<ConsumerRecord<String, String>> partitionRecords, String topic) {
+    public RetData executeList(List<ConsumerRecord<String, String>> partitionRecords, String topic) {
         RetData retData = new RetData();
         retData.setCode(RetCodeAndMessage.DATA_ERROR);
         retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
@@ -56,17 +64,17 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
             long offset = record.offset();
             JSONObject json = JSONObject.parseObject(value);
             list.add(json);
-            int size = list.size();
-            if (size % 20 == 0) {
-                EsModel es = new EsModel();
-                es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
-                es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
-                es.setMessage(JSON.toJSONString(list));
-                retData = elasticsearchService.saveBatch(es);//kafka数据写入ES系统存储任务
-            }
         }
         try {
-
+            int size = list.size();
+            String jsonString = JSON.toJSONString(list);
+            int length = jsonString.length();
+            logger.info("  topic=" + topic + " ;size = " + size + " ;length = " + length);
+            EsModel es = new EsModel();
+            es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
+            es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
+            es.setMessage(JSON.toJSONString(list));
+            retData = elasticsearchService.saveBatch(es);//kafka数据写入ES系统存储任务
         } catch (Exception e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
             retData.setCode(RetCodeAndMessage.SYS_ERROR);
@@ -75,5 +83,18 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
             e.printStackTrace();
         }
         return retData;
+    }
+
+
+    /**
+     * 获取kafka数据，执行业务操作
+     *
+     * @param jsonObject
+     * @Author airufei
+     * @return
+     */
+    @Override
+    public RetData execute(JSONObject jsonObject) {
+        return null;
     }
 }
