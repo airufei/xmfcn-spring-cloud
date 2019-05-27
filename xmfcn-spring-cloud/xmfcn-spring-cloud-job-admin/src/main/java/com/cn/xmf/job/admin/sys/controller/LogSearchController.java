@@ -1,8 +1,9 @@
-package com.cn.xmf.job.admin.es;
+package com.cn.xmf.job.admin.sys.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.job.admin.common.SysCommonService;
+import com.cn.xmf.job.admin.es.LogSearchHelperService;
 import com.cn.xmf.job.admin.sys.ElasticsearchService;
 import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.model.es.EsPartion;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
