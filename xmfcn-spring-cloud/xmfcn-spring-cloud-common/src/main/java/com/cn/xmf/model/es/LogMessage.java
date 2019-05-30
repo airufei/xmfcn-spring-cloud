@@ -5,7 +5,6 @@ import com.cn.xmf.util.StringUtil;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 日志数据model
@@ -23,7 +22,8 @@ public class LogMessage implements Serializable {
     private String methodName = "";//方法名称
     private String message = "";//信息
     private String level = "";//日志级别
-    private Date time = new Date();//发生时间
+    private long time = System.currentTimeMillis();//发生时间
+    private String createTime = DateUtil.getTimeNow();//发生时间
     private String stackMessage = "";//堆栈信息 ERRROR级别才会有
     private String threadName = "";//线程名称
     private String traceId = "";//上下文追踪ID
@@ -77,12 +77,20 @@ public class LogMessage implements Serializable {
         this.level = level;
     }
 
-    public Date getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(long time) {
         this.time = time;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public String getStackMessage() {
@@ -145,6 +153,7 @@ public class LogMessage implements Serializable {
                 .append("message", message)
                 .append("level", level)
                 .append("time", time)
+                .append("createTime", createTime)
                 .append("stackMessage", stackMessage)
                 .append("threadName", threadName)
                 .append("traceId", traceId)

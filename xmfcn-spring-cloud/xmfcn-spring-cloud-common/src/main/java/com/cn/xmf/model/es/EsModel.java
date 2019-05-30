@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * ES 参数模型
+ *
  * @Author rufei.cn
  */
 public class EsModel implements Serializable {
@@ -21,6 +23,9 @@ public class EsModel implements Serializable {
     private boolean isVague;//是否模糊搜索
     private boolean isAccuracySort;//是否根据精确度排序
     private boolean isAndSearch;//是否and搜索
+    private List<JSONObject> list;//消息集合
+    private String startTime;//开始时间
+    private String endTime;//结束时间
 
     public String getIndex() {
         return index;
@@ -102,6 +107,30 @@ public class EsModel implements Serializable {
         isAndSearch = andSearch;
     }
 
+    public List<JSONObject> getList() {
+        return list;
+    }
+
+    public void setList(List<JSONObject> list) {
+        this.list = list;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -115,6 +144,9 @@ public class EsModel implements Serializable {
                 .append("isVague", isVague)
                 .append("isAccuracySort", isAccuracySort)
                 .append("isAndSearch", isAndSearch)
+                .append("list", list)
+                .append("startTime", startTime)
+                .append("endTime", endTime)
                 .toString();
     }
 }

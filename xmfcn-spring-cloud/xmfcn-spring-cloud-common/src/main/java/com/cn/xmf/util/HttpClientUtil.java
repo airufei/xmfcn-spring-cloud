@@ -61,8 +61,7 @@ public class HttpClientUtil {
      * @param noNeedResponse 不需要返回结果
      * @return
      */
-    public static JSONObject httpPost(String url, JSONObject jsonParam,
-                                      boolean noNeedResponse) {
+    public static JSONObject httpPost(String url, JSONObject jsonParam, boolean noNeedResponse) {
         // post请求返回结果
         DefaultHttpClient httpClient = new DefaultHttpClient();
         JSONObject jsonResult = null;

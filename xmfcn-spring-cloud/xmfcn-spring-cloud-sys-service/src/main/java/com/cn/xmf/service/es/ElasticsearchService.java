@@ -10,9 +10,7 @@ import com.cn.xmf.model.es.EsPartion;
 import com.cn.xmf.util.StringUtil;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
-import io.searchbox.core.Bulk;
-import io.searchbox.core.Index;
-import io.searchbox.core.Search;
+import io.searchbox.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,23 +47,31 @@ public class ElasticsearchService {
     @RequestMapping("save")
     public RetData save(@RequestBody EsModel es) {
         RetData retData = new RetData();
-        if (es == null) {
-            retData.setMessage("json 不能为空");
-            return retData;
+        RetData aReturn = elasticsearchHelperService.validateParms(es);
+        if (aReturn.getCode() == RetCodeAndMessage.SYS_ERROR) {
+            return aReturn;
         }
         String message = es.getMessage();
         String indexName = es.getIndex();
         String type = es.getType();
         try {
-            RetData aReturn = elasticsearchHelperService.validateParms(es);
-            if (aReturn.getCode() == RetCodeAndMessage.SYS_ERROR) {
+            JestResult jestResult = elasticsearchHelperService.createIndex(es);
+            if (jestResult == null) {
+                return retData;
+            }
+            int responseCode = jestResult.getResponseCode();
+            if (responseCode != 200) {
                 return aReturn;
             }
-            JSONObject messageJson = JSONObject.parseObject(message);
-            Index index = new Index.Builder(messageJson).index(indexName).type(type).build();
-            jestClient.execute(index);
-            retData.setCode(RetCodeAndMessage.SUCCESS);
-            retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
+            Index index = new Index.Builder(message).index(indexName).type(type).build();
+            DocumentResult result = jestClient.execute(index);
+            responseCode = result.getResponseCode();
+            if (responseCode == 200) {
+                retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
+                retData.setCode(RetCodeAndMessage.SUCCESS);
+            } else {
+                retData.setMessage(result.getErrorMessage());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             String msg = StringUtil.getExceptionMsg(e);
@@ -98,19 +104,34 @@ public class ElasticsearchService {
             if (aReturn.getCode() == RetCodeAndMessage.SYS_ERROR) {
                 return aReturn;
             }
-            List<JSONObject> list = JSONObject.parseArray(message, JSONObject.class);
+            List<JSONObject> list = es.getList();
             if (list == null || list.size() <= 0) {
                 retData.setMessage("list 消息不能为空");
                 return retData;
+            }
+            JSONObject object = list.get(0);
+            es.setMessage(JSON.toJSONString(object));
+            JestResult jestResult = elasticsearchHelperService.createIndex(es);
+            if (jestResult == null) {
+                return aReturn;
+            }
+            int responseCode = jestResult.getResponseCode();
+            if (responseCode != 200) {
+                return aReturn;
             }
             Bulk.Builder bulk = new Bulk.Builder();
             for (JSONObject entity : list) {
                 Index index = new Index.Builder(entity).index(indexName).type(type).build();
                 bulk.addAction(index);
             }
-            jestClient.execute(bulk.build());
-            retData.setCode(RetCodeAndMessage.SUCCESS);
-            retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
+            BulkResult result = jestClient.execute(bulk.build());
+            responseCode = result.getResponseCode();
+            if (responseCode == 200) {
+                retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
+                retData.setCode(RetCodeAndMessage.SUCCESS);
+            } else {
+                retData.setMessage(result.getErrorMessage());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             String msg = StringUtil.getExceptionMsg(e);
