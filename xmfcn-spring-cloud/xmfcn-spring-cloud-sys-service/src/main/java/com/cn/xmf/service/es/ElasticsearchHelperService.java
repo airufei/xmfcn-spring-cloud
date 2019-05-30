@@ -293,7 +293,6 @@ public class ElasticsearchHelperService {
         searchSourceBuilder.highlighter(highlightBuilder);
         search = new Search.Builder(searchSourceBuilder.toString())
                 .addIndex(indexName).addType(type).addSort(sort).build();
-
         return search;
     }
 
