@@ -5,7 +5,9 @@ import com.cn.xmf.job.admin.sys.DictService;
 import com.cn.xmf.model.dict.Dict;
 import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.model.es.EsPage;
+import com.cn.xmf.model.es.LogMessage;
 import com.cn.xmf.util.ConstantUtil;
+import com.cn.xmf.util.DateUtil;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +31,6 @@ public class LogSearchHelperService {
     private static Logger logger = LoggerFactory.getLogger(LogSearchHelperService.class);
     @Autowired
     private DictService dictService;
-
 
     /**
      * 搜索装配参数
@@ -60,8 +61,6 @@ public class LogSearchHelperService {
         }
         JSONObject highlights = new JSONObject();
         highlights.put("message", message);
-        //highlights.put("stackMessage", stackMessage);
-
         JSONObject searchKey = new JSONObject();
         searchKey.put("subSysName", subSysName);
         searchKey.put("message", message);
@@ -69,18 +68,38 @@ public class LogSearchHelperService {
         searchKey.put("stackMessage", stackMessage);
         searchKey.put("methodName", methodName);
         searchKey.put("level", level);
-
+        JSONObject keywords = new JSONObject();
         EsPage esPage = new EsPage();
         esPage.setPageNo(pageNo);
         esPage.setPageSize(pageSize);
         esPage.setStartIndex(startIndex);
-
         EsModel es = new EsModel();
         es.setKeyWord(searchKey);
         es.setHightWord(highlights);
         es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
         es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
         es.setEsPage(esPage);
+        return es;
+    }
+
+
+    /**
+     * 搜索装配参数
+     *
+     * @param request
+     * @return
+     */
+    public EsModel getStatisticsParms(HttpServletRequest request) {
+        String subSysName = request.getParameter("subSysName");
+        String startTime = request.getParameter("startTime");
+        String endTime = request.getParameter("endTime");
+        startTime = DateUtil.toDateStr(startTime, "yyyy-MM-dd");
+        endTime = DateUtil.toDateStr(endTime, "yyyy-MM-dd");
+        EsModel es = new EsModel();
+        es.setStartTime(startTime);
+        es.setEndTime(endTime);
+        es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
+        es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
         return es;
     }
 

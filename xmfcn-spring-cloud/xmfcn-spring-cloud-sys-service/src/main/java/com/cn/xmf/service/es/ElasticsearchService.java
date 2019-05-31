@@ -190,25 +190,25 @@ public class ElasticsearchService {
      * @return
      */
     @RequestMapping("getStatisticsCountByLevel")
-    public List<JSONObject> getStatisticsCountByLevel(@RequestBody EsModel es) {
-        List<JSONObject> list = null;
+    public JSONObject getStatisticsCountByLevel(@RequestBody EsModel es) {
+        JSONObject resJson = null;
         try {
             Search search = elasticsearchHelperService.statisticsLevelCondition(es);
             if (search == null) {
-                return list;
+                return resJson;
             }
             EsPage esPage = es.getEsPage();
             JestResult result = jestClient.execute(search);
-            logger.info(result.getJsonString());
+            logger.info("getStatisticsCountByLevel "+result.getJsonString());
             int responseCode = -1;
             if (result != null) {
                 responseCode = result.getResponseCode();
             }
             if (responseCode != 200) {
                 logger.error("ES 搜索错误信息：" + result.getErrorMessage());
-                return list;
+                return resJson;
             }
-            list = elasticsearchHelperService.getStatisticsResult(result);
+            resJson = elasticsearchHelperService.getLevelStatisticsResult(result);
         } catch (Exception e) {
             e.printStackTrace();
             String msg = StringUtil.getExceptionMsg(e);
@@ -216,7 +216,7 @@ public class ElasticsearchService {
             builder.append("getStatisticsCountByLevel(按日志级别统计时间内的数据) 参数 es:").append(JSON.toJSONString(es)).append(" \n\n错误消息：").append(msg);
             logger.error(builder.toString());
         }
-        return list;
+        return resJson;
     }
 
 
@@ -229,25 +229,25 @@ public class ElasticsearchService {
      * @return
      */
     @RequestMapping("getStatisticsCountByDay")
-    public List<JSONObject> getStatisticsCountByDay(@RequestBody EsModel es) {
-        List<JSONObject> list = null;
+    public JSONObject getStatisticsCountByDay(@RequestBody EsModel es) {
+        JSONObject resJson = null;
         try {
-            Search search = elasticsearchHelperService.statisticsLevelCondition(es);
+            Search search = elasticsearchHelperService.statisticsDayCondition(es);
             if (search == null) {
-                return list;
+                return resJson;
             }
             EsPage esPage = es.getEsPage();
             JestResult result = jestClient.execute(search);
-            logger.info(result.getJsonString());
+            logger.info("getStatisticsCountByDay :"+result.getJsonString());
             int responseCode = -1;
             if (result != null) {
                 responseCode = result.getResponseCode();
             }
             if (responseCode != 200) {
                 logger.error("ES 搜索错误信息：" + result.getErrorMessage());
-                return list;
+                return resJson;
             }
-            list = elasticsearchHelperService.getStatisticsResult(result);
+            resJson = elasticsearchHelperService.getDayStatisticsResult(result);
         } catch (Exception e) {
             e.printStackTrace();
             String msg = StringUtil.getExceptionMsg(e);
@@ -255,6 +255,6 @@ public class ElasticsearchService {
             builder.append("getStatisticsCountByDay(按天统计时间内的数据) 参数 es:").append(JSON.toJSONString(es)).append(" \n\n错误消息：").append(msg);
             logger.error(builder.toString());
         }
-        return list;
+        return resJson;
     }
 }

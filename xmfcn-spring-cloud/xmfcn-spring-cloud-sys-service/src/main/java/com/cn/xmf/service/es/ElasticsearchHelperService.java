@@ -26,6 +26,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.ExtendedBounds;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.joda.time.DateTimeZone;
@@ -383,7 +385,152 @@ public class ElasticsearchHelperService {
 
 
     /**
-     * 统计日志数据每个时间段 各个日志级别的数量
+     * 按天统计  各个日志级别的数量 查询条件
+     *
+     * @param EsModel es
+     *                keywords
+     *                highlights
+     * @return
+     */
+    public Search statisticsDayCondition(EsModel es) {
+        Search search = null;
+        if (es == null) {
+            return search;
+        }
+        String indexName = es.getIndex();
+        String type = es.getType();
+        String startTime = es.getStartTime();
+        String endTime = es.getEndTime();
+        JSONObject keywords = es.getKeyWord();
+        if (StringUtil.isBlank(indexName)) {
+            return search;
+        }
+        if (StringUtil.isBlank(type)) {
+            return search;
+        }
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        if (StringUtil.isNotBlank(startTime) && StringUtil.isNotBlank(endTime)) {
+            RangeQueryBuilder rangequerybuilder = QueryBuilders
+                    .rangeQuery("createTime")
+                    .from(startTime).to(endTime);
+            searchSourceBuilder.query(rangequerybuilder);
+        }
+        AddKeyWords(keywords, searchSourceBuilder);
+        ExtendedBounds extendedBounds = new ExtendedBounds(startTime, endTime);
+        AggregationBuilder levelAgg = AggregationBuilders.terms("level_count").field("level").minDocCount(0);
+        AggregationBuilder dateAgg = AggregationBuilders.dateHistogram("day_count")
+                .field("createTime")
+                .dateHistogramInterval(DateHistogramInterval.DAY)
+                .format("yyyy-MM-dd")
+                .extendedBounds(extendedBounds)
+                .minDocCount(0l)//为空0补充
+                .timeZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+8")));
+        AggregationBuilder builder = dateAgg.subAggregation(levelAgg);
+        searchSourceBuilder.aggregation(builder).size(0);
+        search = new Search.Builder(searchSourceBuilder.toString())
+                .addIndex(indexName).addType(type).build();
+        return search;
+    }
+
+    /**
+     * 按天统计 各个日志级别的数量结果处理
+     *
+     * @param result
+     * @return
+     */
+    public JSONObject getDayStatisticsResult(JestResult result) {
+        JSONObject object = null;
+        JsonElement aggregations = result.getJsonObject().get("aggregations");
+        if (aggregations == null) {
+            return object;
+        }
+        JsonElement day_count = aggregations.getAsJsonObject().get("day_count");
+        if (day_count == null) {
+            return object;
+        }
+        JsonArray jsonArray = day_count.getAsJsonObject().getAsJsonArray("buckets");
+        if (jsonArray == null || jsonArray.size() <= 0) {
+            return object;
+        }
+        int size = jsonArray.size();
+        object = new JSONObject();
+        List<String> dayList = new ArrayList<String>();
+        List<String> dayCountInfoList = new ArrayList<String>();
+        List<String> dayCountErrorList = new ArrayList<String>();
+        List<String> dayCountWarnList = new ArrayList<String>();
+        List<String> dayCountDebugList = new ArrayList<String>();
+        for (int i = 0; i < size; i++) {
+            JsonElement jsonElement = jsonArray.get(i);
+            if (jsonElement == null) {
+                continue;
+            }
+            JSONObject jsonObject = JSONObject.parseObject(jsonElement.toString());
+            if (jsonObject == null) {
+                continue;
+            }
+            String day = jsonObject.getString("key_as_string");
+            JSONObject levelCount = jsonObject.getJSONObject("level_count");
+            if (jsonObject == null || jsonObject.size() <= 0) {
+                continue;
+            }
+            JSONArray buckets = levelCount.getJSONArray("buckets");
+            if (jsonArray == null || jsonArray.size() <= 0) {
+                return object;
+            }
+            int sizeLengt = buckets.size();
+            dayList.add(day);
+            for (int j = 0; j < sizeLengt; j++) {
+                JSONObject bucketsJSONObject = buckets.getJSONObject(j);
+                if (bucketsJSONObject == null) {
+                    continue;
+                }
+                String key = bucketsJSONObject.getString("key");
+                if (StringUtil.isBlank(key)) {
+                    continue;
+                }
+                String doc_count = bucketsJSONObject.getString("doc_count");
+                String value = "0";
+                switch (key) {
+                    case "INFO":
+                        dayCountInfoList.add(doc_count);
+                        dayCountErrorList.add(value);
+                        dayCountWarnList.add(value);
+                        dayCountDebugList.add(value);
+                        break;
+                    case "ERROR":
+                        dayCountErrorList.add(doc_count);
+                        dayCountInfoList.add(value);
+                        dayCountWarnList.add(value);
+                        dayCountDebugList.add(value);
+                        break;
+                    case "WARN":
+                        dayCountWarnList.add(doc_count);
+                        dayCountInfoList.add(value);
+                        dayCountErrorList.add(value);
+                        dayCountDebugList.add(value);
+                        break;
+                    case "DEBUG":
+                        dayCountDebugList.add(doc_count);
+                        dayCountInfoList.add(value);
+                        dayCountErrorList.add(value);
+                        dayCountWarnList.add(value);
+                        break;
+                    default:
+                        dayCountDebugList.add("0");
+                }
+
+            }
+        }
+        object.put("dayList", dayList);
+        object.put("dayCountInfoList", dayCountInfoList);
+        object.put("dayCountErrorList", dayCountErrorList);
+        object.put("dayCountWarnList", dayCountWarnList);
+        object.put("dayCountDebugList", dayCountDebugList);
+        return object;
+    }
+
+    /**
+     * 按天Level统计  各个日志级别的数量 查询条件
      *
      * @param EsModel es
      *                keywords
@@ -414,37 +561,68 @@ public class ElasticsearchHelperService {
             searchSourceBuilder.query(rangequerybuilder);
         }
         AddKeyWords(keywords, searchSourceBuilder);
-        AggregationBuilder aggregation = AggregationBuilders.dateHistogram("day_count").field("createTime")
-                .interval(10).format("yyyy-MM-dd").timeZone(DateTimeZone.forOffsetHours(8));
-        searchSourceBuilder.aggregation(aggregation);
+        ExtendedBounds extendedBounds = new ExtendedBounds(startTime, endTime);
+        AggregationBuilder levelAgg = AggregationBuilders.terms("level_count").field("level").minDocCount(0);
+        searchSourceBuilder.aggregation(levelAgg).size(0);
         search = new Search.Builder(searchSourceBuilder.toString())
                 .addIndex(indexName).addType(type).build();
         return search;
     }
 
     /**
-     * 统计日志数据每个时间段 各个日志级别的数量
+     * 按天Level统计 各个日志级别的数量
      *
      * @param result
      * @return
      */
-    public List<JSONObject> getStatisticsResult(JestResult result) {
-        List<JSONObject> list = null;
+    public JSONObject getLevelStatisticsResult(JestResult result) {
+        JSONObject object = null;
         JsonElement aggregations = result.getJsonObject().get("aggregations");
         if (aggregations == null) {
-            return list;
+            return object;
         }
-        JsonElement log_count = aggregations.getAsJsonObject().get("log_count");
-        if (log_count == null) {
-            return list;
+        JsonElement day_count = aggregations.getAsJsonObject().get("level_count");
+        if (day_count == null) {
+            return object;
         }
-        JSONObject jsonObject = JSONObject.parseObject(log_count.toString());
-        JSONArray buckets = jsonObject.getJSONArray("buckets");
-        if (buckets == null) {
-            return list;
+        JsonArray jsonArray = day_count.getAsJsonObject().getAsJsonArray("buckets");
+        if (jsonArray == null || jsonArray.size() <= 0) {
+            return object;
         }
-        list = buckets.toJavaList(JSONObject.class);
-        return list;
+        int size = jsonArray.size();
+        object = new JSONObject();
+        for (int i = 0; i < size; i++) {
+            JsonElement jsonElement = jsonArray.get(i);
+            if (jsonElement == null) {
+                continue;
+            }
+            JSONObject jsonObject = JSONObject.parseObject(jsonElement.toString());
+            if (jsonObject == null) {
+                continue;
+            }
+            String key = jsonObject.getString("key");
+            String doc_count = jsonObject.getString("doc_count");
+            if (StringUtil.isBlank(doc_count)) {
+                doc_count = "0";
+            }
+            switch (key) {
+                case "INFO":
+                    object.put("infoCount", doc_count);
+                    break;
+                case "ERROR":
+                    object.put("errorCount", doc_count);
+                    break;
+                case "WARN":
+                    object.put("warnCount", doc_count);
+                    break;
+                case "DEBUG":
+                    object.put("debugCount", doc_count);
+                    break;
+                default:
+                    object.put("debugCount", doc_count);
+            }
+        }
+        return object;
     }
 
     /**
