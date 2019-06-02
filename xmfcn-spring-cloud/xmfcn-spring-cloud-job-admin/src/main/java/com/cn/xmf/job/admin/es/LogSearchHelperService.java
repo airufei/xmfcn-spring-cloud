@@ -6,6 +6,7 @@ import com.cn.xmf.model.dict.Dict;
 import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.model.es.EsPage;
 import com.cn.xmf.util.ConstantUtil;
+import com.cn.xmf.util.DateUtil;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,5 +109,25 @@ public class LogSearchHelperService {
             list.add(jsonObject);
         }
         return list;
+    }
+
+    /**
+     * 搜索装配参数
+     *
+     * @param request
+     * @return
+     */
+    public EsModel getStatisticsParms(HttpServletRequest request) {
+        String subSysName = request.getParameter("subSysName");
+        String startTime = request.getParameter("startTime");
+        String endTime = request.getParameter("endTime");
+        startTime = DateUtil.toDateStr(startTime, "yyyy-MM-dd");
+        endTime = DateUtil.toDateStr(endTime, "yyyy-MM-dd");
+        EsModel es = new EsModel();
+        es.setStartTime(startTime);
+        es.setEndTime(endTime);
+        es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
+        es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
+        return es;
     }
 }

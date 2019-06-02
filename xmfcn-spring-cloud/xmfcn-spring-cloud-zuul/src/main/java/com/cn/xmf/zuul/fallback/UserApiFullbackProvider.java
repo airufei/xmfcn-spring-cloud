@@ -73,7 +73,7 @@ public class UserApiFullbackProvider implements FallbackProvider {
             public InputStream getBody() throws IOException {
                 logger.info(serviceName + "服务触发熔断");
                 RetData retData = new RetData();
-                retData.setCode(RetCodeAndMessage.SYS_ERROR);
+                retData.setCode(RetCodeAndMessage.FAILURE);
                 retData.setMessage("服务繁忙，请稍后再试！");
                 retData.setData(null);
                 SendMarkdownMessage();

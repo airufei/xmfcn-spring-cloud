@@ -132,7 +132,7 @@ public class JobUserHelperService {
                 retData.setData(u);
                 retData.setMessage("成功");
             } else {
-                retData.setCode(RetCodeAndMessage.SYS_ERROR);
+                retData.setCode(RetCodeAndMessage.FAILURE);
                 retData.setMessage("账户或者密码不正确");
             }
         } catch (Exception e) {
