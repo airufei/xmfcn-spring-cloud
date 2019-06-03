@@ -2,8 +2,11 @@ package com.cn.xmf.job.admin.common;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.enums.DingMessageType;
+import com.cn.xmf.job.admin.sys.DictService;
 import com.cn.xmf.job.admin.sys.RedisService;
 import com.cn.xmf.model.ding.DingMessage;
+import com.cn.xmf.util.ConstantUtil;
+import com.cn.xmf.util.LocalCacheUtil;
 import com.cn.xmf.util.StringUtil;
 import com.cn.xmf.job.admin.sys.DingTalkService;
 import org.redisson.api.RLock;
@@ -26,7 +29,8 @@ public class SysCommonService {
     private DingTalkService dingTalkService;
     @Autowired
     private RedisService redisService;
-
+    @Autowired
+    private DictService dictService;
     @Autowired
     private Environment environment;
 
@@ -220,5 +224,34 @@ public class SysCommonService {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /**
+     * 获取字典数据
+     *
+     * @param dictType
+     * @param dictKey
+     * @return
+     */
+    public String getDictValue(String dictType, String dictKey) {
+        String dictValue = null;
+        String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + dictType + dictKey;
+        try {
+            dictValue = LocalCacheUtil.getCache(key);
+            if (StringUtil.isNotBlank(dictValue)) {
+                dictValue = dictValue.replace("@0", "");
+                return dictValue;
+            }
+            dictValue = dictService.getDictValue(dictType, dictKey);
+            if (StringUtil.isBlank(dictValue)) {
+                LocalCacheUtil.saveCache(key, "@0");
+            } else {
+                LocalCacheUtil.saveCache(key, dictValue);
+            }
+        } catch (Exception e) {
+            logger.error(StringUtil.getExceptionMsg(e));
+            e.printStackTrace();
+        }
+        return dictValue;
     }
 }

@@ -7,6 +7,7 @@ import com.cn.xmf.service.dict.service.DictService;
 import com.cn.xmf.service.dingtalk.DingTalkService;
 import com.cn.xmf.service.redis.RedisService;
 import com.cn.xmf.util.ConstantUtil;
+import com.cn.xmf.util.LocalCacheUtil;
 import com.cn.xmf.util.StringUtil;
 import org.redisson.api.RLock;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ import java.util.concurrent.Executors;
 
 /**
  * 公共处理方法模块
+ *
  * @author rufei.cn
  */
 @Service
@@ -29,7 +31,6 @@ import java.util.concurrent.Executors;
 public class SysCommonService {
 
     private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
-    public static Map<String, String> cacheMap = new HashMap<String, String>();//字典数据本机缓存，减少rpc 调用
     private static ExecutorService cachedThreadPool = Executors.newFixedThreadPool(200);//线程池
     @Autowired
     private DingTalkService dingTalkService;
@@ -141,7 +142,7 @@ public class SysCommonService {
      * @author airuei
      */
     public RLock getLock(String key) {
-        RLock lock =null;
+        RLock lock = null;
         if (StringUtil.isBlank(key)) {
             return lock;
         }
@@ -171,7 +172,6 @@ public class SysCommonService {
         return result;
     }
 
-
     /**
      * 获取字典数据
      *
@@ -183,19 +183,16 @@ public class SysCommonService {
         String dictValue = null;
         String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + dictType + dictKey;
         try {
-            dictValue = cacheMap.get(key);
+            dictValue = LocalCacheUtil.getCache(key);
             if (StringUtil.isNotBlank(dictValue)) {
-                cachedThreadPool.execute(() -> {
-                    cleanLoadCache(key);//定时清除缓存
-                });
                 dictValue = dictValue.replace("@0", "");
                 return dictValue;
             }
             dictValue = dictService.getDictValue(dictType, dictKey);
             if (StringUtil.isBlank(dictValue)) {
-                cacheMap.put(key, "@0");
+                LocalCacheUtil.saveCache(key, "@0");
             } else {
-                cacheMap.put(key, dictValue);
+                LocalCacheUtil.saveCache(key, dictValue);
             }
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
@@ -203,20 +200,4 @@ public class SysCommonService {
         }
         return dictValue;
     }
-
-    /**
-     * 定时清除本地缓存
-     *
-     * @param key
-     */
-    private void cleanLoadCache(String key) {
-        try {
-            Thread.sleep(1000 * 60);
-            cacheMap.remove(key);
-            logger.info("清除本地缓存,key={}", key);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

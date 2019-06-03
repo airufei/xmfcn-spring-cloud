@@ -18,23 +18,58 @@
     <div class="content-wrapper">
         <!-- Main content -->
         <section class="content">
-            <#-- 调度报表：时间区间筛选，左侧折线图 + 右侧饼图 -->
+            <div class="row">
+                <#--磁盘信息-->
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="info-box bg-green">
+                        <span class="info-box-icon"><i class="fa fa-flag-o"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">磁盘总量</span>
+                            <span class="info-box-number">${sysInfo.disktotal}</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <#--磁盘信息-->
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="info-box bg-yellow">
+                        <span class="info-box-icon"><i class="fa fa-calendar"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">已使用磁盘量</span>
+                            <span class="info-box-number">${sysInfo.diskused}</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <#--内存信息-->
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="info-box bg-aqua">
+                        <span class="info-box-icon"><i class="fa ion-ios-settings-strong"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">已使用内存量</span>
+                            <span class="info-box-number">${sysInfo.ramcurrent}</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">日志数据报表</h3>
-                            <#--<input type="text" class="form-control" id="filterTime" readonly >-->
-
-                            <!-- tools box -->
                             <div class="pull-right box-tools">
                                 <button type="button" class="btn btn-primary btn-sm daterange pull-right"
                                         data-toggle="tooltip" id="filterTime">
                                     <i class="fa fa-calendar"></i>
                                 </button>
                             </div>
-                            <!-- /. tools -->
-
                         </div>
                         <div class="box-body">
                             <div class="row">
