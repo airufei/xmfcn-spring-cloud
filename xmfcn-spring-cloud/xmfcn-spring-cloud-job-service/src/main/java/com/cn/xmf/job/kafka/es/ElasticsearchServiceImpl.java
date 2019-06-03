@@ -11,6 +11,7 @@ import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.StringUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.aspectj.apache.bcel.generic.RET;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,34 +55,64 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
             return retData;
         }
         List<JSONObject> list = new ArrayList<>();
+        int logListSize = getLogListSize();//每次入ES的集合数量，太大可能导致转json内存溢出。
         for (ConsumerRecord<String, String> record : partitionRecords) {
             String value = record.value();//数据
             String key = record.key();
             long offset = record.offset();
+            if (StringUtil.isBlank(value)) {
+                continue;
+            }
+            if (StringUtil.isNotBlank(value)) {
+                value = value.replace("\\\\", "\\");
+            }
             JSONObject json = JSONObject.parseObject(value);
             list.add(json);
-        }
-        try {
             int size = list.size();
-            String jsonString = JSON.toJSONString(list);
-            int length = jsonString.length();
-            logger.info("  topic=" + topic + " ;size = " + size + " ;length = " + length);
-            EsModel es = new EsModel();
-            es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
-            es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
-            es.setMessage(JSON.toJSONString(list));
-            retData = elasticsearchService.saveBatch(es);//kafka数据写入ES系统存储任务
-        } catch (Exception e) {
-            String exceptionMsg = StringUtil.getExceptionMsg(e);
-            retData.setCode(RetCodeAndMessage.FAILURE);
-            retData.setMessage(exceptionMsg);
-            logger.error(exceptionMsg);
-            e.printStackTrace();
+            if (size % logListSize == 0) {
+                getDataReturn(retData, list);
+                list = new ArrayList<>();
+            }
         }
+        retData = getDataReturn(retData, list);
         return retData;
     }
 
+    private RetData getDataReturn(RetData dataReturn, List<JSONObject> list) {
+        try {
+            if (list == null || list.size() <= 0) {
+                dataReturn.setMessage("没有数据");
+                return dataReturn;
+            }
+            EsModel es = new EsModel();
+            es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
+            es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
+            es.setList(list);
+            dataReturn = elasticsearchService.saveBatch(es);//kafka数据写入ES系统存储任务
+        } catch (Exception e) {
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
+            e.printStackTrace();
+        }
+        return dataReturn;
+    }
 
+    /**
+     * 每次入ES的集合数量，太大可能导致转json内存溢出。
+     *
+     * @return
+     */
+    public int getLogListSize() {
+        int num = 1;
+        String dictValue = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "log_list_num");
+        num = StringUtil.stringToInt(dictValue);
+        if (num < 1) {
+            num = 10;
+        } else if (num > 50) {
+            num = 50;
+        }
+        return num;
+    }
     /**
      * 获取kafka数据，执行业务操作
      *

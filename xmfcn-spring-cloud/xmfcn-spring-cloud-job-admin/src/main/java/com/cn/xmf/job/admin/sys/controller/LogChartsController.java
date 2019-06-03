@@ -43,7 +43,7 @@ public class LogChartsController {
     public String index(Model model) {
         JSONObject sysInfo = getSysInfo();
         model.addAttribute("sysInfo", sysInfo);
-        return "log/log-charts-index";
+        return "es/log-charts-index";
     }
 
 

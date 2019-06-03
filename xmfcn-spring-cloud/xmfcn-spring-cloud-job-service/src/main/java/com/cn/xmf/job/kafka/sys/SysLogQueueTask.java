@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import com.cn.xmf.job.kafka.es.*;
@@ -23,7 +25,6 @@ import com.cn.xmf.job.kafka.es.*;
 public class SysLogQueueTask {
     private static Logger logger = LoggerFactory.getLogger(SysLogQueueTask.class);
     private static String topic = ConstantUtil.XMF_KAFKA_TOPIC_LOG;
-    private static ExecutorService cachedThreadPool = Executors.newFixedThreadPool(5);//线程池
     @Autowired
     private SysCommonService sysCommonService;
     @Autowired
@@ -35,7 +36,14 @@ public class SysLogQueueTask {
     @PostConstruct
     public void init() {
         kafkaConsumer = kafkaBean.getKafkaConsumer();//启动项目 产生一个消费者实例
-        cachedThreadPool.execute(() -> startTask());
+        int randNum = StringUtil.getRandNum(30000, 60000);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                startTask();
+                timer.cancel();
+            }
+        }, randNum);
     }
 
     /**
