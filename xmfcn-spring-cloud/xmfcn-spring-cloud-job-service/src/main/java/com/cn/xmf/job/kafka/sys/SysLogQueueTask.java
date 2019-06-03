@@ -55,8 +55,6 @@ public class SysLogQueueTask {
     public void startTask() {
         JSONObject jsonObject = null;
         try {
-            int randNum = StringUtil.getRandNum(10000, 20000);
-            Thread.sleep(randNum);
             logger.info("开始执行【kafka数据写入ES系统存储任务】");
             sysCommonService.readKafkaData(kafkaConsumer, topic, elasticsearchServiceImpl, "sysLogQueueTask");
         } catch (Exception e) {
