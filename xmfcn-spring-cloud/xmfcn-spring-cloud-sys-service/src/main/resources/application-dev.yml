@@ -10,6 +10,7 @@ server:
       enabled: true
       directory: /opt/mnt_file/logs/sys_service/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D(ms)'
+  max-http-header-size: 10000000 #扩展 tomcat header的长度 omcat限制了header的长度,如果你请求的数据量超过了默认的长度就会抛出越界，
   # eureka 配置
 eureka:
   # 链接eureka的用户名密码
