@@ -823,6 +823,15 @@ public class StringUtil extends StringUtils {
             }
             stackMessage.append(callerData[i] + "\n\n");
         }
+        if (StringUtil.isBlank(traceId)) {
+            traceId = "";
+        }
+        if (StringUtil.isBlank(tranceMessage)) {
+            tranceMessage = "";
+        }
+        if (StringUtil.isBlank(methodName)) {
+            methodName = "";
+        }
         Date date = new Date();
         String formatDateTime = DateUtil.formatDateTime(date);
         LogMessage logMessage = new LogMessage();
