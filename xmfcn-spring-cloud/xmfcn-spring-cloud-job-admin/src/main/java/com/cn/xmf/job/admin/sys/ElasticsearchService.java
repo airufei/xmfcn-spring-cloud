@@ -45,8 +45,8 @@ public interface ElasticsearchService {
      * search根据 关键词查询ES信息
      *
      * @param EsModel es
-     *                keywords 查询关键词
-     *                highlights 高亮词
+     * keywords 查询关键词
+     * highlights 高亮词
      * @return
      */
     @RequestMapping(value = "search", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -57,8 +57,8 @@ public interface ElasticsearchService {
      * getStatisticsLevelNumByTime(统计日志数据每个时间段 各个日志级别的数量)
      *
      * @param EsModel es
-     *                startTime
-     *                endTime
+     * startTime
+     * endTime
      * @return
      */
     @RequestMapping(value = "getStatisticsCountByLevel", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -68,8 +68,8 @@ public interface ElasticsearchService {
      * getStatisticsCountByDay(按天统计时间内的数据)
      *
      * @param EsModel es
-     *                startTime
-     *                endTime
+     *  startTime
+     *  endTime
      * @return
      */
     @RequestMapping(value = "getStatisticsCountByDay", consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -26,17 +26,18 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/logcharts")
 @SuppressWarnings("all")
 public class LogChartsController {
-    private static Logger logger = LoggerFactory.getLogger(LogSearchController.class);
+
+    private static Logger logger = LoggerFactory.getLogger(LogChartsController.class);
     @Autowired
     private ElasticsearchService elasticsearchService;
     @Autowired
-    private SysCommonService sysCommonService;
-    @Autowired
     private LogSearchHelperService logSearchHelperService;
+    @Autowired
+    private SysCommonService commonService;
 
     @RequestMapping
     public String index(Model model) {
-        return "es/log-charts-index";
+        return "log/log-charts-index";
     }
 
     /**

@@ -20,6 +20,7 @@
         <mybatis.springboot.version>1.1.1</mybatis.springboot.version>
         <xmfcn.common.version>1.1.1</xmfcn.common.version>
         <job.core.version>1.1.1</job.core.version>
+        <log4j.version>1.2.17</log4j.version>
     </properties>
 
 
@@ -34,6 +35,13 @@
             <artifactId>xmfcn-spring-cloud-job-core</artifactId>
             <version>${job.core.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
         <!--mybatis-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

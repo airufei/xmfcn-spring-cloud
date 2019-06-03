@@ -288,7 +288,7 @@ public class SysCommonService {
             return;
         }
         int code = retData.getCode();
-        if (code != RetCodeAndMessage.SYS_ERROR) {
+        if (code != RetCodeAndMessage.FAILURE) {
             return;
         }
         String value = json.getString("value");

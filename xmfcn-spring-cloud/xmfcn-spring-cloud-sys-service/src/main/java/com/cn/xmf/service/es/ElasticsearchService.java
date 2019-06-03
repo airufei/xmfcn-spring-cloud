@@ -48,7 +48,7 @@ public class ElasticsearchService {
     public RetData save(@RequestBody EsModel es) {
         RetData retData = new RetData();
         RetData aReturn = elasticsearchHelperService.validateParms(es);
-        if (aReturn.getCode() == RetCodeAndMessage.SYS_ERROR) {
+        if (aReturn.getCode() == RetCodeAndMessage.FAILURE) {
             return aReturn;
         }
         String message = es.getMessage();
@@ -57,7 +57,7 @@ public class ElasticsearchService {
         try {
             JestResult jestResult = elasticsearchHelperService.createIndex(es);
             if (jestResult == null) {
-                return retData;
+                return aReturn;
             }
             int responseCode = jestResult.getResponseCode();
             if (responseCode != 200) {
@@ -92,18 +92,14 @@ public class ElasticsearchService {
     @RequestMapping("saveBatch")
     public RetData saveBatch(@RequestBody EsModel es) {
         RetData retData = new RetData();
-        if (es == null) {
-            retData.setMessage("json 不能为空");
-            return retData;
+        RetData aReturn = elasticsearchHelperService.validateParms(es);
+        if (aReturn.getCode() == RetCodeAndMessage.FAILURE) {
+            return aReturn;
         }
         String message = es.getMessage();
         String indexName = es.getIndex();
         String type = es.getType();
         try {
-            RetData aReturn = elasticsearchHelperService.validateParms(es);
-            if (aReturn.getCode() == RetCodeAndMessage.SYS_ERROR) {
-                return aReturn;
-            }
             List<JSONObject> list = es.getList();
             if (list == null || list.size() <= 0) {
                 retData.setMessage("list 消息不能为空");
@@ -130,6 +126,8 @@ public class ElasticsearchService {
                 retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
                 retData.setCode(RetCodeAndMessage.SUCCESS);
             } else {
+                String errorMessage = "saveBatch(保存集合数据到ES):" + result.getErrorMessage();
+                logger.error(errorMessage);
                 retData.setMessage(result.getErrorMessage());
             }
         } catch (Exception e) {
@@ -199,7 +197,7 @@ public class ElasticsearchService {
             }
             EsPage esPage = es.getEsPage();
             JestResult result = jestClient.execute(search);
-            logger.info("getStatisticsCountByLevel "+result.getJsonString());
+            logger.info("getStatisticsCountByLevel " + result.getJsonString());
             int responseCode = -1;
             if (result != null) {
                 responseCode = result.getResponseCode();
@@ -238,7 +236,7 @@ public class ElasticsearchService {
             }
             EsPage esPage = es.getEsPage();
             JestResult result = jestClient.execute(search);
-            logger.info("getStatisticsCountByDay :"+result.getJsonString());
+            logger.info("getStatisticsCountByDay :" + result.getJsonString());
             int responseCode = -1;
             if (result != null) {
                 responseCode = result.getResponseCode();

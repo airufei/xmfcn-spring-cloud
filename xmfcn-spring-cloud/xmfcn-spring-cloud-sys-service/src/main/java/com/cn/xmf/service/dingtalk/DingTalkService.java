@@ -10,7 +10,6 @@ import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,8 +72,8 @@ public class DingTalkService {
     public RetData sendMessageToDingTalk(@RequestBody DingMessage dingMessage) {
         logger.info("sendMessageToDingTalk(发送不定格式信息到钉钉群) 开始");
         RetData result = new RetData();
-        result.setCode(RetCodeAndMessage.SYS_ERROR);
-        result.setMessage(RetCodeAndMessage.SYS_ERROR_MESSAGE);
+        result.setCode(RetCodeAndMessage.FAILURE);
+        result.setMessage(RetCodeAndMessage.FAILURE_MESSAGE);
         if (dingMessage == null) {
             result.setMessage("入参dingMessage为空");
             return result;

@@ -84,26 +84,6 @@ public class LogSearchHelperService {
 
 
     /**
-     * 搜索装配参数
-     *
-     * @param request
-     * @return
-     */
-    public EsModel getStatisticsParms(HttpServletRequest request) {
-        String subSysName = request.getParameter("subSysName");
-        String startTime = request.getParameter("startTime");
-        String endTime = request.getParameter("endTime");
-        startTime = DateUtil.toDateStr(startTime, "yyyy-MM-dd");
-        endTime = DateUtil.toDateStr(endTime, "yyyy-MM-dd");
-        EsModel es = new EsModel();
-        es.setStartTime(startTime);
-        es.setEndTime(endTime);
-        es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
-        es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
-        return es;
-    }
-
-    /**
      * 获取子系统名称
      *
      * @param dictType 系统类型
@@ -127,5 +107,25 @@ public class LogSearchHelperService {
             list.add(jsonObject);
         }
         return list;
+    }
+
+    /**
+     * 搜索装配参数
+     *
+     * @param request
+     * @return
+     */
+    public EsModel getStatisticsParms(HttpServletRequest request) {
+        String subSysName = request.getParameter("subSysName");
+        String startTime = request.getParameter("startTime");
+        String endTime = request.getParameter("endTime");
+        startTime = DateUtil.toDateStr(startTime, "yyyy-MM-dd");
+        endTime = DateUtil.toDateStr(endTime, "yyyy-MM-dd");
+        EsModel es = new EsModel();
+        es.setStartTime(startTime);
+        es.setEndTime(endTime);
+        es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
+        es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
+        return es;
     }
 }

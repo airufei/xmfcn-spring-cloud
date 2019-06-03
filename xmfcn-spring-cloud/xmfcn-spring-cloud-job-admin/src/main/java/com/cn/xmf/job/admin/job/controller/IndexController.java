@@ -86,7 +86,7 @@ public class IndexController {
         int code = retData.getCode();
         String message = retData.getMessage();
         Object data = retData.getData();
-        if (code == RetCodeAndMessage.SYS_ERROR || code == RetCodeAndMessage.PARMS_ERROR) {
+        if (code == RetCodeAndMessage.FAILURE || code == RetCodeAndMessage.PARMS_ERROR) {
             return new ReturnT<String>(500, message);
         }
         JobUser user = (JobUser) data;

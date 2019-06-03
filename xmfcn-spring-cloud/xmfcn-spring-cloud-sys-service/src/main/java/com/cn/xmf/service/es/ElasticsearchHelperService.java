@@ -49,10 +49,12 @@ import java.util.*;
 @SuppressWarnings("all")
 public class ElasticsearchHelperService {
     private static Logger logger = LoggerFactory.getLogger(ElasticsearchHelperService.class);
-    @Autowired
-    private SysCommonService sysCommonService;
+
     @Autowired
     private JestClient jestClient;
+
+    @Autowired
+    private SysCommonService sysCommonService;
 
     /**
      * 创建mapping
@@ -63,7 +65,7 @@ public class ElasticsearchHelperService {
     public JestResult createMapping(EsModel es) {
         JestResult result = null;
         RetData aReturn = validateParms(es);
-        if (aReturn.getCode() == RetCodeAndMessage.SYS_ERROR) {
+        if (aReturn.getCode() == RetCodeAndMessage.FAILURE) {
             return result;
         }
         String message = es.getMessage();
@@ -84,7 +86,7 @@ public class ElasticsearchHelperService {
                 }
                 JSONObject object = new JSONObject();
                 object.put("type", "text");
-                if (key.equals("createTime")) {
+                if (key.equals("time")) {
                     object.put("type", "date");
                     object.put("format", "yyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis");
                 }
@@ -158,7 +160,7 @@ public class ElasticsearchHelperService {
     public JestResult deleteIndex(EsModel es) {
         JestResult result = null;
         RetData aReturn = validateParms(es);
-        if (aReturn.getCode() == RetCodeAndMessage.SYS_ERROR) {
+        if (aReturn.getCode() == RetCodeAndMessage.FAILURE) {
             return result;
         }
         String message = es.getMessage();
@@ -191,7 +193,7 @@ public class ElasticsearchHelperService {
     public JestResult createIndex(EsModel es) {
         JestResult result = null;
         RetData aReturn = validateParms(es);
-        if (aReturn.getCode() == RetCodeAndMessage.SYS_ERROR) {
+        if (aReturn.getCode() == RetCodeAndMessage.FAILURE) {
             return result;
         }
         String message = es.getMessage();
@@ -295,6 +297,7 @@ public class ElasticsearchHelperService {
         searchSourceBuilder.highlighter(highlightBuilder);
         search = new Search.Builder(searchSourceBuilder.toString())
                 .addIndex(indexName).addType(type).addSort(sort).build();
+
         return search;
     }
 
@@ -310,11 +313,11 @@ public class ElasticsearchHelperService {
         if (StringUtil.isBlank(sql)) {
             return jsonObject;
         }
-        String kafaka_address = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "kafaka_http_rest_url");//获取kafka地址 包括端口号
-        if (StringUtil.isBlank(kafaka_address)) {
+        String es_http_rest_url = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "es_http_rest_url");//获取kafka地址 包括端口号
+        if (StringUtil.isBlank(es_http_rest_url)) {
             return jsonObject;
         }
-        kafaka_address = kafaka_address + "/_xpack/sql";
+        es_http_rest_url = es_http_rest_url + "/_xpack/sql";
         JSONObject parms = new JSONObject();
         parms.put("query", sql);
         String doHttpPost = null;
@@ -455,10 +458,10 @@ public class ElasticsearchHelperService {
         int size = jsonArray.size();
         object = new JSONObject();
         List<String> dayList = new ArrayList<String>();
-        List<String> dayCountInfoList = new ArrayList<String>();
-        List<String> dayCountErrorList = new ArrayList<String>();
-        List<String> dayCountWarnList = new ArrayList<String>();
-        List<String> dayCountDebugList = new ArrayList<String>();
+        List<Integer> dayCountInfoList = new ArrayList<Integer>();
+        List<Integer> dayCountErrorList = new ArrayList<Integer>();
+        List<Integer> dayCountWarnList = new ArrayList<Integer>();
+        List<Integer> dayCountDebugList = new ArrayList<Integer>();
         for (int i = 0; i < size; i++) {
             JsonElement jsonElement = jsonArray.get(i);
             if (jsonElement == null) {
@@ -479,6 +482,10 @@ public class ElasticsearchHelperService {
             }
             int sizeLengt = buckets.size();
             dayList.add(day);
+            int infoCount = 0;
+            int errorCount = 0;
+            int warnCount = 0;
+            int debugCount = 0;
             for (int j = 0; j < sizeLengt; j++) {
                 JSONObject bucketsJSONObject = buckets.getJSONObject(j);
                 if (bucketsJSONObject == null) {
@@ -488,38 +495,29 @@ public class ElasticsearchHelperService {
                 if (StringUtil.isBlank(key)) {
                     continue;
                 }
-                String doc_count = bucketsJSONObject.getString("doc_count");
+                int doc_count = bucketsJSONObject.getIntValue("doc_count");
                 String value = "0";
                 switch (key) {
                     case "INFO":
-                        dayCountInfoList.add(doc_count);
-                        dayCountErrorList.add(value);
-                        dayCountWarnList.add(value);
-                        dayCountDebugList.add(value);
+                        infoCount = infoCount + doc_count;
                         break;
                     case "ERROR":
-                        dayCountErrorList.add(doc_count);
-                        dayCountInfoList.add(value);
-                        dayCountWarnList.add(value);
-                        dayCountDebugList.add(value);
+                        errorCount = errorCount + doc_count;
                         break;
                     case "WARN":
-                        dayCountWarnList.add(doc_count);
-                        dayCountInfoList.add(value);
-                        dayCountErrorList.add(value);
-                        dayCountDebugList.add(value);
+                        warnCount = warnCount + doc_count;
                         break;
                     case "DEBUG":
-                        dayCountDebugList.add(doc_count);
-                        dayCountInfoList.add(value);
-                        dayCountErrorList.add(value);
-                        dayCountWarnList.add(value);
+                        debugCount = debugCount + doc_count;
                         break;
                     default:
-                        dayCountDebugList.add("0");
+                        debugCount = 0;
                 }
-
             }
+            dayCountInfoList.add(infoCount);
+            dayCountErrorList.add(errorCount);
+            dayCountWarnList.add(warnCount);
+            dayCountDebugList.add(debugCount);
         }
         object.put("dayList", dayList);
         object.put("dayCountInfoList", dayCountInfoList);
@@ -625,6 +623,7 @@ public class ElasticsearchHelperService {
         return object;
     }
 
+
     /**
      * 获取搜索结果，处理高亮词
      *
@@ -651,9 +650,6 @@ public class ElasticsearchHelperService {
             if (jsonObject == null || jsonObject.size() <= 0) {
                 continue;
             }
-            String time = jsonObject.getString("time");
-            String date = DateUtil.stampToString(time, "yyyy-MM-dd HH:mm:ss:SSSSSS");
-            jsonObject.put("time", date);
             jsonObject = addHightWord(entries, jsonObject);
             list.add(jsonObject);
         }

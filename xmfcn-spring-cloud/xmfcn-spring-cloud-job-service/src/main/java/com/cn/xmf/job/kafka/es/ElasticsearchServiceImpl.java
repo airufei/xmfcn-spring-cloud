@@ -9,19 +9,15 @@ import com.cn.xmf.job.common.SysCommonService;
 import com.cn.xmf.job.sys.ElasticsearchService;
 import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.util.ConstantUtil;
-import com.cn.xmf.util.DateUtil;
 import com.cn.xmf.util.StringUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * kafka数据写入ES系统存储任务
@@ -77,7 +73,7 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
             retData = elasticsearchService.saveBatch(es);//kafka数据写入ES系统存储任务
         } catch (Exception e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
-            retData.setCode(RetCodeAndMessage.SYS_ERROR);
+            retData.setCode(RetCodeAndMessage.FAILURE);
             retData.setMessage(exceptionMsg);
             logger.error(exceptionMsg);
             e.printStackTrace();

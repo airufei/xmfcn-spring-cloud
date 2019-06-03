@@ -81,8 +81,8 @@ public class UserController {
             retData.setCode(RetCodeAndMessage.SUCCESS);
             retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
         } catch (Exception e) {
-            retData.setCode(RetCodeAndMessage.SYS_ERROR);
-            retData.setMessage(RetCodeAndMessage.SYS_ERROR_MESSAGE);
+            retData.setCode(RetCodeAndMessage.FAILURE);
+            retData.setMessage(RetCodeAndMessage.FAILURE_MESSAGE);
             String msg = "getList:(获取用户信息分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             commonService.sendDingMessage("getList", parms, JSON.toJSONString(retData), msg, this.getClass());
@@ -124,8 +124,8 @@ public class UserController {
             retData.setCode(RetCodeAndMessage.SUCCESS);
             retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
         } catch (Exception e) {
-            retData.setCode(RetCodeAndMessage.SYS_ERROR);
-            retData.setMessage(RetCodeAndMessage.SYS_ERROR_MESSAGE);
+            retData.setCode(RetCodeAndMessage.FAILURE);
+            retData.setMessage(RetCodeAndMessage.FAILURE_MESSAGE);
             String msg = "getUserList:(获取用户信息不分页查询接口)====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             commonService.sendDingMessage("getUserList", parms, JSON.toJSONString(retData), msg, this.getClass());
@@ -167,8 +167,8 @@ public class UserController {
             retData.setCode(RetCodeAndMessage.SUCCESS);
             retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
         } catch (Exception e) {
-            retData.setCode(RetCodeAndMessage.SYS_ERROR);
-            retData.setMessage(RetCodeAndMessage.SYS_ERROR_MESSAGE);
+            retData.setCode(RetCodeAndMessage.FAILURE);
+            retData.setMessage(RetCodeAndMessage.FAILURE_MESSAGE);
             String msg = "getUser:(查询用户信息单条数据接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             commonService.sendDingMessage("getUser", parms, JSON.toJSONString(retData), msg, this.getClass());
@@ -210,8 +210,8 @@ public class UserController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retData.setCode(RetCodeAndMessage.SYS_ERROR);
-            retData.setMessage(RetCodeAndMessage.SYS_ERROR_MESSAGE);
+            retData.setCode(RetCodeAndMessage.FAILURE);
+            retData.setMessage(RetCodeAndMessage.FAILURE_MESSAGE);
             String msg = "delete:(逻辑删除用户信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             commonService.sendDingMessage("delete", parms, JSON.toJSONString(retData), msg, this.getClass());
@@ -258,8 +258,8 @@ public class UserController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            retData.setCode(RetCodeAndMessage.SYS_ERROR);
-            retData.setMessage(RetCodeAndMessage.SYS_ERROR_MESSAGE);
+            retData.setCode(RetCodeAndMessage.FAILURE);
+            retData.setMessage(RetCodeAndMessage.FAILURE_MESSAGE);
             String msg = "save:(保存用户信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             commonService.sendDingMessage("save", parms, JSON.toJSONString(retData), msg, this.getClass());
