@@ -45,7 +45,7 @@ spring:
     name: xmfjob
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     # 测试库
     url: jdbc:mysql://127.0.0.1:3306/xmfjob?useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root

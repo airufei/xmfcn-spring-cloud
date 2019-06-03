@@ -823,7 +823,10 @@ public class StringUtil extends StringUtils {
             }
             stackMessage.append(callerData[i] + "\n\n");
         }
+        Date date = new Date();
+        String formatDateTime = DateUtil.formatDateTime(date);
         LogMessage logMessage = new LogMessage();
+        logMessage.setCreateTime(formatDateTime);
         logMessage.setSubSysName(subSysName);
         logMessage.setModuleName(loggerName);
         logMessage.setLevel(level.toString());
