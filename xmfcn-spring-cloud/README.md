@@ -64,13 +64,13 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
    
    &nbsp;&nbsp;6）所需要的数据库文件在父项目的db文件夹 xmfcn-spring-cloud/db/job-admin/xmfjob.sql启动
    
-   &nbsp;&nbsp;7）启动之后经过zuul访问的路径是http://localhost:8085/jobadmin
+   &nbsp;&nbsp;7）启动之后经过zuul访问的路径是http://localhost:8085/job
    
 9、xmfcn-spring-cloud-job-service 作为任务执行器，执行具体的任务，比如定时任务等等。
 
    &nbsp;&nbsp;1）引入sys-service，引入包括队列、缓存以及分布式锁功能
    
-   &nbsp;&nbsp;2）需要配置调度中心地址，如：http://localhost:8085/jobadmin
+   &nbsp;&nbsp;2）需要配置调度中心地址，如：http://localhost:8085/job
    
 10、集成EFK统一日志系统方案：
 

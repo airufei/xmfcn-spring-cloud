@@ -243,7 +243,7 @@ INSERT INTO `t_sys_job_menu` VALUES ('2', '菜单管理', '/job/jobMenu', '0', '
 INSERT INTO `t_sys_job_menu` VALUES ('3', '调度管理', null, '0', '2018-12-20 22:32:27', '2018-12-20 22:39:04', '1', '调度任务', '-1', '1');
 INSERT INTO `t_sys_job_menu` VALUES ('4', '调度任务', '/job/jobinfo', '0', '2018-12-20 22:56:43', '2018-12-20 22:56:43', '1', '调度任务', '3', '2');
 INSERT INTO `t_sys_job_menu` VALUES ('5', '调度日志', '/job/joblog', '0', '2018-12-20 22:57:29', '2018-12-20 22:57:29', '1', '调度日志', '3', '2');
-INSERT INTO `t_sys_job_menu` VALUES ('6', '调度报表', '/jobadmin', '0', '2018-12-20 22:58:29', '2018-12-20 22:58:29', '1', '调度报表', '3', '2');
+INSERT INTO `t_sys_job_menu` VALUES ('6', '调度报表', '/job', '0', '2018-12-20 22:58:29', '2018-12-20 22:58:29', '1', '调度报表', '3', '2');
 INSERT INTO `t_sys_job_menu` VALUES ('7', '系统监控', null, '0', '2018-12-20 23:00:54', '2018-12-20 23:00:54', '1', '系统监控', '-1', '1');
 INSERT INTO `t_sys_job_menu` VALUES ('8', 'redis监控', '/job/redis', '0', '2018-12-20 23:02:02', '2018-12-20 23:02:25', '1', 'redis监控', '7', '2');
 INSERT INTO `t_sys_job_menu` VALUES ('9', '执行器管理', '/job/jobgroup', '0', '2018-12-20 23:23:17', '2018-12-20 23:23:17', '1', '执行器管理', '3', '2');
