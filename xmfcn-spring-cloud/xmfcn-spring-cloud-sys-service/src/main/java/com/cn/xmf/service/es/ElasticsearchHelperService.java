@@ -86,7 +86,7 @@ public class ElasticsearchHelperService {
                 }
                 JSONObject object = new JSONObject();
                 object.put("type", "text");
-                if (key.equals("time")) {
+                if (key.equals("createTime")) {
                     object.put("type", "date");
                     object.put("format", "yyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis");
                 }
@@ -382,7 +382,11 @@ public class ElasticsearchHelperService {
             if (value == null || value.toString().length() <= 0) {
                 continue;
             }
-            searchSourceBuilder.query(QueryBuilders.commonTermsQuery(key, value));
+            if ("id".equals(key)) {
+                searchSourceBuilder.query(QueryBuilders.termQuery(key, value));
+            } else {
+                searchSourceBuilder.query(QueryBuilders.commonTermsQuery(key, value));
+            }
         }
     }
 
@@ -676,6 +680,9 @@ public class ElasticsearchHelperService {
             Map.Entry<String, JsonElement> next = iterator.next();
             String key = next.getKey();
             String value = next.getValue().toString();
+            if ("id".equals(key)) {
+                continue;
+            }
             jsonObject.put(key, value);
         }
         return jsonObject;

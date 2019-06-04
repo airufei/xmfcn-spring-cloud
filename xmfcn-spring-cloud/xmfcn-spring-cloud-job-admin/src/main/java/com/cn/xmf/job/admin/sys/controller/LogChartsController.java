@@ -46,7 +46,11 @@ public class LogChartsController {
         return "es/log-charts-index";
     }
 
-
+    /**
+     * 获取磁盘信息和内存信息
+     *
+     * @return
+     */
     public JSONObject getSysInfo() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("diskused", 0);

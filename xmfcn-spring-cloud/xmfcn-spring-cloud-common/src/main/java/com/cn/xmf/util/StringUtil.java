@@ -823,6 +823,9 @@ public class StringUtil extends StringUtils {
             }
             stackMessage.append(callerData[i] + "\n\n");
         }
+        if (StringUtil.isBlank(traceId) && mdcMap != null) {
+            traceId = mdcMap.get("X-B3-TraceId");
+        }
         if (StringUtil.isBlank(traceId)) {
             traceId = "";
         }
@@ -832,10 +835,7 @@ public class StringUtil extends StringUtils {
         if (StringUtil.isBlank(methodName)) {
             methodName = "";
         }
-        Date date = new Date();
-        String formatDateTime = DateUtil.formatDateTime(date);
         LogMessage logMessage = new LogMessage();
-        logMessage.setCreateTime(formatDateTime);
         logMessage.setSubSysName(subSysName);
         logMessage.setModuleName(loggerName);
         logMessage.setLevel(level.toString());

@@ -28,7 +28,7 @@ $(function () {
         "columns": [
             {
                 "data": 'id',
-                "visible": true,
+                "visible": false,
                 "width": '180'
             },
             {
@@ -65,7 +65,16 @@ $(function () {
             {
                 "data": 'message',
                 "visible": true,
-                "width": '250'
+                "width": '250',
+                "render": function (data, type, row) {
+                    return function () {
+                        var message = row.message;
+                        if (message != null && message.length > 120) {
+                            message = message.substr(0, 120) + "...";
+                        }
+                        return message;
+                    };
+                }
             },
             {
                 "data": 'threadName',
@@ -74,11 +83,6 @@ $(function () {
             },
             {
                 "data": 'sysIp',
-                "visible": true,
-                "width": '180'
-            },
-            {
-                "data": 'stackMessage',
                 "visible": true,
                 "width": '180'
             },
@@ -138,20 +142,32 @@ function deatil(target) {
     if (id == null || id == undefined || id == "") {
         id = $(target).children('td').children('p').attr("id");
     }
-    var row = tableData['key' + id];
-    if (row != null && row != undefined) {
-        console.log(row);
-        $("#sysIp").html(row.sysIp);
-        $("#subSysName_deatil").html(row.subSysName);
-        $("#moduleName").html(row.moduleName);
-        $("#methodName__deatil").html(row.methodName);
-        $("#message__deatil").html(row.message);
-        $("#level__deatil").html(row.level);
-        $("#time").html(row.time);
-        $("#stackMessage_deatil").html(row.stackMessage);
-        $("#threadName").html(row.threadName);
-        $("#traceId__deatil").html(row.traceId);
-        $("#id_deatil").html(row.id);
-    }
+    $.ajax({
+        type: "post",
+        url: base_url + "/log/getLogDetailById?id=" + id,
+        dataType: "json",
+        success: function (data) {
+            if (data == null || undefined == data) {
+                return;
+            }
+            var row = data;
+            $("#sysIp").html(row.sysIp);
+            $("#subSysName_deatil").html(row.subSysName);
+            $("#moduleName").html(row.moduleName);
+            $("#methodName__deatil").html(row.methodName);
+            $("#message__deatil").html(row.message);
+            $("#level__deatil").html(row.level);
+            $("#time").html(row.time);
+            $("#stackMessage_deatil").html(row.stackMessage);
+            $("#threadName").html(row.threadName);
+            $("#traceId__deatil").html(row.traceId);
+            $("#id_deatil").html(row.id);
+            $("#mdcMessage_deatil").html(row.traceMap);
+            $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
+        },
+        error: function (jqXHR) {
+            console.log("Error: " + jqXHR.status);
+        }
+    });
     $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');
 }

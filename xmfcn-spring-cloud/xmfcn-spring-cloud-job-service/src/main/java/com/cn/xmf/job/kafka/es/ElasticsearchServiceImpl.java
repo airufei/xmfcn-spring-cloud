@@ -40,8 +40,8 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
      *
      * @param partitionRecords 数据集
      * @param topic            主题
-     * @Author airufei
      * @return
+     * @Author airufei
      */
     @Override
     public RetData executeList(List<ConsumerRecord<String, String>> partitionRecords, String topic) {
@@ -66,7 +66,12 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
             if (StringUtil.isNotBlank(value)) {
                 value = value.replace("\\\\", "\\");
             }
-            JSONObject json = JSONObject.parseObject(value);
+            JSONObject json = null;
+            try {
+                json = JSONObject.parseObject(value);
+            } catch (Exception e) {
+                logger.info("value={},errorMeg={}", value, StringUtil.getExceptionMsg(e));
+            }
             list.add(json);
             int size = list.size();
             if (size % logListSize == 0) {
@@ -113,12 +118,13 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
         }
         return num;
     }
+
     /**
      * 获取kafka数据，执行业务操作
      *
      * @param jsonObject
-     * @Author airufei
      * @return
+     * @Author airufei
      */
     @Override
     public RetData execute(JSONObject jsonObject) {

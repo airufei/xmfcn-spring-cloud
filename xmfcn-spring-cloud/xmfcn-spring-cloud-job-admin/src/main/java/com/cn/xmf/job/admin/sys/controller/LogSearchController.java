@@ -51,6 +51,40 @@ public class LogSearchController {
      *
      * @param request
      * @return
+     * @Author airufei
+     */
+    @RequestMapping("getLogDetailById")
+    @ResponseBody
+    public JSONObject getLogDetailById(HttpServletRequest request) {
+        JSONObject retJon = new JSONObject();
+        try {
+            EsModel parms = logSearchHelperService.getLogDetailParms(request);
+            EsPartion pt = elasticsearchService.search(parms);
+            if (pt == null) {
+                return retJon;
+            }
+            int totalCount = pt.getTotalCount();
+            List<JSONObject> retList = pt.getList();
+            if(retList!=null&&retList.size()>0)
+            {
+                retJon=retList.get(0);
+            }
+            retJon.put("logMessage", retJon);
+        } catch (Exception e) {
+            String msg = "search:(系统日志搜索) 异常====>" + StringUtil.getExceptionMsg(e);
+            logger.error(msg);
+            sysCommonService.sendDingMessage("getLogDetailById", null, JSON.toJSONString(retJon), msg, this.getClass());
+            e.printStackTrace();
+        }
+        logger.info("search:(系统日志搜索) 结束");
+        return retJon;
+    }
+
+    /**
+     * search:(系统日志搜索)
+     *
+     * @param request
+     * @return
      * @Author rufei.cn
      */
     @RequestMapping("search")
@@ -60,9 +94,9 @@ public class LogSearchController {
         retJon.put("data", "");
         retJon.put("recordsTotal", 0);
         retJon.put("recordsFiltered", 0);
-        JSONObject param = null;
+        EsModel parms =null;
         try {
-            EsModel parms = logSearchHelperService.getParms(request);
+            parms = logSearchHelperService.getParms(request);
             EsPartion pt = elasticsearchService.search(parms);
             if (pt == null) {
                 return retJon;
@@ -75,7 +109,7 @@ public class LogSearchController {
         } catch (Exception e) {
             String msg = "search:(系统日志搜索) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("search", param.toString(), JSON.toJSONString(retJon), msg, this.getClass());
+            sysCommonService.sendDingMessage("search", parms.toString(), JSON.toJSONString(retJon), msg, this.getClass());
             e.printStackTrace();
         }
         logger.info("search:(系统日志搜索) ==结束==");

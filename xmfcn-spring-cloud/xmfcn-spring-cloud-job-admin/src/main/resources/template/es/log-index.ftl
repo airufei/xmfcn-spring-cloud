@@ -95,7 +95,6 @@
                                         <th name="message">日志信息</th>
                                         <th name="threadName">线程名称</th>
                                         <th name="sysIp">机器IP</th>
-                                        <th name="stackMessage">堆栈信息</th>
                                         <th name="operate"></th>
                                     </tr>
                                     </thead>
@@ -172,6 +171,10 @@
                     <div class="form-group">
                         <label for="time" class="col-sm-2 control-label">日志时间</label>
                         <div class="col-sm-10"><label id="time"></label></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mdcMessage" class="col-sm-2 control-label">追踪信息</label>
+                        <div class="col-sm-10"><label  id="mdcMessage_deatil"></label></div>
                     </div>
                     <div class="form-group">
                         <label for="stackMessage" class="col-sm-2 control-label">堆栈信息</label>

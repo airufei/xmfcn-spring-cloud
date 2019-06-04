@@ -5,6 +5,7 @@ import com.cn.xmf.util.StringUtil;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 日志数据model
@@ -23,7 +24,7 @@ public class LogMessage implements Serializable {
     private String message = "";//信息
     private String level = "";//日志级别
     private long time = System.currentTimeMillis();//发生时间
-    private String createTime = DateUtil.getTimeNow();//发生时间
+    private String createTime = DateUtil.formatDateTime(new Date());//发生时间
     private String stackMessage = "";//堆栈信息 ERRROR级别才会有
     private String threadName = "";//线程名称
     private String traceId = "";//上下文追踪ID

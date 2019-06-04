@@ -68,7 +68,37 @@ public class LogSearchHelperService {
         searchKey.put("stackMessage", stackMessage);
         searchKey.put("methodName", methodName);
         searchKey.put("level", level);
-        JSONObject keywords = new JSONObject();
+        EsPage esPage = new EsPage();
+        esPage.setPageNo(pageNo);
+        esPage.setPageSize(pageSize);
+        esPage.setStartIndex(startIndex);
+        EsModel es = new EsModel();
+        es.setKeyWord(searchKey);
+        es.setHightWord(highlights);
+        es.setIndex(ConstantUtil.ES_SYS_LOG_INDEX);
+        es.setType(ConstantUtil.ES_SYS_LOG_TYPE);
+        es.setEsPage(esPage);
+        return es;
+    }
+
+
+    /**
+     * ID 查询
+     *
+     * @param request
+     * @return
+     */
+    public EsModel getLogDetailParms(HttpServletRequest request) {
+        String id = request.getParameter("id");
+        int pageSize = 1;
+        int pageNo = 1;
+        int startIndex = 0;
+        if (startIndex > 0) {
+            pageNo = (startIndex / pageSize) + 1;
+        }
+        JSONObject highlights = new JSONObject();
+        JSONObject searchKey = new JSONObject();
+        searchKey.put("id", id);
         EsPage esPage = new EsPage();
         esPage.setPageNo(pageNo);
         esPage.setPageSize(pageSize);

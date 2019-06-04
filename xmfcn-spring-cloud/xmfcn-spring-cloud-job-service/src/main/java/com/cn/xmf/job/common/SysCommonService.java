@@ -200,9 +200,9 @@ public class SysCommonService {
             }
             dictValue = dictService.getDictValue(dictType, dictKey);
             if (StringUtil.isBlank(dictValue)) {
-                LocalCacheUtil.saveCache(key, "@0");
+                LocalCacheUtil.saveCache(key, "@0",60*5);
             } else {
-                LocalCacheUtil.saveCache(key, dictValue);
+                LocalCacheUtil.saveCache(key, dictValue,60*5);
             }
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
