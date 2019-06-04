@@ -1,8 +1,6 @@
 package com.cn.xmf.job.admin.sys;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.job.admin.common.HttpBasicAuthConfig;
-import org.redisson.api.RLock;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
