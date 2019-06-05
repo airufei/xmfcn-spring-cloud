@@ -109,11 +109,11 @@
                             <div class="row">
                                 <#-- 左侧折线图 -->
                                 <div class="col-md-8">
-                                    <div id="lineChart" style="height: 350px;"></div>
+                                    <div id="lineChart" style="height: 600px;"></div>
                                 </div>
                                 <#-- 右侧饼图 -->
                                 <div class="col-md-4">
-                                    <div id="pieChart" style="height: 350px;"></div>
+                                    <a href="/job/info" title="点击查看详情"><div id="pieChart" style="height: 600px;"></div></a>
                                 </div>
                             </div>
                         </div>

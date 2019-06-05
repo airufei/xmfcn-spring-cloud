@@ -79,7 +79,7 @@
                                 </div>
                                 <#-- 右侧饼图 -->
                                 <div class="col-md-4">
-                                    <div id="pieChart" style="height: 600px;"></div>
+                                    <a href="/job/log" title="点击查看详情"><div id="pieChart" style="height: 600px;"></div></a>
                                 </div>
                             </div>
                         </div>

@@ -77,6 +77,9 @@
                 <div class="col-xs-1">
                     <button class="btn btn-block btn-info" id="searchBtn">搜索</button>
                 </div>
+                <div class="col-xs-2">
+                    <button class="btn btn-block btn-success" id="goToReport" type="button">报表</button>
+                </div>
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="box">

@@ -6,6 +6,11 @@ $(function () {
         "deferRender": true,
         "processing": true,
         "serverSide": true,
+         bLengthChange: true,
+         aLengthMenu: [30, 50, 100, 200, 400],
+        "searching": false,
+        "ordering": false,
+        "scrollX": true,	// scroll x，close self-adaption
         "ajax": {
             url: base_url + "/log/search",
             type: "post",
@@ -22,9 +27,6 @@ $(function () {
                 return obj;
             }
         },
-        "searching": false,
-        "ordering": false,
-        "scrollX": true,	// scroll x，close self-adaption
         "columns": [
             {
                 "data": 'id',
@@ -129,6 +131,10 @@ $(function () {
         logTable.fnDraw();
     });
 
+    // 查询按钮事件
+    $('#goToReport').on('click', function () {
+        window.location.href = base_url+"/logcharts";
+    });
 
     //双击弹出编辑
     $('#log_table').on('dblclick', 'tr', function () {
