@@ -31,7 +31,7 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
    
 9、xxl-job 改造为spring cloud版本后已经在生产环境正常调度超过100万次。详见：https://github.com/airufei/xmfcn-spring-cloud/issues/1
 
-# 工程简介
+# 工程职责简介
 
 ## 1、xmfcn-spring-cloud-common 
 1、提供基础工具类相关功能，如：字符串工具类、常量类、http请求、文件相关工具、时间转换工具、枚举，model、vo等。
@@ -48,7 +48,7 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
 
 2、计划引入spring cloud gateway 进行替换，spring boot2.x版本以后官方自研版本。
 
-##4、xmfcn-spring-cloud-user-api 
+## 4、xmfcn-spring-cloud-user-api 
 1、提供对外用户信息功能接口，用户基础信息查询，用户注册、登录等，提供个性化的对外API能力。
 
 2、如：分页查询用户信息接口：http://localhost:8082/user/getList 参数：parms={"pageNo":1,"pageSize":20}，当前代码由https://github.com/airufei/xCode 生成
