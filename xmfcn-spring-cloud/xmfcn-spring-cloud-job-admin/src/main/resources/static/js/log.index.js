@@ -38,7 +38,6 @@ $(function () {
                 "visible": true,
                 "width": '160'
             },
-
             {
                 "data": 'subSysName',
                 "visible": true,
@@ -131,7 +130,7 @@ $(function () {
         logTable.fnDraw();
     });
 
-    // 查询按钮事件
+    // 按钮调整事件
     $('#goToReport').on('click', function () {
         window.location.href = base_url+"/logcharts";
     });
