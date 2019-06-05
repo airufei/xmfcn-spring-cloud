@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.xmf.service.user.dao.UserDao">
+
+    <sql id="userColumns">
+	   str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
+	   str_to_date(a.updatetime, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
+		a.id AS "id",
+		a.username AS "username",
+		a.password AS "password",
+		a.age AS "age",
+		a.email AS "email",
+		a.phone AS "phone",
+		a.address AS "address",
+		a.qq AS "qq",
+		a.wechart AS "wechart",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
+		a.flag AS "flag",
+		a.remark AS "remark",
+		a.type AS "type"
+	</sql>
+
+    <sql id="userJoins">
+    </sql>
+
+    <select id="getUserById" resultType="com.cn.xmf.model.user.User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_base_user a
+        <include refid="userJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        count(*) as count
+        FROM t_base_user a
+        <include refid="userJoins"/>
+        <where>
+            flag=#{flag}
+            <if test="username != null and username != ''">
+                AND a.username = #{username}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND a.phone = #{phone}
+            </if>
+        </where>
+    </select>
+
+    <select id="getList" resultType="com.cn.xmf.model.user.User" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        <include refid="userColumns"/>
+        FROM
+        (SELECT id from t_base_user t
+        <where>
+            flag=#{flag}
+            <if test="username != null and username != ''">
+                AND t.username = #{username}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND t.phone = #{phone}
+            </if>
+        </where>
+        <choose>
+            <otherwise>
+                ORDER BY t.updatetime desc
+            </otherwise>
+        </choose>
+        limit #{startIndex},#{pageSize}) b inner join
+        t_base_user a on b.id=a.id
+    </select>
+
+    <select id="getUserList" resultType="com.cn.xmf.model.user.User" parameterType="com.cn.xmf.model.user.User">
+        SELECT
+        <include refid="userColumns"/>
+        (SELECT id from t_base_user t
+        <where>
+            flag=#{flag}
+            <if test="username != null and username != ''">
+                AND t.username = #{username}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND t.phone = #{phone}
+            </if>
+        </where>
+        <choose>
+            <otherwise>
+                ORDER BY t.updatetime desc
+            </otherwise>
+        </choose>
+        ) b inner join t_base_user a on b.id=a.id
+        <include refid="userJoins"/>
+    </select>
+
+    <select id="getSignleUser" resultType="com.cn.xmf.model.user.User" parameterType="com.cn.xmf.model.user.User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM
+        (SELECT id from t_base_user t
+        <where>
+            flag=#{flag}
+            <if test="username != null and username != ''">
+                AND t.username = #{username}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND t.phone = #{phone}
+            </if>
+        </where>
+        <choose>
+            <otherwise>
+                ORDER BY t.updatetime desc
+            </otherwise>
+        </choose>
+        limit 1)b inner join t_base_user a on b.id=a.id
+        <include refid="userJoins"/>
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_base_user(
+			id,
+			username,
+			password,
+			age,
+			email,
+			phone,
+			address,
+			qq,
+			wechart,
+			createtime,
+			updatetime,
+			flag,
+			remark,
+			type,
+			roleId
+		) VALUES (
+			#{id},
+			#{username},
+			#{password},
+			#{age},
+			#{email},
+			#{phone},
+			#{address},
+			#{qq},
+			#{wechart},
+			#{createtime},
+			#{updatetime},
+			#{flag},
+			#{remark},
+			#{type},
+			#{roleid}
+		)
+	</insert>
+
+
+    <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_base_user(
+        id,
+        username,
+        password,
+        age,
+        email,
+        phone,
+        address,
+        qq,
+        wechart,
+        createtime,
+        updatetime,
+        flag,
+        remark,
+        type,
+        roleId
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.username},
+            #{item.password},
+            #{item.age},
+            #{item.email},
+            #{item.phone},
+            #{item.address},
+            #{item.qq},
+            #{item.wechart},
+            #{item.createtime},
+            #{item.updatetime},
+            #{item.flag},
+            #{item.remark},
+            #{item.type},
+            #{item.roleid}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateById">
+        UPDATE t_base_user SET
+        <if test="username != null and username != '' ">
+            username = #{username},
+        </if>
+        <if test="password != null and password != '' ">
+            password = #{password},
+        </if>
+        <if test="age != null and age != '' ">
+            age = #{age},
+        </if>
+        <if test="email != null and email != '' ">
+            email = #{email},
+        </if>
+        <if test="phone != null and phone != '' ">
+            phone = #{phone},
+        </if>
+        <if test="address != null and address != '' ">
+            address = #{address},
+        </if>
+        <if test="qq != null and qq != '' ">
+            qq = #{qq},
+        </if>
+        <if test="wechart != null and wechart != '' ">
+            wechart = #{wechart},
+        </if>
+        <if test="updatetime != null and updatetime != '' ">
+            updatetime = #{updatetime},
+        </if>
+        <if test="flag != null and flag != '' ">
+            flag = #{flag},
+        </if>
+        <if test="remark != null and remark != '' ">
+            remark = #{remark},
+        </if>
+        <if test="type != null and type != '' ">
+            type = #{type},
+        </if>
+        updatetime= NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+	UPDATE t_base_user SET 
+	flag = -1
+		WHERE id = #{id}
+	</update>
+</mapper>
