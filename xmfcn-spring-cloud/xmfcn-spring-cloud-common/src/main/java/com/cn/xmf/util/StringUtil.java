@@ -800,6 +800,10 @@ public class StringUtil extends StringUtils {
         String threadName = loggingEvent.getThreadName();
         Map<String, String> mdcMap = loggingEvent.getMDCPropertyMap();
         StackTraceElement[] callerData = loggingEvent.getCallerData();
+        if (isBlank(loggerName)) {
+            return null;
+        }
+        String message = loggerName.replace("\\\\", "\\").replace("\\\\\\", "\\");
         StringBuilder stackMessage = null;//堆栈信息
         String methodName = "";
         String traceId = "";
@@ -840,7 +844,7 @@ public class StringUtil extends StringUtils {
         logMessage.setModuleName(loggerName);
         logMessage.setLevel(level.toString());
         logMessage.setMethodName(methodName);
-        logMessage.setMessage(formattedMessage);
+        logMessage.setMessage(message);
         logMessage.setThreadName(threadName);
         logMessage.setSysIp(ip);
         logMessage.setTraceId(traceId);
@@ -849,6 +853,7 @@ public class StringUtil extends StringUtils {
             logMessage.setStackMessage(stackMessage.toString());
         }
         String jsonString = JSON.toJSONString(logMessage);
+        jsonString = jsonString.replace("\\\\", "\\").replace("\\\\\\", "\\");
         return jsonString;
     }
 

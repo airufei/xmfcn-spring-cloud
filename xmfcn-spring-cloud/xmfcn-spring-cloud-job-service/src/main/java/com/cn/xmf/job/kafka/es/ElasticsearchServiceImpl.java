@@ -63,9 +63,6 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
             if (StringUtil.isBlank(value)) {
                 continue;
             }
-            if (StringUtil.isNotBlank(value)) {
-                value = value.replace("\\\\", "\\");
-            }
             JSONObject json = null;
             try {
                 json = JSONObject.parseObject(value);
@@ -113,8 +110,6 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
         num = StringUtil.stringToInt(dictValue);
         if (num < 1) {
             num = 10;
-        } else if (num > 50) {
-            num = 50;
         }
         return num;
     }

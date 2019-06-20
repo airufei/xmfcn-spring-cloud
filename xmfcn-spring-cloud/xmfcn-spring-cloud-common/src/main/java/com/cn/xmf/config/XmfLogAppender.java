@@ -36,6 +36,9 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
     private Tracer tracer; // 默认注入的是DefaultTracer
     private Producer<String, String> producer;
 
+    /**
+     * 初始化
+     */
     @Override
     public void start() {
         super.start();
@@ -44,7 +47,7 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             props = new Properties();
             props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
             // 是判别请求是否为完整的条件（就是是判断是不是成功发送了）。我们指定了“all”将会阻塞消息，这种设置性能最低，但是是最可靠的。
-            props.put(ProducerConfig.ACKS_CONFIG, "1");
+            props.put(ProducerConfig.ACKS_CONFIG, "-1");
             // 如果请求返回可重试的错误，例如首领选举或网络连接异常等可在几秒钟内解决，生产者会自动发起重试。
             props.put(ProducerConfig.RETRIES_CONFIG, 0);
             // 缓存大小，值较大的话将会产生更大的批。并需要更多的内存（因为每个“活跃”的分区都有1个缓冲区）
@@ -67,12 +70,21 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
         }
     }
 
+    /**
+     * 异步执行写入日志
+     * @param loggingEvent
+     */
     @Override
     protected void append(LoggingEvent loggingEvent) {
         cachedThreadPool.execute(() -> start(loggingEvent));//异步执行
     }
 
 
+    /**
+     * 获取日志信息，写入kafka队列
+     *
+     * @param loggingEvent
+     */
     public void start(LoggingEvent loggingEvent) {
         try {
             if (producer == null) {
@@ -83,13 +95,10 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             if (!loggerName.startsWith("com.cn.xmf")) {
                 return;
             }
-            if (message.contains("mdc_______")) {
-                return;
-            }
-            if (message.contains("mdc_______")) {
-                return;
-            }
             String jsonString = StringUtil.getLogData(loggingEvent, subSysName);
+            if (StringUtil.isBlank(jsonString)) {
+                return;
+            }
             // 方法是异步的，添加消息到缓冲区等待发送，并立即返回。生产者将单个的消息批量在一起发送来提高效率。
             producer.send(new ProducerRecord<>(ConstantUtil.XMF_KAFKA_TOPIC_LOG, topic, jsonString));
         } catch (Exception e) {
