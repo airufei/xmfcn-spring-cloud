@@ -875,6 +875,17 @@ public class StringUtil extends StringUtils {
     }
 
     /**
+     * 当前线程sleep
+     * @param randNum
+     */
+    public static void threadSleep(long randNum) {
+        try {
+            Thread.sleep(randNum);
+        } catch (InterruptedException e) {
+        }
+    }
+
+    /**
      * 获取访问者IP
      * <p>
      * 在一般情况下使用Request.getRemoteAddr()即可，但是经过nginx等反向代理软件后，这个方法会失效。

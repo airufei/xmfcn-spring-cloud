@@ -36,7 +36,7 @@ public class KafkaBean {
      *
      * @return the consumer instance
      */
-    public KafkaConsumer<String, String> getKafkaConsumer() {
+    public KafkaConsumer<String, String> getKafkaConsumer(String topic) {
         KafkaConsumer<String, String> kafkaConsumer = null;
         try {
             kafkaConsumer = new KafkaConsumer<>(kafkaConfig.initConsumerProp());

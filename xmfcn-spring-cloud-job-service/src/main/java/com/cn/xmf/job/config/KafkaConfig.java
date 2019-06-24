@@ -31,7 +31,7 @@ public class KafkaConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConfig.class);
 
-    public Properties initConsumerProp() throws ClassNotFoundException {
+    public Properties initConsumerProp(String topic) throws ClassNotFoundException {
         Properties consumerProps = new Properties();
         String kafka_server = null;// kafka连接地址
         String consumer_groupId = null;//消费者组
@@ -41,7 +41,13 @@ public class KafkaConfig {
         String consumer_maxPollRecords = null;//单次拉取的最大消息数量
         String consumer_sessionTimeoutMs = null;//如果消费者崩溃或无法在session.timeout.ms配置的时间内发送心跳，则消费者将被视为死亡
         String config_type = ConstantUtil.DICT_TYPE_CONFIG_KAFKA;
-        String kafka_config = sysCommonService.getDictValue(config_type, "kafka_common_config");
+        String kafka_config = null;
+        if (sysCommonService != null && StringUtil.isNotBlank(topic)) {//优先加载topic配置
+            kafka_config = sysCommonService.getDictValue(config_type, topic);
+        }
+        if (StringUtil.isBlank(kafka_config) && sysCommonService != null) {//再选择公共字典配置，最后选择配置文件
+            kafka_config = sysCommonService.getDictValue(config_type, "kafka_common_config");
+        }
         JSONObject json = JSONObject.parseObject(kafka_config);
         logger.info("============================》kafka配置 config_type={}，kafka_config={}：", config_type, kafka_config);
         if (json != null) {

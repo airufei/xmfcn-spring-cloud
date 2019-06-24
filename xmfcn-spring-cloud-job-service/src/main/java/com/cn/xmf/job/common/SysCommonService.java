@@ -1,5 +1,7 @@
 package com.cn.xmf.job.common;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.RetCodeAndMessage;
 import com.cn.xmf.base.model.RetData;
@@ -284,6 +286,47 @@ public class SysCommonService {
     }
 
     /**
+     * 根据处理队列数据返回结果执行是否重入队列、清除缓存等操作
+     *
+     * @param topic
+     * @param json
+     * @param dataReturn
+     */
+    public void isRetryKafka(String topic, RetData dataReturn) {
+        if (StringUtil.isBlank(topic)) {
+            logger.info("topic 为空");
+        }
+        if (dataReturn == null) {
+            return;
+        }
+        int code = dataReturn.getCode();
+        if (code != RetCodeAndMessage.FAILURE) {
+            return;
+        }
+        String jsonString = JSON.toJSONString(dataReturn);
+        logger.error("执行队列数据发生异常 topic={},dataReturn={}", topic, jsonString);
+        if (StringUtil.isBlank(jsonString)) {
+            return;
+        }
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+        if (jsonObject == null || jsonObject.size() <= 0) {
+            return;
+        }
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
+        if (jsonArray == null || jsonArray.size() <= 0) {
+            return;
+        }
+        int size = jsonArray.size();
+        for (int i = 0; i < size; i++) {
+            JSONObject object = jsonArray.getJSONObject(i);
+            if (object == null) {
+                return;
+            }
+            retry(topic, object);//重入异常队列
+        }
+    }
+
+    /**
      * sendKafka（发送数据到kafka）
      *
      * @param topic
@@ -319,56 +362,87 @@ public class SysCommonService {
      * @param topic         消费主题
      * @param kafkaReader   消费类实例
      * @param taskName      任务名称
+     * @param taskName      任务名称
      */
-    public void readKafkaData(KafkaConsumer<String, String> kafkaConsumer, String topic, IKafkaReader kafkaReader, String taskName) {
-        try {
-            if (kafkaConsumer == null) {
-                logger.info(taskName + "kafkaConsumer 消费者实例 为空");
-                return;
+    public RetData readKafkaData(KafkaConsumer<String, String> kafkaConsumer, String topic, IKafkaReader kafkaReader, String taskName, boolean isList) {
+        RetData dataReturn = new RetData();
+        if (kafkaConsumer == null) {
+            String msg = taskName + "kafkaConsumer 消费者实例 为空";
+            logger.info(msg);
+            dataReturn.setCode(RetCodeAndMessage.NO_DATA);
+            return dataReturn;
+        }
+        if (StringUtil.isBlank(topic)) {
+            String msg = taskName + "topic 消费主题 为空";
+            logger.info(msg);
+            dataReturn.setCode(RetCodeAndMessage.NO_DATA);
+            dataReturn.setMessage(msg);
+            return dataReturn;
+        }
+        kafkaConsumer.subscribe(Collections.singletonList(topic));
+        boolean isNext = true;
+        while (isNext) {
+            int randNum = 200;
+            boolean isSleep = false;
+            if (isSleep) {
+                randNum = StringUtil.getRandNum(500, 2000);
+                StringUtil.threadSleep(randNum);
             }
-            if (StringUtil.isBlank(topic)) {
-                logger.info(taskName + "topic 消费主题 为空");
-                return;
+            boolean kafkaisReLoadConsmer = getKafkaisReLoadConsmer(topic);//判断是否热加载
+            if (kafkaisReLoadConsmer) {
+                dataReturn.setCode(RetCodeAndMessage.NO_DATA);
+                dataReturn.setMessage("kafka实例需要重新加载");
+                isNext = false;
+                kafkaConsumer = null;
+                continue;
             }
-            kafkaConsumer.subscribe(Collections.singletonList(topic));
-            while (true) {
-                int randNum = 200;
-                boolean isSleep = false;
-                long startTime = System.currentTimeMillis();
-                ConsumerRecords<String, String> records = null;
-                try {
-                    if (isSleep) {
-                        randNum = StringUtil.getRandNum(500, 2000);
-                        Thread.sleep(randNum);
-                    }
-                    records = kafkaConsumer.poll(500);
-                } catch (Exception e) {
-                    logger.error(taskName + " kafkaConsumer.poll" + StringUtil.getExceptionMsg(e));
-                }
-                StringBuilder stringBuilder = new StringBuilder();
-                randNum = StringUtil.getRandNum(500, 3000);
-                if (records == null) {
-                    Thread.sleep(randNum);
+            String redisCache = null;
+            if (isList) {
+                String cachekey = ConstantUtil.CACHE_SYS_BASE_DATA_ + "interval_time" + topic;
+                redisCache = getCache(cachekey);
+            }
+            if (StringUtil.isNotBlank(redisCache)) {
+                StringUtil.threadSleep(randNum);
+                continue;
+            }
+            ConsumerRecords<String, String> records = null;
+            try {
+                records = kafkaConsumer.poll(1000);
+            } catch (Exception e) {
+                logger.error(StringUtil.getExceptionMsg(e));
+                e.printStackTrace();
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            randNum = StringUtil.getRandNum(500, 5000);
+            if (records == null || records.isEmpty()) {
+                StringUtil.threadSleep(randNum);
+                continue;
+            }
+            Set<TopicPartition> partitions = records.partitions();
+            if (partitions == null || partitions.size() <= 0) {
+                StringUtil.threadSleep(randNum);
+                continue;
+            }
+            for (TopicPartition partition : partitions) {
+                List<ConsumerRecord<String, String>> partitionRecords = records.records(partition);
+                if (partitionRecords == null || partitionRecords.size() <= 0) {
+                    stringBuilder.append(taskName).append(" partitionRecords  没有队列数据");
+                    logger.info(stringBuilder.toString());
+                    StringUtil.threadSleep(randNum);
                     continue;
                 }
-                Set<TopicPartition> partitions = records.partitions();
-                if (partitions == null || partitions.size() <= 0) {
-                    Thread.sleep(randNum);
-                    continue;
-                }
-                for (TopicPartition partition : partitions) {
-                    List<ConsumerRecord<String, String>> partitionRecords = records.records(partition);
-                    if (partitionRecords == null || partitionRecords.size() <= 0) {
-                        stringBuilder.append(taskName).append(" partitionRecords  没有队列数据");
-                        logger.info(stringBuilder.toString());
-                        Thread.sleep(randNum);
-                        continue;
-                    }
+                if (isList) {//处理集合形式的数据，集合形式尚未有重试功能
                     int len = partitionRecords.size();
                     ConsumerRecord<String, String> record = partitionRecords.get(0);
                     long newOffset = record.offset() + len;
                     cachedThreadPool.execute(() -> {
-                        RetData aReturn = kafkaReader.executeList(partitionRecords, topic);
+                        try {
+                            RetData aReturn = kafkaReader.executeList(partitionRecords, topic);
+                            isRetryKafka(topic, aReturn);
+                        } catch (Exception e) {
+                            logger.error("处理kafka集合数据异常：" + StringUtil.getExceptionMsg(e));
+                            e.printStackTrace();
+                        }
                     });
                     // 逐个异步提交消费成功，避免异常导致无法提交而造成重复消费
                     kafkaConsumer.commitAsync(Collections.singletonMap(partition, new OffsetAndMetadata(newOffset)), (map, e) -> {
@@ -376,14 +450,86 @@ public class SysCommonService {
                             logger.error(taskName + " 提交失败 offset={},e={}", record.offset(), e);
                         }
                     });
+                    randNum = StringUtil.getRandNum(500, 1000);
+                    StringUtil.threadSleep(randNum);
+                    continue;
                 }
+                getPartitionRecords(kafkaConsumer, topic, kafkaReader, partition, partitionRecords);
             }
-        } catch (InterruptedException e) {
-            logger.error(taskName + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
-        } catch (Exception e) {
-            logger.error(taskName + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
         }
+        return dataReturn;
+    }
+
+    /**
+     * 获取每个分区的数据
+     *
+     * @param kafkaConsumer
+     * @param topic
+     * @param kafkaReader
+     * @param partition
+     * @param partitionRecords
+     */
+    private void getPartitionRecords(KafkaConsumer<String, String> kafkaConsumer, String topic, IKafkaReader kafkaReader, TopicPartition partition, List<ConsumerRecord<String, String>> partitionRecords) {
+        boolean isSleep;
+        for (ConsumerRecord<String, String> record : partitionRecords) {
+            String value = record.value();//数据
+            if (StringUtil.isBlank(value)) {
+                continue;
+            }
+            String key = record.key();
+            long offset = record.offset();
+            JSONObject json = new JSONObject();
+            json.put("key", key);
+            json.put("value", value);
+            json.put("offset", offset);
+            json.put("topic", topic);
+            cachedThreadPool.execute(() -> {
+                try {
+                    RetData aReturn = kafkaReader.execute(json);
+                    isRetryKafka(topic, json, aReturn);
+                } catch (Exception e) {
+                    logger.error("处理kafka数据异常：" + StringUtil.getExceptionMsg(e) + "===>原始数据：" + json);
+                    e.printStackTrace();
+                }
+            });
+            // 逐个异步提交消费成功，避免异常导致无法提交而造成重复消费
+            kafkaConsumer.commitAsync(Collections.singletonMap(partition, new OffsetAndMetadata(record.offset() + 1)), (map, e) -> {
+                if (e != null) {
+                    logger.error(" 提交失败 offset={},e={}", record.offset(), e);
+                }
+            });
+        }
+    }
+
+    /**
+     * 根据主题获取kafka消费实例是否重新加载
+     *
+     * @param topic
+     * @return
+     */
+    public boolean getKafkaisReLoadConsmer(String topic) {
+        boolean result = false;
+        if (StringUtil.isBlank(topic)) {
+            return result;
+        }
+        String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + "getKafkaisReLoadConsmer" + topic;
+        String redisCache = getCache(key);
+        if (StringUtil.isNotBlank(redisCache)) {
+            return result;
+        }
+        String dictValue = getDictValue(ConstantUtil.DICT_TYPE_CONFIG_KAFKA, topic);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = JSONObject.parseObject(dictValue);
+        } catch (Exception e) {
+        }
+        if (jsonObject == null) {
+            return result;
+        }
+        result = jsonObject.getBooleanValue("isReloadKafka");
+        if (result) {
+            save(key, "false", 60 * 5);//五分钟内无需对同一个topic实例进行实例加载
+        }
+        return result;
     }
 }

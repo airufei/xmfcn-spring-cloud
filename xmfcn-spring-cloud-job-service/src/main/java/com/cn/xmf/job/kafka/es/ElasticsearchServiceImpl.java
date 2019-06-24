@@ -54,6 +54,14 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
         if (StringUtil.isBlank(topic)) {
             return retData;
         }
+        String interval_time = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "log_topic_interval_time");
+        int intervalTime = StringUtil.stringToInt(interval_time);//配置拉取日志的间隔时间
+        if (intervalTime <= 0) {
+            intervalTime = 10;
+        }
+        String cachekey = ConstantUtil.CACHE_SYS_BASE_DATA_ + "interval_time" + topic;
+        sysCommonService.save(cachekey, "0", intervalTime);//10秒之内不在拉取数据
+        logger.info("【 kafka数据写入ES系统存储任务】 已经读出数据 topic={}, listCount={}", topic, partitionRecords.size());
         List<JSONObject> list = new ArrayList<>();
         int logListSize = getLogListSize();//每次入ES的集合数量，太大可能导致转json内存溢出。
         for (ConsumerRecord<String, String> record : partitionRecords) {
@@ -63,11 +71,22 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
             if (StringUtil.isBlank(value)) {
                 continue;
             }
+            if (StringUtil.isBlank(value)) {
+                continue;
+            }
+            boolean filterLog = isFilterLog(value);
+            if (filterLog)//是否过滤包含某一些关键词的日志信息
+            {
+                continue;
+            }
             JSONObject json = null;
             try {
                 json = JSONObject.parseObject(value);
             } catch (Exception e) {
                 logger.info("value={},errorMeg={}", value, StringUtil.getExceptionMsg(e));
+            }
+            if (json == null||json.size()<=0) {
+                continue;
             }
             list.add(json);
             int size = list.size();
@@ -114,6 +133,41 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
         return num;
     }
 
+    /**
+     * 是否过滤包含某一些关键词的日志信息
+     *
+     * @param message
+     * @return
+     */
+    public boolean isFilterLog(String message) {
+        boolean result = false;
+        if (StringUtil.isBlank(message)) {
+            return true;
+        }
+        String dictValue = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "log_filter_words");//需要过滤的日志信息
+        if (StringUtil.isBlank(dictValue)) {
+            return result;
+        }
+        String[] array = dictValue.split(",");
+        int len = 0;
+        if (array == null || (len = array.length) <= 0) {
+            array = dictValue.split("，");
+        }
+        if (array == null || (len = array.length) <= 0) {
+            return result;
+        }
+        for (int i = 0; i < len; i++) {
+            String item = array[i];
+            if (StringUtil.isBlank(item)) {
+                continue;
+            }
+            if (message.contains(item)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
     /**
      * 获取kafka数据，执行业务操作
      *
