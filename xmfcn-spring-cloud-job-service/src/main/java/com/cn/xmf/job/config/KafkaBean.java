@@ -39,7 +39,7 @@ public class KafkaBean {
     public KafkaConsumer<String, String> getKafkaConsumer(String topic) {
         KafkaConsumer<String, String> kafkaConsumer = null;
         try {
-            kafkaConsumer = new KafkaConsumer<>(kafkaConfig.initConsumerProp());
+            kafkaConsumer = new KafkaConsumer<>(kafkaConfig.initConsumerProp(topic));
         } catch (ClassNotFoundException e) {
             logger.error("获取kafka 消费者异常======e={}", e);
             sysCommonService.sendDingMessage("KafkaBean.getKafkaProducer()", null, null, "获取kafka 消费者失败", getClass());
