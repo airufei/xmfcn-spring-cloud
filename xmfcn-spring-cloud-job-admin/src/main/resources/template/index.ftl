@@ -135,6 +135,7 @@
 <script src="/job/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
 <#-- echarts -->
 <script src="/job/plugins/echarts/echarts.common.min.js"></script>
+<script src="/job/js/DateUtil.js"></script>
 <script src="/job/js/index.js"></script>
 </body>
 </html>

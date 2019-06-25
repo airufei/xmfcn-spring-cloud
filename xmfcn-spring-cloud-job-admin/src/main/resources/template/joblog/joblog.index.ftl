@@ -159,6 +159,7 @@
 <!-- daterangepicker -->
 <script src="/job/adminlte/plugins/daterangepicker/moment.min.js"></script>
 <script src="/job/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="/job/js/DateUtil.js"></script>
 <script src="/job/js/joblog.index.1.js"></script>
 </body>
 </html>

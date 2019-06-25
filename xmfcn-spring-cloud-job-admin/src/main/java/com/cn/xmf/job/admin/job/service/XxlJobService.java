@@ -1,4 +1,5 @@
 package com.cn.xmf.job.admin.job.service;
+import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import java.util.Date;
@@ -78,6 +79,6 @@ public interface XxlJobService {
 	 * @param endDate
 	 * @return
 	 */
-	public ReturnT<Map<String,Object>> chartInfo(Date startDate, Date endDate);
+	public ReturnT<JSONObject> chartInfo(Date startDate, Date endDate);
 
 }

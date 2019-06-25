@@ -1,5 +1,6 @@
 package com.cn.xmf.job.admin.job.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.RetCodeAndMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.admin.common.PermissionInterceptor;
@@ -47,15 +48,15 @@ public class IndexController {
     public String index(Model model) {
         Map<String, Object> dashboardMap = xxlJobService.dashboardInfo();
         model.addAllAttributes(dashboardMap);
-        logger.info("-----------------------------------1");
         return "index";
     }
 
     @RequestMapping("/chartInfo")
     @ResponseBody
-    public ReturnT<Map<String, Object>> chartInfo(Date startDate, Date endDate) {
-        logger.info("-----------------------------------1");
-        return xxlJobService.chartInfo(startDate, endDate);
+    public ReturnT<JSONObject> chartInfo(Date startDate, Date endDate) {
+        ReturnT<JSONObject> returnT = xxlJobService.chartInfo(startDate, endDate);
+        logger.info("returnT = " + returnT);
+        return returnT;
     }
 
     @RequestMapping("/toLogin")

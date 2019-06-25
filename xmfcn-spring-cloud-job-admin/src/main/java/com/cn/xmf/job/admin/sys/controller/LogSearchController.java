@@ -43,7 +43,7 @@ public class LogSearchController {
         String dictType = ConstantUtil.DICT_TYPE_SYS_NAME;
         List<JSONObject> list = logSearchHelperService.getSubSysName(dictType);
         model.addAttribute("sysList", list);
-        return "es/log-index";
+        return "log/log-index";
     }
 
     /**

@@ -2,36 +2,7 @@
 # 框架结构图
 ![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/4AB893CF-8AAE-4a49-A961-B6D153644027.png)
 
-# xmfcn-spring-cloud 简介
-1、springcloud 微服务，基于spring-cloud Finchley.SR1,spring boot 2.0.1.RELEASE 。
-
-2、使用eurka作为注册中心，提供服务发现与注册功能。
-
-3、使用zuul作为统一网关，提供统一入口，安全校验、路由等。
-
-4、加入xxl-job 任务调度器，负责任务调度与任务管理。
-
-5、当前版本api层服务和service层服务已经打通，去除了Spring Security权限验证。在spring boot2.x版本中，Security权限验证存在很多问题
-暂时未能解决，再研究研究，争取把权限验证加入到每层服务中，当前服务仅保留eurka使用了权限验证，并且可用。
-
-6、调度器job-admin 和job-handler执行器已经可用。执行任务只需要访问http://localhost:8082/job/ 添加相应任务，并且在job-service的task包下写入具体的任务执行方法即可执行相应任务。
-
-7、服务系统拆分采用垂直+水平，水平方向拆分如user-api、order-api等等、垂直方向划分如：user-api和user-service。这样划分的好处是分层更清晰，每层的职责边界更清楚。
-api层更专注于业务逻辑或者api的多样性，service层更加倾向于数据能力和服务稳定能力。
-
-7、user-api和user-service，当前两个服务已经可用。
-
-8、配合开源代码生成工具更能提高开发效率。地址：https://github.com/airufei/xCode。
-
-   &nbsp;&nbsp;1）根据数据库表生成基本功能代码，包含Mybatis文件，dao、servic、entity、controller以及查询页面、增加编辑页。
-   
-   &nbsp;&nbsp;2) 根据不同代码模型生成不同的代码结构和代码风格。
-   
-   &nbsp;&nbsp;3）springcloud生成模型是特定为springcloud体系开发的代码生成模型、可以同时生成model、api层的接口代码和调用user-service的接口代码 service层的接口代码、数据库SQL语句等
-   
-9、xxl-job 改造为spring cloud版本后已经在生产环境正常调度超过100万次。详见：https://github.com/airufei/xmfcn-spring-cloud/issues/1
-
-# 工程职责简介
+# 工程简介
 
 ## 1、xmfcn-spring-cloud-common 
 1、提供基础工具类相关功能，如：字符串工具类、常量类、http请求、文件相关工具、时间转换工具、枚举，model、vo等。
@@ -119,3 +90,25 @@ api层更专注于业务逻辑或者api的多样性，service层更加倾向于�
    &nbsp;&nbsp;4）kibana 当前没有登录功能，因此暂时集成到job-admin进行日志搜索。
    
 2、欢迎留言讨论：https://github.com/airufei/xmfcn-spring-cloud/issues/1
+
+#项目截图
+1、登录界面
+![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625172030.png)
+
+2、任务管理界面
+![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625175639.png)
+
+3、任务日志界面
+![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625175549.png)
+
+4、系统日志搜索界面
+![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625174804.png)
+
+5、系统日志报表界面
+![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625175224.png)
+
+6、Redis运行状态界面
+![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625175735.png)
+
+6、数据字典界面
+![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625175815.png)
