@@ -4,6 +4,8 @@
 
 # 工程简介
 
+springcloud 微服务，Sring cloud Greenwich.SR1 spring boot 2.1.3.RELEASE 版本 。服务水平加垂直分层，集成xxl定时任务系统、Redis缓存、队列、分布式锁，监控，EFK 日志搜索方案集成实现等 https://kafeijie.com
+
 ## 1、xmfcn-spring-cloud-common 
 1、提供基础工具类相关功能，如：字符串工具类、常量类、http请求、文件相关工具、时间转换工具、枚举，model、vo等。
 
