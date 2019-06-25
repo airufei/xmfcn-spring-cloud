@@ -104,11 +104,14 @@
 4、系统日志搜索界面
 ![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625174804.png)
 
-5、系统日志报表界面
+5、日志跨系统追踪
+![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/FEA1CAF8-3738-423e-A031-CCC39E2AF0EC.png)
+
+6、系统日志报表界面
 ![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625175224.png)
 
-6、Redis运行状态界面
+7、Redis运行状态界面
 ![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625175735.png)
 
-6、数据字典界面
+8、数据字典界面
 ![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/20190625175815.png)
