@@ -141,7 +141,7 @@
         <b>MF-JOB</b> ${I18n.admin_version}
         <div class="pull-right hidden-xs">
             <strong>Copyright &copy; 2015-${.now?string('yyyy')} &nbsp;
-                <a href="https://xmf.cn" target="_blank">小蜜蜂</a>
+                <a href="https://www.kafeijie.com" target="_blank">小蜜蜂</a>
             </strong><!-- All rights reserved. -->
         </div>
     </footer>
