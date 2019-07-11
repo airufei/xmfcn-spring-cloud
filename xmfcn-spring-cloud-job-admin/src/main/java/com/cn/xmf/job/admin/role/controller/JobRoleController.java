@@ -90,7 +90,7 @@ public class JobRoleController {
             String msg = "getList:(获取角色数据分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("getList", param.toString(), JSON.toJSONString(retJon), msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getList:(获取角色数据分页查询接口) 结束");
         return retJon;
@@ -124,7 +124,7 @@ public class JobRoleController {
                 returnT.setMsg("成功");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
             returnT = returnT.FAIL;
             String msg = "delete:(逻辑删除角色数据数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
@@ -177,7 +177,7 @@ public class JobRoleController {
             returnT.setCode(ReturnT.SUCCESS_CODE);
             returnT.setMsg("成功");
         } catch (Exception e) {
-            e.printStackTrace();
+
             String msg = "save:(保存角色数据数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(returnT), msg, this.getClass());

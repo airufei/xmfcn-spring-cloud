@@ -71,7 +71,7 @@ public class JobMenuService {
                 parms = json.toString();
             }
             sysCommonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getList(获取job-菜单带分页数据-服务) 结束 ");
         return pt;
@@ -97,7 +97,7 @@ public class JobMenuService {
             String msg = "getJobMenuList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getJobMenuList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getJobMenuList(获取job-菜单 不带分页数据-服务) 结束");
         return list;
@@ -123,7 +123,7 @@ public class JobMenuService {
             String msg = "save (保存job-菜单 数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("save (保存job-菜单 数据-服务) 结束");
         return jobMenu;
@@ -150,7 +150,7 @@ public class JobMenuService {
             String msg = "getJobMenu(获取job-菜单单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getJobMenu]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getJobMenu(获取job-菜单单条数据-服务) 结束 ");
         return ret;

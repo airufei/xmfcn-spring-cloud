@@ -66,7 +66,7 @@ public class KafKaProducerController {
                 returnT.setMsg("发送成功");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
             returnT = ReturnT.FAIL;
             String msg = "send(发送数据到kafka) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);

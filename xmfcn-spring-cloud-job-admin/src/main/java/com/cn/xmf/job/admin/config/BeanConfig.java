@@ -71,7 +71,7 @@ public class BeanConfig {
             xxlJobDynamicScheduler.setAccessToken(token);
             xxlJobDynamicScheduler.setScheduler(quartzScheduler().getScheduler());
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         return xxlJobDynamicScheduler;
     }

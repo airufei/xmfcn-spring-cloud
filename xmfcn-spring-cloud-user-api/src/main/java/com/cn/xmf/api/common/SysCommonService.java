@@ -57,7 +57,7 @@ public class SysCommonService {
             dingMessage.setRetData(retData);
             dingTalkService.sendMessageToDingTalk(dingMessage);
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -76,7 +76,7 @@ public class SysCommonService {
             redisService.save(key, value, seconds);
         } catch (Exception e) {
             logger.error("save_error:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
     }
 
@@ -95,7 +95,7 @@ public class SysCommonService {
             redisService.getCache(key);
         } catch (Exception e) {
             logger.error("getCache_error:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
         return cache;
     }
@@ -114,7 +114,7 @@ public class SysCommonService {
             redisService.delete(key);
         } catch (Exception e) {
             logger.error("delete_error:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
     }
 
@@ -135,7 +135,7 @@ public class SysCommonService {
             redisService.putToQueue(key, value);
         } catch (Exception e) {
             logger.error("putToQueue_error:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
     }
 
@@ -154,7 +154,7 @@ public class SysCommonService {
             value = redisService.getFromQueue(key);
         } catch (Exception e) {
             logger.error("putToQueue_error:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
         return value;
     }
@@ -175,7 +175,7 @@ public class SysCommonService {
             //lock = redisService.getLock(key);
         } catch (Exception e) {
             logger.error("getLock（获取分布式锁）:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
         return lock;
     }

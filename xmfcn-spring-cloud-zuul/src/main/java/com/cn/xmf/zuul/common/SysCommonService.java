@@ -53,7 +53,7 @@ public class SysCommonService {
             dingMessage.setRetData(retData);
             dingTalkService.sendMessageToDingTalk(dingMessage);
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -79,7 +79,7 @@ public class SysCommonService {
             // ssdbService.setStrByKey(ssdbJsonObject);
         } catch (Exception e) {
             logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
     }
 
@@ -104,7 +104,7 @@ public class SysCommonService {
             //ssdbService.setStrByKey(ssdbJsonObject);
         } catch (Exception e) {
             logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
     }
 
@@ -122,7 +122,7 @@ public class SysCommonService {
             //cache=ssdbService.getStrByKey(key);
         } catch (Exception e) {
             logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
         return cache;
     }
@@ -140,7 +140,7 @@ public class SysCommonService {
             //ssdbService.delStrByKey(key);
         } catch (Exception e) {
             logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
     }
 }

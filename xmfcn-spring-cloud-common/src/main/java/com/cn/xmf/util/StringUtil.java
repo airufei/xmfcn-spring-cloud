@@ -268,7 +268,7 @@ public class StringUtil extends StringUtils {
             result = matcher.matches();
         } catch (Exception e) {
             result = false;
-            e.printStackTrace();
+
         }
         return result;
     }
@@ -307,7 +307,7 @@ public class StringUtil extends StringUtils {
         try {
             result = java.net.URLDecoder.decode(url, encode);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+
         }
         return result;
     }
@@ -354,15 +354,15 @@ public class StringUtil extends StringUtils {
      * @return
      * @author rufei.cn
      */
-    public static String getURLEncoderString(String url, String ENCODE) {
+    public static String getURLEncoderString(String url, String encode) {
         String result = "";
         if (null == url) {
             return "";
         }
         try {
-            result = java.net.URLEncoder.encode(url, ENCODE);
+            result = java.net.URLEncoder.encode(url, encode);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+
         }
         return result;
     }
@@ -394,20 +394,6 @@ public class StringUtil extends StringUtils {
     }
 
 
-    /**
-     * 显示字符串前N个字
-     */
-    public static final String getPreInfo(String str, int n) {
-        if (str == null) {
-            return "";
-        }
-        if (str.length() <= n) {
-            return str;
-        }
-        str = str.substring(0, n) + "...";
-        return str;
-    }
-
 
     /**
      * getUuId:(获取唯一标识)
@@ -416,7 +402,6 @@ public class StringUtil extends StringUtils {
      * @author rufei.cn
      */
     public static String getUuId() {
-
         String uuid = UUID.randomUUID().toString().replace("-", "");
         return uuid;
     }
@@ -486,7 +471,7 @@ public class StringUtil extends StringUtils {
             result = Double.parseDouble(amount);
         } catch (Exception e) {
             logger.error("StrToDouble：服务端异常" + e);
-            e.printStackTrace();
+
         }
         return result;
     }
@@ -507,47 +492,10 @@ public class StringUtil extends StringUtils {
             result = Boolean.parseBoolean(str);
         } catch (Exception e) {
             logger.error("StrToBoolean：服务端异常" + e);
-            e.printStackTrace();
+
 
         }
         return result;
-    }
-
-    /**
-     * 手机号脱敏.
-     *
-     * @param phone the phone
-     * @return the string
-     */
-    public static String phoneTuoMin(String phone) {
-        if (isBlank(phone)) {
-            return phone;
-        }
-        if (phone.length() == 11) {
-            String prifix = phone.substring(0, 3);
-            String subfix = phone.substring(7);
-            phone = prifix.concat("****").concat(subfix);
-        }
-        return phone;
-    }
-
-
-    /**
-     * 去除数组后小数点后面的0
-     *
-     * @param strnum
-     * @return
-     * @author jxli
-     */
-    public static String formatNum(String strnum) {
-        if (!StringUtil.isBlank(strnum) && strnum.indexOf(".") > 0 && "0".equals(strnum.substring(strnum.length() - 1))) {
-            String num = Double.parseDouble(strnum) + "";
-            if ("0".equals(num.substring(num.length() - 1))) {
-                return num.substring(0, num.length() - 2);
-            }
-            return num;
-        }
-        return strnum;
     }
 
 
@@ -702,7 +650,7 @@ public class StringUtil extends StringUtils {
             try {
                 aClass = Class.forName(moduleName);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+
             }
             int lineNumber = stackTrace[i].getLineNumber();
             String simpleName = null;
@@ -771,7 +719,7 @@ public class StringUtil extends StringUtils {
             ret = new StringBuilder(password).reverse().toString();//反转
         } catch (Exception e) {
             ret = null;
-            e.printStackTrace();
+
         }
         return ret;
     }
@@ -788,7 +736,7 @@ public class StringUtil extends StringUtils {
         try {
             addr = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+
         }
         Map<String, String> mdcPropertyMap = loggingEvent.getMDCPropertyMap();
 

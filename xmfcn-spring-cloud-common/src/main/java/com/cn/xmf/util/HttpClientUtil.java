@@ -303,7 +303,7 @@ public class HttpClientUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
             logger.error("Https Exception:" + e + "=====url:" + url);
         }
 
@@ -361,7 +361,7 @@ public class HttpClientUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
             logger.error("Https Exception:" + e + "=====url:" + url);
         }
 

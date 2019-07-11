@@ -37,7 +37,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
                 formatDate = DateFormatUtils.format(date, "yyyy-MM-dd");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         return formatDate;
     }
@@ -98,7 +98,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
                 dt = toDate(res, paten);
             }
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+
         }
         return dt;
     }
@@ -119,7 +119,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             Date date = new Date(lt);
             res = simpleDateFormat.format(date);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+
         }
         return res;
     }
@@ -145,7 +145,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         try {
             dt = formater.parse(dateStr);
         } catch (ParseException e) {
-            e.printStackTrace();
+
         }
         return dt;
     }
@@ -165,7 +165,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = formater.parse(dateStr);
         } catch (ParseException e) {
-            e.printStackTrace();
+
         }
         return date;
     }
@@ -186,7 +186,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = formater.parse(dateStr);
         } catch (ParseException e) {
-            e.printStackTrace();
+
         }
         dateStr = formatDate(date, format);
         return dateStr;
@@ -208,7 +208,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             cal.add(Calendar.DAY_OF_MONTH, day);
             date = cal.getTime();
         } catch (Exception e) {
-            e.printStackTrace();
+
 
         }
         return date;
@@ -231,7 +231,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             cal.add(Calendar.MINUTE, min);
             date = cal.getTime();
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         return date;
     }
@@ -252,7 +252,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             cal.add(Calendar.MONTH, month);
             date = cal.getTime();
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         return date;
     }
@@ -279,7 +279,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             Date beginDateStr = format.parse(beginDate);
             count = (int) ((endDateStr.getTime() - beginDateStr.getTime()) / (1000 * 3600 * 24));
         } catch (ParseException e) {
-            e.printStackTrace();
+
         }
         return count;
     }
@@ -301,7 +301,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
                 day = days;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         return day;
     }

@@ -65,7 +65,7 @@ public class KafkaBean {
             kafkaProducer = new KafkaProducer<>(initProducerProp());
         } catch (ClassNotFoundException e) {
             logger.error("获取kafka 生产者异常======e={}", e);
-            e.printStackTrace();
+
         }
         return kafkaProducer;
     }

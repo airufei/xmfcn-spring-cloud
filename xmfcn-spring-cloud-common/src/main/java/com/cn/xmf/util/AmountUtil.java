@@ -25,7 +25,7 @@ public class AmountUtil {
             retAmount = am.setScale(num, BigDecimal.ROUND_HALF_UP).toString();
         } catch (Exception e) {
             logger.error("getStrDecimal(金额保留N位小数-返回字符串类型)：" + e);
-            e.printStackTrace();
+
         }
         return retAmount;
     }
@@ -46,7 +46,7 @@ public class AmountUtil {
             retAmount = am.setScale(num, BigDecimal.ROUND_HALF_UP);
         } catch (Exception e) {
             logger.error("getDecimal(金额保留N位小数-返回数字类型)：" + e);
-            e.printStackTrace();
+
         }
         return retAmount;
     }
@@ -66,7 +66,7 @@ public class AmountUtil {
             retAmount = amount.setScale(num, BigDecimal.ROUND_HALF_UP);
         } catch (Exception e) {
             logger.error("getDecimal(金额保留N位小数-返回数字类型)：" + e);
-            e.printStackTrace();
+
         }
         return retAmount.toString();
     }
@@ -85,7 +85,7 @@ public class AmountUtil {
             retAmount = amount.setScale(num, BigDecimal.ROUND_HALF_UP);
         } catch (Exception e) {
             logger.error("getDecimal(金额保留N位小数-返回数字类型)：" + e);
-            e.printStackTrace();
+
         }
         return retAmount;
     }
@@ -105,7 +105,7 @@ public class AmountUtil {
             retAmount = new BigDecimal(amount);
         } catch (Exception e) {
             logger.error("getDecimal(金额保留N位小数-返回数字类型)：" + e);
-            e.printStackTrace();
+
         }
         return retAmount;
     }

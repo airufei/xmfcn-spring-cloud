@@ -110,7 +110,7 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             producer.send(new ProducerRecord<>(ConstantUtil.XMF_KAFKA_TOPIC_LOG, topic, jsonString));
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
     }
 

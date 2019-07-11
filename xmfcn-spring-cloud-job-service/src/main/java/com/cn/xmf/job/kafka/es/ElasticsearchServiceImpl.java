@@ -113,7 +113,7 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
         } catch (Exception e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
             logger.error(exceptionMsg);
-            e.printStackTrace();
+
         }
         return dataReturn;
     }

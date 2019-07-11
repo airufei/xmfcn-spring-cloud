@@ -43,7 +43,7 @@ public class KafkaBean {
         } catch (ClassNotFoundException e) {
             logger.error("获取kafka 消费者异常======e={}", e);
             sysCommonService.sendDingMessage("KafkaBean.getKafkaProducer()", null, null, "获取kafka 消费者失败", getClass());
-            e.printStackTrace();
+
         }
         return kafkaConsumer;
     }

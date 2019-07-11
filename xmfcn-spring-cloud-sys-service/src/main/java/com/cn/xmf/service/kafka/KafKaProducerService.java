@@ -53,7 +53,7 @@ public class KafKaProducerService {
         kafkaProducer.send(record, new Callback() {
             public void onCompletion(RecordMetadata metadata, Exception e) {
                 if (e != null) {
-                    e.printStackTrace();
+
                     logger.info(StringUtil.getExceptionMsg(e));
                 }
             }

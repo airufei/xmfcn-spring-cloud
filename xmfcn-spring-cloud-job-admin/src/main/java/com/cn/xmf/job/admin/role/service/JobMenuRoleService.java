@@ -61,7 +61,7 @@ public class JobMenuRoleService  {
                 parms = json.toString();
             }
               sysCommonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
           }
 		  logger.info("getList(获取角色菜单关系带分页数据-服务) 结束 ");
 		  return pt;
@@ -88,7 +88,7 @@ public class JobMenuRoleService  {
             String msg = "getJobMenuRoleList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getJobMenuRoleList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
           }
 	      logger.info("getJobMenuRoleList(获取角色菜单关系 不带分页数据-服务) 结束");
 	      return list;
@@ -116,7 +116,7 @@ public class JobMenuRoleService  {
             logger.error(msg);
             ret=null;
             sysCommonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
           }
 	    logger.info("save (保存角色菜单关系 数据-服务) 结束");
 	    return  ret;
@@ -144,7 +144,7 @@ public class JobMenuRoleService  {
             String msg = "getJobMenuRole(获取角色菜单关系单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getJobMenuRole]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
           }
 	       logger.info("getJobMenuRole(获取角色菜单关系单条数据-服务) 结束 ");
 	      return ret;

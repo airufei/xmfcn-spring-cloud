@@ -73,7 +73,7 @@ public class ElasticsearchService {
                 retData.setMessage(result.getErrorMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
             String msg = StringUtil.getExceptionMsg(e);
             StringBuilder builder = new StringBuilder();
             builder.append("saveBatch(保存集合数据到ES) 参数 es:").append(JSON.toJSONString(es)).append(" \n\n错误消息：").append(msg);
@@ -131,7 +131,7 @@ public class ElasticsearchService {
                 retData.setMessage(result.getErrorMessage());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
             String msg = StringUtil.getExceptionMsg(e);
             StringBuilder builder = new StringBuilder();
             builder.append("saveBatch(保存集合数据到ES) 参数 es:").append(JSON.toJSONString(es)).append(" \n\n错误消息：").append(msg);
@@ -170,7 +170,7 @@ public class ElasticsearchService {
             }
             pt = elasticsearchHelperService.getSearchResult(result, esPage);
         } catch (Exception e) {
-            e.printStackTrace();
+
             String msg = StringUtil.getExceptionMsg(e);
             StringBuilder builder = new StringBuilder();
             builder.append("search(根据 关键词查询ES信息) 参数 es:").append(JSON.toJSONString(es)).append(" \n\n错误消息：").append(msg);
@@ -208,7 +208,7 @@ public class ElasticsearchService {
             }
             resJson = elasticsearchHelperService.getLevelStatisticsResult(result);
         } catch (Exception e) {
-            e.printStackTrace();
+
             String msg = StringUtil.getExceptionMsg(e);
             StringBuilder builder = new StringBuilder();
             builder.append("getStatisticsCountByLevel(按日志级别统计时间内的数据) 参数 es:").append(JSON.toJSONString(es)).append(" \n\n错误消息：").append(msg);
@@ -247,7 +247,7 @@ public class ElasticsearchService {
             }
             resJson = elasticsearchHelperService.getDayStatisticsResult(result);
         } catch (Exception e) {
-            e.printStackTrace();
+
             String msg = StringUtil.getExceptionMsg(e);
             StringBuilder builder = new StringBuilder();
             builder.append("getStatisticsCountByDay(按天统计时间内的数据) 参数 es:").append(JSON.toJSONString(es)).append(" \n\n错误消息：").append(msg);

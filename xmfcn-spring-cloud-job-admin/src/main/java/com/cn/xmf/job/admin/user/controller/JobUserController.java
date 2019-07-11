@@ -92,7 +92,7 @@ public class JobUserController {
             String msg = "getList:(获取调度系统用户分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("getList", null, JSON.toJSONString(maps), msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getList:(获取调度系统用户分页查询接口) 结束");
         return maps;
@@ -130,7 +130,7 @@ public class JobUserController {
                 returnT.setMsg("请选择需要删除的数据");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
             String msg = "delete:(逻辑删除调度系统用户数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("delete", parms, JSON.toJSONString(returnT), msg, this.getClass());
@@ -205,7 +205,7 @@ public class JobUserController {
                 retData.setMsg("保存成功");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
             String msg = "save:(保存调度系统用户数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("save", null, JSON.toJSONString(retData), msg, this.getClass());

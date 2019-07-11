@@ -61,7 +61,7 @@ public class JobRoleService {
                 parms = json.toString();
             }
             sysCommonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getList(获取角色数据带分页数据-服务) 结束 ");
         return pt;
@@ -87,7 +87,7 @@ public class JobRoleService {
             String msg = "getJobRoleList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getJobRoleList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getJobRoleList(获取角色数据 不带分页数据-服务) 结束");
         return list;
@@ -115,7 +115,7 @@ public class JobRoleService {
             logger.error(msg);
             ret = null;
             sysCommonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("save (保存角色数据 数据-服务) 结束");
         return ret;
@@ -142,7 +142,7 @@ public class JobRoleService {
             String msg = "getJobRole(获取角色数据单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getJobRole]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getJobRole(获取角色数据单条数据-服务) 结束 ");
         return ret;

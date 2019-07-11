@@ -138,7 +138,7 @@ public class JobUserHelperService {
         } catch (Exception e) {
             String msg = "login(登录) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            e.printStackTrace();
+
         }
         return retData;
     }

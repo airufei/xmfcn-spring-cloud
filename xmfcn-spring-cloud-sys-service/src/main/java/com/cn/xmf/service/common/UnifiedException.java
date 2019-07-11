@@ -43,7 +43,7 @@ public class UnifiedException {
     @ResponseBody
     Object handleException(Throwable e, HttpServletRequest request, HttpServletResponse response) {
         dingTalkMessage(request, e);
-        e.printStackTrace();
+
         return null;
     }
 
@@ -74,7 +74,7 @@ public class UnifiedException {
             dingMessage.setRetData(null);
             dingTalkService.sendMessageToDingTalk(dingMessage);
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         logger.error(stackMessage);
     }

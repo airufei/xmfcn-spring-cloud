@@ -61,7 +61,7 @@ public class CodeTableService {
                 parms = json.toString();
             }
             sysCommonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getList(获取数据表信息带分页数据-服务) 结束 ");
         return pt;
@@ -87,7 +87,7 @@ public class CodeTableService {
             String msg = "getCodeTableList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getCodeTableList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getCodeTableList(获取数据表信息 不带分页数据-服务) 结束");
         return list;
@@ -113,7 +113,7 @@ public class CodeTableService {
             String msg = "save (保存数据表信息 数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("save (保存数据表信息 数据-服务) 结束");
         return codeTable;
@@ -140,7 +140,7 @@ public class CodeTableService {
             String msg = "getCodeTable(获取数据表信息单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getCodeTable]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getCodeTable(获取数据表信息单条数据-服务) 结束 ");
         return ret;

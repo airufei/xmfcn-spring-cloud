@@ -82,7 +82,7 @@ public class IndexController {
             retData = jobUserHelperService.login(phone, password);
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
         int code = retData.getCode();
         String message = retData.getMessage();

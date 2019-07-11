@@ -58,7 +58,7 @@ public class DingTalkService {
             }
         } catch (IOException e) {
             logger.info("钉钉发送提醒消息失败：" + e + "=======webhook:" + webhook + "=======message:" + message);
-            e.printStackTrace();
+
         }
     }
 
@@ -119,7 +119,7 @@ public class DingTalkService {
             logger.info("钉钉发送提醒发送结果: " + send);
         } catch (IOException e) {
             logger.error("钉钉发送提醒消息失败：" + e + "=======webhook:" + webhook + "=======message:" + message);
-            e.printStackTrace();
+
         }
         return result;
     }

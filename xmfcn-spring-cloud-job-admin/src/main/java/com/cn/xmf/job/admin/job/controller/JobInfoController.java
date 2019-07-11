@@ -95,7 +95,7 @@ public class JobInfoController {
 			returnT.setCode(ReturnT.SUCCESS_CODE);
 			returnT.setMsg("成功");
 		} catch (Exception e) {
-			e.printStackTrace();
+
 			String msg = "save:(保存job-任务) error===>" + StringUtil.getExceptionMsg(e);
 			logger.error(msg);
 			//sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(returnT), msg, this.getClass());

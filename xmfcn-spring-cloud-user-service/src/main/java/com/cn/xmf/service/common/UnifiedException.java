@@ -38,7 +38,7 @@ public class UnifiedException {
     RetData handleException(Throwable e, HttpServletRequest request, HttpServletResponse response){
         RetData mobileData  =null;
         dingTalkMessage(request, e);
-        e.printStackTrace();
+
         return mobileData;
     }
 

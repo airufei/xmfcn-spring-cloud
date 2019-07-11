@@ -45,7 +45,7 @@ public class UnifiedException {
         mobileData.setMessage(message);
         mobileData.setData(data);
         dingTalkMessage(request, e);
-        e.printStackTrace();
+
         return mobileData;
     }
 

@@ -118,11 +118,11 @@ public class ElasticsearchHelperService {
         } catch (IOException e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
             logger.info(exceptionMsg);
-            e.printStackTrace();
+
         } catch (Exception e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
             logger.info(exceptionMsg);
-            e.printStackTrace();
+
         }
         return result;
 
@@ -142,11 +142,11 @@ public class ElasticsearchHelperService {
         } catch (IOException e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
             logger.info(exceptionMsg);
-            e.printStackTrace();
+
         } catch (Exception e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
             logger.info(exceptionMsg);
-            e.printStackTrace();
+
         }
         return result;
     }
@@ -179,7 +179,7 @@ public class ElasticsearchHelperService {
         } catch (Exception e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
             logger.info(exceptionMsg);
-            e.printStackTrace();
+
         }
         return result;
     }
@@ -215,7 +215,7 @@ public class ElasticsearchHelperService {
         } catch (Exception e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
             logger.info(exceptionMsg);
-            e.printStackTrace();
+
         }
         return result;
     }
@@ -329,7 +329,7 @@ public class ElasticsearchHelperService {
         } catch (Exception e) {
             String exceptionMsg = sql + "=======》" + StringUtil.getExceptionMsg(e);
             logger.error(exceptionMsg);
-            e.printStackTrace();
+
         }
         return jsonObject;
     }

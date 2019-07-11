@@ -89,7 +89,7 @@ public class CodeTableController {
             String msg = "getList:(获取数据表信息分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("getList", param.toString(), JSON.toJSONString(retJon), msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getList:(获取数据表信息分页查询接口) 结束");
         return retJon;
@@ -123,7 +123,7 @@ public class CodeTableController {
                 returnT.setMsg("成功");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
             returnT = returnT.FAIL;
             String msg = "delete:(逻辑删除数据表信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
@@ -151,7 +151,7 @@ public class CodeTableController {
             tableList = codeTableService.getTableList(dbName, tableName);
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
+
         }
         return tableList;
     }
@@ -188,7 +188,7 @@ public class CodeTableController {
             returnT.setCode(ReturnT.SUCCESS_CODE);
             returnT.setMsg("成功");
         } catch (Exception e) {
-            e.printStackTrace();
+
             String msg = "save:(保存数据表信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(returnT), msg, this.getClass());

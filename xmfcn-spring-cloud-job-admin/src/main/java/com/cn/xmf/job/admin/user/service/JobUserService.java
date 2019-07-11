@@ -62,7 +62,7 @@ public class JobUserService {
                 parms = json.toString();
             }
             sysCommonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getList(获取调度系统用户带分页数据-服务) 结束 ");
         return pt;
@@ -88,7 +88,7 @@ public class JobUserService {
             String msg = "getJobUserList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getJobUserList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getJobUserList(获取调度系统用户 不带分页数据-服务) 结束");
         return list;
@@ -114,7 +114,7 @@ public class JobUserService {
             String msg = "save (保存调度系统用户 数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("save (保存调度系统用户 数据-服务) 结束");
         return jobUser;
@@ -142,7 +142,7 @@ public class JobUserService {
             String msg = "getJobUser(获取调度系统用户单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getJobUser]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getJobUser(获取调度系统用户单条数据-服务) 结束 ");
         return ret;

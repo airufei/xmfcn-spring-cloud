@@ -27,12 +27,12 @@ public class FileReadUtil {
         } catch (Exception e) {
             //此处可根据你的日志框架进行记录
             System.err.println("Error reading conf properties in PropertyManager.loadProps() " + e);
-            e.printStackTrace();
+
         } finally {
             try {
                 in.close();
             } catch (Exception e) {
-                e.printStackTrace();
+
                 //此处可根据你的日志框架进行记录
             }
         }

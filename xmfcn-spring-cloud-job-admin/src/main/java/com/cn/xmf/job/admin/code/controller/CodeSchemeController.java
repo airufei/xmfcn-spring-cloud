@@ -89,7 +89,7 @@ public class CodeSchemeController {
             String msg = "getList:(获取代码生成方案分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("getList", param.toString(), JSON.toJSONString(retJon), msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getList:(获取代码生成方案分页查询接口) 结束");
         return retJon;
@@ -123,7 +123,7 @@ public class CodeSchemeController {
                 returnT.setMsg("成功");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
             returnT = returnT.FAIL;
             String msg = "delete:(逻辑删除代码生成方案数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
@@ -165,7 +165,7 @@ public class CodeSchemeController {
             returnT.setCode(ReturnT.SUCCESS_CODE);
             returnT.setMsg("成功");
         } catch (Exception e) {
-            e.printStackTrace();
+
             String msg = "save:(保存代码生成方案数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(returnT), msg, this.getClass());

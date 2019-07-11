@@ -68,7 +68,7 @@ public class CodeTableColumnService {
                 parms = json.toString();
             }
             sysCommonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getList(获取表字段信息带分页数据-服务) 结束 ");
         return pt;
@@ -94,7 +94,7 @@ public class CodeTableColumnService {
             String msg = "getCodeTableColumnList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getCodeTableColumnList]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getCodeTableColumnList(获取表字段信息 不带分页数据-服务) 结束");
         return list;
@@ -120,7 +120,7 @@ public class CodeTableColumnService {
             String msg = "save (保存表字段信息 数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("save (保存表字段信息 数据-服务) 结束");
         return codeTableColumn;
@@ -147,7 +147,7 @@ public class CodeTableColumnService {
             String msg = "getCodeTableColumn(获取表字段信息单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("base-service[getCodeTableColumn]", parms, null, msg, this.getClass());
-            e.printStackTrace();
+
         }
         logger.info("getCodeTableColumn(获取表字段信息单条数据-服务) 结束 ");
         return ret;

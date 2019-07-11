@@ -65,7 +65,7 @@ public class LogChartsController {
         try {
             httpGet = HttpClientUtil.httpsGet(es_http_rest_url);
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         String[] split = null;
         if (StringUtil.isNotBlank(httpGet)) {
@@ -127,7 +127,7 @@ public class LogChartsController {
         } catch (Exception e) {
             String msg = "getLogLevelCharts(统计日志数据每个时间段 各个日志级别的数量) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            e.printStackTrace();
+
         }
         return resJson;
     }
