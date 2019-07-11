@@ -75,7 +75,7 @@ public class LocalCacheUtil {
                 }
             }, expTime);
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 }
