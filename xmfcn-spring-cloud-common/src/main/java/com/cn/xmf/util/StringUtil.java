@@ -88,14 +88,17 @@ public class StringUtil extends StringUtils {
      * @Date 2017/11/23 15:19
      **/
     public static float stringToFloat(String s) {
+        float result=0l;
         if (isBlank(s)) {
-            return 0;
+            return result;
         }
         try {
             return Float.parseFloat(s);
         } catch (Exception e) {
-            return 0;
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
+        return result;
     }
 
     /**
@@ -107,11 +110,14 @@ public class StringUtil extends StringUtils {
      * @Date 2017/11/23 15:20
      **/
     public static double stringToDouble(String s) {
+        double result=0l;
         try {
             return Double.parseDouble(s);
         } catch (Exception e) {
-            return 0;
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
+        return result;
     }
 
     /**
@@ -127,6 +133,8 @@ public class StringUtil extends StringUtils {
         try {
             id = Integer.parseInt(strId);
         } catch (Exception e) {
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return id;
     }
@@ -144,6 +152,8 @@ public class StringUtil extends StringUtils {
         try {
             id = Long.parseLong(strId);
         } catch (Exception e) {
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return id;
     }
@@ -169,6 +179,8 @@ public class StringUtil extends StringUtils {
         try {
             id = Integer.parseInt(request.getParameter(name));
         } catch (Exception e) {
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return id;
     }
@@ -186,7 +198,8 @@ public class StringUtil extends StringUtils {
         try {
             b = Boolean.parseBoolean(s);
         } catch (Exception e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return b;
     }
@@ -204,7 +217,8 @@ public class StringUtil extends StringUtils {
                 result = Integer.parseInt(obj.toString());
             }
         } catch (NumberFormatException e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return result;
 
@@ -307,7 +321,8 @@ public class StringUtil extends StringUtils {
         try {
             result = java.net.URLDecoder.decode(url, encode);
         } catch (UnsupportedEncodingException e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return result;
     }
@@ -491,9 +506,8 @@ public class StringUtil extends StringUtils {
             }
             result = Boolean.parseBoolean(str);
         } catch (Exception e) {
-            logger.error("StrToBoolean：服务端异常" + e);
-
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return result;
     }
@@ -512,6 +526,8 @@ public class StringUtil extends StringUtils {
             response.sendRedirect(url);
             return;
         } catch (IOException e) {
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
     }
 
@@ -719,7 +735,8 @@ public class StringUtil extends StringUtils {
             ret = new StringBuilder(password).reverse().toString();//反转
         } catch (Exception e) {
             ret = null;
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return ret;
     }

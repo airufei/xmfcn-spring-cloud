@@ -2,6 +2,8 @@ package com.cn.xmf.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +17,7 @@ import java.util.Date;
  **/
 @SuppressWarnings("all")
 public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
-
+    private static Logger logger = LoggerFactory.getLogger(DateUtil.class);
 
     private static String[] parsePatterns = {"yyyy-MM-dd",
             "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM", "yyyy/MM/dd",
@@ -37,7 +39,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
                 formatDate = DateFormatUtils.format(date, "yyyy-MM-dd");
             }
         } catch (Exception e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return formatDate;
     }
@@ -119,7 +122,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             Date date = new Date(lt);
             res = simpleDateFormat.format(date);
         } catch (NumberFormatException e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return res;
     }
@@ -145,7 +149,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         try {
             dt = formater.parse(dateStr);
         } catch (ParseException e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return dt;
     }
@@ -165,7 +170,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = formater.parse(dateStr);
         } catch (ParseException e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return date;
     }
@@ -186,7 +192,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
         try {
             date = formater.parse(dateStr);
         } catch (ParseException e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         dateStr = formatDate(date, format);
         return dateStr;
@@ -208,8 +215,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             cal.add(Calendar.DAY_OF_MONTH, day);
             date = cal.getTime();
         } catch (Exception e) {
-
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return date;
     }
@@ -231,7 +238,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             cal.add(Calendar.MINUTE, min);
             date = cal.getTime();
         } catch (Exception e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return date;
     }
@@ -252,7 +260,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             cal.add(Calendar.MONTH, month);
             date = cal.getTime();
         } catch (Exception e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return date;
     }
@@ -279,7 +288,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
             Date beginDateStr = format.parse(beginDate);
             count = (int) ((endDateStr.getTime() - beginDateStr.getTime()) / (1000 * 3600 * 24));
         } catch (ParseException e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return count;
     }
@@ -301,7 +311,8 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
                 day = days;
             }
         } catch (Exception e) {
-
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.error(exceptionMsg);
         }
         return day;
     }
