@@ -3,6 +3,7 @@ package com.cn.xmf.job.common;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cn.xmf.base.Interface.SysCommon;
 import com.cn.xmf.base.model.RetCodeAndMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.enums.DingMessageType;
@@ -40,7 +41,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @SuppressWarnings("all")
-public class SysCommonService {
+public class SysCommonService implements SysCommon {
 
     /**
      * int corePoolSize, 指定了线程池中的线程数量，它的数量决定了添加的任务是开辟新的线程去执行，还是放到workQueue任务队列中去；
@@ -49,7 +50,8 @@ public class SysCommonService {
      * TimeUnit unit, keepAliveTime的单位
      * BlockingQueue<Runnable> workQueue 任务队列，被添加到线程池中，但尚未被执行的任务；它一般分为直接提交队列、有界任务队列、无界任务队列、优先任务队列几种；
      */
-    private static ThreadPoolExecutor cachedThreadPool = new ThreadPoolExecutor(50, 100, 3000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(50));
+    private static int maxPoolSize = 500;//最大队列
+    private static ThreadPoolExecutor cachedThreadPool = new ThreadPoolExecutor(50, maxPoolSize, 3000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(50));
     private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
 
     @Autowired
@@ -80,6 +82,7 @@ public class SysCommonService {
      * @param parms
      * @return
      */
+    @Override
     public void sendDingMessage(String method, String parms, String retData, String msg, Class t) {
         try {
             DingMessage dingMessage = new DingMessage();
@@ -92,7 +95,7 @@ public class SysCommonService {
             dingMessage.setRetData(retData);
             dingTalkService.sendMessageToDingTalk(dingMessage);
         } catch (Exception e) {
-            e.printStackTrace();
+           logger.error(StringUtil.getExceptionMsg(e));
         }
     }
 
@@ -111,7 +114,6 @@ public class SysCommonService {
             redisService.save(key, value, seconds);
         } catch (Exception e) {
             logger.error("save_error:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
         }
     }
 
@@ -130,7 +132,6 @@ public class SysCommonService {
             redisService.getCache(key);
         } catch (Exception e) {
             logger.error("getCache_error:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
         }
         return cache;
     }
@@ -150,7 +151,6 @@ public class SysCommonService {
             result = redisService.delete(key);
         } catch (Exception e) {
             logger.error("delete_error:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
         }
         return result;
     }
@@ -172,7 +172,6 @@ public class SysCommonService {
             //lock = redisService.getLock(key);
         } catch (Exception e) {
             logger.error("getLock（获取分布式锁）:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
         }
         return lock;
     }
@@ -189,7 +188,6 @@ public class SysCommonService {
             result = redisService.getRedisInfo();
         } catch (Exception e) {
             logger.error("getRedisInfo（redis 运行健康信息):" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
         }
         return result;
     }
@@ -219,7 +217,6 @@ public class SysCommonService {
             }
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
         }
         return dictValue;
     }
@@ -259,7 +256,6 @@ public class SysCommonService {
             String exceptionMsg = "重入kafka队列失败：" + StringUtil.getExceptionMsg(e) + parms;
             logger.error(exceptionMsg);
             sendDingMessage("retry", parms, null, exceptionMsg, this.getClass());
-            e.printStackTrace();
         }
     }
 
@@ -361,7 +357,6 @@ public class SysCommonService {
             result = kafKaProducerService.sendKafka(sendJson);
         } catch (Exception e) {
             logger.error("sendKafka（发送数据到kafka）:" + StringUtil.getExceptionMsg(e));
-            e.printStackTrace();
         }
         return result;
     }
@@ -446,6 +441,7 @@ public class SysCommonService {
                     int len = partitionRecords.size();
                     ConsumerRecord<String, String> record = partitionRecords.get(0);
                     long newOffset = record.offset() + len;
+                    StringUtil.getThreadPoolIsNext(cachedThreadPool,maxPoolSize,this.getClass());//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停1秒
                     cachedThreadPool.execute(() -> {
                         try {
                             RetData aReturn = kafkaReader.executeList(partitionRecords, topic);
@@ -494,6 +490,7 @@ public class SysCommonService {
             json.put("value", value);
             json.put("offset", offset);
             json.put("topic", topic);
+            StringUtil.getThreadPoolIsNext(cachedThreadPool,maxPoolSize,this.getClass());//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停1秒
             cachedThreadPool.execute(() -> {
                 try {
                     RetData aReturn = kafkaReader.execute(json);
@@ -533,6 +530,7 @@ public class SysCommonService {
         try {
             jsonObject = JSONObject.parseObject(dictValue);
         } catch (Exception e) {
+            logger.error(StringUtil.getExceptionMsg(e));
         }
         if (jsonObject == null) {
             return result;
@@ -543,4 +541,5 @@ public class SysCommonService {
         }
         return result;
     }
+
 }
