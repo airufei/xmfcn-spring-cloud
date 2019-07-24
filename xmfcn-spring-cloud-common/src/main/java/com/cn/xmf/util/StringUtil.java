@@ -742,68 +742,6 @@ public class StringUtil extends StringUtils {
         return ret;
     }
 
-
-    /**
-     * 判断激活的线程数量与最大线程的比列 如果大于80% 则暂停1秒
-     *
-     * @param maxPoolSize
-     * @param cachedThreadPool
-     */
-    public static void getThreadPoolIsNext(ThreadPoolExecutor cachedThreadPool,int maxPoolSize, Class t) {
-        boolean isNext = true;
-        try {
-            if (cachedThreadPool == null) {
-                return;
-            }
-            if (maxPoolSize <= 0) {
-                return;
-            }
-            int activeCount = cachedThreadPool.getActiveCount();
-            if (activeCount <= 0) {
-                return;
-            }
-            double count = activeCount / maxPoolSize;
-            getCountThreadPool(cachedThreadPool,maxPoolSize,t);//发送监控数据
-            if (count > 0.8) {
-                //getCountThreadPool(cachedThreadPool,maxPoolSize,t);//发送监控数据
-                threadSleep(2000);
-            }
-        } catch (Exception e) {
-            String exceptionMsg = StringUtil.getExceptionMsg(e);
-            logger.error(exceptionMsg);
-        }
-    }
-
-    /**
-     * 发送监控数据
-     * @param cachedThreadPool
-     * @param maxPoolSize
-     */
-    public static void getCountThreadPool(ThreadPoolExecutor cachedThreadPool,int maxPoolSize, Class t)
-    {
-        if (cachedThreadPool == null) {
-            return;
-        }
-       /* SysCommon sysCommonService = (SysCommon) SpringUtil.getBean("sysCommonService");
-        if (sysCommonService == null) {
-            return;
-        }*/
-        int activeCount = cachedThreadPool.getActiveCount();
-        long completedTaskCount = cachedThreadPool.getCompletedTaskCount();
-        int corePoolSize = cachedThreadPool.getCorePoolSize();
-        int poolSize = cachedThreadPool.getPoolSize();
-        long taskCount = cachedThreadPool.getTaskCount();
-        StringBuilder stringBuilder=new StringBuilder();
-        stringBuilder.append("【线程池监控】");
-        stringBuilder.append("\n\n maxPoolSize=").append(maxPoolSize);
-        stringBuilder.append("\n\n activeCount=").append(activeCount);
-        stringBuilder.append("\n\n completedTaskCount=").append(completedTaskCount);
-        stringBuilder.append("\n\n corePoolSize=").append(corePoolSize);
-        stringBuilder.append("\n\n poolSize=").append(poolSize);
-        stringBuilder.append("\n\n taskCount=").append(taskCount);
-        logger.info("==============================================》"+stringBuilder.toString());
-        //sysCommonService.sendDingMessage("getCountThreadPool",null,null,stringBuilder.toString(),t);
-    }
     /*
      * getLogData(组织日志信息)
      * @param loggingEvent 日志信息
