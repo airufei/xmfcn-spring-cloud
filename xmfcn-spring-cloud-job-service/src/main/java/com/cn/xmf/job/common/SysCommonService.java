@@ -44,19 +44,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("all")
 public class SysCommonService implements SysCommon {
 
-    private static int maxPoolSize = 500;//最大线程池数量
-    private static int maxQueueSize = 100;//最大队列数量
-    private static int corePoolSize = 50;//核心线程数
-    private static int keepAliveTime = 3000;//空闲线程等待时间（秒）
-    /**
-     * int corePoolSize, 指定了线程池中的线程数量，它的数量决定了添加的任务是开辟新的线程去执行，还是放到workQueue任务队列中去；
-     * int maximumPoolSize, 指定了线程池中的最大线程数量，这个参数会根据你使用的workQueue任务队列的类型，决定线程池会开辟的最大线程数量；
-     * long keepAliveTime, 当线程池中空闲线程数量超过corePoolSize时，多余的线程会在多长时间内被销毁；
-     * TimeUnit unit, keepAliveTime的单位
-     * BlockingQueue<Runnable> workQueue 任务队列，被添加到线程池中，但尚未被执行的任务；它一般分为直接提交队列、有界任务队列、无界任务队列、优先任务队列几种；
-     */
-    private static ThreadPoolExecutor  cachedThreadPool = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(maxQueueSize));
-
+    private static ThreadPoolExecutor cachedThreadPool = TreadPoolUtil.getCommonThreadPool();//获取公共线程池
     private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
 
     @Autowired
@@ -98,9 +86,12 @@ public class SysCommonService implements SysCommon {
             dingMessage.setParms(parms);
             dingMessage.setExceptionMessage(msg);
             dingMessage.setRetData(retData);
-            dingTalkService.sendMessageToDingTalk(dingMessage);
+            TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, this.getClass());
+            cachedThreadPool.execute(() -> {
+                dingTalkService.sendMessageToDingTalk(dingMessage);
+            });
         } catch (Exception e) {
-           logger.error(StringUtil.getExceptionMsg(e));
+            logger.error(StringUtil.getExceptionMsg(e));
         }
     }
 
@@ -216,9 +207,9 @@ public class SysCommonService implements SysCommon {
             }
             dictValue = dictService.getDictValue(dictType, dictKey);
             if (StringUtil.isBlank(dictValue)) {
-                LocalCacheUtil.saveCache(key, "@0",60*5);
+                LocalCacheUtil.saveCache(key, "@0", 60 * 5);
             } else {
-                LocalCacheUtil.saveCache(key, dictValue,60*5);
+                LocalCacheUtil.saveCache(key, dictValue, 60 * 5);
             }
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
@@ -446,7 +437,7 @@ public class SysCommonService implements SysCommon {
                     int len = partitionRecords.size();
                     ConsumerRecord<String, String> record = partitionRecords.get(0);
                     long newOffset = record.offset() + len;
-                    TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool,this.getClass());//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停N秒
+                    TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, this.getClass());//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停N秒
                     cachedThreadPool.execute(() -> {
                         try {
                             RetData aReturn = kafkaReader.executeList(partitionRecords, topic);
@@ -495,7 +486,7 @@ public class SysCommonService implements SysCommon {
             json.put("value", value);
             json.put("offset", offset);
             json.put("topic", topic);
-            TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool,this.getClass());//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停N秒
+            TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, this.getClass());//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停N秒
             cachedThreadPool.execute(() -> {
                 try {
                     RetData aReturn = kafkaReader.execute(json);

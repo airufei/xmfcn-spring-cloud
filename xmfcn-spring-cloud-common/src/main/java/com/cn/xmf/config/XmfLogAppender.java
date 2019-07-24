@@ -4,6 +4,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.StringUtil;
+import com.cn.xmf.util.TreadPoolUtil;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -26,14 +27,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("all")
 public class XmfLogAppender extends AppenderBase<LoggingEvent> {
 
-    /**
-     * int corePoolSize, 指定了线程池中的线程数量，它的数量决定了添加的任务是开辟新的线程去执行，还是放到workQueue任务队列中去；
-     * int maximumPoolSize, 指定了线程池中的最大线程数量，这个参数会根据你使用的workQueue任务队列的类型，决定线程池会开辟的最大线程数量；
-     * long keepAliveTime, 当线程池中空闲线程数量超过corePoolSize时，多余的线程会在多长时间内被销毁；
-     * TimeUnit unit, keepAliveTime的单位
-     * BlockingQueue<Runnable> workQueue 任务队列，被添加到线程池中，但尚未被执行的任务；它一般分为直接提交队列、有界任务队列、无界任务队列、优先任务队列几种；
-     */
-    private static ThreadPoolExecutor cachedThreadPool = new ThreadPoolExecutor(50, 100, 3000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(50));
+    private static ThreadPoolExecutor cachedThreadPool = TreadPoolUtil.getCommonThreadPool();//获取公共线程池
     private static final Logger logger = LoggerFactory.getLogger(XmfLogAppender.class);
     private static Properties props;
     private static String topic = ConstantUtil.XMF_KAFKA_TOPIC_LOG;//日志主题
@@ -83,6 +77,7 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
      */
     @Override
     protected void append(LoggingEvent loggingEvent) {
+        TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool,this.getClass());
         cachedThreadPool.execute(() -> start(loggingEvent));//异步执行
     }
 

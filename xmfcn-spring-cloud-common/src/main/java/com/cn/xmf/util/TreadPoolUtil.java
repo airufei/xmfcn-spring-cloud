@@ -28,6 +28,15 @@ public class TreadPoolUtil {
     private static ThreadPoolExecutor cachedThreadPool = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(maxQueueSize));
 
     /**
+     * 获取公共线程池
+     *
+     * @return
+     */
+    public static ThreadPoolExecutor getCommonThreadPool() {
+        return cachedThreadPool;
+    }
+
+    /**
      * 判断激活的线程数量与最大线程的比列 如果大于80% 则暂停1秒
      *
      * @param cachedThreadPool
@@ -57,7 +66,7 @@ public class TreadPoolUtil {
             }
         }
         if (waitCount > 0) {
-            getCountThreadPool(cachedThreadPool, waitCount,minWaitTime, t);//发送监控数据
+            getCountThreadPool(cachedThreadPool, waitCount, minWaitTime, t);//发送监控数据
         }
     }
 
@@ -66,7 +75,7 @@ public class TreadPoolUtil {
      *
      * @param cachedThreadPool
      */
-    public static void getCountThreadPool(ThreadPoolExecutor cachedThreadPool, int waitCount,long minWaitTime, Class t) {
+    public static void getCountThreadPool(ThreadPoolExecutor cachedThreadPool, int waitCount, long minWaitTime, Class t) {
         if (cachedThreadPool == null) {
             return;
         }
