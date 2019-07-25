@@ -2,9 +2,9 @@
 # 框架结构图
 ![img](https://github.com/airufei/xmfcn-spring-cloud/blob/master/imgs/4AB893CF-8AAE-4a49-A961-B6D153644027.png)
 
-# 1、详细文档请点击：https://github.com/airufei/xmfcn-spring-cloud/wiki/%E9%A6%96%E9%A1%B5
+## 1、详细文档请点击：https://github.com/airufei/xmfcn-spring-cloud/wiki/%E9%A6%96%E9%A1%B5
 
-#2、欢迎留言讨论：https://github.com/airufei/xmfcn-spring-cloud/issues/1
+## 2、欢迎留言讨论：https://github.com/airufei/xmfcn-spring-cloud/issues/1
 
 # job-admin系统的部分功能截图
 1、登录界面
