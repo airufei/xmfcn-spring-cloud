@@ -54,13 +54,6 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
         if (StringUtil.isBlank(topic)) {
             return retData;
         }
-        String interval_time = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "log_topic_interval_time");
-        int intervalTime = StringUtil.stringToInt(interval_time);//配置拉取日志的间隔时间
-        if (intervalTime <= 0) {
-            intervalTime = 10;
-        }
-        String cachekey = ConstantUtil.CACHE_SYS_BASE_DATA_ + "interval_time" + topic;
-        sysCommonService.save(cachekey, "0", intervalTime);//10秒之内不在拉取数据
         logger.info("【 kafka数据写入ES系统存储任务】 已经读出数据 topic={}, listCount={}", topic, partitionRecords.size());
         List<JSONObject> list = new ArrayList<>();
         int logListSize = getLogListSize();//每次入ES的集合数量，太大可能导致转json内存溢出。

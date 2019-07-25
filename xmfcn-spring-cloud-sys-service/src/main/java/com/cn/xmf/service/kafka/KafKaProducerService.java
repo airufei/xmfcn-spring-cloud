@@ -2,6 +2,7 @@ package com.cn.xmf.service.kafka;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.util.StringUtil;
+import com.cn.xmf.util.TreadPoolUtil;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * kafka生产者
@@ -25,15 +28,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class KafKaProducerService {
 
     private static Logger logger = LoggerFactory.getLogger(KafKaProducerService.class);
+    private static ThreadPoolExecutor cachedThreadPool = TreadPoolUtil.getCommonThreadPool();//获取公共线程池
     @Autowired
     private KafkaProducer<String, String> kafkaProducer;
 
     /**
      * sendKafka（发送kafka消息）
-     *
+     * <p>
      * topic 主题 必填
      * key 数据key 选填
      * value 数据主体 必填
+     *
      * @param jsonObject
      * @return
      */
@@ -49,16 +54,25 @@ public class KafKaProducerService {
         if (StringUtil.isBlank(key)) {
             key = StringUtil.getUuId();
         }
-        ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);//Topic Key Value
-        kafkaProducer.send(record, new Callback() {
-            public void onCompletion(RecordMetadata metadata, Exception e) {
-                if (e != null) {
-
-                    logger.info(StringUtil.getExceptionMsg(e));
-                }
-            }
-        });
-        result = true;
+        try {
+            final String fkey = key;
+            String classMethod = this.getClass().getName() + ".sendKafka()";
+            TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
+            cachedThreadPool.execute(() -> {
+                ProducerRecord<String, String> record = new ProducerRecord<>(topic, fkey, value);//Topic Key Value
+                kafkaProducer.send(record, new Callback() {
+                    public void onCompletion(RecordMetadata metadata, Exception e) {
+                        if (e != null) {
+                            logger.info(StringUtil.getExceptionMsg(e));
+                        }
+                    }
+                });
+            });
+            result = true;
+        } catch (Exception e) {
+            result = false;
+            logger.info(StringUtil.getExceptionMsg(e));
+        }
         return result;
     }
 }

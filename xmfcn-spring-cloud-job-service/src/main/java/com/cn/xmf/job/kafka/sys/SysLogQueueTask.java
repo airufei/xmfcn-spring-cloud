@@ -39,7 +39,7 @@ public class SysLogQueueTask {
     @PostConstruct
     public void init() {
         kafkaConsumer = kafkaBean.getKafkaConsumer(topic);//启动项目 产生一个消费者实例
-        int randNum = StringUtil.getRandNum(30000, 60000);
+        int randNum = StringUtil.getRandNum(10000, 20000);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {

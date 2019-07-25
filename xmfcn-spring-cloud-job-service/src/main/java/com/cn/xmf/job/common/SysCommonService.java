@@ -76,17 +76,22 @@ public class SysCommonService implements SysCommon {
      * @return
      */
     @Override
-    public void sendDingMessage(String method, String parms, String retData, String msg, Class t) {
+    public void sendDingMessage(String method, Object parms, Object retData, String msg, Class t) {
         try {
             DingMessage dingMessage = new DingMessage();
             dingMessage.setDingMessageType(DingMessageType.MARKDWON);
             dingMessage.setSysName(getSysName());
             dingMessage.setModuleName(t.getPackage().toString());
             dingMessage.setMethodName(method);
-            dingMessage.setParms(parms);
+            if (parms != null) {
+                dingMessage.setParms(parms.toString());
+            }
+            if (retData != null) {
+                dingMessage.setRetData(retData.toString());
+            }
             dingMessage.setExceptionMessage(msg);
-            dingMessage.setRetData(retData);
-            TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, this.getClass());
+            String classMethod = this.getClass().getName() + ".sendDingMessage()";
+            TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
             cachedThreadPool.execute(() -> {
                 dingTalkService.sendMessageToDingTalk(dingMessage);
             });
@@ -196,6 +201,7 @@ public class SysCommonService implements SysCommon {
      * @param dictKey
      * @return
      */
+    @Override
     public String getDictValue(String dictType, String dictKey) {
         String dictValue = null;
         String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + dictType + dictKey;
@@ -207,9 +213,9 @@ public class SysCommonService implements SysCommon {
             }
             dictValue = dictService.getDictValue(dictType, dictKey);
             if (StringUtil.isBlank(dictValue)) {
-                LocalCacheUtil.saveCache(key, "@0", 60 * 5);
+                LocalCacheUtil.saveCache(key, "@0", 60);
             } else {
-                LocalCacheUtil.saveCache(key, dictValue, 60 * 5);
+                LocalCacheUtil.saveCache(key, dictValue, 60);
             }
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
@@ -337,13 +343,17 @@ public class SysCommonService implements SysCommon {
      * @param value
      * @return
      */
-    public boolean sendKafka(String topic, String key, String value) {
+    @Override
+    public boolean sendKafka(String topic, String key, Object value) {
         boolean result = false;
         if (StringUtil.isBlank(topic)) {
             logger.info("topic不能为空");
         }
-        if (StringUtil.isBlank(value)) {
+        if (value == null) {
             logger.info("value不能为空");
+        }
+        if (kafKaProducerService == null) {
+            return result;
         }
         JSONObject sendJson = new JSONObject();
         sendJson.put("topic", topic);
@@ -384,27 +394,12 @@ public class SysCommonService implements SysCommon {
         kafkaConsumer.subscribe(Collections.singletonList(topic));
         boolean isNext = true;
         while (isNext) {
-            int randNum = 200;
-            boolean isSleep = false;
-            if (isSleep) {
-                randNum = StringUtil.getRandNum(500, 2000);
-                StringUtil.threadSleep(randNum);
-            }
             boolean kafkaisReLoadConsmer = getKafkaisReLoadConsmer(topic);//判断是否热加载
             if (kafkaisReLoadConsmer) {
                 dataReturn.setCode(RetCodeAndMessage.NO_DATA);
                 dataReturn.setMessage("kafka实例需要重新加载");
                 isNext = false;
                 kafkaConsumer = null;
-                continue;
-            }
-            String redisCache = null;
-            if (isList) {
-                String cachekey = ConstantUtil.CACHE_SYS_BASE_DATA_ + "interval_time" + topic;
-                redisCache = getCache(cachekey);
-            }
-            if (StringUtil.isNotBlank(redisCache)) {
-                StringUtil.threadSleep(randNum);
                 continue;
             }
             ConsumerRecords<String, String> records = null;
@@ -415,7 +410,7 @@ public class SysCommonService implements SysCommon {
                 e.printStackTrace();
             }
             StringBuilder stringBuilder = new StringBuilder();
-            randNum = StringUtil.getRandNum(500, 5000);
+            int randNum = StringUtil.getRandNum(500, 5000);
             if (records == null || records.isEmpty()) {
                 StringUtil.threadSleep(randNum);
                 continue;
@@ -437,7 +432,8 @@ public class SysCommonService implements SysCommon {
                     int len = partitionRecords.size();
                     ConsumerRecord<String, String> record = partitionRecords.get(0);
                     long newOffset = record.offset() + len;
-                    TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, this.getClass());//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停N秒
+                    String classMethod = this.getClass().getName() + ".readKafkaData()";
+                    TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
                     cachedThreadPool.execute(() -> {
                         try {
                             RetData aReturn = kafkaReader.executeList(partitionRecords, topic);
@@ -453,9 +449,6 @@ public class SysCommonService implements SysCommon {
                             logger.error(taskName + " 提交失败 offset={},e={}", record.offset(), e);
                         }
                     });
-                    randNum = StringUtil.getRandNum(500, 1000);
-                    StringUtil.threadSleep(randNum);
-                    continue;
                 }
                 getPartitionRecords(kafkaConsumer, topic, kafkaReader, partition, partitionRecords);
             }
@@ -486,7 +479,8 @@ public class SysCommonService implements SysCommon {
             json.put("value", value);
             json.put("offset", offset);
             json.put("topic", topic);
-            TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, this.getClass());//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停N秒
+            String classMethod = this.getClass().getName() + ".getPartitionRecords()";
+            TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停N秒
             cachedThreadPool.execute(() -> {
                 try {
                     RetData aReturn = kafkaReader.execute(json);

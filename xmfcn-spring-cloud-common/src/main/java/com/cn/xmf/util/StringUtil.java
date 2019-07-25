@@ -133,6 +133,9 @@ public class StringUtil extends StringUtils {
     public static int stringToInt(String strId) {
         int id = 0;
         try {
+            if (isBlank(strId)) {
+                return id;
+            }
             id = Integer.parseInt(strId);
         } catch (Exception e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
@@ -152,6 +155,9 @@ public class StringUtil extends StringUtils {
     public static long stringToLong(String strId) {
         long id = 0;
         try {
+            if (isBlank(strId)) {
+                return id;
+            }
             id = Long.parseLong(strId);
         } catch (Exception e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);
@@ -175,18 +181,6 @@ public class StringUtil extends StringUtils {
         }
         return str;
     }
-
-    public static int StringToId(HttpServletRequest request, String name) {
-        int id = 0;
-        try {
-            id = Integer.parseInt(request.getParameter(name));
-        } catch (Exception e) {
-            String exceptionMsg = StringUtil.getExceptionMsg(e);
-            logger.error(exceptionMsg);
-        }
-        return id;
-    }
-
     /**
      * stringToBoolean:(String转boolean 默认false)
      *
@@ -198,6 +192,9 @@ public class StringUtil extends StringUtils {
     public static boolean stringToBoolean(String s) {
         boolean b = false;
         try {
+            if (isBlank(s)) {
+                return b;
+            }
             b = Boolean.parseBoolean(s);
         } catch (Exception e) {
             String exceptionMsg = StringUtil.getExceptionMsg(e);

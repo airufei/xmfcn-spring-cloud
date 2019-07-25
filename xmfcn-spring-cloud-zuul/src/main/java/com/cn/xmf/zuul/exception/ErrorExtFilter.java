@@ -64,7 +64,6 @@ public class ErrorExtFilter extends SendErrorFilter {
         ctx.setSendZuulResponse(false);// 对该请求不路由
         ctx.set("isSuccess", false);// 设值，让下一个Filter看到上一个Filter的状态
         dingTalkMessage(ctx, throwable);
-        throwabl
         // 构建返回信息
         RetData retData = new RetData();
         retData.setCode(RetCodeAndMessage.FAILURE);

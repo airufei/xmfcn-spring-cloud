@@ -11,12 +11,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * 线程池工具类
  */
+@SuppressWarnings("all")
 public class TreadPoolUtil {
 
     private static Logger logger = LoggerFactory.getLogger(TreadPoolUtil.class);
-    private static int maxQueueSize = 20;//默认最大队列数量
-    private static int corePoolSize = 300;//默认核心线程数
-    private static int maxPoolSize = 500;//最大线程数，超过此值改为默认值
+    private static int maxQueueSize = 500;//默认最大队列数量
+    private static int corePoolSize = 200;//默认核心线程数
+    private static int maxPoolSize = 800;//最大线程数，超过此值改为默认值
     private static int keepAliveTime = 3000;//空闲线程等待时间（秒）
     /**
      * int corePoolSize, 指定了线程池中的线程数量，它的数量决定了添加的任务是开辟新的线程去执行，还是放到workQueue任务队列中去；
@@ -41,7 +42,7 @@ public class TreadPoolUtil {
      *
      * @param cachedThreadPool
      */
-    public static void getThreadPoolIsNext(ThreadPoolExecutor cachedThreadPool, Class t) {
+    public static void getThreadPoolIsNext(ThreadPoolExecutor cachedThreadPool,String classMethod) {
         boolean isNext = true;
         if (cachedThreadPool == null) {
             return;
@@ -66,7 +67,7 @@ public class TreadPoolUtil {
             }
         }
         if (waitCount > 0) {
-            getCountThreadPool(cachedThreadPool, waitCount, minWaitTime, t);//发送监控数据
+            getMonitorThreadPoolInfo(cachedThreadPool, waitCount, minWaitTime,classMethod);//发送监控数据
         }
     }
 
@@ -75,7 +76,7 @@ public class TreadPoolUtil {
      *
      * @param cachedThreadPool
      */
-    public static void getCountThreadPool(ThreadPoolExecutor cachedThreadPool, int waitCount, long minWaitTime, Class t) {
+    public static void getMonitorThreadPoolInfo(ThreadPoolExecutor cachedThreadPool, int waitCount, long minWaitTime, String classMethod) {
         if (cachedThreadPool == null) {
             return;
         }
@@ -87,9 +88,7 @@ public class TreadPoolUtil {
         int maximumPoolSize = cachedThreadPool.getMaximumPoolSize();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("\n\n【线程池监控】");
-        if (t != null) {
-            stringBuilder.append(t.getName());
-        }
+        stringBuilder.append("\n\n 执行位置：").append(classMethod);
         stringBuilder.append("\n\n 等待睡眠次数=").append(waitCount);
         stringBuilder.append("\n\n 每次睡眠时间(毫秒)=").append(minWaitTime);
         stringBuilder.append("\n\n 配置最大线程数=").append(maximumPoolSize);
@@ -107,7 +106,12 @@ public class TreadPoolUtil {
         if (sysCommonService == null) {
             return;
         }
-        sysCommonService.sendDingMessage("getCountThreadPool", null, null, stringBuilder.toString(), t);//发送钉钉消息
+        String threadPoolMessage = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "isSendMonitorThreadPoolMessage");
+        boolean isSendMonitorThreadPoolMessage = StringUtil.strToBoolean(threadPoolMessage);
+        if (!isSendMonitorThreadPoolMessage) {
+            return;
+        }
+        sysCommonService.sendDingMessage("getMonitorThreadPoolInfo", null, null, stringBuilder.toString(), LocalCacheUtil.class);//发送钉钉消息
     }
 
 
@@ -127,9 +131,10 @@ public class TreadPoolUtil {
      */
     public static void main(String[] args) throws Exception {
         long startTimeMillis = System.currentTimeMillis();
+        String classMethod = LocalCacheUtil.class.getName() + ".main()";
         for (int i = 0; i < 5000; i++) {
-            getThreadPoolIsNext(cachedThreadPool, LocalCacheUtil.class);//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停N秒
             int finalI = i;
+            getThreadPoolIsNext(cachedThreadPool, classMethod);//判断激活的线程数量与最大线程的比列 如果大于80% 则暂停N秒
             cachedThreadPool.execute(() -> {
                 getData(finalI);//定时清除缓存
             });
