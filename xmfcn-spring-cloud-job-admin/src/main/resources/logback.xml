@@ -15,7 +15,6 @@
 	<!-- 自定义日志写入方式和格式 -->
 	<appender name="esLog" class="com.cn.xmf.config.XmfLogAppender">
 		<subSysName>job-admin</subSysName><!-- 系统名称 -->
-		<kafkaAddress>10.105.10.12:9092</kafkaAddress><!--kafka地址-->
 	</appender>
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>/opt/mnt_file/logs/job-admin/job-admin.log</file><!--log4j.config.path-->
