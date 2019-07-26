@@ -13,7 +13,7 @@ server:
 
   # 本服务需要调用的服务和授权信息-service层
 base-service:
-  sys-service: sys-service
+  sys-base-service: sys-base-service
   name: serviceadmin
   password: service987423Ds887
   # eureka 配置
@@ -66,7 +66,7 @@ spring:
       password: service987423Ds887
       roles: admin
   main:
-    allow-bean-definition-overriding: true # 防止'${base-service.sys-service}.FeignClientSpecification', defined in null, could not be registered 多个接口请求服务名称相同
+    allow-bean-definition-overriding: true # 防止'${base-service: sys-base-service}.FeignClientSpecification', defined in null, could not be registered 多个接口请求服务名称相同
 # myBatis配置
 mybatis:
   # mybatis主配置文件

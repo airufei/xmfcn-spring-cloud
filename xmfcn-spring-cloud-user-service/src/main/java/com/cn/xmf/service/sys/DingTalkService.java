@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @SuppressWarnings("all")
 
-@FeignClient(value = "${base-service.sys-service}")// 配置远程服务名以及自定义权限验证配置
+@FeignClient(value = "${base-service:sys-base-service}")// 配置远程服务名以及自定义权限验证配置
 @RequestMapping("/server/dingTalk/")// 配置远程服务路径
 public interface DingTalkService {
 

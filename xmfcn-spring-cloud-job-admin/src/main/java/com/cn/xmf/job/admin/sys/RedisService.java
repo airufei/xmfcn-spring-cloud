@@ -6,12 +6,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "${base-service.sys-service}")// 配置远程服务名以及自定义权限验证配置
+@FeignClient(value = "${base-service:sys-redis-service}")// 配置远程服务名以及自定义权限验证配置
 @RequestMapping("/server/redis/")// 配置远程服务路径
 @SuppressWarnings("all")
 public interface RedisService {
     /**
      * save:(设置缓存-带有效期)
+     *
      * @param key
      * @param value
      * @param seconds
@@ -22,6 +23,7 @@ public interface RedisService {
 
     /**
      * 获取单个值
+     *
      * @param key
      * @return
      */
@@ -44,16 +46,17 @@ public interface RedisService {
      * @param key
      * @return
      */
-    @RequestMapping(value = "getFromQueue",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "getFromQueue", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String getFromQueue(@RequestParam(value = "key") String key);
 
 
     /**
      * 将 key 缓存数据删除
+     *
      * @param key
      * @return
      */
-    @RequestMapping(value = "delete",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "delete", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long delete(@RequestParam(value = "key") String key);
 
     /**
@@ -62,7 +65,7 @@ public interface RedisService {
      * @param pattern
      * @return
      */
-    @RequestMapping(value = "deletes",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "deletes", consumes = MediaType.APPLICATION_JSON_VALUE)
     public long deletes(@RequestParam(value = "pattern") String pattern);
 
 
@@ -73,18 +76,22 @@ public interface RedisService {
      */
     //@RequestMapping(value ="getLock",consumes = MediaType.APPLICATION_JSON_VALUE)
     // public RLock getLock(@RequestParam(value = "key") String key);
+
     /**
      * getQueueLength（获取队列长度)key 是消息频道
+     *
      * @param key
      * @return
      */
-    @RequestMapping(value="getQueueLength",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "getQueueLength", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long getQueueLength(@RequestParam(value = "key") String key);
+
     /**
      * getRedisInfo（redis 运行健康信息)
+     *
      * @param key
      * @return
      */
-    @RequestMapping(value ="getRedisInfo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "getRedisInfo", consumes = MediaType.APPLICATION_JSON_VALUE)
     public JSONObject getRedisInfo();
 }

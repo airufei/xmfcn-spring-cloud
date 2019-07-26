@@ -5,7 +5,6 @@ import com.cn.xmf.job.admin.sys.DictService;
 import com.cn.xmf.model.dict.Dict;
 import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.model.es.EsPage;
-import com.cn.xmf.model.es.LogMessage;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.DateUtil;
 import com.cn.xmf.util.StringUtil;

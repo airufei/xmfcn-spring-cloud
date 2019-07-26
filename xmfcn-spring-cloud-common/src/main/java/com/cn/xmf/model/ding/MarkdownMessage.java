@@ -10,7 +10,8 @@ import java.util.Map;
 /**
  * Created by dustin on 2017/3/18.
  */
-public class MarkdownMessage implements Message {
+@SuppressWarnings("all")
+public class MarkdownMessage implements Message{
 
     private String title;
 
