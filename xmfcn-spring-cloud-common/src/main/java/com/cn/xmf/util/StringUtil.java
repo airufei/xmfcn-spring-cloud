@@ -729,7 +729,7 @@ public class StringUtil extends StringUtils {
     public static String getEncryptPassword(String password) {
         String ret = null;
         try {
-            password = MD5Util.getMD5(password);
+            password = MD5Util.getMd5(password);
             ret = new StringBuilder(password).reverse().toString();//反转
         } catch (Exception e) {
             ret = null;

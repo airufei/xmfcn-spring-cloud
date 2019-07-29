@@ -37,10 +37,10 @@ public class FeedCardMessage implements Message {
             if (StringUtils.isBlank(item.getTitle())) {
                 throw new IllegalArgumentException("title should not be blank");
             }
-            if (StringUtils.isBlank(item.getMessageURL())) {
+            if (StringUtils.isBlank(item.getMessageUrl())) {
                 throw new IllegalArgumentException("messageURL should not be blank");
             }
-            if (StringUtils.isBlank(item.getPicURL())) {
+            if (StringUtils.isBlank(item.getPicUrl())) {
                 throw new IllegalArgumentException("picURL should not be blank");
             }
         }

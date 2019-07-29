@@ -25,7 +25,7 @@ public class XxlJobLogger {
     private static void logDetail(StackTraceElement callInfo, String appendLog) {
 
 
-        /**// "yyyy-MM-dd HH:mm:ss [ClassName]-[MethodName]-[LineNumber]-[ThreadName] log";
+        /** "yyyy-MM-dd HH:mm:ss [ClassName]-[MethodName]-[LineNumber]-[ThreadName] log";
         StackTraceElement[] stackTraceElements = new Throwable().getStackTrace();
         StackTraceElement callInfo = stackTraceElements[1];*/
 
