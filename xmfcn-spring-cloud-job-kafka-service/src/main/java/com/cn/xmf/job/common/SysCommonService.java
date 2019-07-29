@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -404,7 +405,8 @@ public class SysCommonService implements SysCommon {
             }
             ConsumerRecords<String, String> records = null;
             try {
-                records = kafkaConsumer.poll(1000);
+                Duration parse = Duration.parse("PT1S");//1秒
+                records = kafkaConsumer.poll(parse);
             } catch (Exception e) {
                 logger.error(StringUtil.getExceptionMsg(e));
                 e.printStackTrace();

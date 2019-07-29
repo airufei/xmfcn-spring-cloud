@@ -19,7 +19,7 @@ public class ActionCardMessage implements Message {
     public static final int MIN_ACTION_BUTTON_CNT = 1;
 
     private String title;
-    private String bannerURL;
+    private String bannerUrl;
     private String briefTitle;
     private String briefText;
     private boolean hideAvatar;
@@ -50,12 +50,12 @@ public class ActionCardMessage implements Message {
         this.actionButtonStyle = actionButtonStyle;
     }
 
-    public String getBannerURL() {
-        return bannerURL;
+    public String getBannerUrl() {
+        return bannerUrl;
     }
 
-    public void setBannerURL(String bannerURL) {
-        this.bannerURL = bannerURL;
+    public void setBannerUrl(String bannerUrl) {
+        this.bannerUrl = bannerUrl;
     }
 
     public String getTitle() {
@@ -82,6 +82,7 @@ public class ActionCardMessage implements Message {
         actions.add(action);
     }
 
+    @Override
     public String toJsonString() {
 
         Map<String, Object> items = new HashMap<String, Object>();
@@ -91,8 +92,8 @@ public class ActionCardMessage implements Message {
         actionCardContent.put("title", title);
 
         StringBuffer text = new StringBuffer();
-        if (StringUtils.isNotBlank(bannerURL)) {
-            text.append(MarkdownMessage.getImageText(bannerURL) + "\n");
+        if (StringUtils.isNotBlank(bannerUrl)) {
+            text.append(MarkdownMessage.getImageText(bannerUrl) + "\n");
         }
         if (StringUtils.isNotBlank(briefTitle)) {
             text.append(MarkdownMessage.getHeaderText(3, briefTitle) + "\n");

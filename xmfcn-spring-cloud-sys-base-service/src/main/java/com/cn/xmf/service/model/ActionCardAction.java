@@ -5,11 +5,11 @@ package com.cn.xmf.service.model;
  */
 public class ActionCardAction {
     private String title;
-    private String actionURL;
+    private String actionUrl;
 
-    public ActionCardAction(String text, String actionURL) {
+    public ActionCardAction(String text, String actionUrl) {
         this.title = text;
-        this.actionURL = actionURL;
+        this.actionUrl = actionUrl;
     }
 
     public String getTitle() {
@@ -20,11 +20,11 @@ public class ActionCardAction {
         this.title = title;
     }
 
-    public String getActionURL() {
-        return actionURL;
+    public String getActionUrl() {
+        return actionUrl;
     }
 
-    public void setActionURL(String actionURL) {
-        this.actionURL = actionURL;
+    public void setActionUrl(String actionUrl) {
+        this.actionUrl = actionUrl;
     }
 }

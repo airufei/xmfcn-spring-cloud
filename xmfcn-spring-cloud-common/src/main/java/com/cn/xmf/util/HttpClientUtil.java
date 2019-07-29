@@ -18,14 +18,27 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.security.cert.CertificateException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -41,7 +54,7 @@ public class HttpClientUtil {
 
     private static Logger logger = Logger.getLogger(HttpClientUtil.class);
 
-   
+
     /**
      * httpPost
      *
@@ -63,7 +76,8 @@ public class HttpClientUtil {
      */
     public static JSONObject httpPost(String url, JSONObject jsonParam, boolean noNeedResponse) {
         // post请求返回结果
-        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        ;
         JSONObject jsonResult = null;
         HttpPost method = new HttpPost(url);
         try {
@@ -125,7 +139,8 @@ public class HttpClientUtil {
         // get请求返回结果
         JSONObject jsonResult = null;
         try {
-            DefaultHttpClient client = new DefaultHttpClient();
+            HttpClient client = HttpClientBuilder.create().build();
+            ;
             // 发送get请求
             HttpGet request = new HttpGet(url);
             request.addHeader("", "");
@@ -158,7 +173,8 @@ public class HttpClientUtil {
         // get请求返回结果
         String strResult = null;
         try {
-            DefaultHttpClient client = new DefaultHttpClient();
+            HttpClient client = HttpClientBuilder.create().build();
+            ;
             // 发送get请求
             HttpGet request = new HttpGet(url);
             HttpResponse response = client.execute(request);
@@ -192,7 +208,8 @@ public class HttpClientUtil {
         HttpEntity entity = null;
         try {
             if (url != null) {
-                DefaultHttpClient httpclient = new DefaultHttpClient();
+                HttpClient httpclient = HttpClientBuilder.create().build();
+                ;
                 HttpPost post = new HttpPost(url);
                 entity = new UrlEncodedFormEntity(param);
                 post.setEntity(entity);
@@ -243,7 +260,7 @@ public class HttpClientUtil {
             if (map == null || map.isEmpty()) {
                 return jsonResult;
             }
-            httpClient = new SSLClient();
+            httpClient = SSLClient();
             httpPost = new HttpPost(url);
             // 设置参数
             List<NameValuePair> list = new ArrayList<NameValuePair>();
@@ -293,7 +310,7 @@ public class HttpClientUtil {
         HttpGet httpGet = null;
         String result = null;
         try {
-            httpClient = new SSLClient();
+            httpClient = SSLClient();
             httpGet = new HttpGet(url);
             HttpResponse response = httpClient.execute(httpGet);
             if (response != null) {
@@ -348,7 +365,7 @@ public class HttpClientUtil {
         HttpGet httpGet = null;
         String result = null;
         try {
-            httpClient = new SSLClient();
+            httpClient = SSLClient();
             httpGet = new HttpGet(url);
             if (headerList != null && !headerList.isEmpty()) {
                 setGetHeader(headerList, httpGet);
@@ -367,5 +384,41 @@ public class HttpClientUtil {
 
         return result;
     }
-    
+
+
+    public static CloseableHttpClient SSLClient() throws Exception {
+        SSLContext sc = SSLContext.getInstance("SSLv3");
+        // 实现一个X509TrustManager接口，用于绕过验证，不用修改里面的方法
+        X509TrustManager trustManager = new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(
+                    java.security.cert.X509Certificate[] paramArrayOfX509Certificate,
+                    String paramString) throws CertificateException {
+            }
+
+            @Override
+            public void checkServerTrusted(
+                    java.security.cert.X509Certificate[] paramArrayOfX509Certificate,
+                    String paramString) throws CertificateException {
+            }
+
+            @Override
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+        };
+        sc.init(null, new TrustManager[]{trustManager}, null);
+
+        //设置协议http和https对应的处理socket链接工厂的对象
+        Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("http", PlainConnectionSocketFactory.INSTANCE)
+                .register("https", new SSLConnectionSocketFactory(sc))
+                .build();
+        PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+        HttpClients.custom().setConnectionManager(connManager);
+        //创建自定义的httpclient对象
+        CloseableHttpClient client = HttpClients.custom().setConnectionManager(connManager).build();
+        return client;
+    }
+
 }

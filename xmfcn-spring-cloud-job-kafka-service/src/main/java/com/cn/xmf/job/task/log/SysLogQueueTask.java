@@ -41,6 +41,7 @@ public class SysLogQueueTask {
         int randNum = StringUtil.getRandNum(10000, 20000);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
+            @Override
             public void run() {
                 startTask();
                 timer.cancel();

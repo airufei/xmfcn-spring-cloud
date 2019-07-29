@@ -23,6 +23,7 @@ public class FeedCardMessage implements Message {
         this.feedItems = feedItems;
     }
 
+    @Override
     public String toJsonString() {
         Map<String, Object> items = new HashMap<String, Object>();
         items.put("msgtype", "feedCard");

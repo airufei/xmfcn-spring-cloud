@@ -19,7 +19,7 @@ public class SingleTargetActionCardMessage implements Message {
     private String briefText;
 
     private String singleTitle;
-    private String singleURL;
+    private String singleUrl;
 
     private boolean hideAvatar;
 
@@ -71,15 +71,15 @@ public class SingleTargetActionCardMessage implements Message {
         this.singleTitle = singleTitle;
     }
 
-    public String getSingleURL() {
-        return singleURL;
+    public String getSingleUrl() {
+        return singleUrl;
     }
 
-    public void setSingleURL(String singleURL) {
-        this.singleURL = singleURL;
+    public void setSingleUrl(String singleUrl) {
+        this.singleUrl = singleUrl;
     }
 
-
+    @Override
     public String toJsonString() {
         Map<String, Object> items = new HashMap<String, Object>();
         items.put("msgtype", "actionCard");
@@ -105,12 +105,12 @@ public class SingleTargetActionCardMessage implements Message {
         if (StringUtils.isBlank(singleTitle)) {
             throw new IllegalArgumentException("singleTitle should not be blank");
         }
-        if (StringUtils.isBlank(singleURL)) {
-            throw new IllegalArgumentException("singleURL should not be blank");
+        if (StringUtils.isBlank(singleUrl)) {
+            throw new IllegalArgumentException("singleUrl should not be blank");
         }
 
         actionCardContent.put("singleTitle", singleTitle);
-        actionCardContent.put("singleURL", singleURL);
+        actionCardContent.put("singleURL", singleUrl);
 
         items.put("actionCard", actionCardContent);
 

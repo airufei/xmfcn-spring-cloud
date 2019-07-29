@@ -86,23 +86,23 @@ public class ElasticsearchHelperService {
                 }
                 JSONObject object = new JSONObject();
                 object.put("type", "text");
-                if (key.equals("createTime")) {
+                if ("createTime".equals(key)) {
                     object.put("type", "date");
                     object.put("format", "yyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis");
                 }
-                if (key.equals("time")) {
+                if ("time".equals(key)) {
                     object.put("type", "keyword");
                 }
-                if (key.equals("level")) {
+                if ("level".equals(key)) {
                     object.put("type", "keyword");
                 }
-                if (key.equals("subSysName")) {
+                if ("subSysName".equals(key)) {
                     object.put("type", "keyword");
                 }
-                if (key.equals("traceId")) {
+                if ("traceId".equals(key)) {
                     object.put("type", "keyword");
                 }
-                if (key.equals("id")) {
+                if ("id".equals(key)) {
                     object.put("type", "keyword");
                 }
                 typeName.put(key, object);
@@ -430,7 +430,7 @@ public class ElasticsearchHelperService {
                 .dateHistogramInterval(DateHistogramInterval.DAY)
                 .format("yyyy-MM-dd")
                 .extendedBounds(extendedBounds)
-                .minDocCount(0l)//为空0补充
+                .minDocCount(0L)//为空0补充
                 .timeZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+8")));
         AggregationBuilder builder = dateAgg.subAggregation(levelAgg);
         searchSourceBuilder.aggregation(builder).size(0);

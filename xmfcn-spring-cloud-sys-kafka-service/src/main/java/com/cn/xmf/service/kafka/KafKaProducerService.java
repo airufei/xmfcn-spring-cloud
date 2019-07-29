@@ -61,6 +61,7 @@ public class KafKaProducerService {
             cachedThreadPool.execute(() -> {
                 ProducerRecord<String, String> record = new ProducerRecord<>(topic, fkey, value);//Topic Key Value
                 kafkaProducer.send(record, new Callback() {
+                    @Override
                     public void onCompletion(RecordMetadata metadata, Exception e) {
                         if (e != null) {
                             logger.info(StringUtil.getExceptionMsg(e));

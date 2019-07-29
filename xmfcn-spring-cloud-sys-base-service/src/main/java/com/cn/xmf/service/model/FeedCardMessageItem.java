@@ -5,15 +5,15 @@ package com.cn.xmf.service.model;
  */
 public class FeedCardMessageItem {
     private String title;
-    private String picURL;
-    private String messageURL;
+    private String picUrl;
+    private String messageUrl;
 
-    public String getMessageURL() {
-        return messageURL;
+    public String getMessageUrl() {
+        return messageUrl;
     }
 
-    public void setMessageURL(String messageURL) {
-        this.messageURL = messageURL;
+    public void setMessageUrl(String messageUrl) {
+        this.messageUrl = messageUrl;
     }
 
     public String getTitle() {
@@ -24,11 +24,11 @@ public class FeedCardMessageItem {
         this.title = title;
     }
 
-    public String getPicURL() {
-        return picURL;
+    public String getPicUrl() {
+        return picUrl;
     }
 
-    public void setPicURL(String picURL) {
-        this.picURL = picURL;
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 }

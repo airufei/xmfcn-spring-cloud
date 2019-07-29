@@ -28,7 +28,7 @@ public class MD5Util {
 	 * @return
 	 * @throws Exception 
 	 */
-	public static String getMD5(String str) throws Exception {
+	public static String getMd5(String str) throws Exception {
 	    try {
 	        // 生成一个MD5加密计算摘要
 	        MessageDigest md = MessageDigest.getInstance("MD5");

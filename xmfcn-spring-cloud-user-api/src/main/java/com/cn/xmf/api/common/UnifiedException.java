@@ -57,14 +57,14 @@ public class UnifiedException {
      */
     private void dingTalkMessage(HttpServletRequest request, Throwable throwable) {
         Enumeration<String> enu = request.getParameterNames();
-        String requestURI = request.getRequestURI();
+        String requestUrl = request.getRequestURI();
         StringBuilder sb = new StringBuilder();
         while (enu.hasMoreElements()) {
             String paraName = enu.nextElement();
             sb.append(" " + paraName + ":" + request.getParameter(paraName));
         }
         String stackMessage = StringUtil.getExceptionMsg(throwable);
-        String url = StringUtil.getSystemUrl(request) + requestURI;
+        String url = StringUtil.getSystemUrl(request) + requestUrl;
         sysCommonService.sendDingMessage(url,sb.toString(),stackMessage,null, UnifiedException.class);
         logger.error(stackMessage);
     }

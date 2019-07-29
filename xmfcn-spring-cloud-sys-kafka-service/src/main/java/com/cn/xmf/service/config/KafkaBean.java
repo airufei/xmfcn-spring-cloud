@@ -32,8 +32,8 @@ public class KafkaBean {
      */
     private Properties initProducerProp() throws ClassNotFoundException {
         Properties producerProps = new Properties();
-        String kafka_server = environment.getProperty("kafka.server");
-        producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafka_server);
+        String kafkaServer = environment.getProperty("kafka.server");
+        producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
         // 是判别请求是否为完整的条件（就是是判断是不是成功发送了）。我们指定了“all”将会阻塞消息，这种设置性能最低，但是是最可靠的。
         producerProps.put(ProducerConfig.ACKS_CONFIG, environment.getProperty("kafka.producer.ack"));
         // 如果请求返回可重试的错误，例如首领选举或网络连接异常等可在几秒钟内解决，生产者会自动发起重试。

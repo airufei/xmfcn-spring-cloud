@@ -37,6 +37,7 @@ public class SendResult {
         this.errorMsg = errorMsg;
     }
 
+    @Override
     public String toString(){
         Map<String, Object> items = new HashMap<String, Object>();
         items.put("errorCode", errorCode);

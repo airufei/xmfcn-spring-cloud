@@ -90,7 +90,7 @@ public class StringUtil extends StringUtils {
      * @Date 2017/11/23 15:19
      **/
     public static float stringToFloat(String s) {
-        float result = 0l;
+        float result = 0L;
         if (isBlank(s)) {
             return result;
         }
@@ -112,7 +112,7 @@ public class StringUtil extends StringUtils {
      * @Date 2017/11/23 15:20
      **/
     public static double stringToDouble(String s) {
-        double result = 0l;
+        double result = 0L;
         try {
             return Double.parseDouble(s);
         } catch (Exception e) {

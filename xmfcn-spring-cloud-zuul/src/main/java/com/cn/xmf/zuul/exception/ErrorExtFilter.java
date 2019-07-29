@@ -81,13 +81,13 @@ public class ErrorExtFilter extends SendErrorFilter {
     private void dingTalkMessage(RequestContext ctx, Throwable throwable) {
         HttpServletRequest request = ctx.getRequest();
         Enumeration<String> enu = request.getParameterNames();
-        String requestURI = request.getRequestURI();
+        String requestUrl = request.getRequestURI();
         StringBuilder sb = new StringBuilder();
         while (enu.hasMoreElements()) {
             String paraName = enu.nextElement();
             sb.append(" ").append(paraName).append(":").append(request.getParameter(paraName));
         }
-        String url = StringUtil.getSystemUrl(request) + requestURI;
+        String url = StringUtil.getSystemUrl(request) + requestUrl;
         String stackMessage = StringUtil.getExceptionMsg(throwable);
         DingMessage dingMessage = new DingMessage();
         dingMessage.setDingMessageType(DingMessageType.MARKDWON);
