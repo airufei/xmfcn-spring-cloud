@@ -9,19 +9,11 @@ import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.SpringUtil;
 import com.cn.xmf.util.StringUtil;
 import com.cn.xmf.util.TreadPoolUtil;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.sleuth.Tracer;
 
 import java.util.Properties;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 扩展logback Appender 类 XmfLogAppender 实现log数据直接发送kafka队列

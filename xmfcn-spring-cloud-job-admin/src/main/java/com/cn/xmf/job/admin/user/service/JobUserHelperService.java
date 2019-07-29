@@ -44,7 +44,7 @@ public class JobUserHelperService {
     }
 
 
-    /*
+    /**
      * save(保存调度系统用户)
      * @param jobUser
      * @author rufei.cn

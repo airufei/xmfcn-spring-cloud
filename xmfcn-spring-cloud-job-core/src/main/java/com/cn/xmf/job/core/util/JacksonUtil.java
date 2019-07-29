@@ -92,7 +92,7 @@ public class JacksonUtil {
 		return null;
 	}
 
-    /*public static <T> T readValueRefer(String jsonStr, Class<T> clazz) {
+    /**public static <T> T readValueRefer(String jsonStr, Class<T> clazz) {
     	try {
 			return getInstance().readValue(jsonStr, new TypeReference<T>() { });
 		} catch (JsonParseException e) {

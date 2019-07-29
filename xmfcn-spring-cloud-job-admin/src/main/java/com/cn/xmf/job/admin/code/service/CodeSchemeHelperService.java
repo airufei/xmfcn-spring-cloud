@@ -41,7 +41,7 @@ public class CodeSchemeHelperService  {
 	   }
 
 
-    /*
+    /**
      * save(保存代码生成方案)
      * @param codeScheme
      * @author rufei.cn

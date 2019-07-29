@@ -62,7 +62,7 @@ public class JobFailMonitorHelper {
 								} else if (IJobHandler.SUCCESS.getCode() == log.getHandleCode()) {
 									// job success, pass
 									logger.info(">>>>>>>>>>> job monitor, job success, JobLogId:{}", jobLogId);
-								} else /*if (IJobHandler.FAILURE.getCode() == log.getTriggerCode()
+								} else /**if (IJobHandler.FAILURE.getCode() == log.getTriggerCode()
 										|| IJobHandler.FAILURE.getCode() == log.getHandleCode()
 										|| IJobHandler.FAIL_RETRY.getCode() == log.getHandleCode() )*/ {
 
@@ -82,7 +82,7 @@ public class JobFailMonitorHelper {
 									failAlarm(info, log);
 
 									logger.info(">>>>>>>>>>> job monitor, job fail, JobLogId:{}", jobLogId);
-								}/* else {
+								}/** else {
 									JobFailMonitorHelper.monitor(jobLogId);
 									logger.info(">>>>>>>>>>> job monitor, job status unknown, JobLogId:{}", jobLogId);
 								}*/

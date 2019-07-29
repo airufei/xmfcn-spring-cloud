@@ -367,7 +367,7 @@ public class RedisService {
         if (StringUtil.isBlank(pattern)) {
             return result;
         }
-        if (pattern.equals("*")) {
+        if ("*".equals(pattern)) {
             return result;
         }
         RedisConnection conn = getRedisConnection();

@@ -38,7 +38,7 @@ public class CodeTableColumnHelperService  {
 	   }
 
 
-    /*
+    /**
      * save(保存表字段信息)
      * @param codeTableColumn
      * @author rufei.cn

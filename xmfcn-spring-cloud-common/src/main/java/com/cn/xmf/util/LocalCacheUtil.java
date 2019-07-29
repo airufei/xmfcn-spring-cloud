@@ -69,6 +69,7 @@ public class LocalCacheUtil {
         try {
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
+                @Override
                 public void run() {
                     cacheMap.remove(key);
                     timer.cancel();

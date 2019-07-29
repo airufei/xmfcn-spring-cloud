@@ -1,4 +1,4 @@
-/*
+/**
 package com.cn.xmf.zuul.filter;
 
 import com.netflix.zuul.ZuulFilter;
@@ -10,7 +10,7 @@ import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 /**
  * 金丝雀发布过滤器（灰度发布）
  *
- *//*
+ *//**
 
 public class GatedLaunchFilter extends ZuulFilter {
     @Override

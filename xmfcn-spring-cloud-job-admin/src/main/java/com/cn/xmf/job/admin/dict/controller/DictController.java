@@ -130,10 +130,10 @@ public class DictController {
 
     @RequestMapping("/delete")
     @ResponseBody
-    public ReturnT<String> delete(int id) {
+    public ReturnT<String> delete(Integer id) {
         logger.info("delete 开始============>" + id);
         ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "删除失败");
-        if (id <= 0) {
+        if (id == null || id <= 0) {
             returnT.setMsg("参数错误");
             return returnT;
         }

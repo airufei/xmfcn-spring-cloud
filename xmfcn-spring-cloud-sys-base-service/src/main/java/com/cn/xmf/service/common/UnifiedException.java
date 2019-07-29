@@ -47,7 +47,7 @@ public class UnifiedException {
         return null;
     }
 
-    /*
+    /**
      * dingTalkMessage:(发送钉钉消息)
      * @author: airufei
      * @date:2018/1/3 18:08

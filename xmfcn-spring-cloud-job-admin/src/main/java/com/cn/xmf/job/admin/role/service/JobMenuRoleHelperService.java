@@ -42,7 +42,7 @@ public class JobMenuRoleHelperService {
     }
 
 
-    /*
+    /**
      * save(保存角色菜单关系)
      * @param jobMenuRole
      * @author rufei.cn
@@ -72,7 +72,7 @@ public class JobMenuRoleHelperService {
         return ret;
     }
 
-    /*
+    /**
      * addTrainRecordBatch(批量新增角色菜单关系数据)
      * @param jobMenuRole
      * @author rufei.cn

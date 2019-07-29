@@ -47,7 +47,7 @@ public class JobRoleHelperService {
     }
 
 
-    /*
+    /**
      * save(保存角色数据)
      * @param jobRole
      * @author rufei.cn

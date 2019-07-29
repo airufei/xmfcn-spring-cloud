@@ -183,7 +183,7 @@ public class XxlJobFileAppender {
 		LogResult logResult = new LogResult(fromLineNum, toLineNum, logContentBuffer.toString(), false);
 		return logResult;
 
-		/*
+		/**
         // it will return the number of characters actually skipped
         reader.skip(Long.MAX_VALUE);
         int maxLineNum = reader.getLineNumber();

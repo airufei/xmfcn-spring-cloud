@@ -1,4 +1,4 @@
-/*
+/**
 package com.cn.xmf.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 */
 /**
  *当前服务安全密码验证
- *//*
+ *//**
 
 @EnableWebSecurity
 @Configuration

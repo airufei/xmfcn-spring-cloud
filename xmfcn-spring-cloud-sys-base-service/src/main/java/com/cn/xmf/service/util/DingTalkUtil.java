@@ -14,7 +14,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 
 public class DingTalkUtil {
-    /*
+    /**
      * send:(向钉钉发送信息)
      * @author: airufei
      * @date:2018/1/3 17:13

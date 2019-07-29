@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import javax.sql.DataSource;
@@ -31,7 +29,7 @@ public class BeanConfig {
     @Value("${xmf.job.accessToken}")
     private String token;
 
-    /*
+    /**
      * quartz初始化监听器
      */
     @Bean
@@ -39,7 +37,7 @@ public class BeanConfig {
         return new QuartzInitializerListener();
     }
 
-    /*
+    /**
      * 通过SchedulerFactoryBean获取Scheduler的实例
      */
     @Bean(name = "quartzScheduler")

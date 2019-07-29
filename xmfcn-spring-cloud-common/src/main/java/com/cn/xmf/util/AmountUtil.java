@@ -4,14 +4,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-
+@SuppressWarnings("all")
 public class AmountUtil {
 
     private static Logger logger = LoggerFactory.getLogger(AmountUtil.class);
 
-    /*
+    /**
      * getStrDecimal(金额保留N位小数-返回字符串类型)
-     * @param tags
+     * @param amount
+     * @param num
      * @author rufei.cn
      * @date 2018/3/7 16:07
      */
@@ -30,9 +31,10 @@ public class AmountUtil {
         return retAmount;
     }
 
-    /*
+    /**
      * getDecimal(金额保留N位小数-返回数字类型)
-     * @param tags
+     * @param amount
+     * @param num
      * @author rufei.cn
      * @date 2018/3/7 16:07
      */
@@ -51,9 +53,10 @@ public class AmountUtil {
         return retAmount;
     }
 
-    /*
+    /**
      * getString(金额保留N位小数-返回数字类型)
-     * @param tags
+     * @param amount
+     * @param num
      * @author rufei.cn
      * @date 2018/3/7 16:07
      */
@@ -70,9 +73,10 @@ public class AmountUtil {
         }
         return retAmount.toString();
     }
-    /*
+    /**
      * getDecimal(金额保留N位小数-返回数字类型)
-     * @param tags
+     * @param amount
+     * @param num
      * @author rufei.cn
      * @date 2018/3/7 16:07
      */
@@ -90,9 +94,9 @@ public class AmountUtil {
         return retAmount;
     }
 
-    /*
+    /**
      * getDecimal(字符串转金额类型)
-     * @param tags
+     * @param amount
      * @author rufei.cn
      * @date 2018/3/7 16:07
      */

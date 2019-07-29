@@ -47,7 +47,7 @@ public class JobMenuHelperService {
     }
 
 
-    /*
+    /**
      * save(保存job-菜单)
      * @param jobMenu
      * @author rufei.cn

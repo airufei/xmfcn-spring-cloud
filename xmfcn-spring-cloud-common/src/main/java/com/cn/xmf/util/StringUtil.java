@@ -679,7 +679,7 @@ public class StringUtil extends StringUtils {
         return stackMessage.toString();
     }
 
-    /*
+    /**
      * getEsLogData(组织日志信息)
      * @param loggingEvent 日志信息
      * @param subSysName 子系统名称
@@ -739,7 +739,7 @@ public class StringUtil extends StringUtils {
         return ret;
     }
 
-    /*
+    /**
      * getLogData(组织日志信息)
      * @param loggingEvent 日志信息
      * @param subSysName 子系统名称

@@ -39,7 +39,7 @@ public class UserHelperService  {
 	   }
 
 
-    /*
+    /**
      * save(保存用户信息)
      * @param user
      * @author rufei.cn

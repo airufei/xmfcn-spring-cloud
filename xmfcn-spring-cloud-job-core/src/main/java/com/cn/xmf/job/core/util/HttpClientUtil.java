@@ -35,7 +35,7 @@ public class HttpClientUtil {
 
 		try {
 			// init post
-			/*if (params != null && !params.isEmpty()) {
+			/**if (params != null && !params.isEmpty()) {
 				List<NameValuePair> formParams = new ArrayList<NameValuePair>();
 				for (Map.Entry<String, String> entry : params.entrySet()) {
 					formParams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));

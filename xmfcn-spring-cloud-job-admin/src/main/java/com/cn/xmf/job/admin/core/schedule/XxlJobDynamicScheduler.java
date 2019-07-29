@@ -214,7 +214,7 @@ public final class XxlJobDynamicScheduler implements ApplicationContextAware {
 		Class<? extends Job> jobClass_ = RemoteHttpJobBean.class;   // Class.forName(jobInfo.getJobClass());
 
 		JobDetail jobDetail = JobBuilder.newJob(jobClass_).withIdentity(jobKey).build();
-        /*if (jobInfo.getJobData()!=null) {
+        /**if (jobInfo.getJobData()!=null) {
         	JobDataMap jobDataMap = jobDetail.getJobDataMap();
         	jobDataMap.putAll(JacksonUtil.readValue(jobInfo.getJobData(), Map.class));	
         	// JobExecutionContext context.getMergedJobDataMap().get("mailGuid");
@@ -277,7 +277,7 @@ public final class XxlJobDynamicScheduler implements ApplicationContextAware {
             // JobDetail-JobDataMap fresh
             JobKey jobKey = new JobKey(jobName, jobGroup);
             JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-            /*JobDataMap jobDataMap = jobDetail.getJobDataMap();
+            /**JobDataMap jobDataMap = jobDetail.getJobDataMap();
             jobDataMap.clear();
             jobDataMap.putAll(JacksonUtil.readValue(jobInfo.getJobData(), Map.class));*/
 
@@ -401,7 +401,7 @@ public final class XxlJobDynamicScheduler implements ApplicationContextAware {
      * finaAllJobList
      *
      * @return
-     *//*
+     *//**
     @Deprecated
     public static List<Map<String, Object>> finaAllJobList(){
         List<Map<String, Object>> jobList = new ArrayList<Map<String,Object>>();

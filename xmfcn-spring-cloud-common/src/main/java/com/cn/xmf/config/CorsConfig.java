@@ -1,4 +1,4 @@
-/*
+/**
 package com.cn.xmf.common.config;
 
 import org.springframework.context.annotation.Bean;
@@ -8,12 +8,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 */
-/*
+/**
  * CorsConfig:(解决跨域问题)
  * @author: airufei
  * @date:2017/12/22 19:35
  * @return:
- *//*
+ *//**
 
 @Configuration
 public class CorsConfig {
