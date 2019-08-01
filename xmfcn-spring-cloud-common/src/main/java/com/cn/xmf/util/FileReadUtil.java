@@ -1,10 +1,16 @@
 package com.cn.xmf.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * 读取文件
+ */
 public class FileReadUtil {
-
+    private static Logger logger = LoggerFactory.getLogger(FileReadUtil.class);
     private static FileReadUtil instance = null;
     private Properties props = null;
     private static String FILEPATH = "";
@@ -25,15 +31,12 @@ public class FileReadUtil {
             in = getClass().getResourceAsStream(filePath);
             props.load(in);
         } catch (Exception e) {
-            //此处可根据你的日志框架进行记录
-            System.err.println("Error reading conf properties in PropertyManager.loadProps() " + e);
-
+            logger.error(StringUtil.getExceptionMsg(e));
         } finally {
             try {
                 in.close();
             } catch (Exception e) {
-
-                //此处可根据你的日志框架进行记录
+                logger.error(StringUtil.getExceptionMsg(e));
             }
         }
     }
@@ -65,5 +68,4 @@ public class FileReadUtil {
         String value = getInstatance(filePath).getProp(key);
         return "".equals(value) ? defaultValue : value;
     }
-
 }

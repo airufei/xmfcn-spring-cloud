@@ -4,6 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+
+/**
+ * 金额相关的处理工具
+ */
 @SuppressWarnings("all")
 public class AmountUtil {
 

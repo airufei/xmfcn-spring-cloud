@@ -42,32 +42,36 @@ public class TreadPoolUtil {
      *
      * @param cachedThreadPool
      */
-    public static void getThreadPoolIsNext(ThreadPoolExecutor cachedThreadPool,String classMethod) {
+    public static void getThreadPoolIsNext(ThreadPoolExecutor cachedThreadPool, String classMethod) {
         boolean isNext = true;
         if (cachedThreadPool == null) {
             return;
         }
         int waitCount = 0;//等待次数
         long minWaitTime = 200;//最小等待时间
-        while (isNext) {
-            int maxPoolSize = cachedThreadPool.getMaximumPoolSize();
-            int poolSize = cachedThreadPool.getPoolSize();
-            if (maxPoolSize <= 0) {
-                return;
+        try {
+            while (isNext) {
+                int maxPoolSize = cachedThreadPool.getMaximumPoolSize();
+                int poolSize = cachedThreadPool.getPoolSize();
+                if (maxPoolSize <= 0) {
+                    return;
+                }
+                if (poolSize <= 0) {
+                    return;
+                }
+                double poolNum = poolSize / maxPoolSize;
+                if (poolNum > 0.8) {
+                    waitCount = waitCount + 1;
+                    StringUtil.threadSleep(minWaitTime);
+                } else {
+                    isNext = false;
+                }
             }
-            if (poolSize <= 0) {
-                return;
+            if (waitCount > 0) {
+                getMonitorThreadPoolInfo(cachedThreadPool, waitCount, minWaitTime, classMethod);//发送监控数据
             }
-            double poolNum = poolSize / maxPoolSize;
-            if (poolNum > 0.8) {
-                waitCount = waitCount + 1;
-                StringUtil.threadSleep(minWaitTime);
-            } else {
-                isNext = false;
-            }
-        }
-        if (waitCount > 0) {
-            getMonitorThreadPoolInfo(cachedThreadPool, waitCount, minWaitTime,classMethod);//发送监控数据
+        } catch (Exception e) {
+            logger.error(StringUtil.getExceptionMsg(e));
         }
     }
 

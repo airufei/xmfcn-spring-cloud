@@ -1,5 +1,9 @@
 package com.cn.xmf.util;
 
+/**
+ * 常量类
+ */
+@SuppressWarnings("all")
 public class ConstantUtil {
 
     /**

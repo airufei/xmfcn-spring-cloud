@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.*;
 
+/**
+ * 异步调用测试
+ */
 public class ListenableFutureTest {
 
     private static Logger logger = LoggerFactory.getLogger(TreadPoolUtil.class);

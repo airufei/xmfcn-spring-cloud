@@ -12,10 +12,10 @@ import org.springframework.context.ApplicationContextAware;
  * <p>Title:com.cn.xmf.utils</p>
  * <p>Description:$DESCRIPTION</p>
  */
+@SuppressWarnings("all")
 public class SpringUtil implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext = null;
-
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -39,7 +39,6 @@ public class SpringUtil implements ApplicationContextAware {
      */
     public static Object getBean(String name) {
         return getApplicationContext().getBean(name);
-
     }
 
     /**
@@ -64,5 +63,4 @@ public class SpringUtil implements ApplicationContextAware {
     public static <T> T getBean(String name, Class<T> clazz) {
         return getApplicationContext().getBean(name, clazz);
     }
-
 }

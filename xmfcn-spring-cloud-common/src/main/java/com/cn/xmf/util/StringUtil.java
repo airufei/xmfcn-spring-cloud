@@ -281,26 +281,9 @@ public class StringUtil extends StringUtils {
             result = matcher.matches();
         } catch (Exception e) {
             result = false;
-
+            logger.error(StringUtil.getExceptionMsg(e));
         }
         return result;
-    }
-
-
-    /**
-     * padLeft:(补位左填充)
-     *
-     * @param
-     * @return
-     * @author rufei.cn
-     * @Date 2017/11/23 15:33
-     **/
-    public static String padLeft(String input, char c, int length) {
-        String output = input;
-        while (output.length() < length) {
-            output = c + output;
-        }
-        return output;
     }
 
 
@@ -376,11 +359,10 @@ public class StringUtil extends StringUtils {
         try {
             result = java.net.URLEncoder.encode(url, encode);
         } catch (UnsupportedEncodingException e) {
-
+            logger.error(StringUtil.getExceptionMsg(e));
         }
         return result;
     }
-
 
     /**
      * getSystemUrl:(获取访问服务器的端口号IP)
@@ -419,23 +401,6 @@ public class StringUtil extends StringUtils {
         return uuid;
     }
 
-    /**
-     * 将二进制数组转化成字符串
-     *
-     * @param data
-     * @return
-     */
-    public static String convertToHexString(byte data[]) {
-        StringBuffer ret = new StringBuffer();
-        for (int i = 0; i < data.length; ++i) {
-            int v = data[i] & 255;
-            if (v < 16) {
-                ret.append('0');
-            }
-            ret.append(Integer.toString(v, 16).toUpperCase());
-        }
-        return ret.toString();
-    }
 
     /**
      * getQueryParms:(获取分页参数集合)
@@ -483,8 +448,7 @@ public class StringUtil extends StringUtils {
             }
             result = Double.parseDouble(amount);
         } catch (Exception e) {
-            logger.error("StrToDouble：服务端异常" + e);
-
+            logger.error(StringUtil.getExceptionMsg(e));
         }
         return result;
     }
@@ -704,7 +668,6 @@ public class StringUtil extends StringUtils {
                     stackMessage.append(callerData[i] + "\n");
                 }
             }
-
         }
         EsLogMessage esLog = new EsLogMessage();
         esLog.setSubSysName(subSysName);
@@ -729,7 +692,7 @@ public class StringUtil extends StringUtils {
     public static String getEncryptPassword(String password) {
         String ret = null;
         try {
-            password = MD5Util.getMd5(password);
+            password = M5Util.getMd5(password);
             ret = new StringBuilder(password).reverse().toString();//反转
         } catch (Exception e) {
             ret = null;
@@ -754,7 +717,6 @@ public class StringUtil extends StringUtils {
 
         }
         Map<String, String> mdcPropertyMap = loggingEvent.getMDCPropertyMap();
-
         String ip = addr.getHostAddress().toString(); //获取本机ip
         String hostName = addr.getHostName().toString(); //获取本机计算机名称
         String formattedMessage = loggingEvent.getFormattedMessage();
