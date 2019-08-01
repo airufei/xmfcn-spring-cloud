@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.Interface.SysCommon;
-import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.kafka.IKafkaReader;
 import com.cn.xmf.job.sys.DictService;
@@ -296,7 +296,7 @@ public class SysCommonService implements SysCommon {
             return;
         }
         int code = retData.getCode();
-        if (code != RetCodeAndMessage.FAILURE) {
+        if (code != ResultCodeMessage.FAILURE) {
             return;
         }
         String value = json.getString("value");
@@ -324,7 +324,7 @@ public class SysCommonService implements SysCommon {
             return;
         }
         int code = dataReturn.getCode();
-        if (code != RetCodeAndMessage.FAILURE) {
+        if (code != ResultCodeMessage.FAILURE) {
             return;
         }
         String jsonString = JSON.toJSONString(dataReturn);
@@ -365,13 +365,13 @@ public class SysCommonService implements SysCommon {
         if (kafkaConsumer == null) {
             String msg = taskName + "kafkaConsumer 消费者实例 为空";
             logger.info(msg);
-            dataReturn.setCode(RetCodeAndMessage.NO_DATA);
+            dataReturn.setCode(ResultCodeMessage.NO_DATA);
             return dataReturn;
         }
         if (StringUtil.isBlank(topic)) {
             String msg = taskName + "topic 消费主题 为空";
             logger.info(msg);
-            dataReturn.setCode(RetCodeAndMessage.NO_DATA);
+            dataReturn.setCode(ResultCodeMessage.NO_DATA);
             dataReturn.setMessage(msg);
             return dataReturn;
         }
@@ -380,7 +380,7 @@ public class SysCommonService implements SysCommon {
         while (isNext) {
             boolean kafkaisReLoadConsmer = getKafkaisReLoadConsmer(topic);//判断是否热加载
             if (kafkaisReLoadConsmer) {
-                dataReturn.setCode(RetCodeAndMessage.NO_DATA);
+                dataReturn.setCode(ResultCodeMessage.NO_DATA);
                 dataReturn.setMessage("kafka实例需要重新加载");
                 isNext = false;
                 kafkaConsumer = null;

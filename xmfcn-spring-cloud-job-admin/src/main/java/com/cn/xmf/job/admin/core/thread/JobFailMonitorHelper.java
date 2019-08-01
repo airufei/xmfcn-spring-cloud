@@ -1,5 +1,6 @@
 package com.cn.xmf.job.admin.core.thread;
 
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.core.model.XxlJobGroup;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.admin.core.model.XxlJobLog;
@@ -101,7 +102,7 @@ public class JobFailMonitorHelper {
 				if (jobLogIdList!=null && jobLogIdList.size()>0) {
 					for (Integer jobLogId: jobLogIdList) {
 						XxlJobLog log = XxlJobDynamicScheduler.xxlJobLogDao.load(jobLogId);
-						if (ReturnT.FAIL_CODE == log.getTriggerCode()|| ReturnT.FAIL_CODE==log.getHandleCode()) {
+						if (ResultCodeMessage.FAILURE == log.getTriggerCode()|| ResultCodeMessage.FAILURE==log.getHandleCode()) {
 							// job fail,
 							XxlJobInfo info = XxlJobDynamicScheduler.xxlJobInfoDao.loadById(log.getJobId());
 
@@ -170,10 +171,10 @@ public class JobFailMonitorHelper {
 		if (info!=null && info.getAlarmEmail()!=null && info.getAlarmEmail().trim().length()>0) {
 
 			String alarmContent = "Alarm Job LogId=" + jobLog.getId();
-			if (jobLog.getTriggerCode() != ReturnT.SUCCESS_CODE) {
+			if (jobLog.getTriggerCode() != ResultCodeMessage.SUCCESS) {
 				alarmContent += "<br>TriggerMsg=" + jobLog.getTriggerMsg();
 			}
-			if (jobLog.getHandleCode()>0 && jobLog.getHandleCode() != ReturnT.SUCCESS_CODE) {
+			if (jobLog.getHandleCode()>0 && jobLog.getHandleCode() != ResultCodeMessage.SUCCESS) {
 				alarmContent += "<br>HandleCode=" + jobLog.getHandleMsg();
 			}
 

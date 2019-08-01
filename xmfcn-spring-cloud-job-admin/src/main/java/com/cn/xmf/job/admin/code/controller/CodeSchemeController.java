@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cn.xmf.base.model.Partion;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.util.StringUtil;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
+
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSON;
 import com.cn.xmf.job.admin.code.model.*;
@@ -106,30 +109,31 @@ public class CodeSchemeController {
     @RequestMapping("delete")
     @ResponseBody
     public ReturnT<String> delete(HttpServletRequest request) {
-        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "删除失败");
+        ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "删除失败");
         String ids = null;
         try {
             ids = request.getParameter("id");
             int id = StringUtil.stringToInt(ids);
             logger.info("delete 开始============>" + id);
             if (id <= 0) {
-                returnT.setMsg("参数错误");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             long newId = id;
             boolean ret = codeSchemeService.delete(newId);
             if (ret) {
-                returnT.setCode(ReturnT.SUCCESS_CODE);
-                returnT.setMsg("成功");
+                retData.setCode(ResultCodeMessage.SUCCESS);
+                retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
             }
         } catch (Exception e) {
-            returnT.setCode(ReturnT.FAIL_CODE);
+            retData.setCode(ResultCodeMessage.FAILURE);
+            retData.setMsg(ResultCodeMessage.EXCEPTION_MESSAGE);
             String msg = "delete:(逻辑删除代码生成方案数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("delete", ids, null, msg, this.getClass());
         }
-        logger.info("delete 结束============>" + JSON.toJSONString(returnT));
-        return returnT;
+        logger.info("delete 结束============>" + JSON.toJSONString(retData));
+        return retData;
     }
 
     /**
@@ -143,35 +147,35 @@ public class CodeSchemeController {
     @RequestMapping(value = "save")
     @ResponseBody
     public ReturnT<String> save(CodeScheme codeScheme) {
-        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
+        ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "保存数据失败");
         String parms = null;
         try {
             parms = JSON.toJSONString(codeScheme);
             logger.info("save:(保存代码生成方案数据接口) 开始  parms={}", parms);
             if (codeScheme == null) {
-                returnT.setMsg("参数为空");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             if (codeScheme == null) {
-                returnT.setMsg("参数错误");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             CodeScheme ret = codeSchemeService.save(codeScheme);
             if (ret == null) {
-                returnT.setMsg("保存数据失败");
-                return returnT;
+                retData.setMsg("保存数据失败");
+                return retData;
             }
-            returnT.setCode(ReturnT.SUCCESS_CODE);
-            returnT.setMsg("成功");
+            retData.setCode(ResultCodeMessage.SUCCESS);
+            retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
         } catch (Exception e) {
 
             String msg = "save:(保存代码生成方案数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(returnT), msg, this.getClass());
-            returnT.setMsg("服务器繁忙，请稍后再试");
+            sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(retData), msg, this.getClass());
+            retData.setMsg(ResultCodeMessage.EXCEPTION_MESSAGE);
         }
-        logger.info("save 结束============>" + JSON.toJSONString(returnT));
-        return returnT;
+        logger.info("save 结束============>" + JSON.toJSONString(retData));
+        return retData;
     }
 
 }

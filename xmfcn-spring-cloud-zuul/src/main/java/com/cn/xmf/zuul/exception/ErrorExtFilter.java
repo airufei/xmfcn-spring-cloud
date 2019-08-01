@@ -1,9 +1,9 @@
 package com.cn.xmf.zuul.exception;
 
+import com.cn.xmf.base.model.ResultCodeMessage;
+import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.enums.DingMessageType;
 import com.cn.xmf.model.ding.DingMessage;
-import com.cn.xmf.base.model.RetCodeAndMessage;
-import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.util.StringUtil;
 import com.cn.xmf.zuul.sys.DingTalkService;
 import com.netflix.zuul.ZuulFilter;
@@ -66,8 +66,8 @@ public class ErrorExtFilter extends SendErrorFilter {
         dingTalkMessage(ctx, throwable);
         // 构建返回信息
         RetData retData = new RetData();
-        retData.setCode(RetCodeAndMessage.FAILURE);
-        retData.setMessage("服务繁忙，请稍后再试");
+        retData.setCode(ResultCodeMessage.FAILURE);
+        retData.setMessage(ResultCodeMessage.EXCEPTION_MESSAGE);
         retData.setData(new Object());
         return retData;
     }

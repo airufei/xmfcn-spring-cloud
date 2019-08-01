@@ -1,8 +1,7 @@
 package com.cn.xmf.job.kafka.es;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.kafka.IKafkaReader;
 import com.cn.xmf.job.common.SysCommonService;
@@ -11,7 +10,6 @@ import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.StringUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.aspectj.apache.bcel.generic.RET;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +44,8 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
     @Override
     public RetData executeList(List<ConsumerRecord<String, String>> partitionRecords, String topic) {
         RetData retData = new RetData();
-        retData.setCode(RetCodeAndMessage.DATA_ERROR);
-        retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
+        retData.setCode(ResultCodeMessage.DATA_ERROR);
+        retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
         if (partitionRecords == null || partitionRecords.size() <= 0) {
             return retData;
         }

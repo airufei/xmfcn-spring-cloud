@@ -2,7 +2,7 @@ package com.cn.xmf.job.task.log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.common.SysCommonService;
 import com.cn.xmf.job.config.KafkaBean;
@@ -66,7 +66,7 @@ public class SysLogQueueTask {
                 return ;
             }
             int code = dataReturn.getCode();
-            if (code == RetCodeAndMessage.NO_DATA) {
+            if (code == ResultCodeMessage.NO_DATA) {
                 logger.info("准备重建消费实例 topic={}", topic);
                 kafkaConsumer = kafkaBean.getKafkaConsumer(topic);//产生一个消费者实例
                 startTask();

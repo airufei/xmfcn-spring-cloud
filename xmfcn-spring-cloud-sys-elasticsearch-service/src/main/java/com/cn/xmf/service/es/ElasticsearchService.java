@@ -2,7 +2,7 @@ package com.cn.xmf.service.es;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.model.es.EsPage;
@@ -48,7 +48,7 @@ public class ElasticsearchService {
     public RetData save(@RequestBody EsModel es) {
         RetData retData = new RetData();
         RetData aReturn = elasticsearchHelperService.validateParms(es);
-        if (aReturn.getCode() == RetCodeAndMessage.FAILURE) {
+        if (aReturn.getCode() == ResultCodeMessage.FAILURE) {
             return aReturn;
         }
         String message = es.getMessage();
@@ -67,8 +67,8 @@ public class ElasticsearchService {
             DocumentResult result = jestClient.execute(index);
             responseCode = result.getResponseCode();
             if (responseCode == 200) {
-                retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
-                retData.setCode(RetCodeAndMessage.SUCCESS);
+                retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
+                retData.setCode(ResultCodeMessage.SUCCESS);
             } else {
                 retData.setMessage(result.getErrorMessage());
             }
@@ -93,7 +93,7 @@ public class ElasticsearchService {
     public RetData saveBatch(@RequestBody EsModel es) {
         RetData retData = new RetData();
         RetData aReturn = elasticsearchHelperService.validateParms(es);
-        if (aReturn.getCode() == RetCodeAndMessage.FAILURE) {
+        if (aReturn.getCode() == ResultCodeMessage.FAILURE) {
             return aReturn;
         }
         String message = es.getMessage();
@@ -123,8 +123,8 @@ public class ElasticsearchService {
             BulkResult result = jestClient.execute(bulk.build());
             responseCode = result.getResponseCode();
             if (responseCode == 200) {
-                retData.setMessage(RetCodeAndMessage.SUCCESS_MESSAGE);
-                retData.setCode(RetCodeAndMessage.SUCCESS);
+                retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
+                retData.setCode(ResultCodeMessage.SUCCESS);
             } else {
                 String errorMessage = "saveBatch(保存集合数据到ES):" + result.getErrorMessage();
                 logger.error(errorMessage);

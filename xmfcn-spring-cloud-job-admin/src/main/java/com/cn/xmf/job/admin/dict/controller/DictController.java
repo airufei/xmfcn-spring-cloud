@@ -3,6 +3,7 @@ package com.cn.xmf.job.admin.dict.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.sys.DictService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.model.dict.Dict;
@@ -90,60 +91,60 @@ public class DictController {
     @ResponseBody
     public ReturnT<String> save(Dict dict) {
         logger.info("save 开始============>" + JSON.toJSONString(dict));
-        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
+        ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "保存数据失败");
         if (dict == null) {
-            returnT.setMsg("参数错误");
-            return returnT;
+            retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+            return retData;
         }
         String dictValue = dict.getDictValue();
         String dictKey = dict.getDictKey();
         String type = dict.getType();
         String remark = dict.getRemark();
         if (StringUtil.isBlank(dictValue)) {
-            returnT.setMsg("值不能为空");
-            return returnT;
+            retData.setMsg("值不能为空");
+            return retData;
         }
         if (StringUtil.isBlank(dictKey)) {
-            returnT.setMsg("键不能为空");
-            return returnT;
+            retData.setMsg("键不能为空");
+            return retData;
         }
         if (StringUtil.isBlank(type)) {
-            returnT.setMsg("类型不能为空");
-            return returnT;
+            retData.setMsg("类型不能为空");
+            return retData;
         }
         if (StringUtil.isBlank(remark)) {
-            returnT.setMsg("备注不能为空");
-            return returnT;
+            retData.setMsg("备注不能为空");
+            return retData;
         }
         dict.setCreateTime(new Date());
         dict.setUpdateTime(new Date());
         Dict data = dictService.save(dict);
         if (data == null) {
-            returnT.setMsg("参数错误");
-            return returnT;
+            retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+            return retData;
         }
-        returnT.setCode(ReturnT.SUCCESS_CODE);
-        returnT.setMsg("成功");
-        logger.info("save 结束============>" + JSON.toJSONString(returnT));
-        return returnT;
+        retData.setCode(ResultCodeMessage.SUCCESS);
+        retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
+        logger.info("save 结束============>" + JSON.toJSONString(retData));
+        return retData;
     }
 
     @RequestMapping("/delete")
     @ResponseBody
     public ReturnT<String> delete(Integer id) {
         logger.info("delete 开始============>" + id);
-        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "删除失败");
+        ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "删除失败");
         if (id == null || id <= 0) {
-            returnT.setMsg("参数错误");
-            return returnT;
+            retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+            return retData;
         }
         long newId = id;
         boolean delete = dictService.delete(newId);
         if (delete) {
-            returnT.setCode(ReturnT.SUCCESS_CODE);
-            returnT.setMsg("成功");
+            retData.setCode(ResultCodeMessage.SUCCESS);
+            retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
         }
-        logger.info("delete 结束============>" + JSON.toJSONString(returnT));
-        return returnT;
+        logger.info("delete 结束============>" + JSON.toJSONString(retData));
+        return retData;
     }
 }

@@ -1,5 +1,6 @@
 package com.cn.xmf.job.admin.common;
 
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.job.core.util.JacksonUtil;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class ExceptionResolver implements HandlerExceptionResolver {
 		}
 
 		// error result
-		ReturnT<String> errorResult = new ReturnT<String>(ReturnT.FAIL_CODE, ex.toString().replaceAll("\n", "<br/>"));
+		ReturnT<String> errorResult = new ReturnT<String>(ResultCodeMessage.FAILURE, ex.toString().replaceAll("\n", "<br/>"));
 
 		// response
 		ModelAndView mv = new ModelAndView();

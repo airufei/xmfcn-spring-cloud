@@ -3,8 +3,8 @@ package com.cn.xmf.base.model;
 
 
 public class RetData {
-    private int code = RetCodeAndMessage.PARMS_ERROR;
-    private String message= RetCodeAndMessage.PARMS_ERROR_MESSAGE;
+    private int code = ResultCodeMessage.PARMS_ERROR;
+    private String message= ResultCodeMessage.PARMS_ERROR_MESSAGE;
     private Object data;
 
 

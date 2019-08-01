@@ -3,6 +3,7 @@ package com.cn.xmf.job.admin.user.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.user.model.JobUser;
 import com.cn.xmf.job.admin.user.service.JobUserService;
@@ -109,35 +110,34 @@ public class JobUserController {
     @RequestMapping("delete")
     @ResponseBody
     public ReturnT<String> delete(HttpServletRequest request, String parms) {
-        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "删除失败");
+        ReturnT<String> retData = new ReturnT<>();
         try {
             logger.info("delete:(逻辑删除调度系统用户数据接口) 开始  parms={}", parms);
             if (StringUtil.isBlank(parms)) {
-                returnT.setMsg("参数为空");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             JSONObject json = JSONObject.parseObject(parms);
             if (json == null) {
-                returnT.setMsg("参数为空");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             Long id = json.getLong("id");
             if (id != null && id > 0) {
                 jobUserService.delete(id);
-                returnT.setMsg("删除成功");
-                returnT.setCode(ReturnT.SUCCESS_CODE);
+                retData.setMsg("删除成功");
+                retData.setCode(ResultCodeMessage.SUCCESS);
             } else {
-                returnT.setMsg("请选择需要删除的数据");
+                retData.setMsg("请选择需要删除的数据");
             }
         } catch (Exception e) {
-
             String msg = "delete:(逻辑删除调度系统用户数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("delete", parms, JSON.toJSONString(returnT), msg, this.getClass());
-            returnT.setMsg("服务器繁忙，请稍后再试");
+            sysCommonService.sendDingMessage("delete", parms, JSON.toJSONString(retData), msg, this.getClass());
+            retData.setMsg(ResultCodeMessage.EXCEPTION_MESSAGE);
         }
         logger.info("delete:(逻辑删除调度系统用户数据接口) 结束  parms={}", parms);
-        return returnT;
+        return retData;
     }
 
     /**
@@ -201,7 +201,7 @@ public class JobUserController {
             // 保存数据库
             JobUser ret = jobUserService.save(jobUser);
             if (ret != null) {
-                retData.setCode(ReturnT.SUCCESS_CODE);
+                retData.setCode(ResultCodeMessage.SUCCESS);
                 retData.setMsg("保存成功");
             }
         } catch (Exception e) {
@@ -209,7 +209,7 @@ public class JobUserController {
             String msg = "save:(保存调度系统用户数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("save", null, JSON.toJSONString(retData), msg, this.getClass());
-            retData.setMsg("服务器繁忙，请稍后再试");
+            retData.setMsg(ResultCodeMessage.EXCEPTION_MESSAGE);
             return retData;
         }
         logger.info("save:(保存调度系统用户数据接口) 结束");

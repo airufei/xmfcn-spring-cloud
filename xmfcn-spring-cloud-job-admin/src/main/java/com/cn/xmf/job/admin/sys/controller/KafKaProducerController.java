@@ -1,6 +1,7 @@
 package com.cn.xmf.job.admin.sys.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.sys.KafKaProducerService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.util.ConstantUtil;
@@ -45,33 +46,33 @@ public class KafKaProducerController {
     @RequestMapping("send")
     @ResponseBody
     public ReturnT<String> send(HttpServletRequest request) {
-        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "执行失败，没有数据");
+        ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "执行失败，没有数据");
         try {
             String topic = request.getParameter("topic");
             String kafkaData = request.getParameter("kafkaData");
             if (StringUtil.isBlank(topic)) {
-                returnT.setMsg("请输入topic");
-                return returnT;
+                retData.setMsg("请输入topic");
+                return retData;
             }
             if (StringUtil.isBlank(kafkaData)) {
-                returnT.setMsg("请输入kafkaData");
-                return returnT;
+                retData.setMsg("请输入kafkaData");
+                return retData;
             }
             JSONObject sendJson = new JSONObject();
             sendJson.put("topic", topic);
             sendJson.put("value", kafkaData);
             boolean sendKafka = kafKaProducerService.sendKafka(sendJson);
             if (sendKafka) {
-                returnT.setCode(ReturnT.SUCCESS_CODE);
-                returnT.setMsg("发送成功");
+                retData.setCode(ResultCodeMessage.SUCCESS);
+                retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
             }
         } catch (Exception e) {
 
-            returnT = ReturnT.FAIL;
+            retData = ReturnT.FAIL;
             String msg = "send(发送数据到kafka) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            returnT.setMsg(msg);
+            retData.setMsg(msg);
         }
-        return returnT;
+        return retData;
     }
 }
