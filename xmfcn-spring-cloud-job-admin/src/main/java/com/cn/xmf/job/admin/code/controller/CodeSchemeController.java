@@ -123,8 +123,7 @@ public class CodeSchemeController {
                 returnT.setMsg("成功");
             }
         } catch (Exception e) {
-
-            returnT = returnT.FAIL;
+            returnT.setCode(ReturnT.FAIL_CODE);
             String msg = "delete:(逻辑删除代码生成方案数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("delete", ids, null, msg, this.getClass());
