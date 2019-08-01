@@ -12,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -839,6 +841,25 @@ public class StringUtil extends StringUtils {
         } else {
             return request.getRemoteAddr();
         }
+    }
+
+    /**
+     * 获取系统名称
+     *
+     * @return
+     */
+    public static String getSubSysName() {
+        String sysSubSysName = "";
+        Environment environment = null;
+        try {
+            environment = (Environment) SpringUtil.getBean("environment");
+        } catch (Exception e) {
+        }
+        if (environment == null) {
+            return sysSubSysName;
+        }
+        sysSubSysName = environment.getProperty("spring.application.name");
+        return sysSubSysName;
     }
 
     public static void main(String[] args) {

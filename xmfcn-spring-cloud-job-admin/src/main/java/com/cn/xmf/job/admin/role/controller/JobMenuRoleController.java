@@ -110,7 +110,7 @@ public class JobMenuRoleController {
         try {
             ids = request.getParameter("id");
             int id = StringUtil.stringToInt(ids);
-            logger.info("delete 开始============>" + id);
+            logger.info("delete 开始============>id={}", id);
             if (id <= 0) {
                 returnT.setMsg("参数错误");
                 return returnT;
@@ -122,13 +122,12 @@ public class JobMenuRoleController {
                 returnT.setMsg("成功");
             }
         } catch (Exception e) {
-
-            returnT = returnT.FAIL;
-            String msg = "delete:(逻辑删除角色菜单关系数据接口) error===>" + StringUtil.getExceptionMsg(e);
-            logger.error(msg);
+            returnT.setCode(ReturnT.FAIL_CODE);
+            StringBuilder msg = new StringBuilder();
+            msg.append("delete:(逻辑删除角色菜单关系数据接口) error===>").append(StringUtil.getExceptionMsg(e));
+            logger.error(msg.toString());
             sysCommonService.sendDingMessage("delete", ids, null, msg, this.getClass());
         }
-        logger.info("delete 结束============>" + JSON.toJSONString(returnT));
         return returnT;
     }
 

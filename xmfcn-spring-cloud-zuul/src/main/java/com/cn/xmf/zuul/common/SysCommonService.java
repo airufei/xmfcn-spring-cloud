@@ -1,15 +1,21 @@
 package com.cn.xmf.zuul.common;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.enums.DingMessageType;
+import com.cn.xmf.base.Interface.SysCommon;
 import com.cn.xmf.model.ding.DingMessage;
-import com.cn.xmf.util.StringUtil;
+import com.cn.xmf.util.*;
+import com.cn.xmf.zuul.sys.DictService;
 import com.cn.xmf.zuul.sys.DingTalkService;
+import com.cn.xmf.zuul.sys.KafKaProducerService;
+import com.cn.xmf.zuul.sys.RedisService;
+import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author rufei.cn
@@ -17,22 +23,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @SuppressWarnings("all")
-public class SysCommonService {
+public class SysCommonService implements SysCommon {
 
+    private static ThreadPoolExecutor cachedThreadPool = ThreadPoolUtil.getCommonThreadPool();//获取公共线程池
+    private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
 
     @Autowired
     private DingTalkService dingTalkService;
-    private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
+    @Autowired
+    private RedisService redisService;
     @Autowired
     private Environment environment;
-
-    /**
-     * 获取当前运行的系统名称
-     * @return
-     */
-    public String getSysName() {
-        return environment.getProperty("spring.application.name");
-    }
+    @Autowired
+    private DictService dictService;
+    @Autowired
+    private KafKaProducerService kafKaProducerService;
 
     /**
      * setDingMessage(组织钉钉消息)
@@ -41,106 +46,163 @@ public class SysCommonService {
      * @param parms
      * @return
      */
-    public void sendDingMessage(String method, String parms, String retData, String msg, Class t) {
+    @Override
+    public void sendDingMessage(String method, Object parms, Object retData, Object msg, Class t) {
         try {
-            DingMessage dingMessage = new DingMessage();
-            dingMessage.setDingMessageType(DingMessageType.MARKDWON);
-            dingMessage.setSysName(getSysName());
-            dingMessage.setModuleName(t.getPackage().toString());
-            dingMessage.setMethodName(method);
-            dingMessage.setParms(parms);
-            dingMessage.setExceptionMessage(msg);
-            dingMessage.setRetData(retData);
-            dingTalkService.sendMessageToDingTalk(dingMessage);
+            if (msg == null) {
+                return;
+            }
+            String currentThreadClass = t.getSimpleName();
+            String subSysName = StringUtil.getSubSysName();
+            DingMessage dingMessage = MessageUtil.getDingTalkMessage(parms, retData, msg, subSysName, currentThreadClass, method);
+            if (dingMessage == null) {
+                return;
+            }
+            String classMethod = this.getClass().getName() + ".sendDingMessage()";
+            ThreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
+            cachedThreadPool.execute(() -> {
+                dingTalkService.sendMessageToDingTalk(dingMessage);
+            });
         } catch (Exception e) {
-
+            logger.error("setDingMessage(发送钉钉消息) 异常={}", StringUtil.getExceptionMsg(e));
         }
     }
 
     /**
-     * saveSsdb(保存ssdb)
+     * sendKafka（发送数据到kafka）
      *
-     * @param key        缓存key
-     * @param value      缓存值
-     * @param expireTime 缓实际
+     * @param topic
+     * @param key
+     * @param value
+     * @return
      */
-    public void saveSsdb(String key, String value, long expireTime) {
-        if (StringUtil.isBlank(key)) {
-            return;
+    @Override
+    public boolean sendKafka(String topic, String key, Object value) {
+        boolean result = false;
+        if (StringUtil.isBlank(topic)) {
+            logger.info("topic不能为空");
         }
-        if (StringUtil.isBlank(value)) {
-            return;
+        if (value == null) {
+            logger.info("value不能为空");
         }
-        JSONObject ssdbJsonObject = new JSONObject();
-        ssdbJsonObject.put("key", key);
-        ssdbJsonObject.put("value", value);
-        ssdbJsonObject.put("expTime", expireTime);
+        if (kafKaProducerService == null) {
+            return result;
+        }
+        JSONObject sendJson = new JSONObject();
+        sendJson.put("topic", topic);
+        sendJson.put("key", key);
+        sendJson.put("value", value);
         try {
-            // ssdbService.setStrByKey(ssdbJsonObject);
+            result = kafKaProducerService.sendKafka(sendJson);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
-
+            logger.error("sendKafka（发送数据到kafka）异常={}:", StringUtil.getExceptionMsg(e));
         }
+        return result;
     }
 
+
     /**
-     * saveSsdb(保存ssdb) 默认缓存10分钟
+     * getDictValue(获取字典数据)
      *
-     * @param key   缓存key
-     * @param value 缓存值
+     * @param dictType
+     * @param dictKey
+     * @return
      */
-    public void saveSsdb(String key, String value) {
-        if (StringUtil.isBlank(key)) {
-            return;
-        }
-        if (StringUtil.isBlank(value)) {
-            return;
-        }
-        JSONObject ssdbJsonObject = new JSONObject();
-        ssdbJsonObject.put("key", key);
-        ssdbJsonObject.put("value", value);
-        ssdbJsonObject.put("expTime", 60 * 10);
+    @Override
+    public String getDictValue(String dictType, String dictKey) {
+        String dictValue = null;
+        String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + dictType + dictKey;
         try {
-            //ssdbService.setStrByKey(ssdbJsonObject);
+            dictValue = LocalCacheUtil.getCache(key);
+            if (StringUtil.isNotBlank(dictValue)) {
+                dictValue = dictValue.replace("@0", "");
+                return dictValue;
+            }
+            dictValue = dictService.getDictValue(dictType, dictKey);
+            if (StringUtil.isBlank(dictValue)) {
+                LocalCacheUtil.saveCache(key, "@0", 60);
+            } else {
+                LocalCacheUtil.saveCache(key, dictValue, 60);
+            }
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
+            logger.error("getDictValue(获取字典数据) 异常={}", StringUtil.getExceptionMsg(e));
+        }
+        return dictValue;
+    }
 
+    /**
+     * save(保持缓存)
+     *
+     * @param key
+     * @return
+     */
+    public void save(String key, String value, int seconds) {
+        try {
+            if (StringUtil.isBlank(key)) {
+                return;
+            }
+            redisService.save(key, value, seconds);
+        } catch (Exception e) {
+            logger.error("save(保持缓存) 异常={}", StringUtil.getExceptionMsg(e));
         }
     }
 
     /**
-     * getStr(获取缓存)
+     * getCache(获取缓存)
+     *
      * @param key
      * @return
      */
     public String getCache(String key) {
-        String cache=null;
+        String cache = null;
         if (StringUtil.isBlank(key)) {
             return null;
         }
         try {
-            //cache=ssdbService.getStrByKey(key);
+            redisService.getCache(key);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
-
+            logger.error("getCache(获取缓存) 异常={}", StringUtil.getExceptionMsg(e));
         }
         return cache;
     }
 
     /**
-     * del(删除缓存)
+     * delete(删除缓存)
+     *
      * @param key
      * @return
      */
-    public void del(String key) {
+    public long delete(String key) {
+        long result = -1;
         try {
             if (StringUtil.isBlank(key)) {
-                return ;
+                return result;
             }
-            //ssdbService.delStrByKey(key);
+            result = redisService.delete(key);
         } catch (Exception e) {
-            logger.error("saveSsdb_error:"+StringUtil.getExceptionMsg(e));
-
+            logger.error("delete(删除缓存) 异常={}", StringUtil.getExceptionMsg(e));
         }
+        return result;
+    }
+
+
+    /**
+     * getLock（获取分布式锁-暂不可用）
+     *
+     * @param key
+     * @return
+     * @author airuei
+     */
+    public RLock getLock(String key) {
+        RLock lock = null;
+        if (StringUtil.isBlank(key)) {
+            return lock;
+        }
+        try {
+            //lock = redisService.getLock(key);
+        } catch (Exception e) {
+            logger.error("getLock（获取分布式锁） 异常={}", StringUtil.getExceptionMsg(e));
+        }
+        return lock;
     }
 }

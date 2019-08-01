@@ -2,36 +2,24 @@ package com.cn.xmf.model.ding;
 
 
 import com.cn.xmf.enums.DingMessageType;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
+@SuppressWarnings("all")
 public class DingMessage implements Serializable {
     private String sysName;//系统名称
+    private String sysIp;//系统IP
+    private String sysHostName;//系统主机名
     private String moduleName;//模块名称
     private String methodName;//方法名称
     private String parms;//入参
     private String retData;//出参
-    private String exceptionMessage;//异常信息
+    private String message;//异常信息
     private String time;//发生时间
     private String webhook;//钉钉接口地址
     private DingMessageType dingMessageType;//消息格式类型
-
-    public DingMessageType getDingMessageType() {
-        return dingMessageType;
-    }
-
-    public void setDingMessageType(DingMessageType dingMessageType) {
-        this.dingMessageType = dingMessageType;
-    }
-    public String getWebhook() {
-        return webhook;
-    }
-
-    public void setWebhook(String webhook) {
-        this.webhook = webhook;
-    }
-
-
+    private String exceptionMessage;
 
     public String getSysName() {
         return sysName;
@@ -39,6 +27,22 @@ public class DingMessage implements Serializable {
 
     public void setSysName(String sysName) {
         this.sysName = sysName;
+    }
+
+    public String getSysIp() {
+        return sysIp;
+    }
+
+    public void setSysIp(String sysIp) {
+        this.sysIp = sysIp;
+    }
+
+    public String getSysHostName() {
+        return sysHostName;
+    }
+
+    public void setSysHostName(String sysHostName) {
+        this.sysHostName = sysHostName;
     }
 
     public String getModuleName() {
@@ -73,12 +77,12 @@ public class DingMessage implements Serializable {
         this.retData = retData;
     }
 
-    public String getExceptionMessage() {
-        return exceptionMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setExceptionMessage(String exceptionMessage) {
-        this.exceptionMessage = exceptionMessage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getTime() {
@@ -89,19 +93,45 @@ public class DingMessage implements Serializable {
         this.time = time;
     }
 
+    public String getWebhook() {
+        return webhook;
+    }
+
+    public void setWebhook(String webhook) {
+        this.webhook = webhook;
+    }
+
+    public DingMessageType getDingMessageType() {
+        return dingMessageType;
+    }
+
+    public void setDingMessageType(DingMessageType dingMessageType) {
+        this.dingMessageType = dingMessageType;
+    }
+
     @Override
     public String toString() {
-        return "DingMessage{" +
-                "sysName='" + sysName + '\'' +
-                ", moduleName='" + moduleName + '\'' +
-                ", methodName='" + methodName + '\'' +
-                ", parms='" + parms + '\'' +
-                ", retData='" + retData + '\'' +
-                ", exceptionMessage='" + exceptionMessage + '\'' +
-                ", time='" + time + '\'' +
-                ", webhook='" + webhook + '\'' +
-                ", dingMessageType=" + dingMessageType +
-                '}';
+        return new ToStringBuilder(this)
+                .append("sysName", sysName)
+                .append("sysIp", sysIp)
+                .append("sysHostName", sysHostName)
+                .append("moduleName", moduleName)
+                .append("methodName", methodName)
+                .append("parms", parms)
+                .append("retData", retData)
+                .append("message", message)
+                .append("time", time)
+                .append("webhook", webhook)
+                .append("dingMessageType", dingMessageType)
+                .toString();
+    }
+
+    public void setExceptionMessage(String exceptionMessage) {
+        this.exceptionMessage = exceptionMessage;
+    }
+
+    public String getExceptionMessage() {
+        return exceptionMessage;
     }
 }
 

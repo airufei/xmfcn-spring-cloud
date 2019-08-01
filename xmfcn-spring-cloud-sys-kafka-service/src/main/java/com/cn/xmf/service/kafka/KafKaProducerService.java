@@ -2,7 +2,7 @@ package com.cn.xmf.service.kafka;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.util.StringUtil;
-import com.cn.xmf.util.TreadPoolUtil;
+import com.cn.xmf.util.ThreadPoolUtil;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -28,7 +28,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class KafKaProducerService {
 
     private static Logger logger = LoggerFactory.getLogger(KafKaProducerService.class);
-    private static ThreadPoolExecutor cachedThreadPool = TreadPoolUtil.getCommonThreadPool();//获取公共线程池
+    private static ThreadPoolExecutor cachedThreadPool = ThreadPoolUtil.getCommonThreadPool();//获取公共线程池
     @Autowired
     private KafkaProducer<String, String> kafkaProducer;
 
@@ -57,7 +57,7 @@ public class KafKaProducerService {
         try {
             final String fkey = key;
             String classMethod = this.getClass().getName() + ".sendKafka()";
-            TreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
+            ThreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
             cachedThreadPool.execute(() -> {
                 ProducerRecord<String, String> record = new ProducerRecord<>(topic, fkey, value);//Topic Key Value
                 kafkaProducer.send(record, new Callback() {

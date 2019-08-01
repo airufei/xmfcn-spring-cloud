@@ -8,7 +8,7 @@ public interface SysCommon {
      * @param parms
      * @return
      */
-    void sendDingMessage(String method, Object parms, Object retData, String msg, Class t);
+    void sendDingMessage(String method, Object parms, Object retData, Object msg, Class t);
 
     /**
      * 获取字典数据

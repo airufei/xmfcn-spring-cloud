@@ -1,14 +1,13 @@
 package com.cn.xmf.job.admin.common;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.enums.DingMessageType;
+import com.cn.xmf.base.Interface.SysCommon;
 import com.cn.xmf.job.admin.sys.DictService;
+import com.cn.xmf.job.admin.sys.DingTalkService;
+import com.cn.xmf.job.admin.sys.KafKaProducerService;
 import com.cn.xmf.job.admin.sys.RedisService;
 import com.cn.xmf.model.ding.DingMessage;
-import com.cn.xmf.util.ConstantUtil;
-import com.cn.xmf.util.LocalCacheUtil;
-import com.cn.xmf.util.StringUtil;
-import com.cn.xmf.job.admin.sys.DingTalkService;
+import com.cn.xmf.util.*;
 import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,32 +15,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * @author rufei.cn
  * <p>公共处理方法模块 $DESCRIPTION</p>
  */
 @Service
 @SuppressWarnings("all")
-public class SysCommonService {
+public class SysCommonService implements SysCommon {
 
+    private static ThreadPoolExecutor cachedThreadPool = ThreadPoolUtil.getCommonThreadPool();//获取公共线程池
     private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
+
     @Autowired
     private DingTalkService dingTalkService;
     @Autowired
     private RedisService redisService;
     @Autowired
+    private Environment environment;
+    @Autowired
     private DictService dictService;
     @Autowired
-    private Environment environment;
-
-    /**
-     * 获取当前运行的系统名称
-     *
-     * @return
-     */
-    public String getSysName() {
-        return environment.getProperty("spring.application.name");
-    }
+    private KafKaProducerService kafKaProducerService;
 
     /**
      * setDingMessage(组织钉钉消息)
@@ -50,20 +46,88 @@ public class SysCommonService {
      * @param parms
      * @return
      */
-    public void sendDingMessage(String method, String parms, String retData, String msg, Class t) {
+    @Override
+    public void sendDingMessage(String method, Object parms, Object retData, Object msg, Class t) {
         try {
-            DingMessage dingMessage = new DingMessage();
-            dingMessage.setDingMessageType(DingMessageType.MARKDWON);
-            dingMessage.setSysName(getSysName());
-            dingMessage.setModuleName(t.getPackage().toString());
-            dingMessage.setMethodName(method);
-            dingMessage.setParms(parms);
-            dingMessage.setExceptionMessage(msg);
-            dingMessage.setRetData(retData);
-            dingTalkService.sendMessageToDingTalk(dingMessage);
+            if (msg == null) {
+                return;
+            }
+            String currentThreadClass = t.getSimpleName();
+            String subSysName = StringUtil.getSubSysName();
+            DingMessage dingMessage = MessageUtil.getDingTalkMessage(parms, retData, msg, subSysName, currentThreadClass, method);
+            if (dingMessage == null) {
+                return;
+            }
+            String classMethod = this.getClass().getName() + ".sendDingMessage()";
+            ThreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
+            cachedThreadPool.execute(() -> {
+                dingTalkService.sendMessageToDingTalk(dingMessage);
+            });
         } catch (Exception e) {
-
+            logger.error("setDingMessage(发送钉钉消息) 异常={}", StringUtil.getExceptionMsg(e));
         }
+    }
+
+    /**
+     * sendKafka（发送数据到kafka）
+     *
+     * @param topic
+     * @param key
+     * @param value
+     * @return
+     */
+    @Override
+    public boolean sendKafka(String topic, String key, Object value) {
+        boolean result = false;
+        if (StringUtil.isBlank(topic)) {
+            logger.info("topic不能为空");
+        }
+        if (value == null) {
+            logger.info("value不能为空");
+        }
+        if (kafKaProducerService == null) {
+            return result;
+        }
+        JSONObject sendJson = new JSONObject();
+        sendJson.put("topic", topic);
+        sendJson.put("key", key);
+        sendJson.put("value", value);
+        try {
+            result = kafKaProducerService.sendKafka(sendJson);
+        } catch (Exception e) {
+            logger.error("sendKafka（发送数据到kafka）异常={}:", StringUtil.getExceptionMsg(e));
+        }
+        return result;
+    }
+
+
+    /**
+     * getDictValue(获取字典数据)
+     *
+     * @param dictType
+     * @param dictKey
+     * @return
+     */
+    @Override
+    public String getDictValue(String dictType, String dictKey) {
+        String dictValue = null;
+        String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + dictType + dictKey;
+        try {
+            dictValue = LocalCacheUtil.getCache(key);
+            if (StringUtil.isNotBlank(dictValue)) {
+                dictValue = dictValue.replace("@0", "");
+                return dictValue;
+            }
+            dictValue = dictService.getDictValue(dictType, dictKey);
+            if (StringUtil.isBlank(dictValue)) {
+                LocalCacheUtil.saveCache(key, "@0", 60);
+            } else {
+                LocalCacheUtil.saveCache(key, dictValue, 60);
+            }
+        } catch (Exception e) {
+            logger.error("getDictValue(获取字典数据) 异常={}", StringUtil.getExceptionMsg(e));
+        }
+        return dictValue;
     }
 
     /**
@@ -79,8 +143,7 @@ public class SysCommonService {
             }
             redisService.save(key, value, seconds);
         } catch (Exception e) {
-            logger.error("save_error:" + StringUtil.getExceptionMsg(e));
-
+            logger.error("save(保持缓存) 异常={}", StringUtil.getExceptionMsg(e));
         }
     }
 
@@ -98,8 +161,7 @@ public class SysCommonService {
         try {
             redisService.getCache(key);
         } catch (Exception e) {
-            logger.error("getCache_error:" + StringUtil.getExceptionMsg(e));
-
+            logger.error("getCache(获取缓存) 异常={}", StringUtil.getExceptionMsg(e));
         }
         return cache;
     }
@@ -118,55 +180,14 @@ public class SysCommonService {
             }
             result = redisService.delete(key);
         } catch (Exception e) {
-            logger.error("delete_error:" + StringUtil.getExceptionMsg(e));
-
+            logger.error("delete(删除缓存) 异常={}", StringUtil.getExceptionMsg(e));
         }
         return result;
     }
 
-    /**
-     * putToQueue(入队列)
-     *
-     * @param key
-     * @return
-     */
-    public void putToQueue(String key, String value) {
-        try {
-            if (StringUtil.isBlank(key)) {
-                return;
-            }
-            if (StringUtil.isBlank(value)) {
-                return;
-            }
-            redisService.putToQueue(key, value);
-        } catch (Exception e) {
-            logger.error("putToQueue_error:" + StringUtil.getExceptionMsg(e));
-
-        }
-    }
 
     /**
-     * getFromQueue(获取队列)
-     *
-     * @param key
-     * @return
-     */
-    public String getFromQueue(String key) {
-        String value = null;
-        try {
-            if (StringUtil.isBlank(key)) {
-                return value;
-            }
-            value = redisService.getFromQueue(key);
-        } catch (Exception e) {
-            logger.error("putToQueue_error:" + StringUtil.getExceptionMsg(e));
-
-        }
-        return value;
-    }
-
-    /**
-     * getLock（获取分布式锁）
+     * getLock（获取分布式锁-暂不可用）
      *
      * @param key
      * @return
@@ -180,31 +201,7 @@ public class SysCommonService {
         try {
             //lock = redisService.getLock(key);
         } catch (Exception e) {
-            logger.error("getLock（获取分布式锁）:" + StringUtil.getExceptionMsg(e));
-
-        }
-        return lock;
-    }
-
-    /**
-     * getQueueLength（获取队列长度)key 是消息频道
-     *
-     * @param key
-     * @return
-     */
-    public long getQueueLength(String key) {
-        long lock = -1;
-        if (StringUtil.isBlank(key)) {
-            return lock;
-        }
-        try {
-            Long aLong = redisService.getQueueLength(key);
-            if (aLong != null) {
-                lock = aLong;
-            }
-        } catch (Exception e) {
-            logger.error("getQueueLength（获取队列长度):" + StringUtil.getExceptionMsg(e));
-
+            logger.error("getLock（获取分布式锁） 异常={}", StringUtil.getExceptionMsg(e));
         }
         return lock;
     }
@@ -220,38 +217,8 @@ public class SysCommonService {
         try {
             result = redisService.getRedisInfo();
         } catch (Exception e) {
-            logger.error("getRedisInfo（redis 运行健康信息):" + StringUtil.getExceptionMsg(e));
-
+            logger.error("getRedisInfo（redis 运行健康信息) 异常={}",StringUtil.getExceptionMsg(e));
         }
         return result;
-    }
-
-    /**
-     * 获取字典数据
-     *
-     * @param dictType
-     * @param dictKey
-     * @return
-     */
-    public String getDictValue(String dictType, String dictKey) {
-        String dictValue = null;
-        String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + dictType + dictKey;
-        try {
-            dictValue = LocalCacheUtil.getCache(key);
-            if (StringUtil.isNotBlank(dictValue)) {
-                dictValue = dictValue.replace("@0", "");
-                return dictValue;
-            }
-            dictValue = dictService.getDictValue(dictType, dictKey);
-            if (StringUtil.isBlank(dictValue)) {
-                LocalCacheUtil.saveCache(key, "@0");
-            } else {
-                LocalCacheUtil.saveCache(key, dictValue);
-            }
-        } catch (Exception e) {
-            logger.error(StringUtil.getExceptionMsg(e));
-
-        }
-        return dictValue;
     }
 }

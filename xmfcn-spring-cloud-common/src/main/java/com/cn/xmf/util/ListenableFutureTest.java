@@ -12,8 +12,8 @@ import java.util.concurrent.*;
  */
 public class ListenableFutureTest {
 
-    private static Logger logger = LoggerFactory.getLogger(TreadPoolUtil.class);
-    private static ThreadPoolExecutor cachedThreadPool = TreadPoolUtil.getCommonThreadPool();//获取公共线程池
+    private static Logger logger = LoggerFactory.getLogger(ThreadPoolUtil.class);
+    private static ThreadPoolExecutor cachedThreadPool = ThreadPoolUtil.getCommonThreadPool();//获取公共线程池
     private static ListeningExecutorService pool = MoreExecutors.listeningDecorator(cachedThreadPool);
 
     public static int call(int mun) {

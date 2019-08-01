@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
  * 线程池工具类
  */
 @SuppressWarnings("all")
-public class TreadPoolUtil {
+public class ThreadPoolUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(TreadPoolUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(ThreadPoolUtil.class);
     private static int maxQueueSize = 500;//默认最大队列数量
     private static int corePoolSize = 200;//默认核心线程数
     private static int maxPoolSize = 800;//最大线程数，超过此值改为默认值
