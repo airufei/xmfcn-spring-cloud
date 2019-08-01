@@ -5,10 +5,8 @@ import com.cn.xmf.job.common.SysCommonService;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.StringUtil;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.serialization.Deserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -21,17 +19,22 @@ import java.util.Properties;
  * @version 2019-05-19
  */
 @Component
+@SuppressWarnings("all")
 public class KafkaConfig {
-
-    @Autowired
-    private Environment environment;
-
-    @Autowired
-    private SysCommonService sysCommonService;
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaConfig.class);
 
-    public Properties initConsumerProp(String topic) throws ClassNotFoundException {
+    private final Environment environment;
+    private final SysCommonService sysCommonService;
+
+
+    public KafkaConfig(Environment environment, SysCommonService sysCommonService) {
+        this.environment = environment;
+        this.sysCommonService = sysCommonService;
+    }
+
+
+    Properties initConsumerProp(String topic) {
         Properties consumerProps = new Properties();
         String kafkaServer = null;// kafka连接地址
         String consumerGroupId = null;//消费者组

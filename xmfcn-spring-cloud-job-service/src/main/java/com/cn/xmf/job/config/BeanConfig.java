@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,7 @@ public class BeanConfig {
         //4.在convert中添加配置信息.
         fastJsonHttpMessageConverter.setSupportedMediaTypes(fastMediaTypes);
         fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
-        return new HttpMessageConverters((HttpMessageConverter<?>) fastJsonHttpMessageConverter);
+        return new HttpMessageConverters(fastJsonHttpMessageConverter);
 
     }
 

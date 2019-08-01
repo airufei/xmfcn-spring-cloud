@@ -10,7 +10,6 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.post.SendErrorFilter;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
 /**
- * 全局异常处理
+ * 异常处理
  *
  * @author rufei.cn
  * @create 2017-11-24 10:54
@@ -30,10 +29,13 @@ public class ErrorExtFilter extends SendErrorFilter {
     private Logger logger = LoggerFactory.getLogger(ErrorExtFilter.class);
 
     @Value("${zuul.routes.user-api.serviceId}")
-    String serviceName;
+    private String serviceName;
 
-    @Autowired
-    private DingTalkService dingTalkService;
+    private final DingTalkService dingTalkService;
+
+    public ErrorExtFilter(DingTalkService dingTalkService) {
+        this.dingTalkService = dingTalkService;
+    }
 
     @Override
     public String filterType() {

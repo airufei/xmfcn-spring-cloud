@@ -28,7 +28,12 @@ import java.util.Map;
 @SuppressWarnings("all")
 @ControllerAdvice
 public class UnifiedException {
-    private static Logger logger = LoggerFactory.getLogger(UnifiedException.class);
+    private static Logger logger;
+
+    static {
+        logger = LoggerFactory.getLogger(UnifiedException.class);
+    }
+
     @Value("${spring.application.name}")
     private String serviceName;
 

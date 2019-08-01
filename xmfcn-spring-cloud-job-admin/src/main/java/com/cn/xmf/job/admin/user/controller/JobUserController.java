@@ -30,6 +30,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/user")
+@SuppressWarnings("all")
 public class JobUserController {
 
     private static Logger logger = LoggerFactory.getLogger(JobUserController.class);
@@ -60,9 +61,9 @@ public class JobUserController {
         try {
             String startStr = request.getParameter("start");
             String length = request.getParameter("length");
-            String username = request.getParameter("username");;
-            String email = request.getParameter("email");;
-            String phone = request.getParameter("phone");;
+            String username = request.getParameter("username");
+            String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
             int pageSize = 10;
             int pageNo = 1;
             int start = 0;
@@ -110,7 +111,7 @@ public class JobUserController {
     @RequestMapping("delete")
     @ResponseBody
     public ReturnT<String> delete(HttpServletRequest request, String parms) {
-        ReturnT<String> retData = new ReturnT<>();
+        ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE,ResultCodeMessage.FAILURE_MESSAGE);
         try {
             logger.info("delete:(逻辑删除调度系统用户数据接口) 开始  parms={}", parms);
             if (StringUtil.isBlank(parms)) {
