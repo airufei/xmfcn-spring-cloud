@@ -17,7 +17,7 @@
     <description>xmfcn-spring-cloud-sys-base-service</description>
 
     <properties>
-        <druid.version>1.0.29</druid.version>
+        <druid.version>1.1.18</druid.version>
         <mybatis.springboot.version>1.1.1</mybatis.springboot.version>
         <commons.pool.version>2.5.0</commons.pool.version>
         <xmfcn.common.version>1.1.1</xmfcn.common.version>
