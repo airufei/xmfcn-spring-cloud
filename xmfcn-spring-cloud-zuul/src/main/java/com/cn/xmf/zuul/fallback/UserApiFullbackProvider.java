@@ -3,7 +3,7 @@ package com.cn.xmf.zuul.fallback;
 import com.alibaba.fastjson.JSON;
 import com.cn.xmf.enums.DingMessageType;
 import com.cn.xmf.model.ding.DingMessage;
-import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.zuul.sys.DingTalkService;
 import org.slf4j.Logger;
@@ -73,7 +73,7 @@ public class UserApiFullbackProvider implements FallbackProvider {
             public InputStream getBody() throws IOException {
                 logger.info(serviceName + "服务触发熔断");
                 RetData retData = new RetData();
-                retData.setCode(RetCodeAndMessage.FAILURE);
+                retData.setCode(ResultCodeMessage.FAILURE);
                 retData.setMessage("服务繁忙，请稍后再试！");
                 retData.setData(null);
                 SendMarkdownMessage();

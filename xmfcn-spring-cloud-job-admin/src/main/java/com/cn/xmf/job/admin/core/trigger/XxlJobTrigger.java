@@ -1,5 +1,6 @@
 package com.cn.xmf.job.admin.core.trigger;
 
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.core.thread.JobFailMonitorHelper;
 import com.cn.xmf.job.admin.core.model.XxlJobGroup;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
@@ -128,12 +129,12 @@ public class XxlJobTrigger {
                 }
             } else {
                 routeAddressResult = executorRouteStrategyEnum.getRouter().route(triggerParam, group.getRegistryList());
-                if (routeAddressResult.getCode() == ReturnT.SUCCESS_CODE) {
+                if (routeAddressResult.getCode() == ResultCodeMessage.SUCCESS) {
                     address = routeAddressResult.getContent();
                 }
             }
         } else {
-            routeAddressResult = new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("jobconf_trigger_address_empty"));
+            routeAddressResult = new ReturnT<String>(ResultCodeMessage.FAILURE, I18nUtil.getString("jobconf_trigger_address_empty"));
         }
 
         // 4、trigger remote executor
@@ -141,7 +142,7 @@ public class XxlJobTrigger {
         if (address != null) {
             triggerResult = runExecutor(triggerParam, address);
         } else {
-            triggerResult = new ReturnT<String>(ReturnT.FAIL_CODE, null);
+            triggerResult = new ReturnT<String>(ResultCodeMessage.FAILURE, null);
         }
 
         // 5、collection trigger info
@@ -191,7 +192,7 @@ public class XxlJobTrigger {
             runResult = executorBiz.run(triggerParam);
         } catch (Exception e) {
             logger.error(">>>>>>>>>>> xxl-job trigger error, please check if the executor[{}] is running.", address, e);
-            runResult = new ReturnT<String>(ReturnT.FAIL_CODE, ""+e );
+            runResult = new ReturnT<String>(ResultCodeMessage.FAILURE, ""+e );
         }
 
         StringBuffer runResultSB = new StringBuffer(I18nUtil.getString("jobconf_trigger_run") + "：");

@@ -1,5 +1,6 @@
 package com.cn.xmf.job.admin.core.route.strategy;
 
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.core.route.ExecutorRouter;
 import com.cn.xmf.job.admin.core.schedule.XxlJobDynamicScheduler;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
@@ -25,7 +26,7 @@ public class ExecutorRouteBusyover extends ExecutorRouter {
                 idleBeatResult = executorBiz.idleBeat(triggerParam.getJobId());
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
-                idleBeatResult = new ReturnT<String>(ReturnT.FAIL_CODE, ""+e );
+                idleBeatResult = new ReturnT<String>(ResultCodeMessage.FAILURE, ""+e );
             }
             idleBeatResultSB.append( (idleBeatResultSB.length()>0)?"<br><br>":"")
                     .append(I18nUtil.getString("jobconf_idleBeat") + "：")
@@ -34,14 +35,14 @@ public class ExecutorRouteBusyover extends ExecutorRouter {
                     .append("<br>msg：").append(idleBeatResult.getMsg());
 
             // beat success
-            if (idleBeatResult.getCode() == ReturnT.SUCCESS_CODE) {
+            if (idleBeatResult.getCode() == ResultCodeMessage.SUCCESS) {
                 idleBeatResult.setMsg(idleBeatResultSB.toString());
                 idleBeatResult.setContent(address);
                 return idleBeatResult;
             }
         }
 
-        return new ReturnT<String>(ReturnT.FAIL_CODE, idleBeatResultSB.toString());
+        return new ReturnT<String>(ResultCodeMessage.FAILURE, idleBeatResultSB.toString());
     }
 
 }

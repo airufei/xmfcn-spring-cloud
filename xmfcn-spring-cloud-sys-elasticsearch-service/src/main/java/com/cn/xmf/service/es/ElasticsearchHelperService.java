@@ -2,14 +2,13 @@ package com.cn.xmf.service.es;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.model.es.EsModel;
 import com.cn.xmf.model.es.EsPage;
 import com.cn.xmf.model.es.EsPartion;
 import com.cn.xmf.service.common.SysCommonService;
 import com.cn.xmf.util.ConstantUtil;
-import com.cn.xmf.util.DateUtil;
 import com.cn.xmf.util.StringUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -65,7 +64,7 @@ public class ElasticsearchHelperService {
     public JestResult createMapping(EsModel es) {
         JestResult result = null;
         RetData aReturn = validateParms(es);
-        if (aReturn.getCode() == RetCodeAndMessage.FAILURE) {
+        if (aReturn.getCode() == ResultCodeMessage.FAILURE) {
             return result;
         }
         String message = es.getMessage();
@@ -160,7 +159,7 @@ public class ElasticsearchHelperService {
     public JestResult deleteIndex(EsModel es) {
         JestResult result = null;
         RetData aReturn = validateParms(es);
-        if (aReturn.getCode() == RetCodeAndMessage.FAILURE) {
+        if (aReturn.getCode() == ResultCodeMessage.FAILURE) {
             return result;
         }
         String message = es.getMessage();
@@ -193,7 +192,7 @@ public class ElasticsearchHelperService {
     public JestResult createIndex(EsModel es) {
         JestResult result = null;
         RetData aReturn = validateParms(es);
-        if (aReturn.getCode() == RetCodeAndMessage.FAILURE) {
+        if (aReturn.getCode() == ResultCodeMessage.FAILURE) {
             return result;
         }
         String message = es.getMessage();
@@ -247,7 +246,7 @@ public class ElasticsearchHelperService {
             dataReturn.setMessage("type 不能为空");
             return dataReturn;
         }
-        dataReturn.setCode(RetCodeAndMessage.SUCCESS);
+        dataReturn.setCode(ResultCodeMessage.SUCCESS);
         return dataReturn;
     }
 

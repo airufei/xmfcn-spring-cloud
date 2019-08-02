@@ -2,7 +2,6 @@ package com.cn.xmf.job.common;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.Interface.SysCommon;
-import com.cn.xmf.enums.DingMessageType;
 import com.cn.xmf.job.sys.DictService;
 import com.cn.xmf.job.sys.DingTalkService;
 import com.cn.xmf.job.sys.KafKaProducerService;
@@ -207,4 +206,19 @@ public class SysCommonService implements SysCommon {
         return lock;
     }
 
+    /**
+     * getRedisInfo（redis 运行健康信息)
+     *
+     * @param key
+     * @return
+     */
+    public JSONObject getRedisInfo() {
+        JSONObject result = null;
+        try {
+            result = redisService.getRedisInfo();
+        } catch (Exception e) {
+            logger.error("getRedisInfo（redis 运行健康信息) 异常={}",StringUtil.getExceptionMsg(e));
+        }
+        return result;
+    }
 }

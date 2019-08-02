@@ -3,6 +3,7 @@ package com.cn.xmf.job.admin.menu.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.menu.model.JobMenu;
 import com.cn.xmf.job.admin.menu.model.MenuNode;
@@ -172,31 +173,31 @@ public class JobMenuController {
     @RequestMapping("delete")
     @ResponseBody
     public ReturnT<String> delete(HttpServletRequest request) {
-        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "删除失败");
+        ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "删除失败");
         String ids = null;
         try {
             ids = request.getParameter("id");
             int id = StringUtil.stringToInt(ids);
             logger.info("delete 开始============>" + id);
             if (id <= 0) {
-                returnT.setMsg("参数错误");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             long newId = id;
             boolean ret = jobMenuService.delete(newId);
             if (ret) {
-                returnT.setCode(ReturnT.SUCCESS_CODE);
-                returnT.setMsg("成功");
+                retData.setCode(ResultCodeMessage.SUCCESS);
+                retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
             }
         } catch (Exception e) {
 
-            returnT = returnT.FAIL;
+            retData = retData.FAIL;
             String msg = "delete:(逻辑删除job-菜单数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("delete", ids, null, msg, this.getClass());
         }
-        logger.info("delete 结束============>" + JSON.toJSONString(returnT));
-        return returnT;
+        logger.info("delete 结束============>" + JSON.toJSONString(retData));
+        return retData;
     }
 
     /**
@@ -210,7 +211,7 @@ public class JobMenuController {
     @RequestMapping(value = "save")
     @ResponseBody
     public ReturnT<String> save(JobMenu jobMenu, HttpServletRequest request) {
-        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
+        ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "保存数据失败");
         String parms = null;
         try {
             Map<String, String[]> map = request.getParameterMap();
@@ -218,18 +219,18 @@ public class JobMenuController {
             parms = JSON.toJSONString(jobMenu);
             logger.info("save:(保存job-菜单数据接口) 开始  parms={}", parms);
             if (jobMenu == null) {
-                returnT.setMsg("参数为空");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             if (jobMenu == null) {
-                returnT.setMsg("参数错误");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             String url = jobMenu.getUrl();
             Integer level = jobMenu.getLevel();
             if (level == null) {
-                returnT.setMsg("菜单级别level不能为空");
-                return returnT;
+                retData.setMsg("菜单级别level不能为空");
+                return retData;
             }
             if (level == 1) {
                 jobMenu.setUrl(null);
@@ -238,20 +239,20 @@ public class JobMenuController {
             jobMenu.setUpdateTime(new Date());
             JobMenu ret = jobMenuService.save(jobMenu);
             if (ret == null) {
-                returnT.setMsg("保存数据失败");
-                return returnT;
+                retData.setMsg("保存数据失败");
+                return retData;
             }
-            returnT.setCode(ReturnT.SUCCESS_CODE);
-            returnT.setMsg("成功");
+            retData.setCode(ResultCodeMessage.SUCCESS);
+            retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
         } catch (Exception e) {
 
             String msg = "save:(保存job-菜单数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(returnT), msg, this.getClass());
-            returnT.setMsg("服务器繁忙，请稍后再试");
+            sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(retData), msg, this.getClass());
+            retData.setMsg(ResultCodeMessage.EXCEPTION_MESSAGE);
         }
-        logger.info("save 结束============>" + JSON.toJSONString(returnT));
-        return returnT;
+        logger.info("save 结束============>" + JSON.toJSONString(retData));
+        return retData;
     }
 
 }

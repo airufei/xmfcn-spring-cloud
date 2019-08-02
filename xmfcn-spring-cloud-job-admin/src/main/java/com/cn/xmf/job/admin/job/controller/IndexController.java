@@ -1,7 +1,7 @@
 package com.cn.xmf.job.admin.job.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.admin.common.PermissionInterceptor;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
@@ -54,9 +54,9 @@ public class IndexController {
     @RequestMapping("/chartInfo")
     @ResponseBody
     public ReturnT<JSONObject> chartInfo(Date startDate, Date endDate) {
-        ReturnT<JSONObject> returnT = xxlJobService.chartInfo(startDate, endDate);
-        logger.info("returnT = " + returnT);
-        return returnT;
+        ReturnT<JSONObject> retData = xxlJobService.chartInfo(startDate, endDate);
+        logger.info("retData = " + retData);
+        return retData;
     }
 
     @RequestMapping("/toLogin")
@@ -87,7 +87,7 @@ public class IndexController {
         int code = retData.getCode();
         String message = retData.getMessage();
         Object data = retData.getData();
-        if (code == RetCodeAndMessage.FAILURE || code == RetCodeAndMessage.PARMS_ERROR) {
+        if (code == ResultCodeMessage.FAILURE || code == ResultCodeMessage.PARMS_ERROR) {
             return new ReturnT<String>(500, message);
         }
         JobUser user = (JobUser) data;

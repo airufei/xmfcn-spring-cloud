@@ -3,6 +3,7 @@ package com.cn.xmf.job.admin.code.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.code.model.CodeTable;
 import com.cn.xmf.job.admin.code.service.CodeTableService;
 import com.cn.xmf.job.admin.common.SysCommonService;
@@ -106,31 +107,31 @@ public class CodeTableController {
     @RequestMapping("delete")
     @ResponseBody
     public ReturnT<String> delete(HttpServletRequest request) {
-        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "删除失败");
+        ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "删除失败");
         String ids = null;
         try {
             ids = request.getParameter("id");
             int id = StringUtil.stringToInt(ids);
             logger.info("delete 开始============>" + id);
             if (id <= 0) {
-                returnT.setMsg("参数错误");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             long newId = id;
             boolean ret = codeTableService.delete(newId);
             if (ret) {
-                returnT.setCode(ReturnT.SUCCESS_CODE);
-                returnT.setMsg("成功");
+                retData.setCode(ResultCodeMessage.SUCCESS);
+                retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
             }
         } catch (Exception e) {
 
-            returnT = returnT.FAIL;
+            retData = retData.FAIL;
             String msg = "delete:(逻辑删除数据表信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             sysCommonService.sendDingMessage("delete", ids, null, msg, this.getClass());
         }
-        logger.info("delete 结束============>" + JSON.toJSONString(returnT));
-        return returnT;
+        logger.info("delete 结束============>" + JSON.toJSONString(retData));
+        return retData;
     }
 
     /**
@@ -167,35 +168,34 @@ public class CodeTableController {
     @RequestMapping(value = "save")
     @ResponseBody
     public ReturnT<String> save(CodeTable codeTable) {
-        ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
+        ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "保存数据失败");
         String parms = null;
         try {
             parms = JSON.toJSONString(codeTable);
             logger.info("save:(保存数据表信息数据接口) 开始  parms={}", parms);
             if (codeTable == null) {
-                returnT.setMsg("参数为空");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             if (codeTable == null) {
-                returnT.setMsg("参数错误");
-                return returnT;
+                retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+                return retData;
             }
             CodeTable ret = codeTableService.save(codeTable);
             if (ret == null) {
-                returnT.setMsg("保存数据失败");
-                return returnT;
+                retData.setMsg("保存数据失败");
+                return retData;
             }
-            returnT.setCode(ReturnT.SUCCESS_CODE);
-            returnT.setMsg("成功");
+            retData.setCode(ResultCodeMessage.SUCCESS);
+            retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
         } catch (Exception e) {
-
             String msg = "save:(保存数据表信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(returnT), msg, this.getClass());
-            returnT.setMsg("服务器繁忙，请稍后再试");
+            sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(retData), msg, this.getClass());
+            retData.setMsg(ResultCodeMessage.EXCEPTION_MESSAGE);
         }
-        logger.info("save 结束============>" + JSON.toJSONString(returnT));
-        return returnT;
+        logger.info("save 结束============>" + JSON.toJSONString(retData));
+        return retData;
     }
 
 }

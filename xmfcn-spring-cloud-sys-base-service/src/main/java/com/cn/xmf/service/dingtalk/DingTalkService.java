@@ -1,7 +1,7 @@
 package com.cn.xmf.service.dingtalk;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.enums.DingMessageType;
 import com.cn.xmf.model.ding.*;
@@ -71,8 +71,8 @@ public class DingTalkService {
      */
     public RetData sendMessageToDingTalk(DingMessage dingMessage) {
         RetData result = new RetData();
-        result.setCode(RetCodeAndMessage.FAILURE);
-        result.setMessage(RetCodeAndMessage.FAILURE_MESSAGE);
+        result.setCode(ResultCodeMessage.FAILURE);
+        result.setMessage(ResultCodeMessage.FAILURE_MESSAGE);
         if (dingMessage == null) {
             result.setMessage(RetCodeAndMessage.PARMS_ERROR_MESSAGE);
             return result;

@@ -1,9 +1,7 @@
 package com.cn.xmf.model.user;
 
 import com.cn.xmf.base.model.BaseEntitys;
-
-import java.util.Date;
-import java.math.BigDecimal;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * 用户信息Entity
@@ -26,9 +24,7 @@ public class User extends BaseEntitys {
 
     private String address;        // address
 
-    private String qq;        // qq
-
-    private String wechart;        // wechart
+    private String weChart;        // wechart
 
     private Integer type;        // 用户类型: 0是互联网用户，1是管理员用户
 
@@ -88,22 +84,6 @@ public class User extends BaseEntitys {
         this.address = address;
     }
 
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
-    }
-
-    public String getWechart() {
-        return wechart;
-    }
-
-    public void setWechart(String wechart) {
-        this.wechart = wechart;
-    }
-
     public Integer getType() {
         return type;
     }
@@ -118,5 +98,28 @@ public class User extends BaseEntitys {
 
     public void setRoleid(Integer roleid) {
         this.roleid = roleid;
+    }
+
+    public String getWeChart() {
+        return weChart;
+    }
+
+    public void setWeChart(String weChart) {
+        this.weChart = weChart;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("username", username)
+                .append("password", password)
+                .append("age", age)
+                .append("email", email)
+                .append("phone", phone)
+                .append("address", address)
+                .append("weChart", weChart)
+                .append("type", type)
+                .append("roleid", roleid)
+                .toString();
     }
 }

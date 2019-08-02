@@ -1,16 +1,14 @@
 package com.cn.xmf.job.admin.job.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.core.model.XxlJobGroup;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
 import com.cn.xmf.job.admin.core.route.ExecutorRouteStrategyEnum;
 import com.cn.xmf.job.admin.core.thread.JobTriggerPoolHelper;
 import com.cn.xmf.job.admin.core.trigger.TriggerTypeEnum;
-import com.cn.xmf.job.admin.core.util.I18nUtil;
 import com.cn.xmf.job.admin.job.dao.XxlJobGroupDao;
 import com.cn.xmf.job.admin.job.service.XxlJobService;
-import com.cn.xmf.job.admin.menu.model.JobMenu;
-import com.cn.xmf.job.admin.menu.service.JobMenuService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.job.core.enums.ExecutorBlockStrategyEnum;
 import com.cn.xmf.job.core.glue.GlueTypeEnum;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -77,32 +74,30 @@ public class JobInfoController {
 	@RequestMapping(value = "save")
 	@ResponseBody
 	public ReturnT<String> save(XxlJobInfo jobInfo) {
-		ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
+		ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "保存数据失败");
 		String parms = null;
 		try {
 			parms = JSON.toJSONString(jobInfo);
 			logger.info("save:(保存job-任务) 开始  parms={}", parms);
 			if (jobInfo == null) {
-				returnT.setMsg("参数为空");
-				return returnT;
+				retData.setMsg(ResultCodeMessage.PARMS_ERROR_MESSAGE);
+				return retData;
 			}
 			Integer id = jobInfo.getId();
 			if (id == null||id<=0) {
-				returnT= xxlJobService.add(jobInfo);
+				retData= xxlJobService.add(jobInfo);
 			}else {
-					returnT= xxlJobService.update(jobInfo);
+					retData= xxlJobService.update(jobInfo);
 			}
-			returnT.setCode(ReturnT.SUCCESS_CODE);
-			returnT.setMsg("成功");
+			retData.setCode(ResultCodeMessage.SUCCESS);
+			retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
 		} catch (Exception e) {
-
 			String msg = "save:(保存job-任务) error===>" + StringUtil.getExceptionMsg(e);
 			logger.error(msg);
-			//sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(returnT), msg, this.getClass());
-			returnT.setMsg("服务器繁忙，请稍后再试");
+			retData.setMsg(ResultCodeMessage.EXCEPTION_MESSAGE);
 		}
-		logger.info("save 结束============>" + JSON.toJSONString(returnT));
-		return returnT;
+		logger.info("save 结束============>" + JSON.toJSONString(retData));
+		return retData;
 	}
 	
 	@RequestMapping("/remove")

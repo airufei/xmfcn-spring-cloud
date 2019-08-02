@@ -1,6 +1,6 @@
 package com.cn.xmf.job.common;
 
-import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
@@ -28,7 +28,12 @@ import java.util.Map;
 @SuppressWarnings("all")
 @ControllerAdvice
 public class UnifiedException {
-    private static Logger logger = LoggerFactory.getLogger(UnifiedException.class);
+    private static Logger logger;
+
+    static {
+        logger = LoggerFactory.getLogger(UnifiedException.class);
+    }
+
     @Value("${spring.application.name}")
     private String serviceName;
 
@@ -40,8 +45,8 @@ public class UnifiedException {
     RetData handleException(Throwable e, HttpServletRequest request, HttpServletResponse response){
         RetData mobileData  = new RetData();;
         Map<String, Object> data = null;
-        String message = "服务器繁忙，请稍后再试";
-        mobileData.setCode(RetCodeAndMessage.FAILURE);
+        String message = ResultCodeMessage.EXCEPTION_MESSAGE;
+        mobileData.setCode(ResultCodeMessage.FAILURE);
         mobileData.setMessage(message);
         mobileData.setData(data);
         dingTalkMessage(request, e);

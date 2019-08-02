@@ -1,16 +1,15 @@
 package com.cn.xmf.zuul.exception;
 
+import com.cn.xmf.base.model.ResultCodeMessage;
+import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.enums.DingMessageType;
 import com.cn.xmf.model.ding.DingMessage;
-import com.cn.xmf.base.model.RetCodeAndMessage;
-import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.util.StringUtil;
 import com.cn.xmf.zuul.sys.DingTalkService;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.post.SendErrorFilter;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 
 /**
- * 全局异常处理
+ * 异常处理
  *
  * @author rufei.cn
  * @create 2017-11-24 10:54
@@ -30,10 +29,13 @@ public class ErrorExtFilter extends SendErrorFilter {
     private Logger logger = LoggerFactory.getLogger(ErrorExtFilter.class);
 
     @Value("${zuul.routes.user-api.serviceId}")
-    String serviceName;
+    private String serviceName;
 
-    @Autowired
-    private DingTalkService dingTalkService;
+    private final DingTalkService dingTalkService;
+
+    public ErrorExtFilter(DingTalkService dingTalkService) {
+        this.dingTalkService = dingTalkService;
+    }
 
     @Override
     public String filterType() {
@@ -66,8 +68,8 @@ public class ErrorExtFilter extends SendErrorFilter {
         dingTalkMessage(ctx, throwable);
         // 构建返回信息
         RetData retData = new RetData();
-        retData.setCode(RetCodeAndMessage.FAILURE);
-        retData.setMessage("服务繁忙，请稍后再试");
+        retData.setCode(ResultCodeMessage.FAILURE);
+        retData.setMessage(ResultCodeMessage.EXCEPTION_MESSAGE);
         retData.setData(new Object());
         return retData;
     }

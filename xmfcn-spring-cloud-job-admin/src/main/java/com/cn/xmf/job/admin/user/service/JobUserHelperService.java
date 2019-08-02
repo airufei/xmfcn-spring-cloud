@@ -1,7 +1,7 @@
 package com.cn.xmf.job.admin.user.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.base.model.RetCodeAndMessage;
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.admin.core.util.I18nUtil;
 import com.cn.xmf.job.admin.user.dao.JobUserDao;
@@ -128,11 +128,11 @@ public class JobUserHelperService {
             jobUser.setPassword(password);
             JobUser u = getSignleJobUser(jobUser);
             if (u != null && u.getId() > 0) {
-                retData.setCode(RetCodeAndMessage.SUCCESS);
+                retData.setCode(ResultCodeMessage.SUCCESS);
                 retData.setData(u);
-                retData.setMessage("成功");
+                retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
             } else {
-                retData.setCode(RetCodeAndMessage.FAILURE);
+                retData.setCode(ResultCodeMessage.FAILURE);
                 retData.setMessage("账户或者密码不正确");
             }
         } catch (Exception e) {

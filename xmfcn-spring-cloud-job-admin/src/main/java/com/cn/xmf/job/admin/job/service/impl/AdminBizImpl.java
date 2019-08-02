@@ -1,5 +1,6 @@
 package com.cn.xmf.job.admin.job.service.impl;
 
+import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.job.admin.core.trigger.TriggerTypeEnum;
 import com.cn.xmf.job.admin.job.dao.XxlJobRegistryDao;
 import com.cn.xmf.job.admin.core.model.XxlJobInfo;
@@ -53,10 +54,10 @@ public class AdminBizImpl implements AdminBiz {
         // valid log item
         XxlJobLog log = xxlJobLogDao.load(handleCallbackParam.getLogId());
         if (log == null) {
-            return new ReturnT<String>(ReturnT.FAIL_CODE, "log item not found.");
+            return new ReturnT<String>(ResultCodeMessage.FAILURE, "log item not found.");
         }
         if (log.getHandleCode() > 0) {
-            return new ReturnT<String>(ReturnT.FAIL_CODE, "log repeate callback.");     // avoid repeat callback, trigger child job etc
+            return new ReturnT<String>(ResultCodeMessage.FAILURE, "log repeate callback.");     // avoid repeat callback, trigger child job etc
         }
 
         // trigger success, to trigger child job
@@ -78,7 +79,7 @@ public class AdminBizImpl implements AdminBiz {
                                 (i+1),
                                 childJobIds.length,
                                 childJobIds[i],
-                                (triggerChildResult.getCode()==ReturnT.SUCCESS_CODE?I18nUtil.getString("system_success"):I18nUtil.getString("system_fail")),
+                                (triggerChildResult.getCode()==ResultCodeMessage.SUCCESS?I18nUtil.getString("system_success"):I18nUtil.getString("system_fail")),
                                 triggerChildResult.getMsg());
                     } else {
                         callbackMsg += MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg2"),
