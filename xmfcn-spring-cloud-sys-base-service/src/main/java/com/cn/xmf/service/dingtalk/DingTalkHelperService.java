@@ -55,6 +55,7 @@ public class DingTalkHelperService {
                 +"\n 入参："+parms+"\n 出参："+retData+"\n 消息内容："+exceptionMessage+"\n 时间："+time;
         return  msg;
     }
+
     public MarkdownMessage setMarkdownMessage(DingMessage dingMessage) {
         MarkdownMessage message = new MarkdownMessage();
         message.setTitle("小蜜蜂消息提醒");
