@@ -15,7 +15,7 @@ import java.util.List;
 
 
 /**
- * Service(钉钉提醒)
+ * MessageService(综合消息发送服务)
  * @author rufei.cn
  * @version 2017-12-21
  */

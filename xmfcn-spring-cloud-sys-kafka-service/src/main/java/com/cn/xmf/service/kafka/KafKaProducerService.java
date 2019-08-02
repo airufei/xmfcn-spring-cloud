@@ -2,7 +2,6 @@ package com.cn.xmf.service.kafka;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.util.StringUtil;
-import com.cn.xmf.util.ThreadPoolUtil;
 import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -13,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * kafka生产者
@@ -28,7 +25,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class KafKaProducerService {
 
     private static Logger logger = LoggerFactory.getLogger(KafKaProducerService.class);
-    private static ThreadPoolExecutor cachedThreadPool = ThreadPoolUtil.getCommonThreadPool();//获取公共线程池
+
     @Autowired
     private KafkaProducer<String, String> kafkaProducer;
 
@@ -55,19 +52,14 @@ public class KafKaProducerService {
             key = StringUtil.getUuId();
         }
         try {
-            final String fkey = key;
-            String classMethod = this.getClass().getName() + ".sendKafka()";
-            ThreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
-            cachedThreadPool.execute(() -> {
-                ProducerRecord<String, String> record = new ProducerRecord<>(topic, fkey, value);//Topic Key Value
-                kafkaProducer.send(record, new Callback() {
-                    @Override
-                    public void onCompletion(RecordMetadata metadata, Exception e) {
-                        if (e != null) {
-                            logger.info(StringUtil.getExceptionMsg(e));
-                        }
+            ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);//Topic Key Value
+            kafkaProducer.send(record, new Callback() {
+                @Override
+                public void onCompletion(RecordMetadata metadata, Exception e) {
+                    if (e != null) {
+                        logger.info(StringUtil.getExceptionMsg(e));
                     }
-                });
+                }
             });
             result = true;
         } catch (Exception e) {

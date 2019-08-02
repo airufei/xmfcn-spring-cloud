@@ -2,14 +2,13 @@ package com.cn.xmf.zuul.exception;
 
 import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
-import com.cn.xmf.enums.DingMessageType;
-import com.cn.xmf.model.ding.DingMessage;
 import com.cn.xmf.util.StringUtil;
-import com.cn.xmf.zuul.sys.DingTalkService;
+import com.cn.xmf.zuul.common.SysCommonService;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.post.SendErrorFilter;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
@@ -31,11 +30,13 @@ public class ErrorExtFilter extends SendErrorFilter {
     @Value("${zuul.routes.user-api.serviceId}")
     private String serviceName;
 
-    private final DingTalkService dingTalkService;
+    @Autowired
+    private final SysCommonService sysCommonService;
 
-    public ErrorExtFilter(DingTalkService dingTalkService) {
-        this.dingTalkService = dingTalkService;
+    public ErrorExtFilter(SysCommonService sysCommonService) {
+        this.sysCommonService = sysCommonService;
     }
+
 
     @Override
     public String filterType() {
@@ -76,6 +77,7 @@ public class ErrorExtFilter extends SendErrorFilter {
 
     /**
      * dingTalkMessage:(发送钉钉消息)
+     *
      * @author: airufei
      * @date:2018/1/3 18:08
      * @return:
@@ -91,14 +93,7 @@ public class ErrorExtFilter extends SendErrorFilter {
         }
         String url = StringUtil.getSystemUrl(request) + requestUrl;
         String stackMessage = StringUtil.getExceptionMsg(throwable);
-        DingMessage dingMessage = new DingMessage();
-        dingMessage.setDingMessageType(DingMessageType.MARKDWON);
-        dingMessage.setSysName(serviceName);
-        dingMessage.setModuleName(this.getClass().getSimpleName());
-        dingMessage.setMethodName(url);
-        dingMessage.setParms(sb.toString());
-        dingMessage.setExceptionMessage(stackMessage);
-        dingTalkService.sendMessageToDingTalk(dingMessage);
+        sysCommonService.sendDingTalkMessage(url, sb.toString(), null, stackMessage, this.getClass());
         logger.error(stackMessage);
     }
 

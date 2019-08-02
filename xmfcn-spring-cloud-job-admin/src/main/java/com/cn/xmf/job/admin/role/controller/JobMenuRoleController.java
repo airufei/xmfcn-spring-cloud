@@ -88,7 +88,7 @@ public class JobMenuRoleController {
         } catch (Exception e) {
             String msg = "getList:(获取角色菜单关系分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("getList", param.toString(), JSON.toJSONString(retJon), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("getList", param.toString(), JSON.toJSONString(retJon), msg, this.getClass());
 
         }
         logger.info("getList:(获取角色菜单关系分页查询接口) 结束");
@@ -127,7 +127,7 @@ public class JobMenuRoleController {
             StringBuilder msg = new StringBuilder();
             msg.append("delete:(逻辑删除角色菜单关系数据接口) error===>").append(StringUtil.getExceptionMsg(e));
             logger.error(msg.toString());
-            sysCommonService.sendDingMessage("delete", ids, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("delete", ids, null, msg, this.getClass());
         }
         return retData;
     }
@@ -167,7 +167,7 @@ public class JobMenuRoleController {
 
             String msg = "save:(保存角色菜单关系数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(retData), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("save", parms, JSON.toJSONString(retData), msg, this.getClass());
             retData.setMsg(ResultCodeMessage.EXCEPTION_MESSAGE);
         }
         logger.info("save 结束============>" + JSON.toJSONString(retData));

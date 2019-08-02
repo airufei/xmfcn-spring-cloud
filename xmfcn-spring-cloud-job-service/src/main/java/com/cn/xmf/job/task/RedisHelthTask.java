@@ -49,7 +49,7 @@ public class RedisHelthTask extends IJobHandler {
                 jsonObject = redisInfo.getJSONObject("info");
             }
             if (jsonObject != null) {
-                sysCommonService.sendDingMessage("execute()", param, null, jsonObject.toString(), this.getClass());
+                sysCommonService.sendDingTalkMessage("execute()", param, null, jsonObject.toString(), this.getClass());
                 retData.setCode(ResultCodeMessage.SUCCESS);
                 retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
                 XxlJobLogger.log("获取redis的运行信息任务", ResultCodeMessage.SUCCESS_MESSAGE);

@@ -2,19 +2,19 @@ package com.cn.xmf.service.common;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.Interface.SysCommon;
-import com.cn.xmf.model.ding.DingMessage;
+import com.cn.xmf.enums.MessageType;
+import com.cn.xmf.model.msg.Message;
 import com.cn.xmf.service.kafka.KafKaProducerService;
 import com.cn.xmf.service.sys.DictService;
-import com.cn.xmf.service.sys.DingTalkService;
-import com.cn.xmf.service.sys.RedisService;
+import com.cn.xmf.service.sys.MessageService;
 import com.cn.xmf.util.*;
-import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -29,10 +29,7 @@ public class SysCommonService implements SysCommon {
     private static ThreadPoolExecutor cachedThreadPool = ThreadPoolUtil.getCommonThreadPool();//获取公共线程池
     private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
 
-    @Autowired
-    private DingTalkService dingTalkService;
-    @Autowired
-    private RedisService redisService;
+
     @Autowired
     private Environment environment;
     @Autowired
@@ -40,34 +37,70 @@ public class SysCommonService implements SysCommon {
     @Autowired
     private KafKaProducerService kafKaProducerService;
 
+    @Autowired
+    private MessageService messageService;
+
     /**
-     * setDingMessage(组织钉钉消息)
+     * sendDingTalkMessage(综合消息发送)
      *
-     * @param method
-     * @param parms
-     * @return
+     * @param messageType 消息类型
+     * @param method      发送消息的方法
+     * @param parms       方法参数
+     * @param retData     方法返回值
+     * @param msg         消息内容
+     * @param t           类信息
      */
     @Override
-    public void sendDingMessage(String method, Object parms, Object retData, Object msg, Class t) {
+    public void sendDingTalkMessage(String method, Object parms, Object retData, Object msg, Class t) {
         try {
             if (msg == null) {
                 return;
             }
             String currentThreadClass = t.getSimpleName();
             String subSysName = StringUtil.getSubSysName();
-            DingMessage dingMessage = MessageUtil.getDingTalkMessage(parms, retData, msg, subSysName, currentThreadClass, method);
-            if (dingMessage == null) {
+            Message message = MessageUtil.getDingTalkMessage(parms, retData, msg, subSysName, currentThreadClass, method);
+            if (message == null) {
                 return;
             }
-            String classMethod = this.getClass().getName() + ".sendDingMessage()";
+            String classMethod = this.getClass().getName() + ".sendDingTalkMessage()";
             ThreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
             cachedThreadPool.execute(() -> {
-                dingTalkService.sendMessageToDingTalk(dingMessage);
+                messageService.sendMessage(message);
             });
         } catch (Exception e) {
-            logger.error("setDingMessage(发送钉钉消息) 异常={}", StringUtil.getExceptionMsg(e));
+            logger.error("sendDingTalkMessage(发送钉钉消息) 异常={}", StringUtil.getExceptionMsg(e));
         }
     }
+
+    /**
+     * sendMessage（综合消息发送）
+     *
+     * @param messageType 消息类型
+     * @param title       标题
+     * @param content     内容
+     * @param list        收件人
+     */
+    @Override
+    public void sendMessage(MessageType messageType, String title, Object content, List<String> list) {
+        try {
+            if (content == null) {
+                return;
+            }
+            Message message = MessageUtil.getMailMessage(title, content, list);
+            if (message == null) {
+                return;
+            }
+            message.setMessageType(messageType);
+            String classMethod = this.getClass().getName() + ".sendMessage()";
+            ThreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
+            cachedThreadPool.execute(() -> {
+                messageService.sendMessage(message);
+            });
+        } catch (Exception e) {
+            logger.error("sendMessage（综合消息发送） 异常={}", StringUtil.getExceptionMsg(e));
+        }
+    }
+
 
     /**
      * sendKafka（发送数据到kafka）
@@ -129,81 +162,5 @@ public class SysCommonService implements SysCommon {
             logger.error("getDictValue(获取字典数据) 异常={}", StringUtil.getExceptionMsg(e));
         }
         return dictValue;
-    }
-
-    /**
-     * save(保持缓存)
-     *
-     * @param key
-     * @return
-     */
-    public void save(String key, String value, int seconds) {
-        try {
-            if (StringUtil.isBlank(key)) {
-                return;
-            }
-            redisService.save(key, value, seconds);
-        } catch (Exception e) {
-            logger.error("save(保持缓存) 异常={}", StringUtil.getExceptionMsg(e));
-        }
-    }
-
-    /**
-     * getCache(获取缓存)
-     *
-     * @param key
-     * @return
-     */
-    public String getCache(String key) {
-        String cache = null;
-        if (StringUtil.isBlank(key)) {
-            return null;
-        }
-        try {
-            redisService.getCache(key);
-        } catch (Exception e) {
-            logger.error("getCache(获取缓存) 异常={}", StringUtil.getExceptionMsg(e));
-        }
-        return cache;
-    }
-
-    /**
-     * delete(删除缓存)
-     *
-     * @param key
-     * @return
-     */
-    public long delete(String key) {
-        long result = -1;
-        try {
-            if (StringUtil.isBlank(key)) {
-                return result;
-            }
-            result = redisService.delete(key);
-        } catch (Exception e) {
-            logger.error("delete(删除缓存) 异常={}", StringUtil.getExceptionMsg(e));
-        }
-        return result;
-    }
-
-
-    /**
-     * getLock（获取分布式锁-暂不可用）
-     *
-     * @param key
-     * @return
-     * @author airuei
-     */
-    public RLock getLock(String key) {
-        RLock lock = null;
-        if (StringUtil.isBlank(key)) {
-            return lock;
-        }
-        try {
-            //lock = redisService.getLock(key);
-        } catch (Exception e) {
-            logger.error("getLock（获取分布式锁） 异常={}", StringUtil.getExceptionMsg(e));
-        }
-        return lock;
     }
 }

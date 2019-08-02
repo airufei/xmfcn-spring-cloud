@@ -1,27 +1,30 @@
-package com.cn.xmf.service.model;
+package com.cn.xmf.service.model.dingtalk;
 
 import com.alibaba.fastjson.JSON;
 import com.cn.xmf.model.ding.MarkdownMessage;
 import com.cn.xmf.model.ding.Message;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-/**
- * Created by dustin on 2017/3/19.
- */
-public class SingleTargetActionCardMessage implements Message {
-    private String title;
 
+/**
+ * Created by dustin on 2017/3/17.
+ */
+public class ActionCardMessage implements Message {
+    public static final int MAX_ACTION_BUTTON_CNT = 5;
+    public static final int MIN_ACTION_BUTTON_CNT = 1;
+
+    private String title;
     private String bannerUrl;
     private String briefTitle;
     private String briefText;
-
-    private String singleTitle;
-    private String singleUrl;
-
     private boolean hideAvatar;
+    private ActionButtonStyle actionButtonStyle = ActionButtonStyle.VERTICAL;
+    private List<ActionCardAction> actions = new ArrayList<ActionCardAction>();
 
     public boolean isHideAvatar() {
         return hideAvatar;
@@ -37,6 +40,14 @@ public class SingleTargetActionCardMessage implements Message {
 
     public void setBriefTitle(String briefTitle) {
         this.briefTitle = briefTitle;
+    }
+
+    public ActionButtonStyle getActionButtonStyle() {
+        return actionButtonStyle;
+    }
+
+    public void setActionButtonStyle(ActionButtonStyle actionButtonStyle) {
+        this.actionButtonStyle = actionButtonStyle;
     }
 
     public String getBannerUrl() {
@@ -63,24 +74,17 @@ public class SingleTargetActionCardMessage implements Message {
         this.briefText = briefText;
     }
 
-    public String getSingleTitle() {
-        return singleTitle;
-    }
 
-    public void setSingleTitle(String singleTitle) {
-        this.singleTitle = singleTitle;
-    }
-
-    public String getSingleUrl() {
-        return singleUrl;
-    }
-
-    public void setSingleUrl(String singleUrl) {
-        this.singleUrl = singleUrl;
+    public void addAction(ActionCardAction action) {
+        if (actions.size() >= MAX_ACTION_BUTTON_CNT) {
+            throw new IllegalArgumentException("number of actions can't more than " + MAX_ACTION_BUTTON_CNT);
+        }
+        actions.add(action);
     }
 
     @Override
     public String toJsonString() {
+
         Map<String, Object> items = new HashMap<String, Object>();
         items.put("msgtype", "actionCard");
 
@@ -102,15 +106,15 @@ public class SingleTargetActionCardMessage implements Message {
         if (hideAvatar) {
             actionCardContent.put("hideAvatar", "1");
         }
-        if (StringUtils.isBlank(singleTitle)) {
-            throw new IllegalArgumentException("singleTitle should not be blank");
-        }
-        if (StringUtils.isBlank(singleUrl)) {
-            throw new IllegalArgumentException("singleUrl should not be blank");
-        }
 
-        actionCardContent.put("singleTitle", singleTitle);
-        actionCardContent.put("singleURL", singleUrl);
+        if (actions.size() < MIN_ACTION_BUTTON_CNT) {
+            throw new IllegalArgumentException("number of actions can't less than " + MIN_ACTION_BUTTON_CNT);
+        }
+        actionCardContent.put("btns", actions);
+
+        if (actions.size() == 2 && actionButtonStyle == ActionButtonStyle.HORIZONTAL) {
+            actionCardContent.put("btnOrientation", "1");
+        }
 
         items.put("actionCard", actionCardContent);
 

@@ -1,4 +1,4 @@
-package com.cn.xmf.service.model;
+package com.cn.xmf.service.model.dingtalk;
 
 /**
  * Created by dustin on 2017/3/19.

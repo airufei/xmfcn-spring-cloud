@@ -89,7 +89,7 @@ public class JobRoleController {
         } catch (Exception e) {
             String msg = "getList:(获取角色数据分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("getList", param.toString(), JSON.toJSONString(retJon), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("getList", param.toString(), JSON.toJSONString(retJon), msg, this.getClass());
 
         }
         logger.info("getList:(获取角色数据分页查询接口) 结束");
@@ -128,7 +128,7 @@ public class JobRoleController {
             retData = retData.FAIL;
             String msg = "delete:(逻辑删除角色数据数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("delete", ids, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("delete", ids, null, msg, this.getClass());
         }
         logger.info("delete 结束============>" + JSON.toJSONString(retData));
         return retData;
@@ -180,7 +180,7 @@ public class JobRoleController {
 
             String msg = "save:(保存角色数据数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("save", parms, JSON.toJSONString(retData), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("save", parms, JSON.toJSONString(retData), msg, this.getClass());
             retData.setMsg(ResultCodeMessage.EXCEPTION_MESSAGE);
         }
         logger.info("save 结束============>" + JSON.toJSONString(retData));

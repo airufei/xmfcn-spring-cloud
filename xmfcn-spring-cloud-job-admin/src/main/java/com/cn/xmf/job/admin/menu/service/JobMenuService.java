@@ -7,11 +7,9 @@ import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.menu.dao.JobMenuDao;
 import com.cn.xmf.job.admin.menu.model.JobMenu;
 import com.cn.xmf.job.admin.menu.model.MenuNode;
-import com.cn.xmf.job.admin.role.model.JobMenuRole;
 import com.cn.xmf.job.admin.role.service.JobMenuRoleService;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.StringUtil;
-import org.apache.tomcat.util.bcel.classfile.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +68,7 @@ public class JobMenuService {
             if (json != null) {
                 parms = json.toString();
             }
-            sysCommonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
-
+            sysCommonService.sendDingTalkMessage("base-service[getList]", parms, null, msg, this.getClass());
         }
         logger.info("getList(获取job-菜单带分页数据-服务) 结束 ");
         return pt;
@@ -96,7 +93,7 @@ public class JobMenuService {
         } catch (Exception e) {
             String msg = "getJobMenuList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[getJobMenuList]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[getJobMenuList]", parms, null, msg, this.getClass());
 
         }
         logger.info("getJobMenuList(获取job-菜单 不带分页数据-服务) 结束");
@@ -122,7 +119,7 @@ public class JobMenuService {
         } catch (Exception e) {
             String msg = "save (保存job-菜单 数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[save]", parms, null, msg, this.getClass());
 
         }
         logger.info("save (保存job-菜单 数据-服务) 结束");
@@ -149,8 +146,7 @@ public class JobMenuService {
         } catch (Exception e) {
             String msg = "getJobMenu(获取job-菜单单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[getJobMenu]", parms, null, msg, this.getClass());
-
+            sysCommonService.sendDingTalkMessage("base-service[getJobMenu]", parms, null, msg, this.getClass());
         }
         logger.info("getJobMenu(获取job-菜单单条数据-服务) 结束 ");
         return ret;
@@ -255,8 +251,7 @@ public class JobMenuService {
      */
     public boolean isNodeChecked(long roleId, Long menuId) {
         boolean isChecked = false;
-        if(roleId<=0)
-        {
+        if (roleId <= 0) {
             return isChecked;
         }
         List<JobMenu> roleList = getJobMenuRoles(roleId, null);
@@ -267,7 +262,10 @@ public class JobMenuService {
         for (int i = 0; i < size; i++) {
             JobMenu menuRole = roleList.get(i);
             Long roleMenuId = menuRole.getId();
-            if (roleMenuId == menuId) {
+            if (roleMenuId == null) {
+                continue;
+            }
+            if (roleMenuId.equals(menuId)) {
                 isChecked = true;
                 break;
             }

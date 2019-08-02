@@ -74,7 +74,7 @@ public class SysLogQueueTask {
         } catch (Exception e) {
             String exceptionMsg = "sysLogQueueTask" + StringUtil.getExceptionMsg(e);
             logger.error(exceptionMsg);
-            sysCommonService.sendDingMessage("sysLogQueueTask", jsonObject.toString(), null, exceptionMsg, this.getClass());
+            sysCommonService.sendDingTalkMessage("sysLogQueueTask", jsonObject.toString(), null, exceptionMsg, this.getClass());
         }
     }
 

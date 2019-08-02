@@ -60,7 +60,7 @@ public class JobMenuRoleService  {
             if (json != null) {
                 parms = json.toString();
             }
-              sysCommonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
+              sysCommonService.sendDingTalkMessage("base-service[getList]", parms, null, msg, this.getClass());
 
           }
 		  logger.info("getList(获取角色菜单关系带分页数据-服务) 结束 ");
@@ -87,7 +87,7 @@ public class JobMenuRoleService  {
 	       } catch (Exception e) {
             String msg = "getJobMenuRoleList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[getJobMenuRoleList]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[getJobMenuRoleList]", parms, null, msg, this.getClass());
 
           }
 	      logger.info("getJobMenuRoleList(获取角色菜单关系 不带分页数据-服务) 结束");
@@ -115,7 +115,7 @@ public class JobMenuRoleService  {
             String msg = "save (保存角色菜单关系 数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
             ret=null;
-            sysCommonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[save]", parms, null, msg, this.getClass());
 
           }
 	    logger.info("save (保存角色菜单关系 数据-服务) 结束");
@@ -143,7 +143,7 @@ public class JobMenuRoleService  {
 	       } catch (Exception e) {
             String msg = "getJobMenuRole(获取角色菜单关系单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[getJobMenuRole]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[getJobMenuRole]", parms, null, msg, this.getClass());
 
           }
 	       logger.info("getJobMenuRole(获取角色菜单关系单条数据-服务) 结束 ");

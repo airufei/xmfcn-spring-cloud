@@ -115,7 +115,7 @@ public class ThreadPoolUtil {
         if (!isSendMonitorThreadPoolMessage) {
             return;
         }
-        sysCommonService.sendDingMessage("getMonitorThreadPoolInfo", null, null, stringBuilder.toString(), LocalCacheUtil.class);//发送钉钉消息
+        sysCommonService.sendDingTalkMessage("getMonitorThreadPoolInfo", null, null, stringBuilder.toString(), LocalCacheUtil.class);//发送钉钉消息
     }
 
 

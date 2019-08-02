@@ -19,7 +19,6 @@
     <properties>
         <commons.pool.version>2.5.0</commons.pool.version>
         <xmfcn.common.version>1.1.1</xmfcn.common.version>
-        <log4j.version>1.2.17</log4j.version>
         <elasticsearch.version>6.8.0</elasticsearch.version>
         <elasticsearch.jest.version>5.3.3</elasticsearch.jest.version>
     </properties>
@@ -29,12 +28,6 @@
             <groupId>xmf.cn.common</groupId>
             <version>${xmfcn.common.version}</version>
             <artifactId>xmfcn-spring-cloud-common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>

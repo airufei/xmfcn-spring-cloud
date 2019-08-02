@@ -60,8 +60,7 @@ public class CodeSchemeService {
             if (json != null) {
                 parms = json.toString();
             }
-            sysCommonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
-
+            sysCommonService.sendDingTalkMessage("base-service[getList]", parms, null, msg, this.getClass());
         }
         logger.info("getList(获取代码生成方案带分页数据-服务) 结束 ");
         return pt;
@@ -86,7 +85,7 @@ public class CodeSchemeService {
         } catch (Exception e) {
             String msg = "getCodeSchemeList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[getCodeSchemeList]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[getCodeSchemeList]", parms, null, msg, this.getClass());
 
         }
         logger.info("getCodeSchemeList(获取代码生成方案 不带分页数据-服务) 结束");
@@ -112,7 +111,7 @@ public class CodeSchemeService {
         } catch (Exception e) {
             String msg = "save (保存代码生成方案 数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[save]", parms, null, msg, this.getClass());
 
         }
         logger.info("save (保存代码生成方案 数据-服务) 结束");
@@ -139,7 +138,7 @@ public class CodeSchemeService {
         } catch (Exception e) {
             String msg = "getCodeScheme(获取代码生成方案单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[getCodeScheme]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[getCodeScheme]", parms, null, msg, this.getClass());
 
         }
         logger.info("getCodeScheme(获取代码生成方案单条数据-服务) 结束 ");

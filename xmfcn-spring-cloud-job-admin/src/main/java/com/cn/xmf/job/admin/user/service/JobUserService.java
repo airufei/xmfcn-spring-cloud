@@ -61,7 +61,7 @@ public class JobUserService {
             if (json != null) {
                 parms = json.toString();
             }
-            sysCommonService.sendDingMessage("base-service[getList]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[getList]", parms, null, msg, this.getClass());
 
         }
         logger.info("getList(获取调度系统用户带分页数据-服务) 结束 ");
@@ -87,7 +87,7 @@ public class JobUserService {
         } catch (Exception e) {
             String msg = "getJobUserList 异常 " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[getJobUserList]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[getJobUserList]", parms, null, msg, this.getClass());
 
         }
         logger.info("getJobUserList(获取调度系统用户 不带分页数据-服务) 结束");
@@ -113,7 +113,7 @@ public class JobUserService {
         } catch (Exception e) {
             String msg = "save (保存调度系统用户 数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[save]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[save]", parms, null, msg, this.getClass());
 
         }
         logger.info("save (保存调度系统用户 数据-服务) 结束");
@@ -141,7 +141,7 @@ public class JobUserService {
         } catch (Exception e) {
             String msg = "getJobUser(获取调度系统用户单条数据-服务) " + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("base-service[getJobUser]", parms, null, msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("base-service[getJobUser]", parms, null, msg, this.getClass());
 
         }
         logger.info("getJobUser(获取调度系统用户单条数据-服务) 结束 ");

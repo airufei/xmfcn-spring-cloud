@@ -1,4 +1,4 @@
-package com.cn.xmf.service.model;
+package com.cn.xmf.service.model.dingtalk;
 
 import com.alibaba.fastjson.JSON;
 

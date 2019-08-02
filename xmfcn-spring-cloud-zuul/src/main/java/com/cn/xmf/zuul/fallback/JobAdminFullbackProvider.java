@@ -3,9 +3,7 @@ package com.cn.xmf.zuul.fallback;
 import com.alibaba.fastjson.JSON;
 import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
-import com.cn.xmf.enums.DingMessageType;
-import com.cn.xmf.model.ding.DingMessage;
-import com.cn.xmf.zuul.sys.DingTalkService;
+import com.cn.xmf.zuul.common.SysCommonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,7 @@ public class JobAdminFullbackProvider implements FallbackProvider {
     String serviceName;
 
     @Autowired
-    private DingTalkService dingTalkService;
+    private SysCommonService sysCommonService;
     /**
      * 获取下游服务名
      *
@@ -96,12 +94,7 @@ public class JobAdminFullbackProvider implements FallbackProvider {
      * @return
      */
     public void SendMarkdownMessage() {
-        DingMessage dingMessage=new DingMessage();
-        dingMessage.setDingMessageType(DingMessageType.MARKDWON);
-        dingMessage.setSysName(serviceName);
-        dingMessage.setModuleName(this.getClass().getSimpleName());
-        dingMessage.setMethodName("fullback()");
-        dingMessage.setExceptionMessage(serviceName+"接口超时或者服务中断，启动了熔断机制，请相关人员立即检查，谢谢。");
-        dingTalkService.sendMessageToDingTalk(dingMessage);
+        String msg=serviceName+"接口超时或者服务中断，启动了熔断机制，请相关人员立即检查，谢谢。";
+        sysCommonService.sendDingTalkMessage("fullback()",null,null,msg,this.getClass());
     }
 }

@@ -37,7 +37,7 @@ public class KafkaBean {
             kafkaConsumer = new KafkaConsumer<>(kafkaConfig.initConsumerProp(topic));
         } catch (Exception e) {
             logger.error("获取kafka 消费者异常======e={}", e);
-            sysCommonService.sendDingMessage("KafkaBean.getKafkaProducer()", null, null, "获取kafka 消费者失败", getClass());
+            sysCommonService.sendDingTalkMessage("KafkaBean.getKafkaProducer()", null, null, "获取kafka 消费者失败", getClass());
         }
         return kafkaConsumer;
     }

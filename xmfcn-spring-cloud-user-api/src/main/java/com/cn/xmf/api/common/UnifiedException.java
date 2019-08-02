@@ -65,7 +65,7 @@ public class UnifiedException {
         }
         String stackMessage = StringUtil.getExceptionMsg(throwable);
         String url = StringUtil.getSystemUrl(request) + requestUrl;
-        sysCommonService.sendDingMessage(url,sb.toString(),stackMessage,null, UnifiedException.class);
+        sysCommonService.sendDingTalkMessage(url,sb.toString(),stackMessage,null, UnifiedException.class);
         logger.error(stackMessage);
     }
 }

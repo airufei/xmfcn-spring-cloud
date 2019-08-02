@@ -1,10 +1,16 @@
 package com.cn.xmf.util;
 
+import com.alibaba.fastjson.JSON;
 import com.cn.xmf.enums.DingMessageType;
+import com.cn.xmf.enums.MailContentType;
+import com.cn.xmf.enums.MessageType;
 import com.cn.xmf.model.ding.DingMessage;
+import com.cn.xmf.model.mail.MailMessage;
+import com.cn.xmf.model.msg.Message;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 /**
  * 消息相关的工具类
@@ -22,10 +28,12 @@ public class MessageUtil {
      * @param method
      * @return
      */
-    public static DingMessage getDingTalkMessage(Object parms, Object retData, Object msg, String sysName, String className, String method) {
+    public static Message getDingTalkMessage(Object parms, Object retData, Object msg, String sysName, String className, String method) {
         if (msg == null) {
             return null;
         }
+        Message message = new Message();
+        message.setMessageType(MessageType.DINGMESSAGE);
         DingMessage dingMessage = new DingMessage();
         InetAddress addr = null;
         try {
@@ -54,6 +62,33 @@ public class MessageUtil {
             dingMessage.setRetData(retData.toString());
         }
         dingMessage.setMessage(msg.toString());
-        return dingMessage;
+        message.setMessageContent(JSON.toJSONString(dingMessage));
+        message.setTitle("钉钉消息");
+        return message;
+    }
+
+    /**
+     * 组织邮件数据
+     *
+     * @param messageType
+     * @param title
+     * @param msg
+     * @param addresseeList
+     * @return
+     */
+    public static Message getMailMessage(String title, Object msg, List<String> addresseeList) {
+        if (msg == null) {
+            return null;
+        }
+        Message message = new Message();
+        message.setMessageType(MessageType.MAILMESSAGE);
+        MailMessage mailMessage = new MailMessage();
+        mailMessage.setAddresseeList(addresseeList);
+        mailMessage.setContent(msg.toString());
+        mailMessage.setMailContentType(MailContentType.MAIL_TEXT);
+        mailMessage.setTitle(title);
+        message.setMessageContent(JSON.toJSONString(mailMessage));
+        message.setTitle("邮件信息消息");
+        return message;
     }
 }

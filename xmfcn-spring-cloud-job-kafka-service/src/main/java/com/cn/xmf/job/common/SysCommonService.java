@@ -6,12 +6,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.Interface.SysCommon;
 import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
+import com.cn.xmf.enums.MessageType;
 import com.cn.xmf.job.kafka.IKafkaReader;
 import com.cn.xmf.job.sys.DictService;
-import com.cn.xmf.job.sys.DingTalkService;
 import com.cn.xmf.job.sys.KafKaProducerService;
+import com.cn.xmf.job.sys.MessageService;
 import com.cn.xmf.job.sys.RedisService;
 import com.cn.xmf.model.ding.DingMessage;
+import com.cn.xmf.model.msg.Message;
 import com.cn.xmf.util.*;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -43,8 +45,6 @@ public class SysCommonService implements SysCommon {
     private static Logger logger = LoggerFactory.getLogger(SysCommonService.class);
 
     @Autowired
-    private DingTalkService dingTalkService;
-    @Autowired
     private RedisService redisService;
     @Autowired
     private Environment environment;
@@ -53,32 +53,67 @@ public class SysCommonService implements SysCommon {
     @Autowired
     private KafKaProducerService kafKaProducerService;
 
+    @Autowired
+    private MessageService messageService;
+
     /**
-     * setDingMessage(组织钉钉消息)
+     * sendDingTalkMessage(综合消息发送)
      *
-     * @param method
-     * @param parms
-     * @return
+     * @param messageType 消息类型
+     * @param method      发送消息的方法
+     * @param parms       方法参数
+     * @param retData     方法返回值
+     * @param msg         消息内容
+     * @param t           类信息
      */
     @Override
-    public void sendDingMessage(String method, Object parms, Object retData, Object msg, Class t) {
+    public void sendDingTalkMessage(String method, Object parms, Object retData, Object msg, Class t) {
         try {
             if (msg == null) {
                 return;
             }
             String currentThreadClass = t.getSimpleName();
             String subSysName = StringUtil.getSubSysName();
-            DingMessage dingMessage = MessageUtil.getDingTalkMessage(parms, retData, msg, subSysName, currentThreadClass, method);
-            if (dingMessage == null) {
+            Message message = MessageUtil.getDingTalkMessage(parms, retData, msg, subSysName, currentThreadClass, method);
+            if (message == null) {
                 return;
             }
-            String classMethod = this.getClass().getName() + ".sendDingMessage()";
+            String classMethod = this.getClass().getName() + ".sendDingTalkMessage()";
             ThreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
             cachedThreadPool.execute(() -> {
-                dingTalkService.sendMessageToDingTalk(dingMessage);
+                messageService.sendMessage(message);
             });
         } catch (Exception e) {
-            logger.error("setDingMessage(发送钉钉消息) 异常={}", StringUtil.getExceptionMsg(e));
+            logger.error("sendDingTalkMessage(发送钉钉消息) 异常={}", StringUtil.getExceptionMsg(e));
+        }
+    }
+
+    /**
+     * sendMessage（综合消息发送）
+     *
+     * @param messageType 消息类型
+     * @param title       标题
+     * @param content     内容
+     * @param list        收件人
+     */
+    @Override
+    public void sendMessage(MessageType messageType, String title, Object content, List<String> list) {
+        try {
+            if (content == null) {
+                return;
+            }
+            Message message = MessageUtil.getMailMessage(title, content, list);
+            if (message == null) {
+                return;
+            }
+            message.setMessageType(messageType);
+            String classMethod = this.getClass().getName() + ".sendMessage()";
+            ThreadPoolUtil.getThreadPoolIsNext(cachedThreadPool, classMethod);
+            cachedThreadPool.execute(() -> {
+                messageService.sendMessage(message);
+            });
+        } catch (Exception e) {
+            logger.error("sendMessage（综合消息发送） 异常={}", StringUtil.getExceptionMsg(e));
         }
     }
 
@@ -157,7 +192,7 @@ public class SysCommonService implements SysCommon {
             }
             redisService.save(key, value, seconds);
         } catch (Exception e) {
-            logger.error("save(保持缓存) 异常={}",StringUtil.getExceptionMsg(e));
+            logger.error("save(保持缓存) 异常={}", StringUtil.getExceptionMsg(e));
         }
     }
 
@@ -175,7 +210,7 @@ public class SysCommonService implements SysCommon {
         try {
             redisService.getCache(key);
         } catch (Exception e) {
-            logger.error("getCache(获取缓存) 异常={}",StringUtil.getExceptionMsg(e));
+            logger.error("getCache(获取缓存) 异常={}", StringUtil.getExceptionMsg(e));
         }
         return cache;
     }
@@ -194,7 +229,7 @@ public class SysCommonService implements SysCommon {
             }
             result = redisService.delete(key);
         } catch (Exception e) {
-            logger.error("delete(删除缓存) 异常={}",StringUtil.getExceptionMsg(e));
+            logger.error("delete(删除缓存) 异常={}", StringUtil.getExceptionMsg(e));
         }
         return result;
     }
@@ -215,7 +250,7 @@ public class SysCommonService implements SysCommon {
         try {
             //lock = redisService.getLock(key);
         } catch (Exception e) {
-            logger.error("getLock（获取分布式锁） 异常={}",StringUtil.getExceptionMsg(e));
+            logger.error("getLock（获取分布式锁） 异常={}", StringUtil.getExceptionMsg(e));
         }
         return lock;
     }
@@ -231,7 +266,7 @@ public class SysCommonService implements SysCommon {
         try {
             result = redisService.getRedisInfo();
         } catch (Exception e) {
-            logger.error("getRedisInfo（redis 运行健康信息) 异常={}",StringUtil.getExceptionMsg(e));
+            logger.error("getRedisInfo（redis 运行健康信息) 异常={}", StringUtil.getExceptionMsg(e));
         }
         return result;
     }
@@ -261,18 +296,18 @@ public class SysCommonService implements SysCommon {
             stringBuilder.append("队列数据已经超过").append(retryIntoQueueNum);
             stringBuilder.append("次重试,需要人工处理");
             logger.info(stringBuilder.toString());
-            sendDingMessage("retry", json.toString(), null, stringBuilder.toString(), this.getClass());
+            sendDingTalkMessage("retry", json.toString(), null, stringBuilder.toString(), this.getClass());
             return;
         }
         try {
             json.put("queueNum", queueNum + 1);
             sendKafka(topic, null, json.toString());
         } catch (Exception e) {
-            StringBuilder msg=new StringBuilder();
+            StringBuilder msg = new StringBuilder();
             msg.append(" 处理失败后再次放入队列 执行参数 topic=").append(topic).append(" value=").append(json);
             msg.append("\n\n 异常=").append(StringUtil.getExceptionMsg(e));
             logger.error(msg.toString());
-            sendDingMessage("retry", null, null, msg.toString(), this.getClass());
+            sendDingTalkMessage("retry", null, null, msg.toString(), this.getClass());
         }
     }
 

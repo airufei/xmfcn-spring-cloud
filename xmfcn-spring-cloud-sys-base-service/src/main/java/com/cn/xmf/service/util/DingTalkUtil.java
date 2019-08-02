@@ -2,7 +2,7 @@ package com.cn.xmf.service.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.model.ding.Message;
-import com.cn.xmf.service.model.SendResult;
+import com.cn.xmf.service.model.dingtalk.SendResult;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;

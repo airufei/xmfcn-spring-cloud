@@ -25,17 +25,10 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
     private static final ThreadPoolExecutor cachedThreadPool = ThreadPoolUtil.getCommonThreadPool();//获取公共线程池
     private static final Logger logger = LoggerFactory.getLogger(XmfLogAppender.class);
     private static final String topic = ConstantUtil.XMF_KAFKA_TOPIC_LOG;//日志主题
+    private String subSysName;
 
     public void start(LoggingEvent loggingEvent) {
         try {
-            SysCommon sysCommonService = null;
-            try {
-                sysCommonService = (SysCommon) SpringUtil.getBean("sysCommonService");
-            } catch (Exception e) {
-            }
-            if (sysCommonService == null) {
-                return;
-            }
             String loggerName = loggingEvent.getLoggerName();
             String message = loggingEvent.getMessage();
             Level level = loggingEvent.getLevel();
@@ -51,6 +44,14 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             String log_type = "log_filter_keyword";//需要过滤的日志信息
             boolean filterLog = filterLog(message, log_type);
             if (filterLog) {//过滤不需要的日志信息
+                return;
+            }
+            SysCommon sysCommonService = null;
+            try {
+                sysCommonService = (SysCommon) SpringUtil.getBean("sysCommonService");
+            } catch (Exception e) {
+            }
+            if (sysCommonService == null) {
                 return;
             }
             String subSysName = StringUtil.getSubSysName();
@@ -70,7 +71,6 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             logger.error(StringUtil.getExceptionMsg(e));
         }
     }
-
 
 
     //过滤不需要的日志信息
@@ -111,4 +111,11 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
         cachedThreadPool.execute(() -> start(loggingEvent));//异步执行
     }
 
+    public String getSubSysName() {
+        return subSysName;
+    }
+
+    public void setSubSysName(String subSysName) {
+        this.subSysName = subSysName;
+    }
 }

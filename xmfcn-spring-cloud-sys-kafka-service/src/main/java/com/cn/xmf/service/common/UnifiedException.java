@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class UnifiedException {
 
     /**
      * dingTalkMessage:(发送钉钉消息)
+     *
      * @author: airufei
      * @date:2018/1/3 18:08
      * @return:
@@ -59,6 +61,6 @@ public class UnifiedException {
         String stackMessage = StringUtil.getExceptionMsg(throwable);
         String url = StringUtil.getSystemUrl(request) + requestUrl;
         logger.error(stackMessage);
-        sysCommonService.sendDingMessage(requestUrl,sb.toString(),null,stackMessage,this.getClass());
+        sysCommonService.sendDingTalkMessage(requestUrl, sb.toString(), null, stackMessage, this.getClass());
     }
 }

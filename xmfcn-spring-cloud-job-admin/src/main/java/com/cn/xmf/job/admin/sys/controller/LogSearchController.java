@@ -73,7 +73,7 @@ public class LogSearchController {
         } catch (Exception e) {
             String msg = "search:(系统日志搜索) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("getLogDetailById", null, JSON.toJSONString(retJon), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("getLogDetailById", null, JSON.toJSONString(retJon), msg, this.getClass());
 
         }
         logger.info("search:(系统日志搜索) 结束");
@@ -109,7 +109,7 @@ public class LogSearchController {
         } catch (Exception e) {
             String msg = "search:(系统日志搜索) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingMessage("search", parms.toString(), JSON.toJSONString(retJon), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("search", parms.toString(), JSON.toJSONString(retJon), msg, this.getClass());
         }
         logger.info("search:(系统日志搜索) ==结束==");
         return retJon;

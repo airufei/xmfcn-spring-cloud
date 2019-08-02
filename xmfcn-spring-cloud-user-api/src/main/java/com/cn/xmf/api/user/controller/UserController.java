@@ -1,9 +1,14 @@
 package com.cn.xmf.api.user.controller;
 
-import java.util.Date;
-import java.util.List;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.api.common.SysCommonService;
+import com.cn.xmf.api.user.service.UserService;
+import com.cn.xmf.base.model.Partion;
+import com.cn.xmf.base.model.ResultCodeMessage;
+import com.cn.xmf.base.model.RetData;
+import com.cn.xmf.model.user.User;
+import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSON;
-import com.cn.xmf.model.user.*;
-import com.cn.xmf.base.model.*;
-import com.cn.xmf.util.*;
-import com.cn.xmf.api.user.service.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * UserController(用户信息)
@@ -33,7 +33,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private SysCommonService commonService; //如果不需要发钉钉消息可以注释了
+    private SysCommonService sysCommonService; //如果不需要发钉钉消息可以注释了
 
     /**
      * getList:(获取用户信息分页查询接口)
@@ -85,7 +85,7 @@ public class UserController {
             retData.setMessage(ResultCodeMessage.FAILURE_MESSAGE);
             String msg = "getList:(获取用户信息分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            commonService.sendDingMessage("getList", parms, JSON.toJSONString(retData), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("getList", parms, JSON.toJSONString(retData), msg, this.getClass());
         }
         logger.info("getList:(获取用户信息分页查询接口) 结束  parms={}", parms);
         return retData;
@@ -127,7 +127,7 @@ public class UserController {
             retData.setMessage(ResultCodeMessage.FAILURE_MESSAGE);
             String msg = "getUserList:(获取用户信息不分页查询接口)====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            commonService.sendDingMessage("getUserList", parms, JSON.toJSONString(retData), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("getUserList", parms, JSON.toJSONString(retData), msg, this.getClass());
 
         }
         logger.info("getUserList:(获取用户信息不分页查询接口) 结束  parms={},", parms);
@@ -170,7 +170,7 @@ public class UserController {
             retData.setMessage(ResultCodeMessage.FAILURE_MESSAGE);
             String msg = "getUser:(查询用户信息单条数据接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            commonService.sendDingMessage("getUser", parms, JSON.toJSONString(retData), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("getUser", parms, JSON.toJSONString(retData), msg, this.getClass());
 
         }
         logger.info("getUser:(查询用户信息单条数据接口) 结束  parms={},", parms);
@@ -213,7 +213,7 @@ public class UserController {
             retData.setMessage(ResultCodeMessage.FAILURE_MESSAGE);
             String msg = "delete:(逻辑删除用户信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            commonService.sendDingMessage("delete", parms, JSON.toJSONString(retData), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("delete", parms, JSON.toJSONString(retData), msg, this.getClass());
         }
         logger.info("delete:(逻辑删除用户信息数据接口) 结束  parms={}", parms);
         return retData;
@@ -260,7 +260,7 @@ public class UserController {
             retData.setMessage(ResultCodeMessage.FAILURE_MESSAGE);
             String msg = "save:(保存用户信息数据接口) error===>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            commonService.sendDingMessage("save", parms, JSON.toJSONString(retData), msg, this.getClass());
+            sysCommonService.sendDingTalkMessage("save", parms, JSON.toJSONString(retData), msg, this.getClass());
         }
         logger.info("save:(保存用户信息数据接口) 结束  parms={}", parms);
         return retData;
