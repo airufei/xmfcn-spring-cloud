@@ -16,13 +16,6 @@
     <name>xmfcn-spring-cloud-sys-elasticsearch-servicee</name>
     <description>xmfcn-spring-cloud-sys-elasticsearch-service</description>
 
-    <properties>
-        <commons.pool.version>2.5.0</commons.pool.version>
-        <xmfcn.common.version>1.1.1</xmfcn.common.version>
-        <elasticsearch.version>6.8.0</elasticsearch.version>
-        <elasticsearch.jest.version>5.3.3</elasticsearch.jest.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>xmf.cn.common</groupId>

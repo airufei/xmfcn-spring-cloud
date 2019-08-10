@@ -17,11 +17,6 @@
     <name>xmfcn-spring-cloud-job-service</name>
     <description>xmfcn-spring-cloud-job-service</description>
 
-    <properties>
-        <job.core.version>1.1.1</job.core.version>
-        <xmfcn.common.version>1.1.1</xmfcn.common.version>
-    </properties>
-
     <dependencies>
          <dependency>
 			<groupId>xmf.cn.common</groupId>

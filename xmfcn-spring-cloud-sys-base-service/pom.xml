@@ -15,14 +15,6 @@
     <packaging>jar</packaging>
     <name>xmfcn-spring-cloud-sys-base-service</name>
     <description>xmfcn-spring-cloud-sys-base-service</description>
-
-    <properties>
-        <druid.version>1.1.18</druid.version>
-        <mybatis.springboot.version>1.1.1</mybatis.springboot.version>
-        <xmfcn.common.version>1.1.1</xmfcn.common.version>
-        <javamail.version>1.6.2</javamail.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>xmf.cn.common</groupId>
@@ -45,6 +37,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.springboot.version}</version>
         </dependency>
         <!--mysql驱动-->
         <dependency>

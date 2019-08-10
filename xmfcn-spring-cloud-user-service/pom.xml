@@ -16,13 +16,6 @@
     <name>xmfcn-spring-cloud-user-service</name>
     <description>xmfcn-spring-cloud-user-service</description>
 
-    <properties>
-        <druid.version>1.1.18</druid.version>
-        <mybatis.springboot.version>2.0.1</mybatis.springboot.version>
-        <commons.pool.version>2.5.0</commons.pool.version>
-        <xmfcn.common.version>1.1.1</xmfcn.common.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>xmf.cn.common</groupId>

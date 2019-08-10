@@ -15,14 +15,6 @@
     <name>xmfcn-spring-cloud-job-admin</name>
     <description>xmfcn-spring-cloud-job-admin</description>
 
-    <properties>
-        <druid.version>1.1.18</druid.version>
-        <mybatis.springboot.version>2.0.1</mybatis.springboot.version>
-        <xmfcn.common.version>1.1.1</xmfcn.common.version>
-        <job.core.version>1.1.1</job.core.version>
-    </properties>
-
-
     <dependencies>
         <dependency>
             <groupId>xmf.cn.common</groupId>
