@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 public class AuthFilter extends ZuulFilter {
-    private Logger logger = LoggerFactory.getLogger(TokenFilter.class);
+    private Logger logger = LoggerFactory.getLogger(AuthFilter.class);
     @Value("${api.name}")
     String apiName;
     @Value("${api.password}")

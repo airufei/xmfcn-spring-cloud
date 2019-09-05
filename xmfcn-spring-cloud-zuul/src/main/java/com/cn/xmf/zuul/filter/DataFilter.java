@@ -2,11 +2,9 @@ package com.cn.xmf.zuul.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
@@ -19,7 +17,6 @@ import static org.springframework.util.ReflectionUtils.rethrowRuntimeException;
 
 /**
  * 出参全局处理过滤器
- *
  */
 @Component
 public class DataFilter extends ZuulFilter {
@@ -76,7 +73,7 @@ public class DataFilter extends ZuulFilter {
     private void modifyResponseHeader() {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletResponse servletResponse = context.getResponse();
-        servletResponse.addHeader("content-type","image/jpeg;charset=utf-8");
+        servletResponse.addHeader("content-type", "image/jpeg;charset=utf-8");
     }
 
     /**
