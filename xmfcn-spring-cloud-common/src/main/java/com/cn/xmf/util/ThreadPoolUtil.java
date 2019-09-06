@@ -32,7 +32,6 @@ public class ThreadPoolUtil {
             new ThreadPoolExecutor.DiscardPolicy());
 
 
-
     /**
      * 线程工厂-设置线程前缀名称
      */
