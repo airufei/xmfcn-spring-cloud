@@ -14,10 +14,13 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.charset.Charset;
 import java.util.*;
 
 @SuppressWarnings("all")
@@ -26,16 +29,24 @@ import java.util.*;
 public class RedisService {
 
     private static Logger logger = LoggerFactory.getLogger(RedisService.class);
-    private static final String LOCK_SUCCESS = "OK";
-    private static final String SET_IF_NOT_EXIST = "NX";
-    private static final String SET_WITH_EXPIRE_TIME = "PX";
-    private static final Long RELEASE_SUCCESS = 1L;
+    private ThreadLocal<String> lockFlag = new ThreadLocal<String>();
+    public static final String UNLOCK_LUA;//释放锁的命令
+
+    static {
+        StringBuilder sb = new StringBuilder();
+        sb.append("if redis.call(\"get\",KEYS[1]) == ARGV[1] ");
+        sb.append("then ");
+        sb.append("    return redis.call(\"del\",KEYS[1]) ");
+        sb.append("else ");
+        sb.append("    return 0 ");
+        sb.append("end ");
+        UNLOCK_LUA = sb.toString();
+    }
+
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Autowired
     private LettuceConnectionFactory lettuceConnectionFactory;
-
-    @Autowired
-    private RedissonClient redissonClient;
-
 
     public RedisConnection getRedisConnection() {
         RedisConnection connection = lettuceConnectionFactory.getConnection();
@@ -264,12 +275,9 @@ public class RedisService {
             return result;
         }
         try {
-            Boolean ret = conn.set(key.getBytes(), value.getBytes());
+            Boolean ret = conn.set(key.getBytes(), value.getBytes(),Expiration.seconds(seconds), RedisStringCommands.SetOption.UPSERT);
             if (ret) {
-                result = 1;
-            }
-            if (seconds > 0 && ret) {
-                expire(key, seconds);
+                result = 1L;
             }
         } catch (Exception e) {
             logger.error("saveCache:" + StringUtil.getExceptionMsg(e));
@@ -426,26 +434,59 @@ public class RedisService {
      * getLock（分布式锁-正确方式）
      *
      * @param key 锁标识
+     * @param key expireTime 自动释放锁的时间
      */
     @RequestMapping("getLock")
-    public RLock getLock(String key) {
-        logger.info("getLock(获取分布式锁) 开始：" + key);
-        RLock lock = null;
+    public Long getLock(String key,long expireTime) {
+        Long result = -1L;
         if (StringUtil.isBlank(key)) {
-            return lock;
-        }
-        if (redissonClient == null) {
-            return lock;
+            return result;
         }
         try {
-            lock = redissonClient.getLock(key);
+            RedisCallback<Boolean> callback = (connection) -> {
+                String uuid = UUID.randomUUID().toString();
+                lockFlag.set(uuid);
+                return connection.set(key.getBytes(Charset.forName("UTF-8")), uuid.getBytes(Charset.forName("UTF-8")), Expiration.milliseconds(expireTime), RedisStringCommands.SetOption.SET_IF_ABSENT);
+            };
+            boolean ret = (Boolean) redisTemplate.execute(callback);
+            if (ret) {
+                result = 1L;
+            }
         } catch (Exception e) {
-            logger.error(StringUtil.getExceptionMsg(e));
+            logger.error("getRedisLock（取分布式锁-正确方式）异常={}", StringUtil.getExceptionMsg(e));
         }
-        logger.info("getLock(获取分布式锁) 结束：" + lock);
-        return lock;
+        return result;
     }
 
+    /**
+     * unRedisLock（释放分布式锁）
+     * @param key       锁
+     * @return 是否释放成功
+     */
+    @RequestMapping("unRedisLock")
+    public int unRedisLock(String key) {
+        int result = -1;
+        if (StringUtil.isBlank(key)) {
+            return result;
+        }
+        // 释放锁的时候，有可能因为持锁之后方法执行时间大于锁的有效期，此时有可能已经被另外一个线程持有锁，所以不能直接删除
+        try {
+            RedisCallback<Boolean> callback = (connection) -> {
+                String value = lockFlag.get();
+                return connection.eval(UNLOCK_LUA.getBytes(), ReturnType.BOOLEAN, 1, key.getBytes(Charset.forName("UTF-8")), value.getBytes(Charset.forName("UTF-8")));
+            };
+            boolean ret = (Boolean) redisTemplate.execute(callback);
+            if (ret) {
+                result = 1;
+            }
+        } catch (Exception e) {
+            logger.error("unRedisLock（释放分布式锁）异常={}", StringUtil.getExceptionMsg(e));
+        } finally {
+            // 清除掉ThreadLocal中的数据，避免内存溢出
+            lockFlag.remove();
+        }
+        return result;
+    }
     /**
      * getOnlyNo(获取唯一编号)
      *

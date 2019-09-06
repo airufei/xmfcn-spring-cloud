@@ -12,7 +12,6 @@ import com.cn.xmf.job.sys.DictService;
 import com.cn.xmf.job.sys.KafKaProducerService;
 import com.cn.xmf.job.sys.MessageService;
 import com.cn.xmf.job.sys.RedisService;
-import com.cn.xmf.model.ding.DingMessage;
 import com.cn.xmf.model.msg.Message;
 import com.cn.xmf.util.*;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -20,7 +19,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
-import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -242,19 +240,40 @@ public class SysCommonService implements SysCommon {
      * @return
      * @author airuei
      */
-    public RLock getLock(String key) {
-        RLock lock = null;
+    public long getLock(String key, long expireTime) {
+        long lock = -1;
         if (StringUtil.isBlank(key)) {
             return lock;
         }
         try {
-            //lock = redisService.getLock(key);
+            Long rLock = redisService.getLock(key, expireTime);
+            if (rLock != null) {
+                lock = rLock;
+            }
         } catch (Exception e) {
             logger.error("getLock（获取分布式锁） 异常={}", StringUtil.getExceptionMsg(e));
         }
         return lock;
     }
 
+    /**
+     * unRedisLock（释放分布式锁）
+     *
+     * @param key 锁
+     * @return 是否释放成功
+     */
+    public long unRedisLock(String key) {
+        long lock = -1;
+        if (StringUtil.isBlank(key)) {
+            return lock;
+        }
+        try {
+            lock = redisService.unRedisLock(key);
+        } catch (Exception e) {
+            logger.error("getLock（获取分布式锁） 异常={}", StringUtil.getExceptionMsg(e));
+        }
+        return lock;
+    }
     /**
      * getRedisInfo（redis 运行健康信息)
      *

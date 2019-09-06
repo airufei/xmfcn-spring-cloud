@@ -220,6 +220,7 @@ public class SysCommonService implements SysCommon {
     }
 
 
+
     /**
      * getLock（获取分布式锁-暂不可用）
      *
@@ -227,13 +228,35 @@ public class SysCommonService implements SysCommon {
      * @return
      * @author airuei
      */
-    public RLock getLock(String key) {
-        RLock lock = null;
+    public long getLock(String key, long expireTime) {
+        long lock = -1;
         if (StringUtil.isBlank(key)) {
             return lock;
         }
         try {
-            //lock = redisService.getLock(key);
+            Long rLock = redisService.getLock(key, expireTime);
+            if (rLock != null) {
+                lock = rLock;
+            }
+        } catch (Exception e) {
+            logger.error("getLock（获取分布式锁） 异常={}", StringUtil.getExceptionMsg(e));
+        }
+        return lock;
+    }
+
+    /**
+     * unRedisLock（释放分布式锁）
+     *
+     * @param key 锁
+     * @return 是否释放成功
+     */
+    public long unRedisLock(String key) {
+        long lock = -1;
+        if (StringUtil.isBlank(key)) {
+            return lock;
+        }
+        try {
+            lock = redisService.unRedisLock(key);
         } catch (Exception e) {
             logger.error("getLock（获取分布式锁） 异常={}", StringUtil.getExceptionMsg(e));
         }

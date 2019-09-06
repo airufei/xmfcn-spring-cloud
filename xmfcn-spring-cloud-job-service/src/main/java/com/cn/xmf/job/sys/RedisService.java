@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface RedisService {
     /**
      * save:(设置缓存-带有效期)
+     *
      * @param key
      * @param value
      * @param seconds
@@ -23,6 +24,7 @@ public interface RedisService {
 
     /**
      * 获取单个值
+     *
      * @param key
      * @return
      */
@@ -45,16 +47,17 @@ public interface RedisService {
      * @param key
      * @return
      */
-    @RequestMapping(value = "getFromQueue",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "getFromQueue", consumes = MediaType.APPLICATION_JSON_VALUE)
     public String getFromQueue(@RequestParam(value = "key") String key);
 
 
     /**
      * 将 key 缓存数据删除
+     *
      * @param key
      * @return
      */
-    @RequestMapping(value = "delete",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "delete", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long delete(@RequestParam(value = "key") String key);
 
     /**
@@ -63,32 +66,44 @@ public interface RedisService {
      * @param pattern
      * @return
      */
-    @RequestMapping(value = "deletes",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "deletes", consumes = MediaType.APPLICATION_JSON_VALUE)
     public long deletes(@RequestParam(value = "pattern") String pattern);
 
 
     /**
      * 获取分布式锁
+     *
      * @param key
+     * @param key expireTime 自动释放锁的时间
      * @return
      */
-    //@RequestMapping(value ="getLock",consumes = MediaType.APPLICATION_JSON_VALUE)
-    // public RLock getLock(@RequestParam(value = "key") String key);
+    @RequestMapping(value = "getLock", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long getLock(@RequestParam(value = "key") String key, @RequestParam(value = "expireTime") long expireTime);
+
+    /**
+     * unRedisLock（释放分布式锁）
+     * @param key       锁
+     * @return 是否释放成功
+     */
+    @RequestMapping(value ="unRedisLock", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public int unRedisLock(@RequestParam(value = "key") String key);
 
     /**
      * getQueueLength（获取队列长度)key 是消息频道
+     *
      * @param key
      * @return
      */
-    @RequestMapping(value="getQueueLength",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "getQueueLength", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long getQueueLength(@RequestParam(value = "key") String key);
 
     /**
      * getRedisInfo（redis 运行健康信息)
+     *
      * @param key
      * @return
      */
-    @RequestMapping(value ="getRedisInfo",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "getRedisInfo", consumes = MediaType.APPLICATION_JSON_VALUE)
     public JSONObject getRedisInfo();
 
 }

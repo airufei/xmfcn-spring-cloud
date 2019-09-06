@@ -1,7 +1,6 @@
 package com.cn.xmf.job.sys;
 
 import com.alibaba.fastjson.JSONObject;
-import org.redisson.api.RLock;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,11 +68,21 @@ public interface RedisService {
 
     /**
      * 获取分布式锁
+     *
      * @param key
+     * @param key expireTime 自动释放锁的时间
      * @return
      */
-    //@RequestMapping(value ="getLock",consumes = MediaType.APPLICATION_JSON_VALUE)
-    // public RLock getLock(@RequestParam(value = "key") String key);
+    @RequestMapping(value = "getLock", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long getLock(@RequestParam(value = "key") String key, @RequestParam(value = "expireTime") long expireTime);
+
+    /**
+     * unRedisLock（释放分布式锁）
+     * @param key       锁
+     * @return 是否释放成功
+     */
+    @RequestMapping(value ="unRedisLock", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public int unRedisLock(@RequestParam(value = "key") String key);
 
     /**
      * getQueueLength（获取队列长度)key 是消息频道
