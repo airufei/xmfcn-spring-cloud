@@ -16,7 +16,7 @@
         <kafka.version>1.1.7.RELEASE</kafka.version>
         <spring.context.version>5.0.0.RELEASE</spring.context.version>
         <servlet.api.version>3.1.0</servlet.api.version>
-        <fastjson.version>1.2.40</fastjson.version>
+        <fastjson.version>1.2.60</fastjson.version>
         <commons.io.version>2.3</commons.io.version>
         <commons.httpclient.version>3.1</commons.httpclient.version>
         <commons.codec.version>1.8</commons.codec.version>
