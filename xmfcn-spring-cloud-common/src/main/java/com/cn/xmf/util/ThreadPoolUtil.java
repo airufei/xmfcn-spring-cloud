@@ -4,9 +4,8 @@ import com.cn.xmf.base.Interface.SysCommon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 线程池工具类
@@ -25,9 +24,42 @@ public class ThreadPoolUtil {
      * long keepAliveTime, 当线程池中空闲线程数量超过corePoolSize时，多余的线程会在多长时间内被销毁；
      * TimeUnit unit, keepAliveTime的单位
      * BlockingQueue<Runnable> workQueue 任务队列，被添加到线程池中，但尚未被执行的任务；它一般分为直接提交队列、有界任务队列、无界任务队列、优先任务队列几种；
+     * ThreadFactory threadFactory 线程工厂
+     * RejectedExecutionHandler handler 队列满了之后的拒绝策略【AbortPolicy：表示拒绝任务并抛出异常 DiscardPolicy：表示拒绝任务但不做任何动作 CallerRunsPolicy：表示拒绝任务，并在调用者的线程中直接执行该任务
+     * DiscardOldestPolicy：表示先丢弃任务队列中的第一个任务，然后把这个任务加进队列。】
      */
-    private static ThreadPoolExecutor cachedThreadPool = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(maxQueueSize));
+    private static ThreadPoolExecutor cachedThreadPool = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(maxQueueSize), new XmfThreadFactory(),
+            new ThreadPoolExecutor.DiscardPolicy());
 
+
+    /**
+     * 线程工厂-设置线程前缀名称
+     */
+    private static class XmfThreadFactory implements ThreadFactory {
+        private AtomicInteger count = new AtomicInteger(0);
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread t = new Thread(r);
+            String threadName = new StringBuilder().append("xmf_thread_pool_").append(ThreadPoolUtil.class.getSimpleName()).append(count.addAndGet(1)).toString();
+            t.setName(threadName);
+            return t;
+        }
+    }
+
+    /**
+     * 重写拒绝机制，改为阻塞提交。保证不抛弃一个任务
+     */
+    private static class XmfRejectedExecutionHandler implements RejectedExecutionHandler {
+        @Override
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+            try {
+                // 核心改造点，由blockingqueue的offer改成put阻塞方法
+                executor.getQueue().put(r);
+            } catch (InterruptedException e) {
+                logger.error(StringUtil.getExceptionMsg(e));
+            }
+        }
+    }
     /**
      * 获取公共线程池
      *

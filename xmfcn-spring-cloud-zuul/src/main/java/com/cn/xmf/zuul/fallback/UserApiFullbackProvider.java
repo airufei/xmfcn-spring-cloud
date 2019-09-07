@@ -1,8 +1,6 @@
 package com.cn.xmf.zuul.fallback;
 
 import com.alibaba.fastjson.JSON;
-import com.cn.xmf.enums.DingMessageType;
-import com.cn.xmf.model.ding.DingMessage;
 import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.zuul.common.SysCommonService;
@@ -16,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
