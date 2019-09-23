@@ -30,7 +30,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class RedisService {
 
     private static Logger logger = LoggerFactory.getLogger(RedisService.class);
-    public static final String UNLOCK_LUA;//释放锁的命令
+    private static final String UNLOCK_LUA;//释放锁的命令
     private static RedisConnection connection = null;//redis连接
     private final  ReentrantLock lock = new ReentrantLock();
     static {
