@@ -4,13 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.util.StringUtil;
 import org.apache.commons.httpclient.util.DateUtil;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -21,7 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.Date;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 @SuppressWarnings("all")
 @RestController
@@ -29,9 +30,8 @@ import java.util.*;
 public class RedisService {
 
     private static Logger logger = LoggerFactory.getLogger(RedisService.class);
-    private ThreadLocal<String> lockFlag = new ThreadLocal<String>();
     public static final String UNLOCK_LUA;//释放锁的命令
-
+    private static RedisConnection connection = null;//redis连接
     static {
         StringBuilder sb = new StringBuilder();
         sb.append("if redis.call(\"get\",KEYS[1]) == ARGV[1] ");
@@ -49,7 +49,19 @@ public class RedisService {
     private LettuceConnectionFactory lettuceConnectionFactory;
 
     public RedisConnection getRedisConnection() {
-        RedisConnection connection = lettuceConnectionFactory.getConnection();
+        if (connection != null) {
+            return connection;
+        }
+        ReentrantLock takeLock = new ReentrantLock();
+        takeLock.lock();
+        logger.info("------------------------------redis 连接不存在");
+        try {
+            connection = lettuceConnectionFactory.getConnection();
+        } catch (Exception e) {
+            logger.error(StringUtil.getExceptionMsg(e));
+        } finally {
+            takeLock.unlock();
+        }
         return connection;
     }
 
@@ -275,7 +287,7 @@ public class RedisService {
             return result;
         }
         try {
-            Boolean ret = conn.set(key.getBytes(), value.getBytes(),Expiration.seconds(seconds), RedisStringCommands.SetOption.UPSERT);
+            Boolean ret = conn.set(key.getBytes(), value.getBytes(), Expiration.seconds(seconds), RedisStringCommands.SetOption.UPSERT);
             if (ret) {
                 result = 1L;
             }
@@ -433,20 +445,19 @@ public class RedisService {
     /**
      * getLock（分布式锁-正确方式）
      *
-     * @param key 锁标识
-     * @param key expireTime 自动释放锁的时间
+     * @param key        锁标识
+     * @param requestId  请求唯一标识，解锁需要带入
+     * @param expireTime 自动释放锁的时间
      */
     @RequestMapping("getLock")
-    public Long getLock(String key,long expireTime) {
+    public Long getLock(String key, String requestId, long expireTime) {
         Long result = -1L;
         if (StringUtil.isBlank(key)) {
             return result;
         }
         try {
             RedisCallback<Boolean> callback = (connection) -> {
-                String uuid = UUID.randomUUID().toString();
-                lockFlag.set(uuid);
-                return connection.set(key.getBytes(Charset.forName("UTF-8")), uuid.getBytes(Charset.forName("UTF-8")), Expiration.milliseconds(expireTime), RedisStringCommands.SetOption.SET_IF_ABSENT);
+                return connection.set(key.getBytes(Charset.forName("UTF-8")), requestId.getBytes(Charset.forName("UTF-8")), Expiration.milliseconds(expireTime), RedisStringCommands.SetOption.SET_IF_ABSENT);
             };
             boolean ret = (Boolean) redisTemplate.execute(callback);
             if (ret) {
@@ -460,11 +471,13 @@ public class RedisService {
 
     /**
      * unRedisLock（释放分布式锁）
+     *
      * @param key       锁
+     * @param requestId 请求唯一标识，解锁需要带入
      * @return 是否释放成功
      */
     @RequestMapping("unRedisLock")
-    public int unRedisLock(String key) {
+    public int unRedisLock(String key, String requestId) {
         int result = -1;
         if (StringUtil.isBlank(key)) {
             return result;
@@ -472,8 +485,7 @@ public class RedisService {
         // 释放锁的时候，有可能因为持锁之后方法执行时间大于锁的有效期，此时有可能已经被另外一个线程持有锁，所以不能直接删除
         try {
             RedisCallback<Boolean> callback = (connection) -> {
-                String value = lockFlag.get();
-                return connection.eval(UNLOCK_LUA.getBytes(), ReturnType.BOOLEAN, 1, key.getBytes(Charset.forName("UTF-8")), value.getBytes(Charset.forName("UTF-8")));
+                return connection.eval(UNLOCK_LUA.getBytes(), ReturnType.BOOLEAN, 1, key.getBytes(Charset.forName("UTF-8")), requestId.getBytes(Charset.forName("UTF-8")));
             };
             boolean ret = (Boolean) redisTemplate.execute(callback);
             if (ret) {
@@ -481,12 +493,10 @@ public class RedisService {
             }
         } catch (Exception e) {
             logger.error("unRedisLock（释放分布式锁）异常={}", StringUtil.getExceptionMsg(e));
-        } finally {
-            // 清除掉ThreadLocal中的数据，避免内存溢出
-            lockFlag.remove();
         }
         return result;
     }
+
     /**
      * getOnlyNo(获取唯一编号)
      *

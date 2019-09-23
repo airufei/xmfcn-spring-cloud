@@ -73,7 +73,7 @@ public interface RedisService {
      * @return
      */
     @RequestMapping(value = "getLock", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Long getLock(@RequestParam(value = "key") String key, @RequestParam(value = "expireTime") long expireTime);
+    public Long getLock(@RequestParam(value = "key") String key,@RequestParam(value = "requestId") String requestId, @RequestParam(value = "expireTime") long expireTime);
 
     /**
      * unRedisLock（释放分布式锁）
@@ -81,7 +81,7 @@ public interface RedisService {
      * @return 是否释放成功
      */
     @RequestMapping(value ="unRedisLock", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public int unRedisLock(@RequestParam(value = "key") String key);
+    public int unRedisLock(@RequestParam(value = "key") String key,@RequestParam(value = "requestId") String requestId);
 
 
 }
