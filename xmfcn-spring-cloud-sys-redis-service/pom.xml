@@ -16,12 +16,6 @@
     <name>xmfcn-spring-cloud-sys-redis-servicee</name>
     <description>xmfcn-spring-cloud-sys-redis-service</description>
 
-    <properties>
-        <druid.version>1.0.29</druid.version>
-        <commons.pool.version>2.5.0</commons.pool.version>
-        <xmfcn.common.version>1.1.1</xmfcn.common.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>xmf.cn.common</groupId>

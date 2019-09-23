@@ -16,11 +16,6 @@
     <name>xmfcn-spring-cloud-sys-kafka-servicee</name>
     <description>xmfcn-spring-cloud-sys-kafka-service</description>
 
-    <properties>
-        <commons.pool.version>2.5.0</commons.pool.version>
-        <xmfcn.common.version>1.1.1</xmfcn.common.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>xmf.cn.common</groupId>
