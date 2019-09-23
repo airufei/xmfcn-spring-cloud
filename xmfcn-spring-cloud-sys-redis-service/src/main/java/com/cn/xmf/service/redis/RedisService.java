@@ -32,6 +32,7 @@ public class RedisService {
     private static Logger logger = LoggerFactory.getLogger(RedisService.class);
     public static final String UNLOCK_LUA;//释放锁的命令
     private static RedisConnection connection = null;//redis连接
+    private final  ReentrantLock lock = new ReentrantLock();
     static {
         StringBuilder sb = new StringBuilder();
         sb.append("if redis.call(\"get\",KEYS[1]) == ARGV[1] ");
@@ -52,15 +53,14 @@ public class RedisService {
         if (connection != null) {
             return connection;
         }
-        ReentrantLock takeLock = new ReentrantLock();
-        takeLock.lock();
+        lock.lock();
         logger.info("------------------------------redis 连接不存在");
         try {
             connection = lettuceConnectionFactory.getConnection();
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         } finally {
-            takeLock.unlock();
+            lock.unlock();
         }
         return connection;
     }
