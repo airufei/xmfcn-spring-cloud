@@ -26,7 +26,7 @@ public class RedisTest {
     @Test
     public void testRedis() {
         for (int i = 0; i < 10000; i++) {
-            testRedisLock();
+            testRedisLock1();
             cachedThreadPool.execute(() -> {
                 testRedisLock2();
             });
@@ -34,30 +34,29 @@ public class RedisTest {
         }
     }
 
-    private void testRedisLock() {
-        logger.info("----------------------->测试锁开始");
+    private void testRedisLock1() {
+        logger.info("----------------------->测试锁1开始");
         String requestId = StringUtil.getUuId();
         String lockKey = "lock_11111111111111111111111111111113332322";
         long redisLock = redisService.getLock(lockKey, requestId, 5000);
         if (redisLock != 1) {
-            logger.info("==========================》锁被占用正在执行中");
+            logger.info("==========================》锁1被占用正在执行中");
         }
         logger.info("已经获取到锁");
         int lock = redisService.unRedisLock(lockKey, requestId);
-        logger.info("----------------------->测试锁结束 lock={}",lock);
+        logger.info("----------------------->测试锁1结束 lock={}",lock);
     }
 
-
     private void testRedisLock2() {
-        logger.info("测试锁开始----------------------->");
+        logger.info("----------------------->测试锁2开始");
         String requestId = StringUtil.getUuId();
         String lockKey = "lock_11111111111111111111111111111113332322";
-        long redisLock = redisService.getLock(lockKey, requestId, 500);
+        long redisLock = redisService.getLock(lockKey, requestId, 5000);
         if (redisLock != 1) {
-            logger.info("正在执行中");
+            logger.info("==========================》锁2被占用正在执行中");
         }
         logger.info("已经获取到锁");
         int lock = redisService.unRedisLock(lockKey, requestId);
-        logger.info("已经解锁");
+        logger.info("----------------------->测试锁2结束 lock={}",lock);
     }
 }
