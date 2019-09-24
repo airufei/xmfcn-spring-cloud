@@ -54,13 +54,13 @@ public class RedisService {
         logger.info("------------------------------redis 连接不存在");
         try {
             connection = lettuceConnectionFactory.getConnection();
+            if (connection != null) {
+                logger.info("------------------------------已经获取redis 连接");
+            }
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));
         } finally {
             lock.unlock();
-        }
-        if (connection != null) {
-            logger.info("------------------------------已经获取redis 连接");
         }
         return connection;
     }
