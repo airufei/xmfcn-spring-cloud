@@ -11,8 +11,6 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +30,8 @@ public class RedisService {
     private static Logger logger = LoggerFactory.getLogger(RedisService.class);
     private static final String UNLOCK_LUA;//释放锁的命令
     private static RedisConnection connection = null;//redis连接
-    private final  ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
+
     static {
         StringBuilder sb = new StringBuilder();
         sb.append("if redis.call(\"get\",KEYS[1]) == ARGV[1] ");
@@ -44,8 +43,6 @@ public class RedisService {
         UNLOCK_LUA = sb.toString();
     }
 
-    @Autowired
-    private RedisTemplate redisTemplate;
     @Autowired
     private LettuceConnectionFactory lettuceConnectionFactory;
 
@@ -61,6 +58,9 @@ public class RedisService {
             logger.error(StringUtil.getExceptionMsg(e));
         } finally {
             lock.unlock();
+        }
+        if (connection != null) {
+            logger.info("------------------------------已经获取redis 连接");
         }
         return connection;
     }
@@ -455,11 +455,15 @@ public class RedisService {
         if (StringUtil.isBlank(key)) {
             return result;
         }
+        if (StringUtil.isBlank(requestId)) {
+            return result;
+        }
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
+            return result;
+        }
         try {
-            RedisCallback<Boolean> callback = (connection) -> {
-                return connection.set(key.getBytes(Charset.forName("UTF-8")), requestId.getBytes(Charset.forName("UTF-8")), Expiration.milliseconds(expireTime), RedisStringCommands.SetOption.SET_IF_ABSENT);
-            };
-            boolean ret = (Boolean) redisTemplate.execute(callback);
+            boolean ret = conn.set(key.getBytes(Charset.forName("UTF-8")), requestId.getBytes(Charset.forName("UTF-8")), Expiration.milliseconds(expireTime), RedisStringCommands.SetOption.SET_IF_ABSENT);
             if (ret) {
                 result = 1L;
             }
@@ -482,12 +486,16 @@ public class RedisService {
         if (StringUtil.isBlank(key)) {
             return result;
         }
+        if (StringUtil.isBlank(requestId)) {
+            return result;
+        }
+        RedisConnection conn = getRedisConnection();
+        if (conn == null) {
+            return result;
+        }
         // 释放锁的时候，有可能因为持锁之后方法执行时间大于锁的有效期，此时有可能已经被另外一个线程持有锁，所以不能直接删除
         try {
-            RedisCallback<Boolean> callback = (connection) -> {
-                return connection.eval(UNLOCK_LUA.getBytes(), ReturnType.BOOLEAN, 1, key.getBytes(Charset.forName("UTF-8")), requestId.getBytes(Charset.forName("UTF-8")));
-            };
-            boolean ret = (Boolean) redisTemplate.execute(callback);
+            boolean ret = conn.eval(UNLOCK_LUA.getBytes(), ReturnType.BOOLEAN, 1, key.getBytes(Charset.forName("UTF-8")), requestId.getBytes(Charset.forName("UTF-8")));
             if (ret) {
                 result = 1;
             }

@@ -40,6 +40,7 @@
         <druid.version>1.1.18</druid.version>
         <druid.springboot.version>1.1.18</druid.springboot.version>
         <javamail.version>1.6.2</javamail.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
@@ -63,6 +64,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
         </dependency>
         <!--不加会报错 java.lang.ClassNotFoundException: com.netflix.hystrix.contrib.javanica.aop.aspectj.HystrixCommandAspect -->
         <dependency>

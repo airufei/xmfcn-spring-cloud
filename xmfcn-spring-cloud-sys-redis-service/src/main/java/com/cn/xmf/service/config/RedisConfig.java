@@ -48,17 +48,4 @@ public class RedisConfig {
         template.afterPropertiesSet();
         return template;
     }
-
-    /**
-     * redisson客户端
-     *
-     * @return
-     * @throws IOException
-     */
-    @Bean(destroyMethod = "shutdown")
-    public RedissonClient redissonClient() throws IOException {
-        Config config = Config.fromYAML(new ClassPathResource("redisson.yml").getInputStream());
-        return Redisson.create(config);
-    }
-
 }
