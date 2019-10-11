@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.xmf.service.photo.dao.WxPhotoDao">
+
+
+    <sql id="wxPhotoColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.type AS "type",
+		a.url AS "url",
+		a.description AS "description",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
+		a.flag AS "flag",
+		a.remark AS "remark"
+	</sql>
+
+    <sql id="wxPhotoJoins">
+    </sql>
+
+    <select id="getWxPhotoById" resultType="com.cn.xmf.model.photo.WxPhoto">
+        SELECT
+        <include refid="wxPhotoColumns"/>
+        FROM t_wx_photo a
+        <include refid="wxPhotoJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        count(*) as count
+        FROM t_wx_photo a
+        <include refid="wxPhotoJoins"/>
+        <where>
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                AND a.name = #{name}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+            and flag=#{flag}
+        </where>
+    </select>
+
+    <select id="getList" resultType="com.cn.xmf.model.photo.WxPhoto" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        <include refid="wxPhotoColumns"/>
+        FROM
+        (SELECT id from t_wx_photo t
+        <where>
+            <if test="id != null and id != ''">
+                AND t.id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                AND t.name = #{name}
+            </if>
+            <if test="type != null and type != ''">
+                AND t.type = #{type}
+            </if>
+            and flag=#{flag}
+        </where>
+        ) b inner join
+        t_wx_photo a on b.id=a.id
+        <choose>
+            <otherwise>
+                ORDER BY createtime desc
+            </otherwise>
+        </choose>
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="getWxPhotoList" resultType="com.cn.xmf.model.photo.WxPhoto"
+            parameterType="com.cn.xmf.model.photo.WxPhoto">
+        SELECT
+        <include refid="wxPhotoColumns"/>
+        FROM (SELECT id from t_wx_photo t
+        <where>
+            <if test="id != null and id != ''">
+                AND t.id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                AND t.name = #{name}
+            </if>
+            <if test="type != null and type != ''">
+                AND t.type = #{type}
+            </if>
+            and flag=#{flag}
+        </where>
+        ) b inner join t_wx_photo a on b.id=a.id
+        <choose>
+            <otherwise>
+                ORDER BY createtime desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getSignleWxPhoto" resultType="com.cn.xmf.model.photo.WxPhoto"
+            parameterType="com.cn.xmf.model.photo.WxPhoto">
+        SELECT
+        <include refid="wxPhotoColumns"/>
+        FROM
+        t_wx_photo a
+        <where>
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                AND a.name = #{name}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+            and flag=#{flag}
+        </where>
+        limit 1
+    </select>
+
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_wx_photo(
+        <if test="id != null">
+            id,
+        </if>
+        <if test="name != null">
+            name,
+        </if>
+        <if test="type != null">
+            type,
+        </if>
+        <if test="url != null">
+            url,
+        </if>
+        <if test="description != null">
+            description,
+        </if>
+        <if test="updatetime != null">
+            updatetime,
+        </if>
+        <if test="flag != null">
+            flag,
+        </if>
+        <if test="remark != null">
+            remark,
+        </if>
+        createtime
+        ) VALUES (
+
+        <if test="id != null ">
+            #{id},
+        </if>
+        <if test="name != null ">
+            #{name},
+        </if>
+        <if test="type != null ">
+            #{type},
+        </if>
+        <if test="url != null ">
+            #{url},
+        </if>
+        <if test="description != null ">
+            #{description},
+        </if>
+        <if test="updatetime != null ">
+            #{updatetime},
+        </if>
+        <if test="flag != null ">
+            #{flag},
+        </if>
+        <if test="remark != null ">
+            #{remark},
+        </if>
+        #{createtime}
+        )
+    </insert>
+
+    <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_wx_photo(
+        id,
+        name,
+        type,
+        url,
+        description,
+        updatetime,
+        flag,
+        remark,
+        createtime
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.name},
+            #{item.type},
+            #{item.url},
+            #{item.description},
+            #{item.updatetime},
+            #{item.flag},
+            #{item.remark},
+            #{item.createtime}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateById">
+        UPDATE t_wx_photo SET
+        <if test="name != null">
+            name = #{name},
+        </if>
+        <if test="type != null">
+            type = #{type},
+        </if>
+        <if test="url != null">
+            url = #{url},
+        </if>
+        <if test="description != null">
+            description = #{description},
+        </if>
+        <if test="flag != null">
+            flag = #{flag},
+        </if>
+        <if test="remark != null">
+            remark = #{remark},
+        </if>
+        updatetime = #{updatetime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+	UPDATE t_wx_photo SET
+	flag = -1
+		WHERE id = #{id}
+	</update>
+</mapper>

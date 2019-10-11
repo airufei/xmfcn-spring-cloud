@@ -71,6 +71,9 @@ zuul:
     job-admin:
       path: /job/**
       serviceId: job-admin
+    wechat-api:
+      path: /wechat/**
+      serviceId: wechat-api
 
 # 配置ribbon 配置下列值并非ribbon get set 属性，因此鼠标点击无用，但是ribbon会自动加载以下信息
 ribbon:
