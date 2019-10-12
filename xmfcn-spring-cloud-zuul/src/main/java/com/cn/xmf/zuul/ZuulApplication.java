@@ -8,7 +8,6 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
- * @author quyc0
  */
 @SpringBootApplication
 @EnableEurekaClient

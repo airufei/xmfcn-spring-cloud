@@ -18,6 +18,7 @@ base-service:
   sys-redis-service: sys-redis-service
   sys-es-service: sys-es-service
   user-service: user-service
+  wechat-service: wechat-service
   name: serviceadmin
   password: service987423Ds887
 
@@ -50,6 +51,10 @@ spring:
   sleuth:
     sampler:
       probability: 1 #收集日志比例 100%
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
   # 数据源
   datasource:
     name: xmfjob

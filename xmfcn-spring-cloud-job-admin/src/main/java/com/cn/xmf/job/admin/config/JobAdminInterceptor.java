@@ -29,11 +29,14 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
 
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-                           ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if (modelAndView != null) {
             modelAndView.addObject("I18nUtil", FtlUtil.generateStaticModel(I18nUtil.class.getName()));
         }
+    }
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String webRoot = getWebRootUrl();
         if (StringUtil.isBlank(webRoot)) {
             throw new Exception("未获取服务域名/IP");
@@ -41,24 +44,25 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         String loginUrl = webRoot + "/job/toLogin";
         String strUrl = request.getRequestURI();
         if (strUrl != null && (strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api") || strUrl.contains("/logout"))) {
-            return;
+            return true;
+        }
+        if (strUrl != null && (strUrl.endsWith(".css") || strUrl.endsWith(".js")|| strUrl.endsWith(".jpg")|| strUrl.endsWith(".gif"))) {
+            return true;
         }
         //logger.info("登录地址============================" + loginUrl);
         HttpSession session = null;
         try {
             session = request.getSession();
         } catch (Exception e) {
-            StringUtil.redirect(response, loginUrl);
-            return;
         }
         if (session == null) {
             StringUtil.redirect(response, loginUrl);
-            return;
+            return false;
         }
         JobUser user = (JobUser) request.getSession().getAttribute("user");
         if (user == null || user.getId() == null || user.getId() <= 0) {
             StringUtil.redirect(response, loginUrl);
-            return;
+            return false;
         }
         String roleCode = user.getRoleCode();
         boolean interceptUrl = true; //isInterceptUrl(roleCode, strUrl);//检查权限
@@ -68,8 +72,9 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
             msg = URLEncoder.encode(msg, "utf-8");
             String errorUrl = webRoot + "/job/sysError?errorMsg=" + msg;
             StringUtil.redirect(response, errorUrl);
-            return;
+            return false;
         }
+        return true;
     }
 
     /**

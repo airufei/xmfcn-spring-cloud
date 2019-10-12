@@ -47,9 +47,9 @@ spring:
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/xcode?useUnicode=true&characterEncoding=utf-8&useSSL=true
-    username: root
-    password: abc123
+    url: jdbc:mysql://10.105.10.46:3306/test_xcode?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: dev_ydxsb
+    password: dev_ydxsb
     initialSize: 10 #连接池初始化大小
     minIdle: 5 #连接池最小值
     maxActive: 1000 #连接池最大值

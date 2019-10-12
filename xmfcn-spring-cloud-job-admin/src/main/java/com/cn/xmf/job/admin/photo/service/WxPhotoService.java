@@ -1,4 +1,4 @@
-package com.cn.xmf.api.photo.service;
+package com.cn.xmf.job.admin.photo.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+
 /**
  * Service(微信照片)
  * @author airufei

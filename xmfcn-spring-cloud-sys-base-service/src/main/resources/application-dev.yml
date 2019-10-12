@@ -19,7 +19,7 @@ eureka:
   password: eureka-xmfp23dw
   client:
     serviceUrl:
-      defaultZone:  http://${eureka.name}:${eureka.password}@localhost:8081/eureka/
+      defaultZone: http://${eureka.name}:${eureka.password}@localhost:8081/eureka/
     healthcheck:
       enabled: true                           # 开启健康检查（依赖spring-boot-starter-actuator）
     registry-fetch-interval-seconds: 1    # 表示eureka client间隔多久去拉取服务注册信息，默认为30秒
@@ -53,16 +53,6 @@ spring:
     testWhileIdle: true #建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
     testOnBorrow: true #申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。 这里建议配置为TRUE，防止取到的连接不可用
     testOnReturn: false  #归还连接时执行validationQuery检测连接是否有效 建议为false
-
-  security:   # 可连接 service 的用户和密码
-    user:
-      name: serviceadmin
-      password: service987423Ds887
-      roles: admin
-  sleuth:
-    sampler:
-      probability: 1 #收集日志比例 100%
-
 
 # myBatis配置
 mybatis:

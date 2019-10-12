@@ -65,7 +65,7 @@ public class XmfLogAppender extends AppenderBase<LoggingEvent> {
             if (jsonObject == null || jsonObject.size() <= 0) {
                 return;
             }
-            boolean sendKafka = sysCommonService.sendKafka(topic, null, jsonObject.toString());
+            //boolean sendKafka = sysCommonService.sendKafka(topic, null, jsonObject.toString());
             // 方法是异步的，添加消息到缓冲区等待发送，并立即返回。生产者将单个的消息批量在一起发送来提高效率。
         } catch (Exception e) {
             logger.error(StringUtil.getExceptionMsg(e));

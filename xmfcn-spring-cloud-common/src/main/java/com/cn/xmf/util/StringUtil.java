@@ -488,10 +488,7 @@ public class StringUtil extends StringUtils {
         try {
             logger.info("重定向到：url={}", url);
             response.sendRedirect(url);
-            return;
         } catch (IOException e) {
-            String exceptionMsg = StringUtil.getExceptionMsg(e);
-            logger.error(exceptionMsg);
         }
     }
 

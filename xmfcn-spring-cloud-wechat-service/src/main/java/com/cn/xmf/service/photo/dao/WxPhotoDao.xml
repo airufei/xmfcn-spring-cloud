@@ -18,7 +18,7 @@
     <sql id="wxPhotoJoins">
     </sql>
 
-    <select id="getWxPhotoById" resultType="com.cn.xmf.model.photo.WxPhoto">
+    <select id="getWxPhotoById" resultType="com.cn.xmf.model.wx.WxPhoto">
         SELECT
         <include refid="wxPhotoColumns"/>
         FROM t_wx_photo a
@@ -45,7 +45,7 @@
         </where>
     </select>
 
-    <select id="getList" resultType="com.cn.xmf.model.photo.WxPhoto" parameterType="com.alibaba.fastjson.JSONObject">
+    <select id="getList" resultType="com.cn.xmf.model.wx.WxPhoto" parameterType="com.alibaba.fastjson.JSONObject">
         SELECT
         <include refid="wxPhotoColumns"/>
         FROM
@@ -72,8 +72,8 @@
         limit #{startIndex},#{pageSize}
     </select>
 
-    <select id="getWxPhotoList" resultType="com.cn.xmf.model.photo.WxPhoto"
-            parameterType="com.cn.xmf.model.photo.WxPhoto">
+    <select id="getWxPhotoList" resultType="com.cn.xmf.model.wx.WxPhoto"
+            parameterType="com.cn.xmf.model.wx.WxPhoto">
         SELECT
         <include refid="wxPhotoColumns"/>
         FROM (SELECT id from t_wx_photo t
@@ -97,8 +97,8 @@
         </choose>
     </select>
 
-    <select id="getSignleWxPhoto" resultType="com.cn.xmf.model.photo.WxPhoto"
-            parameterType="com.cn.xmf.model.photo.WxPhoto">
+    <select id="getSignleWxPhoto" resultType="com.cn.xmf.model.wx.WxPhoto"
+            parameterType="com.cn.xmf.model.wx.WxPhoto">
         SELECT
         <include refid="wxPhotoColumns"/>
         FROM

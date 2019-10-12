@@ -14,7 +14,9 @@
 
     <name>xmfcn-spring-cloud-job-admin</name>
     <description>xmfcn-spring-cloud-job-admin</description>
-
+    <properties>
+    <commons-fileupload.version>1.3.3</commons-fileupload.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>xmf.cn.common</groupId>
@@ -52,6 +54,11 @@
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
             <version>${quartz.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons-fileupload.version}</version>
         </dependency>
     </dependencies>
     <build>

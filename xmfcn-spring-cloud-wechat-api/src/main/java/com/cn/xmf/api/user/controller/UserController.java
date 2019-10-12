@@ -1,6 +1,5 @@
 package com.cn.xmf.api.user.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.api.common.SysCommonService;
 import com.cn.xmf.api.user.service.UserService;
@@ -17,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * UserController(用户信息)
@@ -29,7 +29,7 @@ import java.util.*;
 @SuppressWarnings("all")
 public class UserController {
 
-    private static Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
     @Autowired
@@ -44,23 +44,16 @@ public class UserController {
      * @author rufei.cn
      */
     @RequestMapping("getList")
-    public RetData getList(HttpServletRequest request, String parms) {
+    public RetData getList(HttpServletRequest request) {
         RetData retData = new RetData();
         try {
-            logger.info("getList:(获取用户信息分页查询接口) 开始  parms={}", parms);
-            if (StringUtil.isBlank(parms)) {
-                retData.setMessage(ResultCodeMessage.PARMS_ERROR_MESSAGE);
-                return retData;
-            }
-            JSONObject json = JSONObject.parseObject(parms);
-            if (json == null) {
-                retData.setMessage(ResultCodeMessage.PARMS_ERROR_MESSAGE);
-                return retData;
-            }
-            int pageNo = json.getIntValue("pageNo");
-            int pageSize = json.getIntValue("pageSize");
+            String pageNoStr = request.getParameter("pageNo");
+            String pageSizeStr = request.getParameter("pageSize");
+            String type = request.getParameter("type");
+            int pageNo = StringUtil.stringToInt(pageNoStr);
+            int pageSize = StringUtil.stringToInt(pageSizeStr);
             JSONObject param = StringUtil.getPageJSONObject(pageNo, pageSize);
-            param.putAll(json);
+            param.put("type", type);
             Partion pt = userService.getList(param);
             List<User> list = null;
             int totalCount = 0;
@@ -85,11 +78,10 @@ public class UserController {
             retData.setMessage(ResultCodeMessage.FAILURE_MESSAGE);
             String msg = "getList:(获取用户信息分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
-            sysCommonService.sendDingTalkMessage("getList", parms, JSON.toJSONString(retData), msg, this.getClass());
         }
-        logger.info("getList:(获取用户信息分页查询接口) 结束  parms={}", parms);
         return retData;
     }
+
     /**
      * save:(保存用户信息数据接口)
      *
@@ -101,9 +93,6 @@ public class UserController {
     @RequestMapping(value = "save")
     public JSONObject save(HttpServletRequest request) {
         JSONObject object = new JSONObject();
-        Map parms = new HashMap();
-        Map<String, String[]> parameterMap = request.getParameterMap();
-
         String openId = request.getParameter("openId");
         String nickname = request.getParameter("nickname");
         String age = request.getParameter("age");
@@ -117,19 +106,16 @@ public class UserController {
             String paraName = enu.nextElement();
             logger.info("In parameter: " + requestURI + "  " + paraName + ": " + request.getParameter(paraName));
         }
-        if(StringUtil.isBlank(nickname))
-        {
-            object.put("code",501);
+        if (StringUtil.isBlank(nickname)) {
+            object.put("code", 501);
             return object;
         }
-        if(StringUtil.isBlank(age))
-        {
-            object.put("code",501);
+        if (StringUtil.isBlank(age)) {
+            object.put("code", 501);
             return object;
         }
-        if(age.contains("undefined"))
-        {
-            object.put("code",501);
+        if (age.contains("undefined")) {
+            object.put("code", 501);
             return object;
         }
         try {
@@ -142,10 +128,10 @@ public class UserController {
             wx.setNickname(nickname);
             wx.setPhotourl(photourl);
             userService.save(wx);
-            object.put("code",200);
+            object.put("code", 200);
         } catch (Exception e) {
-            logger.error(e.getMessage());
-            e.printStackTrace();
+            logger.error(StringUtil.getExceptionMsg(e));
+            object.put("code", 501);
         }
         return object;
     }

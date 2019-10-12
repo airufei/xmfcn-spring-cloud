@@ -87,7 +87,7 @@ public class WxPhotoHelperService  {
 	 * @param id
 	 * @return
 	 */
-	  public void updateById(WxPhoto wxPhoto)
+	  private void updateById(WxPhoto wxPhoto)
 	  {
 	     wxPhotoDao.updateById(wxPhoto);
 	  }
