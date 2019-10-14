@@ -69,16 +69,16 @@ CREATE TABLE `t_wx_user` (
 CREATE TABLE `t_wx_photo` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL COMMENT '图片名称',
-  `type` int(11) DEFAULT NULL COMMENT '图片类型',
+  `type` varchar(50) DEFAULT NULL COMMENT '图片类型',
   `url` varchar(50) DEFAULT NULL COMMENT '图片地址',
   `description` varchar(50) DEFAULT NULL COMMENT '图片描述',
   `createtime` datetime DEFAULT NULL COMMENT '创建时间',
   `updatetime` datetime DEFAULT NULL COMMENT '修改时间',
   `flag` int(11) DEFAULT '0' COMMENT '删除标记',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `path` varchar(255) DEFAULT NULL COMMENT '存储地址',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_wx_phone'_type` (`type`) USING BTREE,
   KEY `idx_wx_user_updatetime` (`updatetime`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='微信照片信息表';
-
 

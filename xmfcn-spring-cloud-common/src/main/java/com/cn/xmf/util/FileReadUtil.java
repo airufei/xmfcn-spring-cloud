@@ -3,6 +3,8 @@ package com.cn.xmf.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -67,5 +69,16 @@ public class FileReadUtil {
     public static String getValue(String filePath, String key, String defaultValue) {
         String value = getInstatance(filePath).getProp(key);
         return "".equals(value) ? defaultValue : value;
+    }
+
+    public static void uploadFile(byte[] file, String filePath, String fileName) throws Exception {
+        File targetFile = new File(filePath);
+        if(!targetFile.exists()){
+            targetFile.mkdirs();
+        }
+        FileOutputStream out = new FileOutputStream(filePath+fileName);
+        out.write(file);
+        out.flush();
+        out.close();
     }
 }

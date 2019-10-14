@@ -8,6 +8,7 @@ import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.job.admin.photo.service.WxPhotoService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.model.wx.WxPhoto;
+import com.cn.xmf.util.FileReadUtil;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -51,7 +53,7 @@ public class WxPhotoController {
      */
     @RequestMapping("/getList")
     @ResponseBody
-    public  Map<String, Object>  getList(HttpServletRequest request) {
+    public Map<String, Object> getList(HttpServletRequest request) {
         String pageNoStr = request.getParameter("pageNo");
         String pageSizeStr = request.getParameter("pageSize");
         String type = request.getParameter("type");
@@ -86,7 +88,7 @@ public class WxPhotoController {
     @ResponseBody
     public RetData getWxPhoto(HttpServletRequest request) {
         RetData retData = new RetData();
-        WxPhoto wxPhoto =new WxPhoto();
+        WxPhoto wxPhoto = new WxPhoto();
         if (wxPhoto == null) {
             retData.setMessage("参数为空");
             return retData;
@@ -142,33 +144,52 @@ public class WxPhotoController {
      * @Author airufei
      */
     @RequestMapping("/save")
-    public  ReturnT<String>  save(HttpServletRequest request,@RequestParam("file") MultipartFile file) {
+    public ReturnT<String> save(HttpServletRequest request) throws Exception {
         ReturnT<String> retData = new ReturnT<>(ResultCodeMessage.FAILURE, "保存数据失败");
-        WxPhoto wxPhoto=new WxPhoto();
-        logger.info("save:(保存微信照片数据接口) 开始  wxPhoto={}", wxPhoto);
-        // 无保存内容
-        if (wxPhoto == null) {
-            retData.setMsg("值不能为空");
-            return retData;
-        }
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         /** 页面控件的文件流* */
-        MultipartFile multipartFile = null;
-        Map map =multipartRequest.getFileMap();
-        for (Iterator i = map.keySet().iterator(); i.hasNext();) {
+        Map map = multipartRequest.getFileMap();
+        String name = request.getParameter("name");
+        String type = request.getParameter("type");
+        String description = request.getParameter("description");
+        for (Iterator i = map.keySet().iterator(); i.hasNext(); ) {
             Object obj = i.next();
-            multipartFile=(MultipartFile) map.get(obj);
+            MultipartFile oldfile = (MultipartFile) map.get(obj);
+            if (oldfile == null) {
+                continue;
+            }
             /** 获取文件的后缀* */
-            String filename = multipartFile.getOriginalFilename();
-            logger.info(" 获取文件的后缀 filename={}",filename);
-        }
-        wxPhoto.setCreateTime(new Date());
-        wxPhoto.setUpdateTime(new Date());
-        // 保存数据库
-        WxPhoto ret = wxPhotoService.save(wxPhoto);
-        if (ret != null) {
-            retData.setCode(ResultCodeMessage.SUCCESS);
-            retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
+            String filename = oldfile.getOriginalFilename();
+            logger.info(" 获取文件的后缀 filename={}", filename);
+            if (StringUtil.isBlank(filename)) {
+                continue;
+            }
+            String suffix = filename.substring(filename.lastIndexOf(".") + 1);
+            String newFilenName = StringUtil.getUuId() + "." + suffix;
+            logger.info(" 获取文件的后缀 newFilenName={}", newFilenName);
+            String path = "/opt/xmf/file/" + newFilenName;
+            FileReadUtil.uploadFile(oldfile.getBytes(), path, newFilenName);
+            WxPhoto wxPhoto = new WxPhoto();
+            logger.info("save:(保存微信照片数据接口) 开始  wxPhoto={}", wxPhoto);
+            // 无保存内容
+            if (wxPhoto == null) {
+                retData.setMsg("值不能为空");
+                return retData;
+            }
+            wxPhoto.setType("new_photo");
+            wxPhoto.setUrl("https://abc/" + newFilenName);
+            wxPhoto.setCreateTime(new Date());
+            wxPhoto.setUpdateTime(new Date());
+            wxPhoto.setPath(path);
+            wxPhoto.setDescription(description);
+            wxPhoto.setName(name);
+            wxPhoto.setType(type);
+            // 保存数据库
+            WxPhoto ret = wxPhotoService.save(wxPhoto);
+            if (ret != null) {
+                retData.setCode(ResultCodeMessage.SUCCESS);
+                retData.setMsg(ResultCodeMessage.SUCCESS_MESSAGE);
+            }
         }
         logger.info("save:(保存微信照片数据接口) 结束");
         return retData;

@@ -4,14 +4,15 @@
 
 
     <sql id="wxPhotoColumns">
+        str_to_date(a.updatetime, '%Y-%m-%d %H:%i:%s') AS "updatetimestr",
 		a.id AS "id",
 		a.name AS "name",
 		a.type AS "type",
 		a.url AS "url",
 		a.description AS "description",
-		a.createtime AS "createtime",
-		a.updatetime AS "updatetime",
-		a.flag AS "flag",
+		a.createtime AS "createTime",
+		a.updatetime AS "updateTime",
+		a.path AS "path",
 		a.remark AS "remark"
 	</sql>
 
@@ -140,7 +141,7 @@
         <if test="description != null">
             description,
         </if>
-        <if test="updatetime != null">
+        <if test="updateTime != null">
             updatetime,
         </if>
         <if test="flag != null">
@@ -148,6 +149,9 @@
         </if>
         <if test="remark != null">
             remark,
+        </if>
+        <if test="path != null">
+            path,
         </if>
         createtime
         ) VALUES (
@@ -167,8 +171,8 @@
         <if test="description != null ">
             #{description},
         </if>
-        <if test="updatetime != null ">
-            #{updatetime},
+        <if test="updateTime != null ">
+            #{updateTime},
         </if>
         <if test="flag != null ">
             #{flag},
@@ -176,7 +180,10 @@
         <if test="remark != null ">
             #{remark},
         </if>
-        #{createtime}
+        <if test="path != null">
+            #{path},
+        </if>
+        #{createTime}
         )
     </insert>
 
@@ -194,6 +201,7 @@
         updatetime,
         flag,
         remark,
+        path,
         createtime
         ) VALUES
         <foreach collection="list" item="item" index="index" separator=",">
@@ -203,10 +211,11 @@
             #{item.type},
             #{item.url},
             #{item.description},
-            #{item.updatetime},
+            #{item.updateTime},
             #{item.flag},
             #{item.remark},
-            #{item.createtime}
+            #{item.path},
+            #{item.createTime}
             )
         </foreach>
     </insert>
@@ -231,7 +240,10 @@
         <if test="remark != null">
             remark = #{remark},
         </if>
-        updatetime = #{updatetime}
+        <if test="path != null">
+            remark=#{path},
+        </if>
+        updatetime = #{updateTime}
         WHERE id = #{id}
     </update>
 

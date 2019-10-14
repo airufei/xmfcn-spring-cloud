@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  	<#import "/common/common.macro.ftl" as netCommon>
-	<@netCommon.commonStyle />
+    <#import "/common/common.macro.ftl" as netCommon>
+    <@netCommon.commonStyle />
     <!-- DataTables -->
     <link rel="stylesheet" href="/job/adminlte/plugins/datatables/dataTables.bootstrap.css">
     <link rel="stylesheet" href="/job/js/upload/fileinput.min.css">
@@ -11,9 +11,9 @@
 <body class="hold-transition skin-blue sidebar-mini <#if cookieMap?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if>">
 <div class="wrapper">
     <!-- header -->
-	<@netCommon.commonHeader />
+    <@netCommon.commonHeader />
     <!-- left -->
-	<@netCommon.commonLeft "${className}" />
+    <@netCommon.commonLeft "${className}" />
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -80,7 +80,7 @@
     </div>
 
     <!-- footer -->
-	<@netCommon.commonFooter />
+    <@netCommon.commonFooter />
 </div>
 
 <!-- job新增.模态框 -->
@@ -102,33 +102,31 @@
                 </table>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal form"  method="post" enctype="multipart/form-data" role="form">
-                    <#--<div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">照片名称<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="name" placeholder="请输入键"
-                                                      maxlength="50"></div>
-                    </div>-->
+                <form class="form-horizontal form" method="post" enctype="multipart/form-data" role="form">
                     <div class="form-group">
-                        <label for="file" class="col-sm-2 control-label">选择照片<font color="red">*</font></label>
-                        <div class="col-sm-10"><input id="file" name="file" class="file" type="file"  enctype ="multipart/form-data" multiple data-min-file-count="1" data-theme="fas"></div>
+                        <label for="name" class="col-sm-2 control-label">照片名称<font color="red">*</font></label>
+                        <div class="col-sm-10"><input type="text" id="phoneName" class="form-control" name="name"
+                                                      placeholder="请输入键"
+                                                      maxlength="50"></div>
                     </div>
-                   <#-- <div class="form-group">
+                    <div class="form-group">
                         <label for="type" class="col-sm-2 control-label">类型<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="type" placeholder="请输入类型"
+                        <div class="col-sm-10"><input type="text" id="phoneType" class="form-control" name="type"
+                                                      placeholder="请输入类型"
                                                       maxlength="50"></div>
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-sm-2 control-label">备注<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="description" placeholder="请输入备注"
+                        <div class="col-sm-10"><input id="phoneDescription" type="text" class="form-control"
+                                                      name="description" placeholder="请输入备注"
                                                       maxlength="100"></div>
-                    </div>-->
+                    </div>
                     <hr>
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-6">
-                            <button type="submit" class="btn btn-primary">${I18n.system_save}</button>
-                            <button type="button" class="btn btn-default"
-                                    data-dismiss="modal">${I18n.system_cancel}</button>
-                            <input type="hidden" name="id">
+                        <label for="file" class="col-sm-2 control-label">选择照片<font color="red">*</font></label>
+                        <div class="col-sm-10">
+                            <input id="uploadImg" name="file" class="file" type="file" enctype="multipart/form-data"
+                                   multiple data-min-file-count="1" data-theme="fas">
                         </div>
                     </div>
                 </form>
@@ -146,8 +144,8 @@
 <script src="/job/adminlte/plugins/daterangepicker/moment.min.js"></script>
 <script src="/job/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="/job/js/upload/piexif.js"></script>
+<script src="/job/js/upload/zh.js"></script>
 <script src="/job/js/upload/fileinput.min.js"></script>
-<script src="/job/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>
 <script src="/job/js/photo.index.1.js"></script>
 
 <script>
@@ -156,6 +154,51 @@
         $("#modalDialog").draggable({handle: ".modal-header"});//为模态对话框添加拖拽
         $("#addModal").css("overflow", "hidden"); // 禁止模态对话框的半透明背景滚动
         //$("#fileName").fileinput();
+    })
+    $("#uploadImg").fileinput({
+        uploadUrl: base_url + "/photo/save", // server upload action
+        language: 'zh',
+        minFileCount: 0,
+        uploadAsync: true,
+        maxFileCount: 100,
+        enctype: 'multipart/form-data',
+        maxFileSize: 5120,//限制上传大小KB
+        // overwriteInitial: false,//不覆盖已上传的图片
+        allowedPreviewTypes: ['image'],
+        // allowedFileExtensions: ['jpg', 'png', 'gif'],//可以可选择的违建格式
+        // elErrorContainer: '#kv-error-1',//错误显示的文本continner
+        showBrowse: true,
+        browseOnZoneClick: true,
+        ajaxSettings: {
+            contentType: false
+        },
+        uploadExtraData: function (previewId, index) {
+            var data = {
+                name: $("#phoneName").val(),
+                type: $("#phoneType").val(),
+                description: $("#phoneType").val()
+            };
+            return data;
+        }
+    }).on("filepredelete", function (jqXHR) {
+        var abort = true;
+        if (confirm("确定删除此图片?")) {
+            abort = false;
+        }
+        return abort; // 您还可以发送任何数据/对象，你可以接收` filecustomerror
+    }).on('filebatchpreupload', function (event, data) {
+        var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
+        if (!window.confirm("确定上传选择的文件吗 ?")) {
+            return {
+                message: "上传失败!", // upload error message
+                data: {} // any other data to send that can be referred in `filecustomerror`
+            };
+        }
+    }).on('fileuploaded', function (event, data, id, index) {//上传成功之后的处理
+        $('#addModal').modal('hide');
+        alert("上传成功")
+    }).on('filebatchpreupload', function (event, data, id, index) {
+        $('#kv-success-1').html('<h4>上传状态</h4><ul></ul>').hide();
     })
 </script>
 </body>

@@ -13,7 +13,7 @@ public class WxPhoto extends BaseEntitys {
     /**
      * // 图片类型
      */
-    private Integer type;
+    private String type;
 
     /**
      * // 图片地址
@@ -24,6 +24,11 @@ public class WxPhoto extends BaseEntitys {
      * // 图片描述
      */
     private String description;
+
+    /**
+     * // 存储地址
+     */
+    private String path;
 
 
     public WxPhoto() {
@@ -38,11 +43,11 @@ public class WxPhoto extends BaseEntitys {
         this.name = name;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -62,6 +67,14 @@ public class WxPhoto extends BaseEntitys {
         this.description = description;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -69,6 +82,7 @@ public class WxPhoto extends BaseEntitys {
                 .append("type", type)
                 .append("url", url)
                 .append("description", description)
+                .append("path", path)
                 .toString();
     }
 }
