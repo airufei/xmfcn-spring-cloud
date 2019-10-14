@@ -13,6 +13,8 @@
         <module>xmfcn-spring-cloud-job-service</module>
         <module>xmfcn-spring-cloud-job-kafka-service</module>
         <module>xmfcn-spring-cloud-job-admin</module>
+        <module>xmfcn-spring-cloud-wechat-api</module>
+        <module>xmfcn-spring-cloud-wechat-service</module>
         <module>xmfcn-spring-cloud-sys-base-service</module>
         <module>xmfcn-spring-cloud-sys-kafka-service</module>
         <module>xmfcn-spring-cloud-sys-elasticsearch-service</module>
