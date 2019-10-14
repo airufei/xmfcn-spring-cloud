@@ -18,7 +18,6 @@ import java.util.List;
 @SuppressWarnings("all")
 @FeignClient(value = "${base-service.wechat-service}")// 配置远程服务名以及自定义权限验证配置
 @RequestMapping("/server/photo/")// 配置远程服务路径
-
 public interface WxPhotoService  {
 
     /**

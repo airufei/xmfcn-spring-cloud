@@ -25,7 +25,9 @@ import java.util.List;
  * @author rufei.cn
  * @version 2018-09-16
  */
+
 @RestController
+@RequestMapping(value = "/user")
 @SuppressWarnings("all")
 public class UserController {
 
