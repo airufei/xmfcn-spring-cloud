@@ -1,6 +1,6 @@
 # ==Tomcat配置==
 server:
-  port: 8087
+  port: 8093
   tomcat:
     max-connections: 20000 # 最大连接数 表示有多少个socket连接到tomcat上 NIO模式下默认是10000
     accept-count: 200 # 允许的最大连接数，即等待队列 应大于等于max-threads 默认值75
@@ -8,9 +8,8 @@ server:
     uri-encoding: UTF-8
     accesslog:
       enabled: true
-      directory: /opt/logs/job-service/
+      directory: /opt/logs/job-admin/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
-  max-http-header-size: 10000000 #扩展 tomcat header的长度 omcat限制了header的长度,如果你请求的数据量超过了默认的长度就会抛出越界，
 
 # 本服务需要调用的服务和授权信息-service层
 base-service:
@@ -18,6 +17,8 @@ base-service:
   sys-kafka-service: sys-kafka-service
   sys-redis-service: sys-redis-service
   sys-es-service: sys-es-service
+  user-service: user-service
+  wechat-service: wechat-service
   name: serviceadmin
   password: service987423Ds887
 
@@ -27,7 +28,7 @@ eureka:
   password: eureka-xmfp23dw
   client:
     serviceUrl:
-      defaultZone:  http://${eureka.name}:${eureka.password}@localhost:8081/eureka/
+      defaultZone: http://${eureka.name}:${eureka.password}@localhost:8081/eureka/
     healthcheck:
       enabled: true                           # 开启健康检查（依赖spring-boot-starter-actuator）
     registry-fetch-interval-seconds: 1   # 表示eureka client间隔多久去拉取服务注册信息，刷新本地缓存时间 默认为30秒
@@ -40,7 +41,7 @@ eureka:
     leaseExpirationDurationInSeconds: 2  # 发呆时间，即服务续约到期时间（缺省为90s）
 spring:
   application:
-    name: job-service
+    name: job-admin
   cloud:
     loadbalancer:
       retry:
@@ -50,9 +51,66 @@ spring:
   sleuth:
     sampler:
       probability: 1 #收集日志比例 100%
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+  # 数据源
+  datasource:
+    name: xmfjob
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 测试库
+    url: jdbc:mysql://10.105.10.79:3306/test_mz_job?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: test_ydxsb
+    password: test_ydxsb
+    initialSize: 10 #连接池初始化大小
+    minIdle: 5 #连接池最小值
+    maxActive: 1000 #连接池最大值
+    maxWait: 10000 #连接等待超时的时间
+    timeBetweenEvictionRunsMillis: 60000 #间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    poolPreparedStatements: false  #是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+    validationQuery: select 1 from dual # 验证连接有效与否的SQL，不同的数据配置不同
+    testWhileIdle: true #建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+    testOnBorrow: true #申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。 这里建议配置为TRUE，防止取到的连接不可用
+    testOnReturn: false #归还连接时执行validationQuery检测连接是否有效 建议为false
+  resources:
+    static-locations: classpath:/static/,classpath:/resources
+  freemarker:
+    allow-request-override: false
+    allow-session-override: false
+    cache: true
+    check-template-location: true
+    content-type: text/html
+    enabled: true
+    expose-request-attributes: false
+    expose-session-attributes: false
+    expose-spring-macro-helpers: true
+    prefer-file-system-access: true
+    suffix: .ftl
+    template-loader-path: classpath:/template/
+    settings.template_update_delay: 0
+    settings.default_encoding: UTF-8
+    settings.classic_compatible: true
+    order: 1
+  messages:
+    encoding: utf-8
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+# myBatis配置
+mybatis:
+  # mybatis主配置文件
+  config-location: classpath:mybatis-config.xml
+  # mapper.xml文件位置
+  mapper-locations: classpath:com/cn/xmf/base/*/*.xml
 # LOGGING
 logging:
-    config: classpath:logback.xml
+  config: classpath:logback.xml
 # timeout config
 
 # 配置ribbon 配置下列值并非ribbon get set 属性，因此鼠标点击无用，但是ribbon会自动加载以下信息
@@ -78,15 +136,9 @@ ribbon:
   eager-load:
     enabled: true
 
-#job任务配置
 xmf:
-  job:
-    admin:
-      addresses: http://localhost:8082/job #调度中心部署跟地址 多个逗号隔开
-    executor:
-      appname: xmf-job-timer #执行器"AppName"和地址信息配置：AppName执行器心跳注册分组依据
-      ip:        #执行器IP默认为空表示自动获取IP，多网卡时可手动设置指定IP，手动设置IP时将会绑定Host
-      port: 9999     #执行器默认端口为9999
-      logpath: /opt/logs/job-service/task   #执行器运行日志文件存储的磁盘位置，需要对该路径拥有读写权限
-      logretentiondays: 3 #执行器Log文件定期清理功能，指定日志保存天数，日志文件过期自动删除。限制至少保持3天，否则功能不生效；
-    accessToken: 123456  #执行器通讯TOKEN，非空时启用
+ job:
+  login:
+    webRoot: http://localhost:8082
+  accessToken: 123456
+  i18n:

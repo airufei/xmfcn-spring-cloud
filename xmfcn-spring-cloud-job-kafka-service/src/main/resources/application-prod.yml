@@ -1,6 +1,6 @@
 # ==Tomcat配置==
 server:
-  port: 8087
+  port: 8084
   tomcat:
     max-connections: 20000 # 最大连接数 表示有多少个socket连接到tomcat上 NIO模式下默认是10000
     accept-count: 200 # 允许的最大连接数，即等待队列 应大于等于max-threads 默认值75
@@ -8,7 +8,7 @@ server:
     uri-encoding: UTF-8
     accesslog:
       enabled: true
-      directory: /opt/logs/job-service/
+      directory: /opt/logs/job-kafka-service/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
   max-http-header-size: 10000000 #扩展 tomcat header的长度 omcat限制了header的长度,如果你请求的数据量超过了默认的长度就会抛出越界，
 
@@ -40,7 +40,7 @@ eureka:
     leaseExpirationDurationInSeconds: 2  # 发呆时间，即服务续约到期时间（缺省为90s）
 spring:
   application:
-    name: job-service
+    name: job-kafka-service
   cloud:
     loadbalancer:
       retry:
@@ -90,3 +90,15 @@ xmf:
       logpath: /opt/logs/job-service/task   #执行器运行日志文件存储的磁盘位置，需要对该路径拥有读写权限
       logretentiondays: 3 #执行器Log文件定期清理功能，指定日志保存天数，日志文件过期自动删除。限制至少保持3天，否则功能不生效；
     accessToken: 123456  #执行器通讯TOKEN，非空时启用
+
+kafka:
+  server: 10.105.10.12:9092
+  consumer:
+    groupId: xmf_cn
+    auto_offset_reset: latest # earliest 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费 latest 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
+    enableAutoCommit: false
+    maxPollIntervalMs: 120000 # 两次poll()的间隔若大于该配置时间，如果此超时时间期满之前poll()没有调用，则消费者被视为失败，并且分组将重新平衡，以便将分区重新分配给别的成员。
+    sessionTimeoutMs: 180000 # 如果消费者崩溃或无法在session.timeout.ms配置的时间内发送心跳，则消费者将被视为死亡，并且其分区将被重新分配。
+    maxPollRecords: 500 # 单次拉取的最大消息数量
+    keyDeserializerClass: org.apache.kafka.common.serialization.StringDeserializer
+    valueDeserializerClass: org.apache.kafka.common.serialization.StringDeserializer

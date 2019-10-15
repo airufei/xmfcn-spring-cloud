@@ -24,6 +24,7 @@ import com.cn.xmf.api.photo.service.*;
  * @version 2019-10-11
  */
 @RestController
+@RequestMapping(value = "/photo")
 @SuppressWarnings("all")
 public class WxPhotoController {
 
