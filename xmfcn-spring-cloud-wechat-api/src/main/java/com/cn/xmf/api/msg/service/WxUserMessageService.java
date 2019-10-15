@@ -1,8 +1,8 @@
-package com.cn.xmf.api.photo.service;
+package com.cn.xmf.api.msg.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
-import com.cn.xmf.model.wx.WxPhoto;
+import com.cn.xmf.model.wx.WxUserMessage;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 /**
- * Service(微信照片)
+ * Service(微信留言)
  * @author rufei.cn
  * @version 2019-10-15
  */
 @SuppressWarnings("all")
 @FeignClient(value = "${base-service.base-service}")// 配置远程服务名以及自定义权限验证配置
-@RequestMapping("/server/photo/")// 配置远程服务路径
+@RequestMapping("/server/msg/")// 配置远程服务路径
 
-public interface WxPhotoService  {
+public interface WxUserMessageService  {
 
     /**
-     * list:(查询微信照片 带分页数据)
+     * list:(查询微信留言 带分页数据)
      * @Author rufei.cn
      * @return
      */
@@ -30,32 +30,32 @@ public interface WxPhotoService  {
     Partion getList(@RequestBody JSONObject map);
 
     /**
-     * getWxPhotoList:(查询微信照片 不带分页数据)
+     * getWxUserMessageList:(查询微信留言 不带分页数据)
      * @Author rufei.cn
      * @return
      */
-    @RequestMapping(value = "getWxPhotoList", consumes = MediaType.APPLICATION_JSON_VALUE)
-    List<WxPhoto> getWxPhotoList(@RequestBody WxPhoto wxPhoto);
+    @RequestMapping(value = "getWxUserMessageList", consumes = MediaType.APPLICATION_JSON_VALUE)
+    List<WxUserMessage> getWxUserMessageList(@RequestBody WxUserMessage wxUserMessage);
 
      /**
-     * getWxPhoto:(查询微信照片单个实体数据)
+     * getWxUserMessage:(查询微信留言单个实体数据)
      * @Author rufei.cn
      * @return
      */
-    @RequestMapping(value = "getWxPhoto", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WxPhoto getWxPhoto(@RequestBody WxPhoto wxPhoto);
+    @RequestMapping(value = "getWxUserMessage", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public WxUserMessage getWxUserMessage(@RequestBody WxUserMessage wxUserMessage);
 
     /**
-     * save:(保存微信照片数据)
+     * save:(保存微信留言数据)
      * @Author rufei.cn
      * @return
      */
     @RequestMapping(value = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    WxPhoto save(@RequestBody WxPhoto wxPhoto);
+    WxUserMessage save(@RequestBody WxUserMessage wxUserMessage);
 
 
     /**
-     * delete:(删除微信照片数据)
+     * delete:(删除微信留言数据)
      * @Author rufei.cn
      * @return
      */

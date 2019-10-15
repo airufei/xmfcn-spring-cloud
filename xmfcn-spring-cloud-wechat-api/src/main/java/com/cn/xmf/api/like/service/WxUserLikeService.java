@@ -1,8 +1,8 @@
-package com.cn.xmf.api.photo.service;
+package com.cn.xmf.api.like.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
-import com.cn.xmf.model.wx.WxPhoto;
+import com.cn.xmf.model.wx.WxUserLike;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 /**
- * Service(微信照片)
+ * Service(微信点赞)
  * @author rufei.cn
  * @version 2019-10-15
  */
 @SuppressWarnings("all")
 @FeignClient(value = "${base-service.base-service}")// 配置远程服务名以及自定义权限验证配置
-@RequestMapping("/server/photo/")// 配置远程服务路径
+@RequestMapping("/server/like/")// 配置远程服务路径
 
-public interface WxPhotoService  {
+public interface WxUserLikeService  {
 
     /**
-     * list:(查询微信照片 带分页数据)
+     * list:(查询微信点赞 带分页数据)
      * @Author rufei.cn
      * @return
      */
@@ -30,32 +30,32 @@ public interface WxPhotoService  {
     Partion getList(@RequestBody JSONObject map);
 
     /**
-     * getWxPhotoList:(查询微信照片 不带分页数据)
+     * getWxUserLikeList:(查询微信点赞 不带分页数据)
      * @Author rufei.cn
      * @return
      */
-    @RequestMapping(value = "getWxPhotoList", consumes = MediaType.APPLICATION_JSON_VALUE)
-    List<WxPhoto> getWxPhotoList(@RequestBody WxPhoto wxPhoto);
+    @RequestMapping(value = "getWxUserLikeList", consumes = MediaType.APPLICATION_JSON_VALUE)
+    List<WxUserLike> getWxUserLikeList(@RequestBody WxUserLike wxUserLike);
 
      /**
-     * getWxPhoto:(查询微信照片单个实体数据)
+     * getWxUserLike:(查询微信点赞单个实体数据)
      * @Author rufei.cn
      * @return
      */
-    @RequestMapping(value = "getWxPhoto", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public WxPhoto getWxPhoto(@RequestBody WxPhoto wxPhoto);
+    @RequestMapping(value = "getWxUserLike", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public WxUserLike getWxUserLike(@RequestBody WxUserLike wxUserLike);
 
     /**
-     * save:(保存微信照片数据)
+     * save:(保存微信点赞数据)
      * @Author rufei.cn
      * @return
      */
     @RequestMapping(value = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    WxPhoto save(@RequestBody WxPhoto wxPhoto);
+    WxUserLike save(@RequestBody WxUserLike wxUserLike);
 
 
     /**
-     * delete:(删除微信照片数据)
+     * delete:(删除微信点赞数据)
      * @Author rufei.cn
      * @return
      */

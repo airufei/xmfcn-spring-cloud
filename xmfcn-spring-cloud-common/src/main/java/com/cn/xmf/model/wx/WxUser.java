@@ -19,7 +19,6 @@ public class WxUser extends BaseEntitys {
 
     private String openid;        // 微信用户id
 
-
     public WxUser() {
 
     }
