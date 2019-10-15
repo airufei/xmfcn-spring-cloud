@@ -25,6 +25,7 @@ import java.util.List;
  * @version 2019-10-15
  */
 @RestController
+@RequestMapping("/like")
 @SuppressWarnings("all")
 public class WxUserLikeController {
 

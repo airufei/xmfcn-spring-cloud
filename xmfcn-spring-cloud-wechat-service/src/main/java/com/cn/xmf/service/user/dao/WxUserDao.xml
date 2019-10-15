@@ -1,91 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cn.xmf.service.user.dao.WxUserDao">
-    
-	<sql id="wxUserColumns">
+
+    <sql id="wxUserColumns">
 		a.id AS "id",
 		a.nickName AS "nickname",
 		a.age AS "age",
 		a.city AS "city",
 		a.country AS "country",
 		a.province AS "province",
-		a.createtime AS "createtime",
+		a.createtime AS "createTime",
 		a.updatetime AS "updatetime",
 		a.photoUrl AS "photourl",
 		a.openId AS "openid"
 	</sql>
-	
-	<sql id="wxUserJoins">
-	</sql>
-    
-	<select id="getWxUserById" resultType="com.cn.xmf.model.wx.WxUser">
-		SELECT 
-			<include refid="wxUserColumns"/>
-		FROM t_wx_user a
-		<include refid="wxUserJoins"/>
-		WHERE a.id = #{id}
-	</select>
-	
-	<select id="getTotalCount" resultType="Integer" parameterType="java.util.Map">
-		SELECT 
-			count(0) as count
-		FROM t_wx_user a
-		<include refid="wxUserJoins"/>
-		<where>
-			a.flag = #{flag}
-			<if test="id != null and id != ''">
-				AND a.id = #{id}
-			</if>
-			<if test="openid != null and openid != ''">
-				AND a.openId = #{openid}
-			</if>
-		</where>
-	</select>
-	
-	<select id="getList" resultType="com.cn.xmf.model.wx.WxUser" parameterType="java.util.Map">
-		SELECT 
-			<include refid="wxUserColumns"/>
-		FROM t_wx_user a
-		<include refid="wxUserJoins"/>
-		<where>
-			a.flag = #{flag}
-			<if test="id != null and id != ''">
-				AND a.id = #{id}
-			</if>
-			<if test="openid != null and openid != ''">
-				AND a.openId = #{openid}
-			</if>
-		</where>
-		<choose>
-			<otherwise>
-				ORDER BY a.updateTime desc
-			</otherwise>
-		</choose>
-		limit #{startIndex},#{pageSize} 
-	</select>
+
+    <sql id="wxUserJoins">
+    </sql>
+
+    <select id="getWxUserById" resultType="com.cn.xmf.model.wx.WxUser">
+        SELECT
+        <include refid="wxUserColumns"/>
+        FROM t_wx_user a
+        <include refid="wxUserJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getTotalCount" resultType="Integer" parameterType="java.util.Map">
+        SELECT
+        count(0) as count
+        FROM t_wx_user a
+        <include refid="wxUserJoins"/>
+        <where>
+            a.flag = #{flag}
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="openid != null and openid != ''">
+                AND a.openId = #{openid}
+            </if>
+        </where>
+    </select>
+
+    <select id="getList" resultType="com.cn.xmf.model.wx.WxUser" parameterType="java.util.Map">
+        SELECT
+        <include refid="wxUserColumns"/>
+        FROM t_wx_user a
+        <include refid="wxUserJoins"/>
+        <where>
+            a.flag = #{flag}
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="openid != null and openid != ''">
+                AND a.openId = #{openid}
+            </if>
+        </where>
+        <choose>
+            <otherwise>
+                ORDER BY a.updateTime desc
+            </otherwise>
+        </choose>
+        limit #{startIndex},#{pageSize}
+    </select>
 
     <select id="getWxUserList" resultType="com.cn.xmf.model.wx.WxUser" parameterType="com.cn.xmf.model.wx.WxUser">
-		SELECT 
-			<include refid="wxUserColumns"/>
-		FROM t_wx_user a
-		<include refid="wxUserJoins"/>
-		<where>
-			a.flag = #{flag}
-			<if test="id != null and id != ''">
-				AND a.id = #{id}
-			</if>
-			<if test="openid != null and openid != ''">
-				AND a.openId = #{openid}
-			</if>
-		</where>
-		<choose>
-			<otherwise>
-				ORDER BY a.updateTime desc
-			</otherwise>
-		</choose>
-	</select>
+        SELECT
+        <include refid="wxUserColumns"/>
+        FROM t_wx_user a
+        <include refid="wxUserJoins"/>
+        <where>
+            a.flag = #{flag}
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="openid != null and openid != ''">
+                AND a.openId = #{openid}
+            </if>
+        </where>
+        <choose>
+            <otherwise>
+                ORDER BY a.updateTime desc
+            </otherwise>
+        </choose>
+    </select>
 
-	<insert id="add" useGeneratedKeys="true" keyProperty="id">
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_wx_user(
 			id,
 			nickName,
@@ -106,54 +106,52 @@
 			#{city},
 			#{country},
 			#{province},
-			#{createtime},
-			#{updatetime},
+			#{createTime},
+			#{updateTime},
 			#{flag},
 			#{remark},
 			#{photourl},
 			#{openid}
 		)
 	</insert>
-	
-	<update id="updateById">
-		UPDATE t_wx_user SET 	
-					  <if test="nickname != null and nickname != '' ">
-			            nickName = #{nickname},
-			           </if>
-					  <if test="age != null and age != '' ">
-			            age = #{age},
-			           </if>
-					  <if test="city != null and city != '' ">
-			            city = #{city},
-			           </if>
-					  <if test="country != null and country != '' ">
-			            country = #{country},
-			           </if>
-					  <if test="province != null and province != '' ">
-			            province = #{province},
-			           </if>
-					  <if test="updatetime != null and updatetime != '' ">
-			            updatetime = #{updatetime},
-			           </if>
-					  <if test="flag != null and flag != '' ">
-			            flag = #{flag},
-			           </if>
-					  <if test="remark != null and remark != '' ">
-			            remark = #{remark},
-			           </if>
-					  <if test="photourl != null and photourl != '' ">
-			            photoUrl = #{photourl},
-			           </if>
-					  <if test="openid != null and openid != '' ">
-			            openId = #{openid}
-</if>
-		WHERE id = #{id}
-	</update>
-	
-	<update id="delete">
+
+    <update id="updateById">
+        UPDATE t_wx_user SET
+        <if test="nickname != null and nickname != '' ">
+            nickName = #{nickname},
+        </if>
+        <if test="age != null and age != '' ">
+            age = #{age},
+        </if>
+        <if test="city != null and city != '' ">
+            city = #{city},
+        </if>
+        <if test="country != null and country != '' ">
+            country = #{country},
+        </if>
+        <if test="province != null and province != '' ">
+            province = #{province},
+        </if>
+        <if test="flag != null and flag != '' ">
+            flag = #{flag},
+        </if>
+        <if test="remark != null and remark != '' ">
+            remark = #{remark},
+        </if>
+        <if test="photourl != null and photourl != '' ">
+            photoUrl = #{photourl},
+        </if>
+        <if test="openid != null and openid != '' ">
+            openId = #{openid}
+        </if>
+		updatetime = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
 	UPDATE t_wx_user SET 
 	flag = 1
 		WHERE id = #{id}
 	</update>
-	
+
 </mapper>

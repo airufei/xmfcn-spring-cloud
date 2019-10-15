@@ -26,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @SuppressWarnings("all")
+@RequestMapping("/photo")
 public class WxPhotoController {
 
     private static Logger logger = LoggerFactory.getLogger(WxPhotoController.class);

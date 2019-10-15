@@ -75,12 +75,14 @@ public class UserController {
             retData.setData(jsonObject);
             retData.setCode(ResultCodeMessage.SUCCESS);
             retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
+
         } catch (Exception e) {
             retData.setCode(ResultCodeMessage.FAILURE);
             retData.setMessage(ResultCodeMessage.FAILURE_MESSAGE);
             String msg = "getList:(获取用户信息分页查询接口) 异常====>" + StringUtil.getExceptionMsg(e);
             logger.error(msg);
         }
+        logger.info("结束 retData={}",retData);
         return retData;
     }
 
@@ -102,13 +104,12 @@ public class UserController {
         String province = request.getParameter("province");
         String city = request.getParameter("city");
         String photourl = request.getParameter("photourl");
-        Enumeration<String> enu = request.getParameterNames();
-        String requestURI = request.getRequestURI();
-        while (enu.hasMoreElements()) {
-            String paraName = enu.nextElement();
-            logger.info("In parameter: " + requestURI + "  " + paraName + ": " + request.getParameter(paraName));
-        }
+        logger.info("保存微信用户数据开始：openId={},nickname={}",openId,nickname);
         if (StringUtil.isBlank(nickname)) {
+            object.put("code", 501);
+            return object;
+        }
+        if (StringUtil.isBlank(openId)) {
             object.put("code", 501);
             return object;
         }

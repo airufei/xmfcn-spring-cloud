@@ -4,12 +4,11 @@
 
 
 	<sql id="wxUserLikeColumns">
+        str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
 		a.id AS "id",
 		a.openid AS "openid",
 		a.type AS "type",
 		a.photourl AS "photourl",
-		a.createtime AS "createtime",
-		a.updatetime AS "updatetime",
 		a.flag AS "flag",
 		a.remark AS "remark",
 		a.nickname AS "nickname",

@@ -36,7 +36,7 @@ eureka:
     leaseExpirationDurationInSeconds: 2  # 发呆时间，即服务续约到期时间（缺省为90s）
 spring:
   application:
-    name: wechart-api
+    name: wechat-api
   cloud:
     loadbalancer:
       retry:
