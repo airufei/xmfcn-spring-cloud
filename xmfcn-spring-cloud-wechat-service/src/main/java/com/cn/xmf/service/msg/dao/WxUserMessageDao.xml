@@ -20,7 +20,7 @@
 	<sql id="wxUserMessageJoins">
 	</sql>
 
-	<select id="getWxUserMessageById" resultType="com.cn.xmf.model.msg.WxUserMessage">
+	<select id="getWxUserMessageById" resultType="com.cn.xmf.model.wx.WxUserMessage">
 		SELECT
 			<include refid="wxUserMessageColumns"/>
 		FROM t_wx_user_message a
@@ -47,7 +47,7 @@
 		</where>
 	</select>
 
-	<select id="getList" resultType="com.cn.xmf.model.msg.WxUserMessage" parameterType="com.alibaba.fastjson.JSONObject">
+	<select id="getList" resultType="com.cn.xmf.model.wx.WxUserMessage" parameterType="com.alibaba.fastjson.JSONObject">
 		SELECT
 			<include refid="wxUserMessageColumns"/>
 		FROM
@@ -74,7 +74,7 @@
      limit #{startIndex},#{pageSize}
 	</select>
 
-    <select id="getWxUserMessageList" resultType="com.cn.xmf.model.msg.WxUserMessage" parameterType="com.cn.xmf.model.msg.WxUserMessage">
+    <select id="getWxUserMessageList" resultType="com.cn.xmf.model.wx.WxUserMessage" parameterType="com.cn.xmf.model.wx.WxUserMessage">
 		SELECT
 			<include refid="wxUserMessageColumns"/>
 		FROM (SELECT id from  t_wx_user_message t
@@ -98,7 +98,7 @@
 		</choose>
 	</select>
 
-       <select id="getSignleWxUserMessage" resultType="com.cn.xmf.model.msg.WxUserMessage" parameterType="com.cn.xmf.model.msg.WxUserMessage">
+       <select id="getSignleWxUserMessage" resultType="com.cn.xmf.model.wx.WxUserMessage" parameterType="com.cn.xmf.model.wx.WxUserMessage">
 		SELECT
 			<include refid="wxUserMessageColumns"/>
 		FROM

@@ -23,6 +23,7 @@ import java.util.List;
  * @version 2019-10-15
  */
 @RestController
+@RequestMapping(value = "/msg")
 @SuppressWarnings("all")
 public class WxUserMessageController {
 
