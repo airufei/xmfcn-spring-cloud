@@ -3,7 +3,7 @@
 <mapper namespace="com.cn.xmf.service.like.dao.WxUserLikeDao">
 
 
-	<sql id="wxUserLikeColumns">
+    <sql id="wxUserLikeColumns">
         str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
 		a.id AS "id",
 		a.openid AS "openid",
@@ -15,238 +15,238 @@
 		a.bizid AS "bizid"
 	</sql>
 
-	<sql id="wxUserLikeJoins">
-	</sql>
+    <sql id="wxUserLikeJoins">
+    </sql>
 
-	<select id="getWxUserLikeById" resultType="com.cn.xmf.model.wx.WxUserLike">
-		SELECT
-			<include refid="wxUserLikeColumns"/>
-		FROM t_wx_user_like a
-		<include refid="wxUserLikeJoins"/>
-		WHERE a.id = #{id}
-	</select>
-
-	<select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
-		SELECT
-			count(*) as count
-		FROM t_wx_user_like a
-		<include refid="wxUserLikeJoins"/>
-		<where>
-			<if test="openid != null and openid != ''">
-				AND a.openid = #{openid}
-			</if>
-			<if test="type != null and type != ''">
-				AND a.type = #{type}
-			</if>
-			<if test="bizid != null and bizid != ''">
-				AND a.bizid = #{bizid}
-			</if>
-			and flag=#{flag}
-		</where>
-	</select>
-
-	<select id="getList" resultType="com.cn.xmf.model.wx.WxUserLike" parameterType="com.alibaba.fastjson.JSONObject">
-		SELECT
-			<include refid="wxUserLikeColumns"/>
-		FROM
-		(SELECT id from  t_wx_user_like t
-		<where>
-			<if test="openid != null and openid != ''">
-				AND t.openid = #{openid}
-			</if>
-			<if test="type != null and type != ''">
-				AND t.type = #{type}
-			</if>
-			<if test="bizid != null and bizid != ''">
-				AND t.bizid = #{bizid}
-			</if>
-			and flag=#{flag}
-		</where>
-		 ) b inner join
-		t_wx_user_like a  on b.id=a.id
-		 <choose>
-			<otherwise>
-                 ORDER BY createtime desc
-			</otherwise>
-		</choose>
-     limit #{startIndex},#{pageSize}
-	</select>
-
-    <select id="getWxUserLikeList" resultType="com.cn.xmf.model.wx.WxUserLike" parameterType="com.cn.xmf.model.wx.WxUserLike">
-		SELECT
-			<include refid="wxUserLikeColumns"/>
-		FROM (SELECT id from  t_wx_user_like t
-		<where>
-			<if test="openid != null and openid != ''">
-				AND t.openid = #{openid}
-			</if>
-			<if test="type != null and type != ''">
-				AND t.type = #{type}
-			</if>
-			<if test="bizid != null and bizid != ''">
-				AND t.bizid = #{bizid}
-			</if>
-			and flag=#{flag}
-		</where>
-		) b  inner join t_wx_user_like a  on b.id=a.id
-		 <choose>
-			<otherwise>
-                 ORDER BY createtime desc
-			</otherwise>
-		</choose>
-	</select>
-
-       <select id="getSignleWxUserLike" resultType="com.cn.xmf.model.wx.WxUserLike" parameterType="com.cn.xmf.model.wx.WxUserLike">
-		SELECT
-			<include refid="wxUserLikeColumns"/>
-		FROM
-		t_wx_user_like a
-		<where>
-			<if test="openid != null and openid != ''">
-				AND a.openid = #{openid}
-			</if>
-			<if test="type != null and type != ''">
-				AND a.type = #{type}
-			</if>
-			<if test="bizid != null and bizid != ''">
-				AND a.bizid = #{bizid}
-			</if>
-			and flag=#{flag}
-		</where>
-		limit 1
-	</select>
-
-
-<insert id="add" useGeneratedKeys="true" keyProperty="id">
- <selectKey resultType="long" keyProperty="id" order="AFTER">
+    <select id="getWxUserLikeById" resultType="com.cn.xmf.model.wx.WxUserLike">
         SELECT
-        LAST_INSERT_ID()
-     </selectKey>
-		INSERT INTO t_wx_user_like(
-		<if test="id != null">
-		 id,
-		</if>
-		<if test="openid != null">
-		 openid,
-		</if>
-		<if test="type != null">
-		 type,
-		</if>
-		<if test="photourl != null">
-		 photourl,
-		</if>
-		<if test="updatetime != null">
-		 updatetime,
-		</if>
-		<if test="flag != null">
-		 flag,
-		</if>
-		<if test="remark != null">
-		 remark,
-		</if>
-		<if test="nickname != null">
-		 nickname,
-		</if>
-		<if test="bizid != null">
-		 bizid,
-		</if>
-		 createtime
-		) VALUES (
+        <include refid="wxUserLikeColumns"/>
+        FROM t_wx_user_like a
+        <include refid="wxUserLikeJoins"/>
+        WHERE a.id = #{id}
+    </select>
 
-		 <if test="id != null ">
-		  #{id},
-		   </if>
-		 <if test="openid != null ">
-		  #{openid},
-		   </if>
-		 <if test="type != null ">
-		  #{type},
-		   </if>
-		 <if test="photourl != null ">
-		  #{photourl},
-		   </if>
-		 <if test="updatetime != null ">
-		  #{updatetime},
-		   </if>
-		 <if test="flag != null ">
-		  #{flag},
-		   </if>
-		 <if test="remark != null ">
-		  #{remark},
-		   </if>
-		 <if test="nickname != null ">
-		  #{nickname},
-		   </if>
-		 <if test="bizid != null ">
-		  #{bizid},
-		   </if>
-		 #{createtime}
-		)
-	</insert>
-
-  <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
-     <selectKey resultType="long" keyProperty="id" order="AFTER">
+    <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
         SELECT
-        LAST_INSERT_ID()
-     </selectKey>
-		INSERT INTO t_wx_user_like(
-		 id,
-		 openid,
-		 type,
-		 photourl,
-		 updatetime,
-		 flag,
-		 remark,
-		 nickname,
-		 bizid,
-		  createtime
-		 ) VALUES
- <foreach collection="list" item="item" index="index" separator="," >
-		(
-		  #{item.id},
-		  #{item.openid},
-		  #{item.type},
-		  #{item.photourl},
-		  #{item.updatetime},
-		  #{item.flag},
-		  #{item.remark},
-		  #{item.nickname},
-		  #{item.bizid},
-		  #{item.createtime}
-		)
-</foreach>
-	</insert>
+        count(*) as count
+        FROM t_wx_user_like a
+        <include refid="wxUserLikeJoins"/>
+        <where>
+            <if test="openid != null and openid != ''">
+                AND a.openid = #{openid}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+            <if test="bizid != null and bizid != ''">
+                AND a.bizid = #{bizid}
+            </if>
+            and flag=#{flag}
+        </where>
+    </select>
 
-<update id="updateById">
-   UPDATE t_wx_user_like SET
-            <if test="openid != null">
+    <select id="getList" resultType="com.cn.xmf.model.wx.WxUserLike" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        <include refid="wxUserLikeColumns"/>
+        FROM
+        (SELECT id from t_wx_user_like t
+        <where>
+            <if test="openid != null and openid != ''">
+                AND t.openid = #{openid}
+            </if>
+            <if test="type != null and type != ''">
+                AND t.type = #{type}
+            </if>
+            <if test="bizid != null and bizid != ''">
+                AND t.bizid = #{bizid}
+            </if>
+            and flag=#{flag}
+        </where>
+        ) b inner join
+        t_wx_user_like a on b.id=a.id
+        <choose>
+            <otherwise>
+                ORDER BY createtime desc
+            </otherwise>
+        </choose>
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="getWxUserLikeList" resultType="com.cn.xmf.model.wx.WxUserLike"
+            parameterType="com.cn.xmf.model.wx.WxUserLike">
+        SELECT
+        <include refid="wxUserLikeColumns"/>
+        FROM (SELECT id from t_wx_user_like t
+        <where>
+            <if test="openid != null and openid != ''">
+                AND t.openid = #{openid}
+            </if>
+            <if test="type != null and type != ''">
+                AND t.type = #{type}
+            </if>
+            <if test="bizid != null and bizid != ''">
+                AND t.bizid = #{bizid}
+            </if>
+            and flag=#{flag}
+        </where>
+        ) b inner join t_wx_user_like a on b.id=a.id
+        <choose>
+            <otherwise>
+                ORDER BY createtime desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getSignleWxUserLike" resultType="com.cn.xmf.model.wx.WxUserLike"
+            parameterType="com.cn.xmf.model.wx.WxUserLike">
+        SELECT
+        <include refid="wxUserLikeColumns"/>
+        FROM
+        t_wx_user_like a
+        <where>
+            <if test="openid != null and openid != ''">
+                AND a.openid = #{openid}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+            <if test="bizid != null and bizid != ''">
+                AND a.bizid = #{bizid}
+            </if>
+            and flag=#{flag}
+        </where>
+        limit 1
+    </select>
+
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_wx_user_like(
+        <if test="id != null">
+            id,
+        </if>
+        <if test="openid != null">
+            openid,
+        </if>
+        <if test="type != null">
+            type,
+        </if>
+        <if test="photourl != null">
+            photourl,
+        </if>
+        <if test="updateTime != null">
+            updateTime,
+        </if>
+        <if test="flag != null">
+            flag,
+        </if>
+        <if test="remark != null">
+            remark,
+        </if>
+        <if test="nickname != null">
+            nickname,
+        </if>
+        <if test="bizid != null">
+            bizid,
+        </if>
+        createtime
+        ) VALUES (
+
+        <if test="id != null ">
+            #{id},
+        </if>
+        <if test="openid != null ">
+            #{openid},
+        </if>
+        <if test="type != null ">
+            #{type},
+        </if>
+        <if test="photourl != null ">
+            #{photourl},
+        </if>
+        <if test="updateTime != null ">
+            #{updateTime},
+        </if>
+        <if test="flag != null ">
+            #{flag},
+        </if>
+        <if test="remark != null ">
+            #{remark},
+        </if>
+        <if test="nickname != null ">
+            #{nickname},
+        </if>
+        <if test="bizid != null ">
+            #{bizid},
+        </if>
+        #{createTime}
+        )
+    </insert>
+
+    <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_wx_user_like(
+        id,
+        openid,
+        type,
+        photourl,
+        updatetime,
+        flag,
+        remark,
+        nickname,
+        bizid,
+        createtime
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.openid},
+            #{item.type},
+            #{item.photourl},
+            #{item.updateTime},
+            #{item.flag},
+            #{item.remark},
+            #{item.nickname},
+            #{item.bizid},
+            #{item.createTime}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateById">
+        UPDATE t_wx_user_like SET
+        <if test="openid != null">
             openid = #{openid},
-           </if>
-            <if test="type != null">
+        </if>
+        <if test="type != null">
             type = #{type},
-           </if>
-            <if test="photourl != null">
+        </if>
+        <if test="photourl != null">
             photourl = #{photourl},
-           </if>
-            <if test="createtime != null">
-            createtime = #{createtime},
-           </if>
-            <if test="flag != null">
+        </if>
+        <if test="flag != null">
             flag = #{flag},
-           </if>
-            <if test="remark != null">
+        </if>
+        <if test="remark != null">
             remark = #{remark},
-           </if>
-            <if test="nickname != null">
+        </if>
+        <if test="nickname != null">
             nickname = #{nickname},
-           </if>
-            <if test="bizid != null">
+        </if>
+        <if test="bizid != null">
             bizid = #{bizid},
-           </if>
-	WHERE id = #{id}
-</update>
+        </if>
+        updateTime=now(),
+        WHERE id = #{id}
+    </update>
 
-	<update id="delete">
+    <update id="delete">
 	UPDATE t_wx_user_like SET
 	flag = -1
 		WHERE id = #{id}

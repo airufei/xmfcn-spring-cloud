@@ -243,7 +243,7 @@
         <if test="path != null">
             remark=#{path},
         </if>
-        updatetime = #{updateTime}
+        updatetime = now()
         WHERE id = #{id}
     </update>
 
