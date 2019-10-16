@@ -43,17 +43,23 @@ public class WxUserService {
         wxUserDao.delete(id);
     }
 
+    /**
+     * 保存用户数据
+     * @param wxUser
+     * @return
+     */
     @RequestMapping("save")
-    public WxUser save(WxUser wxUser) {
+    public WxUser save(@RequestBody WxUser wxUser) {
         if (wxUser == null) {
             return null;
         }
         String openid = wxUser.getOpenid();
+        logger.info("保存用户数据 开始 openid={}",openid);
         WxUser user = getWxUserByOpenId(openid);
         if (user != null) {
             wxUser.setId(user.getId());
         }
-        if (wxUser.getId() > 0) {
+        if (wxUser.getId()!=null&&wxUser.getId() > 0) {
             wxUserDao.updateById(wxUser);
         } else {
             wxUserDao.add(wxUser);

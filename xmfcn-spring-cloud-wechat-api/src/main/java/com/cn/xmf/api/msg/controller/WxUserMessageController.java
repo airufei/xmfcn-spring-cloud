@@ -120,13 +120,21 @@ public class WxUserMessageController {
     public RetData save(HttpServletRequest request) {
         RetData retData = new RetData();
         WxUserMessage wxUserMessage= new WxUserMessage();
-        String openid = request.getParameter("openid");
+        String openid = request.getParameter("openId");
         String type = request.getParameter("type");
         String content = request.getParameter("content");
         String photourl = request.getParameter("photourl");
         String remark = request.getParameter("remark");
         String nickname = request.getParameter("nickname");
         String bizid = request.getParameter("bizid");
+        if(StringUtil.isBlank(bizid))
+        {
+            bizid=StringUtil.getUuId();
+        }
+        if(StringUtil.isBlank(type))
+        {
+            type="common_comment";
+        }
         wxUserMessage.setOpenid(openid);
         wxUserMessage.setType(type);
         wxUserMessage.setContent(content);
