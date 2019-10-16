@@ -135,6 +135,18 @@ public class WxUserMessageController {
         {
             type="common_comment";
         }
+        if(StringUtil.isBlank(content))
+        {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("不好意思，留言信息不能为空");
+            return retData;
+        }
+        if(content.length()>50)
+        {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("不好意思，留言太长了...");
+            return retData;
+        }
         wxUserMessage.setOpenid(openid);
         wxUserMessage.setType(type);
         wxUserMessage.setContent(content);

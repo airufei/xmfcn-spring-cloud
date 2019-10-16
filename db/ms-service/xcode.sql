@@ -107,7 +107,7 @@ CREATE TABLE `t_wx_user_message` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `openid` varchar(100) DEFAULT NULL COMMENT '用户唯一标识',
   `type` varchar(50) DEFAULT NULL COMMENT '类型',
-  `content` varchar(50) DEFAULT NULL COMMENT '内容',
+  `content` varchar(200) DEFAULT NULL COMMENT '内容',
   `photourl` varchar(255) DEFAULT NULL COMMENT '头像',
   `createtime` datetime DEFAULT NULL COMMENT '创建时间',
   `updatetime` datetime DEFAULT NULL COMMENT '修改时间',

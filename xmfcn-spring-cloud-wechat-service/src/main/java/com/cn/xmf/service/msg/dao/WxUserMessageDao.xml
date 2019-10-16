@@ -67,7 +67,7 @@
         t_wx_user_message a on b.id=a.id
         <choose>
             <otherwise>
-                ORDER BY photourl desc
+                ORDER BY createtime desc
             </otherwise>
         </choose>
         limit #{startIndex},#{pageSize}
@@ -93,7 +93,7 @@
         ) b inner join t_wx_user_message a on b.id=a.id
         <choose>
             <otherwise>
-                ORDER BY photourl desc
+                ORDER BY createtime desc
             </otherwise>
         </choose>
     </select>
