@@ -46,7 +46,7 @@ public class WxUserMessageController {
         String length = request.getParameter("pageSize");
         String openid = request.getParameter("openid");
         String type = request.getParameter("type");
-        String bizid = request.getParameter("bizid");
+        String bizid = request.getParameter("bizId");
         int pageSize = 10;
         int pageNo = 1;
         if (StringUtil.isNotBlank(pageNoStr)) {
@@ -126,7 +126,7 @@ public class WxUserMessageController {
         String photourl = request.getParameter("photourl");
         String remark = request.getParameter("remark");
         String nickname = request.getParameter("nickname");
-        String bizid = request.getParameter("bizid");
+        String bizid = request.getParameter("bizId");
         if(StringUtil.isBlank(bizid))
         {
             bizid=StringUtil.getUuId();
