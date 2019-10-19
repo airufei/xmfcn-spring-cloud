@@ -68,7 +68,7 @@ public class WxPhotoController {
         int totalCount = 0;
         if (pt != null) {
             list = (List<WxPhoto>) pt.getList();
-            totalCount = pt.getPageCount();
+            totalCount = pt.getTotalCount();
         }
         if (list == null || list.size() <= 0) {
             retData.setData(list);
