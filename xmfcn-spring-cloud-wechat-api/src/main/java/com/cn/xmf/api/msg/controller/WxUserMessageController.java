@@ -70,13 +70,12 @@ public class WxUserMessageController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("list", list);
         jsonObject.put("totalCount", totalCount);
+        retData.setData(jsonObject);
         if (list == null||list.size()<=0) {
-            retData.setData(jsonObject);
             retData.setCode(ResultCodeMessage.NO_DATA);
             retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
             return retData;
         }
-        retData.setData(jsonObject);
         retData.setCode(ResultCodeMessage.SUCCESS);
         retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
         logger.info("getList:(获取微信留言分页查询接口) 结束");
@@ -126,7 +125,7 @@ public class WxUserMessageController {
         String photourl = request.getParameter("photourl");
         String remark = request.getParameter("remark");
         String nickname = request.getParameter("nickname");
-        String bizid = request.getParameter("bizid");
+        String bizid = request.getParameter("bizId");
         if(StringUtil.isBlank(bizid))
         {
             bizid=StringUtil.getUuId();

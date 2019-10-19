@@ -73,8 +73,8 @@ public class WxUserLikeController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("list", list);
         jsonObject.put("totalCount", totalCount);
+        retData.setData(jsonObject);
         if (list == null||list.size()<=0) {
-            retData.setData(jsonObject);
             retData.setCode(ResultCodeMessage.NO_DATA);
             retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
             return retData;
