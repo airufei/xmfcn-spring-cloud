@@ -110,7 +110,7 @@
                     </tr>
                 </table>
          	</div>
-         	<div class="modal-body">
+         	<div class="modal-body" style="overflow-y: scroll;height: 500px">
 				<form class="form-horizontal form" role="form" >
 					<div class="form-group">
 						<label for="firstname" class="col-sm-2 control-label">${I18n.jobinfo_field_jobgroup}<font color="red">*</font></label>
