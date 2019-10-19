@@ -67,15 +67,15 @@ public class WxUserMessageController {
             list = (List<WxUserMessage>) pt.getList();
             totalCount = pt.getTotalCount();
         }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("list", list);
+        jsonObject.put("totalCount", totalCount);
         if (list == null||list.size()<=0) {
-            retData.setData(list);
+            retData.setData(jsonObject);
             retData.setCode(ResultCodeMessage.NO_DATA);
             retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
             return retData;
         }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("list", list);
-        jsonObject.put("totalCount", totalCount);
         retData.setData(jsonObject);
         retData.setCode(ResultCodeMessage.SUCCESS);
         retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);

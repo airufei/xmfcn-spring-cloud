@@ -70,15 +70,15 @@ public class WxPhotoController {
             list = (List<WxPhoto>) pt.getList();
             totalCount = pt.getTotalCount();
         }
-        if (list == null || list.size() <= 0) {
-            retData.setData(list);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("list", list);
+        jsonObject.put("totalCount", totalCount);
+        if (list == null||list.size()<=0) {
+            retData.setData(jsonObject);
             retData.setCode(ResultCodeMessage.NO_DATA);
             retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
             return retData;
         }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("list", list);
-        jsonObject.put("totalCount", totalCount);
         retData.setData(jsonObject);
         retData.setCode(ResultCodeMessage.SUCCESS);
         retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
