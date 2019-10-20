@@ -9,7 +9,6 @@ import com.cn.xmf.base.Interface.SysCommon;
 import com.cn.xmf.enums.MessageType;
 import com.cn.xmf.model.msg.Message;
 import com.cn.xmf.util.*;
-import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
