@@ -10,7 +10,7 @@ server:
       enabled: true
       directory: /opt/mnt_file/logs/zuul/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D(ms)'
-    basedir: /opt/zuul/tomcat/
+    basedir: /opt/mnt_file/logs/tomcat_zuul/
     max-http-post-size: 50MB
   max-http-header-size: 10000000 #扩展 tomcat header的长度 omcat限制了header的长度,如果你请求的数据量超过了默认的长度就会抛出越界
 # 本服务需要调用的服务和授权信息-service层
