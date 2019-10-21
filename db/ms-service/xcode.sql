@@ -59,7 +59,7 @@ CREATE TABLE `t_wx_user` (
   `photoUrl` varchar(500) DEFAULT NULL COMMENT '头像url',
   `openId` varchar(64) DEFAULT NULL COMMENT '微信用户id',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_wx_user_openId` (`openId`) USING BTREE,
+  KEY KEY `idx_wx_user_openId` (`openId`) USING BTREE,
   KEY `idx_wx_user_updatetime` (`updatetime`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='微信用户表';
 
@@ -78,7 +78,7 @@ CREATE TABLE `t_wx_photo` (
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
   `path` varchar(255) DEFAULT NULL COMMENT '存储地址',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_wx_phone'_type` (`type`) USING BTREE,
+  KEY KEY `idx_wx_phone'_type` (`type`) USING BTREE,
   KEY `idx_wx_user_updatetime` (`updatetime`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='微信照片信息表';
 -- ----------------------------
@@ -119,4 +119,23 @@ CREATE TABLE `t_wx_user_message` (
   KEY `idx_wx_user_openid` (`openid`) USING BTREE,
   KEY `idx_wx_msg_type` (`type`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COMMENT='微信留言';
+
+-- ----------------------------
+-- 微信音乐信息表
+-- ----------------------------
+CREATE TABLE `t_wx_music` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) DEFAULT NULL COMMENT '图片名称',
+  `type` varchar(50) DEFAULT NULL COMMENT '图片类型',
+  `url` varchar(50) DEFAULT NULL COMMENT '图片地址',
+  `createtime` datetime DEFAULT NULL COMMENT '创建时间',
+  `updatetime` datetime DEFAULT NULL COMMENT '修改时间',
+  `flag` int(11) DEFAULT '0' COMMENT '删除标记',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `path` varchar(255) DEFAULT NULL COMMENT '存储地址',
+  PRIMARY KEY (`id`),
+  KEY `idx_wx_music'_type` (`type`) USING BTREE,
+  KEY `idx_wx_music_updatetime` (`updatetime`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='微信音乐信息表';
+
 

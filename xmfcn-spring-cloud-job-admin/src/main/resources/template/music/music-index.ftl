@@ -4,7 +4,8 @@
     <#import "/common/common.macro.ftl" as netCommon>
     <@netCommon.commonStyle />
     <!-- DataTables -->
-    <link rel="stylesheet" href="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="/job/adminlte/plugins/datatables/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="/job/js/upload/fileinput.min.css">
     <title>微信音乐管理</title>
 </head>
 <body class="hold-transition skin-blue sidebar-mini  <#if cookieMap?exists && "off" == cookieMap["xxljob_adminlte_settings"].value >sidebar-collapse</#if>">
@@ -27,12 +28,6 @@
             <div class="row">
                 <div class="col-xs-3">
                     <div class="input-group">
-                        <span class="input-group-addon">id</span>
-                        <input type="text" class="form-control" id="id" autocomplete="on">
-                    </div>
-                </div>
-                <div class="col-xs-3">
-                    <div class="input-group">
                         <span class="input-group-addon">类型</span>
                         <input type="text" class="form-control" id="type" autocomplete="on">
                     </div>
@@ -42,27 +37,6 @@
                     <div class="input-group">
                         <span class="input-group-addon">音乐名称</span>
                         <input type="text" class="form-control" id="title" autocomplete="on">
-                    </div>
-                </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">音乐地址</span>
-                        <input type="text" class="form-control" id="url" autocomplete="on">
-                    </div>
-                </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">备注</span>
-                        <input type="text" class="form-control" id="remark" autocomplete="on">
-                    </div>
-                </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">昵称</span>
-                        <input type="text" class="form-control" id="nickname" autocomplete="on">
                     </div>
                 </div>
                 <div class="col-xs-1">
@@ -121,38 +95,27 @@
                     </tr>
                 </table>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: scroll;height: 500px">
                 <form class="form-horizontal form" role="form">
                     <div class="form-group">
-                        <label for="id" class="col-sm-2 control-label">id<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="id" placeholder="请输入..."
-                                                      maxlength="20"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="openid" class="col-sm-2 control-label">用户唯一标识<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="openid"
-                                                      placeholder="请输入..."
-                                                      maxlength="100"></div>
-                    </div>
-                    <div class="form-group">
                         <label for="type" class="col-sm-2 control-label">类型<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="type" placeholder="请输入..."
+                        <div class="col-sm-10"><input type="text" id="save_type" class="form-control" name="type" placeholder="请输入..."
                                                       maxlength="50"></div>
                     </div>
                     <div class="form-group">
-                        <label for="title" class="col-sm-2 control-label">音乐名称<font color="red">*</font></label>
-                        <div class="col-sm-10"><input type="text" class="form-control" name="title" placeholder="请输入..."
+                        <label for="remark" class="col-sm-2 control-label">备注<font color="red">*</font></label>
+                        <div class="col-sm-10"><input id="save_remark"  type="text" class="form-control" name="remark"
+                                                      placeholder="请输入..."
                                                       maxlength="150"></div>
                     </div>
-                    <hr>
                     <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-6">
-                            <button type="submit" class="btn btn-primary">${I18n.system_save}</button>
-                            <button type="button" class="btn btn-default"
-                                    data-dismiss="modal">${I18n.system_cancel}</button>
-                            <input type="hidden" name="id">
+                        <label for="file" class="col-sm-2 control-label">选择文件<font color="red">*</font></label>
+                        <div class="col-sm-10">
+                            <input id="uploadMusic" name="file" class="file" type="file" enctype="multipart/form-data"
+                                   multiple data-min-file-count="1" data-theme="fas">
                         </div>
                     </div>
+                    <hr>
                 </form>
             </div>
         </div>
@@ -161,20 +124,63 @@
 
 <@netCommon.commonScript />
 <!-- DataTables -->
-<script src="/jobadmin/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
-<script src="/jobadmin/plugins/jquery/jquery.validate.min.js"></script>
+<script src="/job/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/job/adminlte/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script src="/job/plugins/jquery/jquery.validate.min.js"></script>
 <!-- moment -->
-<script src="/jobadmin/adminlte/plugins/daterangepicker/moment.min.js"></script>
-<script src="/jobadmin/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>
-//拖拽
-<script src="/jobadmin/js/wxMusic.index.js"></script>
+<script src="/job/adminlte/plugins/daterangepicker/moment.min.js"></script>
+<script src="/job/adminlte/plugins/jQuery/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="/job/js/upload/piexif.js"></script>
+<script src="/job/js/upload/zh.js"></script>
+<script src="/job/js/upload/fileinput.min.js"></script>
+<script src="/job/js/music.index.js"></script>
 
 <script>
     $(document).ready(function () {
         $("#modalDialog").draggable();		        //为模态对话框添加拖拽，拖拽区域只在顶部栏
         $("#modalDialog").draggable({handle: ".modal-header"});//为模态对话框添加拖拽
         $("#addModal").css("overflow", "hidden"); // 禁止模态对话框的半透明背景滚动
+    });
+    $("#uploadMusic").fileinput({
+        uploadUrl: base_url + "/music/save", // server upload action
+        language: 'zh',
+        minFileCount: 0,
+        uploadAsync: true,
+        maxFileCount: 400,
+        allowedFileExtensions: ['mp3'],//可以可选择的违建格式
+        enctype: 'multipart/form-data',
+        maxFileSize: 909600,//限制上传大小KB
+        showBrowse: true,
+        browseOnZoneClick: true,
+        ajaxSettings: {
+            contentType: false
+        },
+        uploadExtraData: function (previewId, index) {
+            var data = {
+                remark: $("#save_remark").val(),
+                type: $("#save_type").val()
+            };
+            return data;
+        }
+    }).on("filepredelete", function (jqXHR) {
+        var abort = true;
+        if (confirm("确定删除此图片?")) {
+            abort = false;
+        }
+        return abort; // 您还可以发送任何数据/对象，你可以接收` filecustomerror
+    }).on('filebatchpreupload', function (event, data) {
+        var n = data.files.length, files = n > 1 ? n + ' files' : 'one file';
+        if (!window.confirm("确定上传选择的文件吗 ?")) {
+            return {
+                message: "上传失败!", // upload error message
+                data: {} // any other data to send that can be referred in `filecustomerror`
+            };
+        }
+    }).on('fileuploaded', function (event, data, id, index) {//上传成功之后的处理
+        $('#addModal').modal('hide');
+        alert("上传成功")
+    }).on('filebatchpreupload', function (event, data, id, index) {
+        $('#kv-success-1').html('<h4>上传状态</h4><ul></ul>').hide();
     })
 </script>
 </body>

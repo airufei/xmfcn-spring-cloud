@@ -71,13 +71,14 @@
                 AND t.level = #{level}
             </if>
         </where>
-        limit #{startIndex},#{pageSize}) b inner join
+       ) b inner join
         t_sys_job_menu a on b.id=a.id
         <choose>
             <otherwise>
                 ORDER BY update_time desc
             </otherwise>
         </choose>
+        limit #{startIndex},#{pageSize}
     </select>
 
     <select id="getJobMenuList" resultType="com.cn.xmf.job.admin.menu.model.JobMenu"
@@ -86,7 +87,6 @@
         <include refid="jobMenuColumns"/>
         FROM (SELECT id from t_sys_job_menu t
         <where>
-            flag=#{flag}
             <if test="name != null and name != ''">
                 AND t.name = #{name}
             </if>
@@ -96,6 +96,7 @@
             <if test="level != null and level != ''">
                 AND t.level = #{level}
             </if>
+            and flag=#{flag}
         </where>
         ) b inner join t_sys_job_menu a on b.id=a.id
         <choose>

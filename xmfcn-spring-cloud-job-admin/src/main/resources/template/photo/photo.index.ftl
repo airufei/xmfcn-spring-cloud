@@ -162,11 +162,7 @@
         uploadAsync: true,
         maxFileCount: 200,
         enctype: 'multipart/form-data',
-        maxFileSize: 90960,//限制上传大小KB
-        // overwriteInitial: false,//不覆盖已上传的图片
-        //allowedPreviewTypes: ['image'],
-        // allowedFileExtensions: ['jpg', 'png', 'gif'],//可以可选择的违建格式
-        // elErrorContainer: '#kv-error-1',//错误显示的文本continner
+        maxFileSize: 909600,//限制上传大小KB
         showBrowse: true,
         browseOnZoneClick: true,
         ajaxSettings: {

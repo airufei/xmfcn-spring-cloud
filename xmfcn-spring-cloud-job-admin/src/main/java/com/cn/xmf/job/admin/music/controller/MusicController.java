@@ -8,6 +8,7 @@ import com.cn.xmf.job.admin.music.service.MusicService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.model.wx.Music;
 import com.cn.xmf.model.wx.WxPhoto;
+import com.cn.xmf.util.AliyunOSSClientUtil;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.FileReadUtil;
 import com.cn.xmf.util.StringUtil;
@@ -21,7 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -56,7 +59,7 @@ public class MusicController {
      * @return
      * @Author rufei.cn
      */
-    @RequestMapping("pageList")
+    @RequestMapping("/pageList")
     @ResponseBody
     public JSONObject getList(HttpServletRequest request) {
         JSONObject retJon = new JSONObject();
@@ -103,7 +106,7 @@ public class MusicController {
      * @return
      * @Author rufei.cn
      */
-    @RequestMapping("delete")
+    @RequestMapping("/delete")
     @ResponseBody
     public ReturnT<String> delete(HttpServletRequest request) {
         ReturnT<String> returnT = new ReturnT<>(ReturnT.FAIL_CODE, "删除失败");
@@ -133,11 +136,11 @@ public class MusicController {
      * @return
      * @Author rufei.cn
      */
-    @RequestMapping(value = "save")
+    @RequestMapping(value = "/save")
     @ResponseBody
     public ReturnT<String> save(HttpServletRequest request) throws IOException {
         ReturnT<String> retData = new ReturnT<>(ReturnT.FAIL_CODE, "保存数据失败");
-        String title = request.getParameter("title");
+        String remark = request.getParameter("remark");
         String type = request.getParameter("type");
         String description = request.getParameter("description");
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -145,10 +148,6 @@ public class MusicController {
         Map map = multipartRequest.getFileMap();
         if (StringUtil.isBlank(type)) {
             retData.setMsg("类型不能为空");
-            return retData;
-        }
-        if (StringUtil.isBlank(title)) {
-            retData.setMsg("名称不能为空");
             return retData;
         }
         if (map == null) {
@@ -179,12 +178,14 @@ public class MusicController {
                 logger.info(message);
                 continue;
             }
-            long oldfileSize = oldfile.getSize();
-            String temp_path = "/mnt/file/pic_temp/";
-            String temp_scale = "/mnt/file/pic_scale/";
-            StringUtil.threadSleep(500);
+            String temp_path = "/mnt/file/music_temp/";
             FileReadUtil.uploadFile(oldfile.getBytes(), temp_path, newFilenName);//写入临时目录
-            FileReadUtil.uploadOss(oldfileSize, newFilenName, temp_scale, temp_path, ossPath);
+            File temFile = new File(temp_path + newFilenName);
+            AliyunOSSClientUtil.upLoadFileOSS(temFile, ossPath);
+            if (temFile.exists()) {
+                temFile.delete();
+                temFile=null;
+            }
             WxPhoto wxPhoto = new WxPhoto();
             String read_path = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "music_read_path");
             if (StringUtil.isBlank(read_path)) {
@@ -194,11 +195,12 @@ public class MusicController {
                 continue;
             }
             Music music = new Music();
-            music.setTitle(title);
+            music.setTitle(filename);
             music.setType(type);
             music.setUrl(read_path + newFilenName);
             music.setCreateTime(new Date());
             music.setUpdateTime(new Date());
+            music.setRemark(remark);
             Music ret = musicService.save(music);
             if (ret == null) {
                 retData.setMsg("保存数据失败");

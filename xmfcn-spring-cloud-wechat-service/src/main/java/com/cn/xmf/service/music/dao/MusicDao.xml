@@ -9,6 +9,7 @@
 		a.type AS "type",
 		a.title AS "title",
 		a.url AS "url",
+		a.path as "path",
 		a.remark AS "remark"
 	</sql>
 
@@ -120,7 +121,7 @@
         <if test="url != null">
             url,
         </if>
-        <if test="updatetime != null">
+        <if test="updateTime != null">
             updatetime,
         </if>
         <if test="flag != null">
@@ -128,6 +129,9 @@
         </if>
         <if test="remark != null">
             remark,
+        </if>
+        <if test="path != null">
+            path,
         </if>
         createtime
         ) VALUES (
@@ -144,8 +148,8 @@
         <if test="url != null ">
             #{url},
         </if>
-        <if test="updatetime != null ">
-            #{updatetime},
+        <if test="updateTime != null ">
+            #{updateTime},
         </if>
         <if test="flag != null ">
             #{flag},
@@ -153,37 +157,11 @@
         <if test="remark != null ">
             #{remark},
         </if>
-        #{createtime}
+        <if test="path != null ">
+            #{path},
+        </if>
+        #{createTime}
         )
-    </insert>
-
-    <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
-        <selectKey resultType="long" keyProperty="id" order="AFTER">
-            SELECT
-            LAST_INSERT_ID()
-        </selectKey>
-        INSERT INTO t_wx_music(
-        id,
-        type,
-        title,
-        url,
-        updatetime,
-        flag,
-        remark,
-        createtime
-        ) VALUES
-        <foreach collection="list" item="item" index="index" separator=",">
-            (
-            #{item.id},
-            #{item.type},
-            #{item.title},
-            #{item.url},
-            #{item.updatetime},
-            #{item.flag},
-            #{item.remark},
-            #{item.createtime}
-            )
-        </foreach>
     </insert>
 
     <update id="updateById">
@@ -199,6 +177,9 @@
         </if>
         <if test="remark != null">
             remark = #{remark},
+        </if>
+        <if test="path != null">
+            path = #{path},
         </if>
         updatetime = now()
         WHERE id = #{id}

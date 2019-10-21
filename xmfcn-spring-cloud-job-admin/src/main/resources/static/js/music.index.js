@@ -21,6 +21,11 @@ $(function () {
         //"scrollX": true,	// scroll x，close self-adaption
         "columns": [
             {
+                "data": 'id',
+                "visible": false,
+                "width": '180'
+            },
+            {
                 "data": 'type',
                  "visible": true,
                 "width": '180'
@@ -28,6 +33,16 @@ $(function () {
             {
                 "data": 'title',
                  "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'url',
+                "visible": true,
+                "width": '180'
+            },
+            {
+                "data": 'updatetimestr',
+                "visible": true,
                 "width": '180'
             },
             {
