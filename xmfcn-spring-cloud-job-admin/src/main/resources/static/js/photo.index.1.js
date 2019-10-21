@@ -188,10 +188,10 @@ $(function () {
         var row = tableData['key' + id];
         if (row != null && row != undefined) {
             $("#addModal .form input[name='id']").val(row.id);
-            $("#addModal .form input[name='dictKey']").val(row.dictKey);
-            $("#addModal .form input[name='dictValue']").val(row.dictValue);
+            $("#addModal .form input[name='name']").val(row.name);
+            $("#addModal .form input[name='url']").val(row.url);
             $("#addModal .form input[name='type']").val(row.type);
-            $("#addModal .form input[name='remark']").val(row.remark);
+            $("#addModal .form input[name='description']").val(row.description);
         }
         // show
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');

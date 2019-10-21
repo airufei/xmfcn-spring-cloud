@@ -9,7 +9,6 @@ $(function () {
             type: "post",
             data: function (d) {
                 var obj = {};
-                obj.openid = $('#openid').val();
                 obj.type = $('#type').val();
                 obj.title = $('#title').val();
                 obj.start = d.start;
@@ -21,11 +20,6 @@ $(function () {
         "ordering": false,
         //"scrollX": true,	// scroll x，close self-adaption
         "columns": [
-            {
-                "data": 'openid',
-                 "visible": true,
-                "width": '180'
-            },
             {
                 "data": 'type',
                  "visible": true,
@@ -162,10 +156,9 @@ $(function () {
         var row = tableData['key' + id];
         if (row != null && row != undefined) {
            $("#addModal .form input[name='id']").val(row.id);
-           $("#addModal .form input[name='openid']").val(row.openid);
            $("#addModal .form input[name='type']").val(row.type);
            $("#addModal .form input[name='title']").val(row.title);
-          $("#addModal .form input[name='id']").val(row.id);
+           $("#addModal .form input[name='id']").val(row.id);
         }
         // show
         $('#addModal').modal({backdrop: false, keyboard: false}).modal('show');

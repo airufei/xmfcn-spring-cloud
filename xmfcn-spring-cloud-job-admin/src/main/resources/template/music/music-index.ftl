@@ -32,14 +32,6 @@
                     </div>
                 </div>
                 <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">用户唯一标识</span>
-                        <input type="text" class="form-control" id="openid" autocomplete="on">
-                    </div>
-                </div>
-                <div class="col-xs-3">
-
                     <div class="input-group">
                         <span class="input-group-addon">类型</span>
                         <input type="text" class="form-control" id="type" autocomplete="on">
@@ -57,27 +49,6 @@
                     <div class="input-group">
                         <span class="input-group-addon">音乐地址</span>
                         <input type="text" class="form-control" id="url" autocomplete="on">
-                    </div>
-                </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">创建时间</span>
-                        <input type="text" class="form-control" id="createtime" autocomplete="on">
-                    </div>
-                </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">修改时间</span>
-                        <input type="text" class="form-control" id="updatetime" autocomplete="on">
-                    </div>
-                </div>
-                <div class="col-xs-3">
-
-                    <div class="input-group">
-                        <span class="input-group-addon">删除标记</span>
-                        <input type="text" class="form-control" id="flag" autocomplete="on">
                     </div>
                 </div>
                 <div class="col-xs-3">
@@ -111,12 +82,10 @@
                                 <thead>
                                 <tr>
                                     <th name="id">id</th>
-                                    <th name="openid">用户唯一标识</th>
                                     <th name="type">类型</th>
                                     <th name="title">音乐名称</th>
                                     <th name="url">音乐地址</th>
-                                    <th name="updatetime">修改时间</th>
-                                    <th name="nickname">昵称</th>
+                                    <th name="updatetimestr">修改时间</th>
                                     <th name="operate">操作</th>
                                 </tr>
                                 </thead>
