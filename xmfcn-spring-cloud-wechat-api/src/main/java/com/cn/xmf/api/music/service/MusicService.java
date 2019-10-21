@@ -16,7 +16,7 @@ import java.util.List;
  * @version 2019-10-21
  */
 @SuppressWarnings("all")
-@FeignClient(value = "${base-service.base-service}")// 配置远程服务名以及自定义权限验证配置
+@FeignClient(value = "${base-service.wechat-service}")// 配置远程服务名以及自定义权限验证配置
 @RequestMapping("/server/music/")// 配置远程服务路径
 
 public interface MusicService  {
