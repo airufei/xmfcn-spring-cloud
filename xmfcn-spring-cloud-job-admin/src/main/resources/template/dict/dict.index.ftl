@@ -54,7 +54,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
-                        <div class="box-body">
+                        <div class="box-body" style="overflow-y: scroll;height: 500px">
                             <table id="dict_list" class="table table-striped table-hover table-condensed"
                                    width="100%" style="white-space: nowrap;">
                                 <thead>

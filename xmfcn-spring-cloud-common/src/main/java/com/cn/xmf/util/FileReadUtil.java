@@ -1,11 +1,11 @@
 package com.cn.xmf.util;
 
+import com.aliyun.oss.OSSClient;
+import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -71,14 +71,84 @@ public class FileReadUtil {
         return "".equals(value) ? defaultValue : value;
     }
 
-    public static void uploadFile(byte[] file, String filePath, String fileName) throws Exception {
+    public static void uploadFile(byte[] file, String filePath, String fileName) {
         File targetFile = new File(filePath);
-        if(!targetFile.exists()){
+        if (!targetFile.exists()) {
             targetFile.mkdirs();
         }
-        FileOutputStream out = new FileOutputStream(filePath+fileName);
-        out.write(file);
-        out.flush();
-        out.close();
+        try {
+            FileOutputStream out = new FileOutputStream(filePath + fileName);
+            out.write(file);
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.info(exceptionMsg);
+        }
+    }
+
+    /**
+     * 上传OSS并按等比例压缩
+     * @param size
+     * @param newFilenName
+     * @param temp_scale
+     * @param temp_path
+     * @param ossPath
+     */
+    public static void uploadOss(long size, String newFilenName, String temp_scale, String temp_path, String ossPath) {
+        logger.info("oldfile_size:={}", size);
+        try {
+            File file = new File(temp_scale);
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            //对图片等比例压缩
+            double scale = 1;
+            double quality = 1;//压缩质量
+            if (size > 1024000) {
+                scale = 0.8;
+                quality = 0.8;
+            } else if (size > 4096000) {
+                scale = 0.5;
+                quality = 0.5;
+            }
+            else if (size > 6144000) {
+                scale = 0.3;
+                quality = 0.3;
+            }
+            Thumbnails.of(temp_path + newFilenName).
+                    scale(scale). // 图片缩放80%, 不能和size()一起使用
+                    outputQuality(quality). // 图片质量压缩80%
+                    toFile(temp_scale + newFilenName);
+            File scaleFile = new File(temp_scale + newFilenName);
+            AliyunOSSClientUtil.upLoadFileOSS(scaleFile, ossPath);
+            File temFile = new File(temp_path + newFilenName);
+            if (temFile.exists()) {
+                temFile.delete();
+                temFile=null;
+            }
+            if (scaleFile.exists()) {
+                scaleFile.delete();
+                scaleFile=null;
+            }
+        } catch (IOException e) {
+            String exceptionMsg = StringUtil.getExceptionMsg(e);
+            logger.info(exceptionMsg);
+        }
+    }
+
+    public static void inputStreamToFile(InputStream ins, File file) {
+        try {
+            OutputStream os = new FileOutputStream(file);
+            int bytesRead = 0;
+            byte[] buffer = new byte[8192];
+            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+            os.close();
+            ins.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

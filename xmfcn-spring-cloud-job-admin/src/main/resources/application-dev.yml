@@ -1,6 +1,7 @@
 # ==Tomcat配置==
 server:
   port: 8093
+  max-http-header-size: 50MB
   tomcat:
     max-connections: 20000 # 最大连接数 表示有多少个socket连接到tomcat上 NIO模式下默认是10000
     accept-count: 200 # 允许的最大连接数，即等待队列 应大于等于max-threads 默认值75
@@ -10,6 +11,7 @@ server:
       enabled: true
       directory: /opt/logs/job-admin/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D'
+    max-http-post-size: 50MB
 
 # 本服务需要调用的服务和授权信息-service层
 base-service:
@@ -53,8 +55,8 @@ spring:
       probability: 1 #收集日志比例 100%
   servlet:
     multipart:
-      max-file-size: 30MB
-      max-request-size: 30MB
+      max-file-size: 50MB
+      max-request-size: 50MB
   # 数据源
   datasource:
     name: xmfjob

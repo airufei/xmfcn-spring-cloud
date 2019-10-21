@@ -104,7 +104,7 @@
             <div class="modal-header">
                 <h4 class="modal-title" >${I18n.joblog_clean_log}</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: scroll;height: 500px">
                 <form class="form-horizontal form" role="form" >
                     <div class="form-group">
                         <label class="col-sm-3 control-label"">${I18n.jobinfo_field_jobgroup}：</label>
@@ -115,7 +115,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"">${I18n.jobinfo_job}：</label>
+                        <label class="col-sm-3 control-label">${I18n.jobinfo_job}：</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control jobIdText" readonly >
                             <input type="hidden" name="jobId" >

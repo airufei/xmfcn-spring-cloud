@@ -68,18 +68,17 @@ public class WxUserLikeController {
         int totalCount = 0;
         if (pt != null) {
             list = (List<WxUserLike>) pt.getList();
-            totalCount = pt.getPageCount();
-        }
-        if (list == null || list.size() <= 0) {
-            retData.setData(list);
-            retData.setCode(ResultCodeMessage.NO_DATA);
-            retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
-            return retData;
+            totalCount = pt.getTotalCount();
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("list", list);
         jsonObject.put("totalCount", totalCount);
         retData.setData(jsonObject);
+        if (list == null||list.size()<=0) {
+            retData.setCode(ResultCodeMessage.NO_DATA);
+            retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
+            return retData;
+        }
         retData.setCode(ResultCodeMessage.SUCCESS);
         retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
         logger.info("getList:(获取微信点赞分页查询接口) 结束");

@@ -1,7 +1,6 @@
 
 package com.cn.xmf.zuul.sys;
 
-import org.redisson.api.RLock;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;

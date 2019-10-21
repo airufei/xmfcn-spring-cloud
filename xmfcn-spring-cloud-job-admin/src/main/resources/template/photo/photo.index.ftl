@@ -19,7 +19,7 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>${I18n.dict_name}</h1>
+            <h1>照片管理</h1>
         </section>
 
         <!-- Main content -->
@@ -48,7 +48,7 @@
                     <button class="btn btn-block btn-info" id="searchBtn">搜索</button>
                 </div>
                 <div class="col-xs-2">
-                    <button class="btn btn-block btn-success add" type="button">新增字典</button>
+                    <button class="btn btn-block btn-success add" type="button">上传照片</button>
                 </div>
             </div>
 
@@ -101,7 +101,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: scroll;height: 500px">
                 <form class="form-horizontal form" method="post" enctype="multipart/form-data" role="form">
                     <div class="form-group">
                         <label for="name" class="col-sm-2 control-label">照片名称<font color="red">*</font></label>
@@ -160,11 +160,11 @@
         language: 'zh',
         minFileCount: 0,
         uploadAsync: true,
-        maxFileCount: 100,
+        maxFileCount: 200,
         enctype: 'multipart/form-data',
-        maxFileSize: 5120,//限制上传大小KB
+        maxFileSize: 90960,//限制上传大小KB
         // overwriteInitial: false,//不覆盖已上传的图片
-        allowedPreviewTypes: ['image'],
+        //allowedPreviewTypes: ['image'],
         // allowedFileExtensions: ['jpg', 'png', 'gif'],//可以可选择的违建格式
         // elErrorContainer: '#kv-error-1',//错误显示的文本continner
         showBrowse: true,

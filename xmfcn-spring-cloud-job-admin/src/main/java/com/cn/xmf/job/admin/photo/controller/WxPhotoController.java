@@ -8,9 +8,11 @@ import com.cn.xmf.job.admin.common.SysCommonService;
 import com.cn.xmf.job.admin.photo.service.WxPhotoService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.model.wx.WxPhoto;
+import com.cn.xmf.util.AliyunOSSClientUtil;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.FileReadUtil;
 import com.cn.xmf.util.StringUtil;
+import net.coobird.thumbnailator.Thumbnails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -155,7 +159,7 @@ public class WxPhotoController {
         String name = request.getParameter("name");
         String type = request.getParameter("type");
         String description = request.getParameter("description");
-        logger.info("save:(保存微信照片数据接口) 开始  name={},type={},description={}", name,type,description);
+        logger.info("save:(保存微信照片数据接口) 开始  name={},type={},description={}", name, type, description);
         if (StringUtil.isBlank(type)) {
             retData.setMsg("类型不能为空");
             return retData;
@@ -178,18 +182,27 @@ public class WxPhotoController {
             }
             String suffix = filename.substring(filename.lastIndexOf(".") + 1);
             String newFilenName = StringUtil.getUuId() + "." + suffix;
+            logger.info(" 获取文件的后缀 filename={}", newFilenName);
+            if (StringUtil.isBlank(newFilenName)) {
+                continue;
+            }
             logger.info(" 获取文件的后缀 newFilenName={}", newFilenName);
-            String path = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "img_store_path");
-            if (StringUtil.isBlank(path)) {
-                String message="存储路径不能为空";
+            String ossPath = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "img_store_path");
+            if (StringUtil.isBlank(ossPath)) {
+                String message = "存储路径不能为空";
                 logger.info(message);
                 continue;
             }
-            FileReadUtil.uploadFile(oldfile.getBytes(), path, newFilenName);
+            long oldfileSize = oldfile.getSize();
+            String temp_path = "/mnt/file/pic_temp/";
+            String temp_scale = "/mnt/file/pic_scale/";
+            StringUtil.threadSleep(500);
+            FileReadUtil.uploadFile(oldfile.getBytes(), temp_path, newFilenName);//写入临时目录
+            FileReadUtil.uploadOss(oldfileSize,newFilenName,temp_scale,temp_path,ossPath);
             WxPhoto wxPhoto = new WxPhoto();
             String read_path = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "img_read_path");
             if (StringUtil.isBlank(read_path)) {
-                String message="读取路径不能为空";
+                String message = "读取路径不能为空";
                 logger.info(message);
                 retData.setMsg(message);
                 continue;
@@ -197,10 +210,11 @@ public class WxPhotoController {
             wxPhoto.setUrl(read_path + newFilenName);
             wxPhoto.setCreateTime(new Date());
             wxPhoto.setUpdateTime(new Date());
-            wxPhoto.setPath(path);
+            wxPhoto.setPath(ossPath);
             wxPhoto.setDescription(description);
             wxPhoto.setName(name);
             wxPhoto.setType(type);
+            wxPhoto.setRemark("AliCloud_OSS");
             // 保存数据库
             WxPhoto ret = wxPhotoService.save(wxPhoto);
             if (ret != null) {

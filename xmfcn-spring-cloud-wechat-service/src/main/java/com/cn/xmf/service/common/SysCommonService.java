@@ -9,7 +9,6 @@ import com.cn.xmf.service.sys.KafKaProducerService;
 import com.cn.xmf.service.sys.MessageService;
 import com.cn.xmf.service.sys.RedisService;
 import com.cn.xmf.util.*;
-import org.redisson.api.RLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
