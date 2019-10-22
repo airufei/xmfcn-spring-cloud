@@ -62,7 +62,7 @@ public class MusicController {
         param.put("title", title);
         Partion pt = musicService.getList(param);
         List<Music> list = null;
-        int totalCount = 0;
+        long totalCount = 0;
         if (pt != null) {
             list = (List<Music>) pt.getList();
             totalCount = pt.getTotalCount();

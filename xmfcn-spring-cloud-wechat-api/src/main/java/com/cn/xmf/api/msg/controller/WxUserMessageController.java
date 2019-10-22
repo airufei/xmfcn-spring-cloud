@@ -62,7 +62,7 @@ public class WxUserMessageController {
         logger.info("getList:(获取微信留言分页查询接口) 开始  param={}", param);
         Partion pt = wxUserMessageService.getList(param);
         List<WxUserMessage> list = null;
-        int totalCount = 0;
+        long totalCount = 0;
         if (pt != null) {
             list = (List<WxUserMessage>) pt.getList();
             totalCount = pt.getTotalCount();
@@ -119,7 +119,7 @@ public class WxUserMessageController {
     public RetData save(HttpServletRequest request) {
         RetData retData = new RetData();
         WxUserMessage wxUserMessage= new WxUserMessage();
-        String openid = request.getParameter("openId");
+        String openId = request.getParameter("openId");
         String type = request.getParameter("type");
         String content = request.getParameter("content");
         String photourl = request.getParameter("photourl");
@@ -140,13 +140,19 @@ public class WxUserMessageController {
             retData.setMessage("不好意思，留言信息不能为空");
             return retData;
         }
-        if(content.length()>50)
+        if(StringUtil.isBlank(openId))
+        {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("不好意思，请先登录");
+            return retData;
+        }
+        if(content.length()>120)
         {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("不好意思，留言太长了...");
             return retData;
         }
-        wxUserMessage.setOpenid(openid);
+        wxUserMessage.setOpenid(openId);
         wxUserMessage.setType(type);
         wxUserMessage.setContent(content);
         wxUserMessage.setPhotourl(photourl);

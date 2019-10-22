@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -58,7 +57,7 @@ public class UserController {
             param.put("type", type);
             Partion pt = userService.getList(param);
             List<User> list = null;
-            int totalCount = 0;
+            long totalCount = 0;
             if (pt != null) {
                 list = (List<User>) pt.getList();
                 totalCount = pt.getPageCount();

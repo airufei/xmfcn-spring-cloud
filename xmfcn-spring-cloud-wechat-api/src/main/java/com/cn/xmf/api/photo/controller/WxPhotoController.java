@@ -65,7 +65,7 @@ public class WxPhotoController {
         logger.info("getList:(获取微信照片分页查询接口) 开始  param={}", param);
         Partion pt = wxPhotoService.getList(param);
         List<WxPhoto> list = null;
-        int totalCount = 0;
+        long totalCount = 0;
         if (pt != null) {
             list = (List<WxPhoto>) pt.getList();
             totalCount = pt.getTotalCount();

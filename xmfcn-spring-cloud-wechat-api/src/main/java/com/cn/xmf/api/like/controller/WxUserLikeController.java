@@ -42,7 +42,7 @@ public class WxUserLikeController {
      * @return
      * @Author rufei.cn
      */
-    @RequestMapping("getList")
+    @RequestMapping("/getList")
     public RetData getList(HttpServletRequest request) {
         RetData retData = new RetData();
         String pageNoStr = request.getParameter("pageNo");
@@ -65,7 +65,7 @@ public class WxUserLikeController {
         logger.info("getList:(获取微信点赞分页查询接口) 开始  param={}", param);
         Partion pt = wxUserLikeService.getList(param);
         List<WxUserLike> list = null;
-        int totalCount = 0;
+        long totalCount = 0;
         if (pt != null) {
             list = (List<WxUserLike>) pt.getList();
             totalCount = pt.getTotalCount();
@@ -93,7 +93,7 @@ public class WxUserLikeController {
      * @return
      * @Author rufei.cn
      */
-    @RequestMapping("getWxUserLike")
+    @RequestMapping("/getWxUserLike")
     public RetData getWxUserLike(HttpServletRequest request) {
         RetData retData = new RetData();
         WxUserLike wxUserLike = new WxUserLike();
@@ -120,22 +120,38 @@ public class WxUserLikeController {
      * @return
      * @Author rufei.cn
      */
-    @RequestMapping(value = "save")
+    @RequestMapping(value = "/save")
     public RetData save(HttpServletRequest request) {
         RetData retData = new RetData();
         WxUserLike wxUserLike = new WxUserLike();
-        String openid = request.getParameter("openid");
+        String openId = request.getParameter("openId");
         String type = request.getParameter("type");
         String photourl = request.getParameter("photourl");
         String remark = request.getParameter("remark");
         String nickname = request.getParameter("nickname");
-        String bizid = request.getParameter("bizid");
-        wxUserLike.setOpenid(openid);
+        String bizId = request.getParameter("bizId");
+        String likeCountStr = request.getParameter("likeCount");
+        int likeCount=StringUtil.stringToInt(likeCountStr);
+        if(StringUtil.isBlank(bizId))
+        {
+            bizId=StringUtil.getUuId();
+        }
+        if(StringUtil.isBlank(type))
+        {
+            type="common_like";
+        }
+        if(StringUtil.isBlank(openId))
+        {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("不好意思，请先登录");
+            return retData;
+        }
+        wxUserLike.setOpenid(openId);
         wxUserLike.setType(type);
         wxUserLike.setPhotourl(photourl);
         wxUserLike.setRemark(remark);
         wxUserLike.setNickname(nickname);
-        wxUserLike.setBizid(bizid);
+        wxUserLike.setBizid(bizId);
         logger.info("save:(保存微信点赞数据接口) 开始  wxUserLike={}", wxUserLike);
         wxUserLike.setCreateTime(new Date());
         wxUserLike.setUpdateTime(new Date());
@@ -157,7 +173,7 @@ public class WxUserLikeController {
      * @return
      * @Author rufei.cn
      */
-    @RequestMapping("delete")
+    @RequestMapping("/delete")
     public RetData delete(HttpServletRequest request) {
         RetData retData = new RetData();
         String idStr = request.getParameter("id");
