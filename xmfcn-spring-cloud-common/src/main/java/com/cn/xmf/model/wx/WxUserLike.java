@@ -37,6 +37,10 @@ public class WxUserLike extends BaseEntitys {
      */
     private String bizid;
 
+    /**
+     * 点赞数
+     */
+    private long likeCount;
 
     public WxUserLike() {
 
@@ -83,6 +87,14 @@ public class WxUserLike extends BaseEntitys {
         this.bizid = bizid;
     }
 
+    public long getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(long likeCount) {
+        this.likeCount = likeCount;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -91,6 +103,7 @@ public class WxUserLike extends BaseEntitys {
                 .append("photourl", photourl)
                 .append("nickname", nickname)
                 .append("bizid", bizid)
+                .append("likeCount", likeCount)
                 .toString();
     }
 }

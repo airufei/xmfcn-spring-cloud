@@ -25,13 +25,13 @@ import java.util.Map;
 @SuppressWarnings("all")
 public class Partion implements java.io.Serializable {
 
-	private int totalCount;// 总的记录数
+	private long totalCount;// 总的记录数
 	private Object list;// 查询的数据集
 	private int currentCount = 1;// 当前页页码
 	private int pageSize = 10;// 每页记录数
-	private int pageCount = 0;// 总页数
-	private int nevPage = 0;// 上一页页码
-	private int nextPage = 0;// 下一页页码
+	private long pageCount = 0;// 总页数
+	private long nevPage = 0;// 上一页页码
+	private long nextPage = 0;// 下一页页码
 	private int isNext = -1;// 是否显示下一页按钮(-1显示  1不显示)
 	private int isNev =1;// 是否显示下一页按钮(-1显示  1不显示)
 
@@ -45,7 +45,7 @@ public class Partion implements java.io.Serializable {
 	 * @param list 数据集
 	 * @param totalcount 总记录数
 	 */
-	public Partion(Map map, List list, int totalcount) {
+	public Partion(Map map, List list, long totalcount) {
 		if (map != null) {
 			currentCount = StringUtil.objToInt(map.get("currentCount"));
 			pageSize = StringUtil.objToInt(map.get("pageSize"));
@@ -54,7 +54,7 @@ public class Partion implements java.io.Serializable {
 			list = new ArrayList();
 		}
 		if (totalcount >0) {
-			pageCount = (totalcount + pageSize - 1) / pageSize;
+		   long	pageCount = (totalcount + pageSize - 1) / pageSize;
 			this.setPageCount(pageCount);
 			nextPage= currentCount + 1;
 			nevPage=currentCount- 1;
@@ -121,7 +121,7 @@ public class Partion implements java.io.Serializable {
 	 * @author rufei.cn
 	 * @return
 	 */
-	public int getPageCount() {
+	public long getPageCount() {
 		return pageCount;
 	}
 
@@ -131,7 +131,7 @@ public class Partion implements java.io.Serializable {
 	 * @author rufei.cn
 	 * @return
 	 */
-	public void setPageCount(int pageCount) {
+	public void setPageCount(long pageCount) {
 		this.pageCount = pageCount;
 	}
 
@@ -141,7 +141,7 @@ public class Partion implements java.io.Serializable {
 	 * @author rufei.cn
 	 * @return
 	 */
-	public int getNevPage() {
+	public long getNevPage() {
 		return nevPage;
 	}
 
@@ -151,7 +151,7 @@ public class Partion implements java.io.Serializable {
 	 * @author rufei.cn
 	 * @return
 	 */
-	public void setNevPage(int nevPage) {
+	public void setNevPage(long nevPage) {
 		this.nevPage = nevPage;
 	}
 
@@ -161,7 +161,7 @@ public class Partion implements java.io.Serializable {
 	 * @author rufei.cn
 	 * @return
 	 */
-	public int getNextPage() {
+	public long getNextPage() {
 		return nextPage;
 	}
 
@@ -171,7 +171,7 @@ public class Partion implements java.io.Serializable {
 	 * @author rufei.cn
 	 * @return
 	 */
-	public void setNextPage(int nextPage) {
+	public void setNextPage(long nextPage) {
 		this.nextPage = nextPage;
 	}
 
@@ -241,7 +241,7 @@ public class Partion implements java.io.Serializable {
 	 * @author rufei.cn
 	 * @return
 	 */
-	public int getTotalCount() {
+	public long getTotalCount() {
 		return totalCount;
 	}
 
@@ -251,7 +251,7 @@ public class Partion implements java.io.Serializable {
 	 * @author rufei.cn
 	 * @return
 	 */
-	public void setTotalCount(int totalCount) {
+	public void setTotalCount(long totalCount) {
 		this.totalCount = totalCount;
 	}
 

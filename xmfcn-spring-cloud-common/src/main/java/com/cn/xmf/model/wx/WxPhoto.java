@@ -31,6 +31,17 @@ public class WxPhoto extends BaseEntitys {
     private String path;
 
 
+    /**
+     * 点赞数
+     */
+    private long likeCount;
+
+    /**
+     * 评论数
+     */
+    private long commentCount;
+
+
     public WxPhoto() {
 
     }
@@ -74,6 +85,21 @@ public class WxPhoto extends BaseEntitys {
     public void setPath(String path) {
         this.path = path;
     }
+    public long getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(long likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public long getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(long commentCount) {
+        this.commentCount = commentCount;
+    }
 
     @Override
     public String toString() {
@@ -83,6 +109,8 @@ public class WxPhoto extends BaseEntitys {
                 .append("url", url)
                 .append("description", description)
                 .append("path", path)
+                .append("likeCount", likeCount)
+                .append("commentCount", commentCount)
                 .toString();
     }
 }
