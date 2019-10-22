@@ -74,6 +74,6 @@ public interface WxPhotoDao {
 	   * @param map
 	   * @return
 	   */
-	   public Integer  getTotalCount(Map map);
+	   public Long  getTotalCount(Map map);
 	   
 }

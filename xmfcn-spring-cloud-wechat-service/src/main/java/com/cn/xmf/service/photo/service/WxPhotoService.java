@@ -47,10 +47,14 @@ public class WxPhotoService {
         if (json == null || json.size() < 1) {
             return null;
         }
-        int totalcount = wxPhotoHelperService.getTotalCount(json);
+        long totalcount = wxPhotoHelperService.getTotalCount(json);
         List<WxPhoto> list = null;
         if (totalcount > 0) {
             list = wxPhotoDao.getList(json);
+        }
+        if(list!=null)
+        {
+            list= wxPhotoHelperService.ListToList(list);
         }
         Partion pt = new Partion(json, list, totalcount);
         return pt;

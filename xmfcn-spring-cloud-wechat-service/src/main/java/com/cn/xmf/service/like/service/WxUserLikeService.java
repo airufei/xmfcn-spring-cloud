@@ -49,7 +49,7 @@ public class WxUserLikeService  {
           {
              return null;
           }
-          int totalcount =wxUserLikeHelperService.getTotalCount(json);
+          long totalcount =wxUserLikeHelperService.getTotalCount(json);
           List<WxUserLike> list= null;
           if(totalcount>0)
           {

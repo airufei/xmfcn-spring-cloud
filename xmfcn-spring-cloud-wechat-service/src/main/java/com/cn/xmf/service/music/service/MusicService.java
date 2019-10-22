@@ -48,7 +48,7 @@ public class MusicService  {
           {
              return null;
           }
-          int totalcount =musicHelperService.getTotalCount(json);
+          long totalcount =musicHelperService.getTotalCount(json);
           List<Music> list= null;
           if(totalcount>0)
           {

@@ -3,6 +3,9 @@ package com.cn.xmf.service.like.service;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.model.wx.WxUserLike;
 import com.cn.xmf.service.like.dao.WxUserLikeDao;
+import com.cn.xmf.util.ConstantUtil;
+import com.cn.xmf.util.LocalCacheUtil;
+import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +26,50 @@ public class WxUserLikeHelperService  {
 	@Autowired
 	private WxUserLikeDao wxUserLikeDao;
 
-	  /**
-	   * 获取分页总记录数
-	   * @param map
-	   * @return
-	   */
-	   public int  getTotalCount(JSONObject map)
-	   {
-	      int resCount=0;
-	      Integer totalCount =wxUserLikeDao.getTotalCount(map);
-	      if(totalCount!=null)
-	      {
-	        resCount=totalCount;
-	      }
-	      return resCount;
-	   }
+	/**
+	 * 获取分页总记录数
+	 *
+	 * @param map
+	 * @return
+	 */
+	public long getTotalCount(JSONObject map) {
+		long resCount = 0;
+		Long totalCount = wxUserLikeDao.getTotalCount(map);
+		if (totalCount != null) {
+			resCount = totalCount;
+		}
+		return resCount;
+	}
 
+	/**
+	 * 获取单条数据
+	 *
+	 * @param bizId
+	 * @param type
+	 * @return
+	 * @author rufei.cn
+	 */
+	public long getPhotoLikeCount(String bizId, String type) {
+		long count = 0;
+		JSONObject map = new JSONObject();
+		map.put("type", type);
+		map.put("bizid", bizId);
+		String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + "getPhotoLikeCount" + bizId + type;
+		String cache = LocalCacheUtil.getCache(key);
+		if (StringUtil.isNotBlank(cache)) {
+			count = StringUtil.stringToLong(cache);
+		}
+		if (count > 0) {
+			return count;
+		}
+		Long likeCount = wxUserLikeDao.getLikeCount(map);
+		if(likeCount!=null)
+		{
+			count=likeCount;
+		}
+		LocalCacheUtil.saveCache(key, String.valueOf(count), 60);
+		return count;
+	}
 
     /*
      * save(保存微信点赞)

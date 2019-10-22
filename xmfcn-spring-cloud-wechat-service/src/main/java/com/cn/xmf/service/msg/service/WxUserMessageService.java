@@ -48,7 +48,7 @@ public class WxUserMessageService  {
           {
              return null;
           }
-          int totalcount =wxUserMessageHelperService.getTotalCount(json);
+          long totalcount =wxUserMessageHelperService.getTotalCount(json);
           List<WxUserMessage> list= null;
           if(totalcount>0)
           {

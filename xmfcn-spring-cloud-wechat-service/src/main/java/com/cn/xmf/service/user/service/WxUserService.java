@@ -76,7 +76,7 @@ public class WxUserService {
     @RequestMapping("getList")
     public Partion getList(@RequestBody Map map) {
         List<WxUser> list = wxUserDao.getList(map);
-        int totalcount = getTotalCount(map);
+        long totalcount = getTotalCount(map);
         Partion pt = new Partion(map, list, totalcount);
         return pt;
     }
@@ -109,7 +109,7 @@ public class WxUserService {
      * @param map
      * @return
      */
-    private int getTotalCount(Map map) {
+    private long getTotalCount(Map map) {
         return wxUserDao.getTotalCount(map);
     }
     /**

@@ -12,6 +12,7 @@
 		a.flag AS "flag",
 		a.remark AS "remark",
 		a.nickname AS "nickname",
+		a.likeCount,
 		a.bizid AS "bizid"
 	</sql>
 
@@ -26,9 +27,28 @@
         WHERE a.id = #{id}
     </select>
 
-    <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
+    <select id="getTotalCount" resultType="Long" parameterType="com.alibaba.fastjson.JSONObject">
         SELECT
         count(*) as count
+        FROM t_wx_user_like a
+        <include refid="wxUserLikeJoins"/>
+        <where>
+            <if test="openid != null and openid != ''">
+                AND a.openid = #{openid}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+            <if test="bizid != null and bizid != ''">
+                AND a.bizid = #{bizid}
+            </if>
+            and flag=#{flag}
+        </where>
+    </select>
+
+    <select id="getLikeCount" resultType="Long" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        sum(likeCount) as likeCount
         FROM t_wx_user_like a
         <include refid="wxUserLikeJoins"/>
         <where>
@@ -152,6 +172,10 @@
         <if test="bizid != null">
             bizid,
         </if>
+        <if test="likeCount != null">
+            likeCount,
+        </if>
+
         createtime
         ) VALUES (
 
@@ -182,6 +206,9 @@
         <if test="bizid != null ">
             #{bizid},
         </if>
+        <if test="likeCount != null ">
+            #{likeCount},
+        </if>
         #{createTime}
         )
     </insert>
@@ -201,6 +228,7 @@
         remark,
         nickname,
         bizid,
+        likeCount,
         createtime
         ) VALUES
         <foreach collection="list" item="item" index="index" separator=",">
@@ -214,6 +242,7 @@
             #{item.remark},
             #{item.nickname},
             #{item.bizid},
+            #{item.likeCount},
             #{item.createTime}
             )
         </foreach>
@@ -241,6 +270,9 @@
         </if>
         <if test="bizid != null">
             bizid = #{bizid},
+        </if>
+        <if test="likeCount != null">
+            likeCount = #{likeCount},
         </if>
         updateTime=now(),
         WHERE id = #{id}

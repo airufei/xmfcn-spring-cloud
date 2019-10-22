@@ -68,6 +68,6 @@ public interface WxUserDao {
 	   * @param map
 	   * @return
 	   */
-	   public int  getTotalCount(Map map);
+	   public Long  getTotalCount(Map map);
 	   
 }
