@@ -149,7 +149,7 @@ public class CommentController {
         if(content.length()>120)
         {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
-            retData.setMessage("不好意思，留言太长了...");
+            retData.setMessage("太长了,可以简短一点，谢谢。");
             return retData;
         }
         comment.setOpenId(openId);
