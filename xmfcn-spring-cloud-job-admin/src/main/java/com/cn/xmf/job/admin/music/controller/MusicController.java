@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.job.admin.common.SysCommonService;
-import com.cn.xmf.job.admin.music.service.MusicService;
+import com.cn.xmf.job.admin.music.rpc.MusicService;
 import com.cn.xmf.job.core.biz.model.ReturnT;
 import com.cn.xmf.model.wx.Music;
-import com.cn.xmf.model.wx.WxPhoto;
+import com.cn.xmf.model.wx.Photo;
 import com.cn.xmf.util.AliyunOSSClientUtil;
 import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.FileReadUtil;
@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -86,7 +85,7 @@ public class MusicController {
         param.put("title", title);
         Partion pt = musicService.getList(param);
         List<Music> list = null;
-        int totalCount = 0;
+        long totalCount = 0;
         if (pt != null) {
             list = (List<Music>) pt.getList();
             totalCount = pt.getTotalCount();
@@ -186,7 +185,7 @@ public class MusicController {
                 temFile.delete();
                 temFile=null;
             }
-            WxPhoto wxPhoto = new WxPhoto();
+            Photo photo = new Photo();
             String read_path = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "music_read_path");
             if (StringUtil.isBlank(read_path)) {
                 String message = "读取路径不能为空";

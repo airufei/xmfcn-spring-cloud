@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.xmf.service.like.dao.LikeDao">
+
+
+    <sql id="likeColumns">
+        str_to_date(a.createtime, '%Y-%m-%d %H:%i:%s') AS "createtimestr",
+		a.id AS "id",
+		a.openId AS "openId",
+		a.type AS "type",
+		a.photoUrl AS "photoUrl",
+		a.flag AS "flag",
+		a.remark AS "remark",
+		a.nickName AS "nickName",
+		a.likeCount,
+		a.bizId AS "bizId"
+	</sql>
+
+    <sql id="likeJoins">
+    </sql>
+
+    <select id="getWxUserLikeById" resultType="com.cn.xmf.model.wx.Like">
+        SELECT
+        <include refid="likeColumns"/>
+        FROM t_wx_user_like a
+        <include refid="likeJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getTotalCount" resultType="Long" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        count(*) as count
+        FROM t_wx_user_like a
+        <include refid="likeJoins"/>
+        <where>
+            <if test="openId != null and openId != ''">
+                AND a.openId = #{openId}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+            <if test="bizId != null and bizId != ''">
+                AND a.bizId = #{bizId}
+            </if>
+            and flag=#{flag}
+        </where>
+    </select>
+
+    <select id="getLikeCount" resultType="Long" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        sum(likeCount) as likeCount
+        FROM t_wx_user_like a
+        <include refid="likeJoins"/>
+        <where>
+            <if test="openId != null and openId != ''">
+                AND a.openId = #{openId}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+            <if test="bizId != null and bizId != ''">
+                AND a.bizId = #{bizId}
+            </if>
+            and flag=#{flag}
+        </where>
+    </select>
+
+    <select id="getList" resultType="com.cn.xmf.model.wx.Like" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        <include refid="likeColumns"/>
+        FROM
+        (SELECT id from t_wx_user_like t
+        <where>
+            <if test="openId != null and openId != ''">
+                AND t.openId = #{openId}
+            </if>
+            <if test="type != null and type != ''">
+                AND t.type = #{type}
+            </if>
+            <if test="bizId != null and bizId != ''">
+                AND t.bizId = #{bizId}
+            </if>
+            and flag=#{flag}
+        </where>
+        ) b inner join
+        t_wx_user_like a on b.id=a.id
+        <choose>
+            <otherwise>
+                ORDER BY createtime desc
+            </otherwise>
+        </choose>
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="getWxUserLikeList" resultType="com.cn.xmf.model.wx.Like"
+            parameterType="com.cn.xmf.model.wx.Like">
+        SELECT
+        <include refid="likeColumns"/>
+        FROM (SELECT id from t_wx_user_like t
+        <where>
+            <if test="openId != null and openId != ''">
+                AND t.openId = #{openId}
+            </if>
+            <if test="type != null and type != ''">
+                AND t.type = #{type}
+            </if>
+            <if test="bizId != null and bizId != ''">
+                AND t.bizId = #{bizId}
+            </if>
+            and flag=#{flag}
+        </where>
+        ) b inner join t_wx_user_like a on b.id=a.id
+        <choose>
+            <otherwise>
+                ORDER BY createtime desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getSignleWxUserLike" resultType="com.cn.xmf.model.wx.Like"
+            parameterType="com.cn.xmf.model.wx.Like">
+        SELECT
+        <include refid="likeColumns"/>
+        FROM
+        t_wx_user_like a
+        <where>
+            <if test="openId != null and openId != ''">
+                AND a.openId = #{openId}
+            </if>
+            <if test="type != null and type != ''">
+                AND a.type = #{type}
+            </if>
+            <if test="bizId != null and bizId != ''">
+                AND a.bizId = #{bizId}
+            </if>
+            and flag=#{flag}
+        </where>
+        limit 1
+    </select>
+
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_wx_user_like(
+        <if test="id != null">
+            id,
+        </if>
+        <if test="openId != null">
+            openId,
+        </if>
+        <if test="type != null">
+            type,
+        </if>
+        <if test="photoUrl != null">
+            photoUrl,
+        </if>
+        <if test="updateTime != null">
+            updateTime,
+        </if>
+        <if test="flag != null">
+            flag,
+        </if>
+        <if test="remark != null">
+            remark,
+        </if>
+        <if test="nickName != null">
+            nickName,
+        </if>
+        <if test="bizId != null">
+            bizId,
+        </if>
+        <if test="likeCount != null">
+            likeCount,
+        </if>
+
+        createtime
+        ) VALUES (
+
+        <if test="id != null ">
+            #{id},
+        </if>
+        <if test="openId != null ">
+            #{openId},
+        </if>
+        <if test="type != null ">
+            #{type},
+        </if>
+        <if test="photoUrl != null ">
+            #{photoUrl},
+        </if>
+        <if test="updateTime != null ">
+            #{updateTime},
+        </if>
+        <if test="flag != null ">
+            #{flag},
+        </if>
+        <if test="remark != null ">
+            #{remark},
+        </if>
+        <if test="nickName != null ">
+            #{nickName},
+        </if>
+        <if test="bizId != null ">
+            #{bizId},
+        </if>
+        <if test="likeCount != null ">
+            #{likeCount},
+        </if>
+        #{createTime}
+        )
+    </insert>
+
+    <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_wx_user_like(
+        id,
+        openId,
+        type,
+        photoUrl,
+        updatetime,
+        flag,
+        remark,
+        nickName,
+        bizId,
+        likeCount,
+        createtime
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.openId},
+            #{item.type},
+            #{item.photoUrl},
+            #{item.updateTime},
+            #{item.flag},
+            #{item.remark},
+            #{item.nickName},
+            #{item.bizId},
+            #{item.likeCount},
+            #{item.createTime}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateById">
+        UPDATE t_wx_user_like SET
+        <if test="openId != null">
+            openId = #{openId},
+        </if>
+        <if test="type != null">
+            type = #{type},
+        </if>
+        <if test="photoUrl != null">
+            photoUrl = #{photoUrl},
+        </if>
+        <if test="flag != null">
+            flag = #{flag},
+        </if>
+        <if test="remark != null">
+            remark = #{remark},
+        </if>
+        <if test="nickName != null">
+            nickName = #{nickName},
+        </if>
+        <if test="bizId != null">
+            bizId = #{bizId},
+        </if>
+        <if test="likeCount != null">
+            likeCount = #{likeCount},
+        </if>
+        updateTime=now(),
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+	UPDATE t_wx_user_like SET
+	flag = -1
+		WHERE id = #{id}
+	</update>
+</mapper>

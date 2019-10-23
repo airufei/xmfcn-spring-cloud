@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.xmf.service.user.dao.UserDao">
+
+    <sql id="userColumns">
+		a.id AS "id",
+		a.nickName AS "nickName",
+		a.age AS "age",
+		a.city AS "city",
+		a.country AS "country",
+		a.province AS "province",
+		a.createtime AS "createTime",
+		a.updatetime AS "updatetime",
+		a.photoUrl AS "photoUrl",
+		a.openId AS "openId"
+	</sql>
+
+    <sql id="userJoins">
+    </sql>
+
+    <select id="getWxUserById" resultType="com.cn.xmf.model.wx.User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_wx_user a
+        <include refid="userJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="getTotalCount" resultType="Long" parameterType="java.util.Map">
+        SELECT
+        count(0) as count
+        FROM t_wx_user a
+        <include refid="userJoins"/>
+        <where>
+            a.flag = #{flag}
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="openId != null and openId != ''">
+                AND a.openId = #{openId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getList" resultType="com.cn.xmf.model.wx.User" parameterType="java.util.Map">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_wx_user a
+        <include refid="userJoins"/>
+        <where>
+            a.flag = #{flag}
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="openId != null and openId != ''">
+                AND a.openId = #{openId}
+            </if>
+        </where>
+        <choose>
+            <otherwise>
+                ORDER BY a.updateTime desc
+            </otherwise>
+        </choose>
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="getWxUserList" resultType="com.cn.xmf.model.wx.User" parameterType="com.cn.xmf.model.wx.User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM t_wx_user a
+        <include refid="userJoins"/>
+        <where>
+            a.flag = #{flag}
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            <if test="openId != null and openId != ''">
+                AND a.openId = #{openId}
+            </if>
+        </where>
+        <choose>
+            <otherwise>
+                ORDER BY a.updateTime desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_wx_user(
+			id,
+			nickName,
+			age,
+			city,
+			country,
+			province,
+			createtime,
+			updatetime,
+			flag,
+			remark,
+			photoUrl,
+			openId
+		) VALUES (
+			#{id},
+			#{nickName},
+			#{age},
+			#{city},
+			#{country},
+			#{province},
+			#{createTime},
+			#{updateTime},
+			#{flag},
+			#{remark},
+			#{photoUrl},
+			#{openId}
+		)
+	</insert>
+
+    <update id="updateById">
+        UPDATE t_wx_user SET
+        <if test="nickName != null and nickName != '' ">
+            nickName = #{nickName},
+        </if>
+        <if test="age != null and age != '' ">
+            age = #{age},
+        </if>
+        <if test="city != null and city != '' ">
+            city = #{city},
+        </if>
+        <if test="country != null and country != '' ">
+            country = #{country},
+        </if>
+        <if test="province != null and province != '' ">
+            province = #{province},
+        </if>
+        <if test="flag != null and flag != '' ">
+            flag = #{flag},
+        </if>
+        <if test="remark != null and remark != '' ">
+            remark = #{remark},
+        </if>
+        <if test="photoUrl != null and photoUrl != '' ">
+            photoUrl = #{photoUrl},
+        </if>
+		updatetime = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+	UPDATE t_wx_user SET 
+	flag = 1
+		WHERE id = #{id}
+	</update>
+
+</mapper>

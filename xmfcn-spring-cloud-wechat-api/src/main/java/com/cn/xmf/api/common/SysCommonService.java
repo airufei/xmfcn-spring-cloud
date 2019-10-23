@@ -1,10 +1,10 @@
 package com.cn.xmf.api.common;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.api.sys.DictService;
-import com.cn.xmf.api.sys.KafKaProducerService;
-import com.cn.xmf.api.sys.MessageService;
-import com.cn.xmf.api.sys.RedisService;
+import com.cn.xmf.api.sys.rpc.DictService;
+import com.cn.xmf.api.sys.rpc.KafKaProducerService;
+import com.cn.xmf.api.sys.rpc.MessageService;
+import com.cn.xmf.api.sys.rpc.RedisService;
 import com.cn.xmf.base.Interface.SysCommon;
 import com.cn.xmf.enums.MessageType;
 import com.cn.xmf.model.msg.Message;

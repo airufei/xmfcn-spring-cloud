@@ -2,12 +2,11 @@ package com.cn.xmf.api.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.api.common.SysCommonService;
-import com.cn.xmf.api.user.service.UserService;
+import com.cn.xmf.api.user.rpc.UserService;
 import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
-import com.cn.xmf.model.user.User;
-import com.cn.xmf.model.wx.WxUser;
+import com.cn.xmf.model.wx.User;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,10 +55,10 @@ public class UserController {
             JSONObject param = StringUtil.getPageJSONObject(pageNo, pageSize);
             param.put("type", type);
             Partion pt = userService.getList(param);
-            List<User> list = null;
+            List<com.cn.xmf.model.user.User> list = null;
             long totalCount = 0;
             if (pt != null) {
-                list = (List<User>) pt.getList();
+                list = (List<com.cn.xmf.model.user.User>) pt.getList();
                 totalCount = pt.getPageCount();
             }
             JSONObject jsonObject = new JSONObject();
@@ -97,14 +96,14 @@ public class UserController {
     public JSONObject save(HttpServletRequest request) {
         JSONObject object = new JSONObject();
         String openId = request.getParameter("openId");
-        String nickname = request.getParameter("nickname");
+        String nickName = request.getParameter("nickName");
         String age = request.getParameter("age");
         String country = request.getParameter("country");
         String province = request.getParameter("province");
         String city = request.getParameter("city");
-        String photourl = request.getParameter("photourl");
-        logger.info("保存微信用户数据开始：openId={},nickname={}",openId,nickname);
-        if (StringUtil.isBlank(nickname)) {
+        String photoUrl = request.getParameter("photoUrl");
+        logger.info("保存微信用户数据开始：openId={},nickName={}",openId,nickName);
+        if (StringUtil.isBlank(nickName)) {
             object.put("code", 501);
             return object;
         }
@@ -121,14 +120,14 @@ public class UserController {
             return object;
         }
         try {
-            WxUser wx = new WxUser();
-            wx.setOpenid(openId);
+            User wx = new User();
+            wx.setOpenId(openId);
             wx.setAge(age);
             wx.setCountry(country);
             wx.setProvince(province);
             wx.setCity(city);
-            wx.setNickname(nickname);
-            wx.setPhotourl(photourl);
+            wx.setNickname(nickName);
+            wx.setPhotoUrl(photoUrl);
             userService.save(wx);
             object.put("code", 200);
         } catch (Exception e) {

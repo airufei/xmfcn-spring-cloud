@@ -86,17 +86,17 @@ CREATE TABLE `t_wx_photo` (
 -- ----------------------------
 CREATE TABLE `t_wx_user_like` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `openid` varchar(100) DEFAULT NULL COMMENT '用户唯一标识',
+  `openId` varchar(100) DEFAULT NULL COMMENT '用户唯一标识',
   `type` varchar(50) DEFAULT NULL COMMENT '类型',
-  `photourl` varchar(255) DEFAULT NULL COMMENT '头像',
+  `photoUrl` varchar(255) DEFAULT NULL COMMENT '头像',
   `createtime` datetime DEFAULT NULL COMMENT '创建时间',
   `updatetime` datetime DEFAULT NULL COMMENT '修改时间',
   `flag` int(11) DEFAULT '0' COMMENT '删除标记',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `nickname` varchar(100) DEFAULT NULL COMMENT '昵称',
-  `bizid` varchar(64) DEFAULT NULL COMMENT '业务ID',
+  `nickName` varchar(100) DEFAULT NULL COMMENT '昵称',
+  `bizId` varchar(64) DEFAULT NULL COMMENT '业务ID',
   PRIMARY KEY (`id`),
-  KEY `idx_wx_like_openid` (`openid`) USING BTREE,
+  KEY `idx_wx_like_openId` (`openId`) USING BTREE,
   KEY `idx_wx_like_type` (`type`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COMMENT='微信点赞';
 
@@ -105,18 +105,18 @@ CREATE TABLE `t_wx_user_like` (
 -- ----------------------------
 CREATE TABLE `t_wx_user_message` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `openid` varchar(100) DEFAULT NULL COMMENT '用户唯一标识',
+  `openId` varchar(100) DEFAULT NULL COMMENT '用户唯一标识',
   `type` varchar(50) DEFAULT NULL COMMENT '类型',
   `content` varchar(200) DEFAULT NULL COMMENT '内容',
-  `photourl` varchar(255) DEFAULT NULL COMMENT '头像',
+  `photoUrl` varchar(255) DEFAULT NULL COMMENT '头像',
   `createtime` datetime DEFAULT NULL COMMENT '创建时间',
   `updatetime` datetime DEFAULT NULL COMMENT '修改时间',
   `flag` int(11) DEFAULT '0' COMMENT '删除标记',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `nickname` varchar(100) DEFAULT NULL COMMENT '昵称',
-  `bizid` varchar(64) DEFAULT NULL COMMENT '业务ID',
+  `nickName` varchar(100) DEFAULT NULL COMMENT '昵称',
+  `bizId` varchar(64) DEFAULT NULL COMMENT '业务ID',
   PRIMARY KEY (`id`),
-  KEY `idx_wx_user_openid` (`openid`) USING BTREE,
+  KEY `idx_wx_user_openId` (`openId`) USING BTREE,
   KEY `idx_wx_msg_type` (`type`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COMMENT='微信留言';
 
