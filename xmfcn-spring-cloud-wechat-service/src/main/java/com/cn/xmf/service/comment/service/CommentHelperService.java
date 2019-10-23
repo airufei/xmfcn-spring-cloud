@@ -89,6 +89,7 @@ public class CommentHelperService {
         JSONObject map = new JSONObject();
         map.put("type", type);
         map.put("bizId", bizId);
+        map.put("flag", 1);
         String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + "getPhotoCommentCount_" + bizId + type;
         String cache = LocalCacheUtil.getCache(key);
         if (StringUtil.isNotBlank(cache)) {

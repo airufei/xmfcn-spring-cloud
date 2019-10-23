@@ -6,6 +6,7 @@ import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.model.wx.Like;
+import com.cn.xmf.util.LocalCacheUtil;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,6 +147,14 @@ public class LikeController {
             retData.setMessage("不好意思，请先登录");
             return retData;
         }
+        String key="like_cache_"+openId+bizId;
+        String cache = LocalCacheUtil.getCache(key);
+        if(StringUtil.isNotBlank(cache))
+        {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("这张已赞过，你可以点赞下一张，谢谢.");
+            return retData;
+        }
         like.setOpenId(openId);
         like.setType(type);
         like.setPhotoUrl(photoUrl);
@@ -159,6 +168,7 @@ public class LikeController {
         // 保存数据库
         Like ret = likeService.save(like);
         if (ret != null) {
+            LocalCacheUtil.saveCache(key,"has_like");
             retData.setCode(ResultCodeMessage.SUCCESS);
             retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
         }
