@@ -76,6 +76,7 @@ public class CommentController {
             retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
             return retData;
         }
+
         retData.setCode(ResultCodeMessage.SUCCESS);
         retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
         logger.info("getList:(获取微信留言分页查询接口) 结束");
