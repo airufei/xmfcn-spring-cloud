@@ -1,10 +1,8 @@
 package com.cn.xmf.api.comment.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.model.wx.Comment;
 import com.cn.xmf.model.wx.CommentDomm;
-import com.cn.xmf.util.LocalCacheUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +14,6 @@ import java.util.List;
 @Service
 @SuppressWarnings("all")
 public class CommentHelperService {
-
     /**
      * 数据转换
      * @param list

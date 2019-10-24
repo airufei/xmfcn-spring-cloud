@@ -1,6 +1,5 @@
 package com.cn.xmf.model.wx;
 
-import com.cn.xmf.base.model.BaseEntitys;
 import com.cn.xmf.util.ImageUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,7 +11,7 @@ public class CommentDomm extends Comment {
     /**
      * 距离顶部的距离
      */
-    private int top=RandomUtils.nextInt(10, 70);
+    private int top=RandomUtils.nextInt(10, 50);
 
     /**
      * 弹幕距离时间
@@ -23,7 +22,6 @@ public class CommentDomm extends Comment {
      * 弹幕字体颜色
      */
     private String color= ImageUtil.getRandColorCode();
-
 
     public double getTop() {
         return top;
