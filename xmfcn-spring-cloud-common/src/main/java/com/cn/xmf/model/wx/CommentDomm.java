@@ -8,16 +8,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * 弹幕
  */
-public class CommentDomm extends BaseEntitys {
+public class CommentDomm extends Comment {
     /**
      * 距离顶部的距离
      */
-    private int top=RandomUtils.nextInt(30, 60);
+    private int top=RandomUtils.nextInt(10, 70);
 
     /**
      * 弹幕距离时间
      */
-    private int time=RandomUtils.nextInt(5, 20);
+    private int time=RandomUtils.nextInt(5, 15);
 
     /**
      * 弹幕字体颜色
