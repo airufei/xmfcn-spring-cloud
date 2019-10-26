@@ -31,9 +31,9 @@ public class MusicHelperService {
      * @param map
      * @return
      */
-    public long getTotalCount(JSONObject map) {
-        long resCount = 0;
-        Long totalCount = musicDao.getTotalCount(map);
+    public int getTotalCount(JSONObject map) {
+        int resCount = 0;
+        Integer totalCount = musicDao.getTotalCount(map);
         if (totalCount != null) {
             resCount = totalCount;
         }

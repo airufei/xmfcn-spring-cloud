@@ -1,19 +1,19 @@
-package com.cn.xmf.service.like.dao;
+package com.cn.xmf.service.invit.dao;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.model.wx.Like;
+import com.cn.xmf.model.wx.Invitation;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * 微信点赞DAO接口
+ * 邀请函DAO接口
  *
  * @author rufei.cn
- * @version 2019-10-15
+ * @version 2019-10-26
  */
 @SuppressWarnings("all")
-public interface LikeDao {
+public interface InvitationDao {
 
     /**
      * 删除数据（逻辑删除）
@@ -26,18 +26,18 @@ public interface LikeDao {
     /**
      * 单条数据增加
      *
-     * @param like
+     * @param invitation
      * @return
      */
-    public void add(Like like);
+    public void add(Invitation invitation);
 
     /**
      * 批量数据增加
      *
-     * @param like
+     * @param invitation
      * @return
      */
-    public void addTrainRecordBatch(List<Like> list);
+    public void addTrainRecordBatch(List<Invitation> list);
 
     /**
      * 根据ID获取单条数据
@@ -45,7 +45,7 @@ public interface LikeDao {
      * @param id
      * @return
      */
-    public Like getWxUserLikeById(long id);
+    public Invitation getInvitationById(long id);
 
     /**
      * 修改单条数据
@@ -53,7 +53,7 @@ public interface LikeDao {
      * @param id
      * @return
      */
-    public void updateById(Like like);
+    public void updateById(Invitation invitation);
 
     /**
      * 获取分页数据
@@ -61,7 +61,7 @@ public interface LikeDao {
      * @param map
      * @return
      */
-    public List<Like> getList(JSONObject map);
+    public List<Invitation> getList(JSONObject map);
 
 
     /**
@@ -70,7 +70,7 @@ public interface LikeDao {
      * @param map
      * @return
      */
-    public List<Like> getWxUserLikeList(Like like);
+    public List<Invitation> getInvitationList(Invitation invitation);
 
     /**
      * 获取单条数据
@@ -78,7 +78,7 @@ public interface LikeDao {
      * @param map
      * @return
      */
-    public Like getSignleWxUserLike(Like like);
+    public Invitation getSignleInvitation(Invitation invitation);
 
     /**
      * 获取分页记录总数
@@ -87,14 +87,5 @@ public interface LikeDao {
      * @return
      */
     public Integer getTotalCount(Map map);
-
-    /**
-     * 点赞数量
-     *
-     * @param map
-     * @return
-     */
-    public Long getLikeCount(Map map);
-
 
 }

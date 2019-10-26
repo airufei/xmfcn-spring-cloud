@@ -27,7 +27,7 @@
         WHERE a.id = #{id}
     </select>
 
-    <select id="getTotalCount" resultType="Long" parameterType="com.alibaba.fastjson.JSONObject">
+    <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
         SELECT
         count(*) as count
         FROM t_wx_user_message a

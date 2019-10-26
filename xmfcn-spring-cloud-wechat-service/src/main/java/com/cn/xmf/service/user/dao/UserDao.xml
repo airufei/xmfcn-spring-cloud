@@ -26,7 +26,7 @@
         WHERE a.id = #{id}
     </select>
 
-    <select id="getTotalCount" resultType="Long" parameterType="java.util.Map">
+    <select id="getTotalCount" resultType="Integer" parameterType="java.util.Map">
         SELECT
         count(0) as count
         FROM t_wx_user a
