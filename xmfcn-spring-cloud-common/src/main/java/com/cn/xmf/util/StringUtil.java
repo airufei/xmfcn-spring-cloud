@@ -288,6 +288,34 @@ public class StringUtil extends StringUtils {
         return result;
     }
 
+    /**
+     * 是否中文名称
+     * @param name
+     * @return
+     */
+    public static boolean isChinese(String str){
+        boolean ret=false;
+        if(isBlank(str))
+        {
+            return ret;
+        }
+        return Pattern.matches("[\\u4e00-\\u9fa5]+",str);
+    }
+    /**
+     * 过滤特殊字符
+     *
+     * @param str 带特殊字符的字符串
+     * @return 过滤之后的字符串（只剩字母、数字、下划线）
+     */
+    public static String stringFilter(String str) {
+        // 只允许字母和数字
+        // String regEx = "[^a-zA-Z0-9]";
+        // 清除掉所有特殊字符
+        String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("").trim();
+    }
 
     /**
      * getURLDecoderString:(URL解码)
@@ -861,7 +889,10 @@ public class StringUtil extends StringUtils {
 
     public static void main(String[] args) {
         String password = StringUtil.getEncryptPassword("abc123");
-        System.out.println(password);
+        System.out.println(isChinese(password));
+        System.out.println(isChinese("66666"));
+        System.out.println(isChinese("张三"));
+        System.out.println(isChinese("三奥术大师大所多无"));
     }
 
 }

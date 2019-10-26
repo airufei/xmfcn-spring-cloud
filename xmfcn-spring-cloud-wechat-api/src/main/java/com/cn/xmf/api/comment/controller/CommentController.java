@@ -187,6 +187,7 @@ public class CommentController {
             retData.setMessage("太长了,可以简短一点，谢谢。");
             return retData;
         }
+        content=StringUtil.stringFilter(content);
         comment.setOpenId(openId);
         comment.setType(type);
         comment.setContent(content);
