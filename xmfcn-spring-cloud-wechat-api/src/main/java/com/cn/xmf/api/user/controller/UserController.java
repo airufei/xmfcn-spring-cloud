@@ -96,8 +96,15 @@ public class UserController {
         byte[] encrypData = Base64.decode(encrypdata);
         byte[] ivData = Base64.decode(ivdata);
         byte[] sessionKey = Base64.decode(sessionkey);
-        String phone = StringUtil.decrypt(sessionKey, ivData, encrypData);
-        logger.info("解密后手机号 phone={}", phone);
+        String data = StringUtil.decrypt(sessionKey, ivData, encrypData);
+        logger.info("解密后手机号 data={}", data);
+        JSONObject jsonObject = JSONObject.parseObject(data);
+        if (jsonObject == null || jsonObject.size() <= 0) {
+            retData.setCode(ResultCodeMessage.NO_DATA);
+            retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
+            return retData;
+        }
+        String phone = jsonObject.getString("phoneNumber");
         retData.setData(phone);
         retData.setCode(ResultCodeMessage.SUCCESS);
         retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
