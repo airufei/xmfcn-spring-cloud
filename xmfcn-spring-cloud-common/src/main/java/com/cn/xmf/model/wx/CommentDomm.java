@@ -11,7 +11,7 @@ public class CommentDomm extends Comment {
     /**
      * 距离顶部的距离
      */
-    private int top=RandomUtils.nextInt(10, 50);
+    private int top=RandomUtils.nextInt(5, 40);
 
     /**
      * 弹幕距离时间
