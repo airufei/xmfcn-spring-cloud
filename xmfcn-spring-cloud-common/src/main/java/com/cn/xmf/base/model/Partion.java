@@ -120,7 +120,7 @@ public class Partion implements java.io.Serializable {
      * @author rufei.cn
      * @return
      */
-    public long getPageCount() {
+    public int getPageCount() {
         return pageCount;
     }
 
