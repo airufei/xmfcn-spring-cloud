@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.api.comment.rpc.CommentService;
 import com.cn.xmf.api.comment.service.CommentHelperService;
+import com.cn.xmf.api.common.SysCommonService;
 import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.model.wx.Comment;
 import com.cn.xmf.model.wx.CommentDomm;
+import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.LocalCacheUtil;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
@@ -39,6 +41,8 @@ public class CommentController {
     private CommentService commentService;
     @Autowired
     private CommentHelperService commentHelperService;
+    @Autowired
+    private SysCommonService sysCommonService;
 
     /**
      * getList:(获取微信留言分页查询接口)
@@ -69,11 +73,10 @@ public class CommentController {
         param.put("type", type);
         param.put("bizId", bizId);
         logger.info("getList:(获取微信留言分页查询接口) 开始  param={}", param);
-        String key="getCommentDommList_"+bizId+pageNo+pageSize+type;
+        String key = "getCommentDommList_" + bizId + pageNo + pageSize + type;
         String cache = LocalCacheUtil.getCache(key);
-        if(StringUtil.isNotBlank(cache))
-        {
-            JSONObject jsonObject=JSONObject.parseObject(cache);
+        if (StringUtil.isNotBlank(cache)) {
+            JSONObject jsonObject = JSONObject.parseObject(cache);
             retData.setData(jsonObject);
             retData.setCode(ResultCodeMessage.SUCCESS);
             retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
@@ -86,8 +89,11 @@ public class CommentController {
             list = (List<Comment>) pt.getList();
             totalCount = pt.getTotalCount();
         }
+        String dommIsOpen = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "domm_is_open");
+        boolean domm_is_open = StringUtil.stringToBoolean(dommIsOpen);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("totalCount", totalCount);
+        jsonObject.put("open", domm_is_open);
         retData.setData(jsonObject);
         String listStr = JSON.toJSONString(list);
         list = JSONObject.parseArray(listStr, Comment.class);
@@ -96,9 +102,14 @@ public class CommentController {
             retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
             return retData;
         }
-        List<CommentDomm> newList = commentHelperService.getCommentDommList(list,param);
-        jsonObject.put("list", newList);
-        if(jsonObject.size()>0){
+        List<CommentDomm> newList = null;
+        if (domm_is_open) {
+            newList = commentHelperService.getCommentDommList(list, param);
+            jsonObject.put("list", newList);
+        } else {
+            jsonObject.put("list", list);
+        }
+        if (jsonObject.size() > 0) {
             LocalCacheUtil.saveCache(key, jsonObject.toString());
         }
         retData.setData(jsonObject);
@@ -176,6 +187,7 @@ public class CommentController {
             retData.setMessage("太长了,可以简短一点，谢谢。");
             return retData;
         }
+        content=StringUtil.stringFilter(content);
         comment.setOpenId(openId);
         comment.setType(type);
         comment.setContent(content);

@@ -14,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,6 +26,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -288,6 +292,34 @@ public class StringUtil extends StringUtils {
         return result;
     }
 
+    /**
+     * 是否中文名称
+     * @param name
+     * @return
+     */
+    public static boolean isChinese(String str){
+        boolean ret=false;
+        if(isBlank(str))
+        {
+            return ret;
+        }
+        return Pattern.matches("[\\u4e00-\\u9fa5]+",str);
+    }
+    /**
+     * 过滤特殊字符
+     *
+     * @param str 带特殊字符的字符串
+     * @return 过滤之后的字符串（只剩字母、数字、下划线）
+     */
+    public static String stringFilter(String str) {
+        // 只允许字母和数字
+        // String regEx = "[^a-zA-Z0-9]";
+        // 清除掉所有特殊字符
+        String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("").trim();
+    }
 
     /**
      * getURLDecoderString:(URL解码)
@@ -859,9 +891,29 @@ public class StringUtil extends StringUtils {
         return sysSubSysName;
     }
 
+    /**
+     * 微信解密，获取手机号
+     * @param key
+     * @param iv
+     * @param encData
+     * @return
+     * @throws Exception
+     */
+    public static String decrypt(byte[] key, byte[] iv, byte[] encData) throws Exception {
+    AlgorithmParameterSpec ivSpec = new IvParameterSpec(iv);
+    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
+    cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+    //解析解密后的字符串
+    return new String(cipher.doFinal(encData),"UTF-8");
+  }
+
     public static void main(String[] args) {
         String password = StringUtil.getEncryptPassword("abc123");
-        System.out.println(password);
+        System.out.println(isChinese(password));
+        System.out.println(isChinese("66666"));
+        System.out.println(isChinese("张三"));
+        System.out.println(isChinese("三奥术大师大所多无"));
     }
 
 }

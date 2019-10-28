@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.xmf.service.meet.dao.MeetingDao">
+
+
+	<sql id="meetingColumns">
+		a.id AS "id",
+		a.user_name AS "userName",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime",
+		a.flag AS "flag",
+		a.remark AS "remark",
+		a.phone AS "phone",
+		a.num AS "num",
+		a.open_id AS "openId",
+		a.nick_name AS "nickName",
+		a.photo_url AS "photoUrl"
+	</sql>
+
+	<sql id="meetingJoins">
+	</sql>
+
+	<select id="getMeetingById" resultType="com.cn.xmf.model.wx.Meeting">
+		SELECT
+			<include refid="meetingColumns"/>
+		FROM t_wx_user_meeting a
+		<include refid="meetingJoins"/>
+		WHERE a.id = #{id} and flag=#{flag}
+	</select>
+
+	<select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
+		SELECT
+			count(*) as count
+		FROM t_wx_user_meeting a
+		<include refid="meetingJoins"/>
+		<where>
+			<if test="userName != null and userName != ''">
+				AND a.user_name = #{userName}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND a.flag = #{flag}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+			AND flag=#{flag}
+		</where>
+	</select>
+
+	<select id="getList" resultType="com.cn.xmf.model.wx.Meeting" parameterType="com.alibaba.fastjson.JSONObject">
+		SELECT
+			<include refid="meetingColumns"/>
+		FROM
+		(SELECT id from  t_wx_user_meeting t
+		<where>
+
+			<if test="userName != null and userName != ''">
+				AND t.user_name = #{userName}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND t.flag = #{flag}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND t.phone = #{phone}
+			</if>
+			AND flag=#{flag}
+		</where>
+		 limit #{startIndex},#{pageSize}) b inner join
+		t_wx_user_meeting a  on b.id=a.id
+		 <choose>
+			<otherwise>
+                 ORDER BY update_time desc
+			</otherwise>
+		</choose>
+	</select>
+
+    <select id="getMeetingList" resultType="com.cn.xmf.model.wx.Meeting" parameterType="com.cn.xmf.model.wx.Meeting">
+		SELECT
+			<include refid="meetingColumns"/>
+		FROM (SELECT id from  t_wx_user_meeting t
+		<where>
+			<if test="userName != null and userName != ''">
+				AND t.user_name = #{userName}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND t.flag = #{flag}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND t.phone = #{phone}
+			</if>
+			AND flag=#{flag}
+		</where>
+		) b  inner join t_wx_user_meeting a  on b.id=a.id
+		 <choose>
+			<otherwise>
+                 ORDER BY update_time desc
+			</otherwise>
+		</choose>
+	</select>
+
+       <select id="getSignleMeeting" resultType="com.cn.xmf.model.wx.Meeting" parameterType="com.cn.xmf.model.wx.Meeting">
+		SELECT
+			<include refid="meetingColumns"/>
+		FROM
+		t_wx_user_meeting a
+		<where>
+			<if test="userName != null and userName != ''">
+				AND a.user_name = #{userName}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND a.flag = #{flag}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+			AND flag=#{flag}
+		</where>
+		limit 1
+	</select>
+
+
+<insert id="add" useGeneratedKeys="true" keyProperty="id">
+ <selectKey resultType="long" keyProperty="id" order="AFTER">
+        SELECT
+        LAST_INSERT_ID()
+     </selectKey>
+		INSERT INTO t_wx_user_meeting(
+		<if test="id != null">
+		 id,
+		</if>
+		<if test="userName != null">
+		 user_name,
+		</if>
+		<if test="updateTime != null">
+		 update_time,
+		</if>
+		<if test="flag != null">
+		 flag,
+		</if>
+		<if test="remark != null">
+		 remark,
+		</if>
+		<if test="phone != null">
+		 phone,
+		</if>
+		<if test="num != null">
+		 num,
+		</if>
+		<if test="openId != null">
+		 open_id,
+		</if>
+		<if test="nickName != null">
+		 nick_name,
+		</if>
+		<if test="photoUrl != null">
+		 photo_url,
+		</if>
+		 create_time
+		) VALUES (
+		 <if test="id != null">
+		  #{id},
+		   </if>
+		 <if test="userName != null">
+		  #{userName},
+		   </if>
+		 <if test="updateTime != null">
+		  #{updateTime},
+		   </if>
+		 <if test="flag != null">
+		  #{flag},
+		   </if>
+		 <if test="remark != null">
+		  #{remark},
+		   </if>
+		 <if test="phone != null">
+		  #{phone},
+		   </if>
+		 <if test="num != null">
+		  #{num},
+		   </if>
+		 <if test="openId != null">
+		  #{openId},
+		   </if>
+		 <if test="nickName != null">
+		  #{nickName},
+		   </if>
+		 <if test="photoUrl != null">
+		  #{photoUrl},
+		   </if>
+		 #{createTime}
+		)
+	</insert>
+
+   <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
+     <selectKey resultType="long" keyProperty="id" order="AFTER">
+        SELECT
+        LAST_INSERT_ID()
+     </selectKey>
+		INSERT INTO t_wx_user_meeting(
+		 id,
+		 user_name,
+		 update_time,
+		 flag,
+		 remark,
+		 phone,
+		 num,
+		 open_id,
+		 nick_name,
+		 photo_url,
+		  create_time
+		 ) VALUES
+ <foreach collection="list" item="item" index="index" separator="," >
+		(
+		  #{item.id},
+		  #{item.userName},
+		  #{item.updateTime},
+		  #{item.flag},
+		  #{item.remark},
+		  #{item.phone},
+		  #{item.num},
+		  #{item.openId},
+		  #{item.nickName},
+		  #{item.photoUrl},
+		  #{item.createTime}
+		)
+</foreach>
+	</insert>
+<update id="updateById">
+   UPDATE t_wx_user_meeting SET
+            <if test="userName != null ">
+            user_name = #{userName},
+           </if>
+            <if test="flag != null ">
+            flag = #{flag},
+           </if>
+            <if test="remark != null ">
+            remark = #{remark},
+           </if>
+            <if test="phone != null ">
+            phone = #{phone},
+           </if>
+            <if test="num != null ">
+            num = #{num},
+           </if>
+            <if test="openId != null ">
+            open_id = #{openId},
+           </if>
+            <if test="nickName != null ">
+            nick_name = #{nickName},
+           </if>
+            <if test="photoUrl != null ">
+            photo_url = #{photoUrl},
+           </if>
+         update_time = #{updateTime}
+	WHERE id = #{id}
+</update>
+
+	<update id="delete">
+	UPDATE t_wx_user_meeting SET
+	flag = -1
+		WHERE id = #{id}
+	</update>
+</mapper>

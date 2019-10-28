@@ -75,6 +75,6 @@ public interface MusicDao {
 	   * @param map
 	   * @return
 	   */
-	   public Long  getTotalCount(Map map);
+	   public Integer  getTotalCount(Map map);
 	   
 }

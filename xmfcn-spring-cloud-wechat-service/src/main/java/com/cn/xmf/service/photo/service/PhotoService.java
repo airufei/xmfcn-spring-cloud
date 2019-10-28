@@ -47,7 +47,7 @@ public class PhotoService {
         if (json == null || json.size() < 1) {
             return null;
         }
-        long totalcount = photoHelperService.getTotalCount(json);
+        int totalcount = photoHelperService.getTotalCount(json);
         List<Photo> list = null;
         if (totalcount > 0) {
             list = photoDao.getList(json);

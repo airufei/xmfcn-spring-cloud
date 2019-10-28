@@ -34,9 +34,9 @@ public class CommentHelperService {
      * @param map
      * @return
      */
-    public long getTotalCount(JSONObject map) {
-        long resCount = 0;
-        Long totalCount = commentDao.getTotalCount(map);
+    public int getTotalCount(JSONObject map) {
+        int resCount = 0;
+        Integer totalCount = commentDao.getTotalCount(map);
         if (totalCount != null) {
             resCount = totalCount;
         }

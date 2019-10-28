@@ -1,17 +1,17 @@
-package com.cn.xmf.service.photo.dao;
-
-import com.alibaba.fastjson.JSONObject;
-import com.cn.xmf.model.wx.Photo;
+package com.cn.xmf.service.meet.dao;
 
 import java.util.List;
 import java.util.Map;
+import com.alibaba.fastjson.JSONObject;
+import com.cn.xmf.model.wx.Meeting;
+
 /**
- * 微信照片DAO接口
- * @author airufei
- * @version 2019-10-11
+ * 参会人员信息登记DAO接口
+ * @author rufen.cn
+ * @version 2019-10-26
  */
 @SuppressWarnings("all")
-public interface PhotoDao {
+public interface MeetingDao {
 	
 	/**
 	 * 删除数据（逻辑删除）
@@ -21,38 +21,38 @@ public interface PhotoDao {
 	public void delete(long id);
     /**
 	 * 单条数据增加
-	 * @param photo
+	 * @param meeting
 	 * @return
 	 */
-	public void add(Photo photo);
+	public void add(Meeting meeting);
 
     /**
 	 * 批量数据增加
-	 * @param photo
+	 * @param meeting
 	 * @return
 	 */
-	 public void addTrainRecordBatch(List<Photo> list);
+	 public void addTrainRecordBatch(List<Meeting> list);
 
      /**
 	 * 根据ID获取单条数据
 	 * @param id
 	 * @return
 	 */
-	 public Photo getWxPhotoById(long id);
+	 public Meeting getMeetingById(long id);
 
       /**
 	 * 修改单条数据
 	 * @param id
 	 * @return
 	 */
-	  public void updateById(Photo photo);
+	  public void updateById(Meeting meeting);
 
 	  /**
 	   * 获取分页数据
 	   * @param map
 	   * @return
 	   */
-	   public List<Photo>  getList(JSONObject map);
+	   public List<Meeting>  getList(JSONObject map);
 	   
 	   
 	   /**
@@ -60,14 +60,14 @@ public interface PhotoDao {
 	   * @param map
 	   * @return
 	   */
-	   public List<Photo>  getWxPhotoList(Photo photo);
+	   public List<Meeting>  getMeetingList(Meeting meeting);
 
 	   /**
 	   * 获取单条数据
 	   * @param map
 	   * @return
 	   */
-	   public Photo getSignleWxPhoto(Photo photo);
+	   public Meeting  getSignleMeeting(Meeting meeting);
 
 	  /**
 	   * 获取分页记录总数

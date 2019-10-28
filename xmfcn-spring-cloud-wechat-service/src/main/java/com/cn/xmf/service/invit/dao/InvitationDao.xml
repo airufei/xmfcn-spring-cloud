@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.xmf.service.invit.dao.InvitationDao">
+
+
+    <sql id="invitationColumns">
+		a.id AS "id",
+		a.old_time AS "oldTime",
+		a.createtime AS "createtime",
+		a.flag AS "flag",
+		a.remark AS "remark",
+		a.new_time AS "newTime",
+		a.adress AS "adress",
+		a.hostel AS "hostel",
+		a.brideg_room AS "bridegRoom",
+		a.bride AS "bride"
+	</sql>
+
+    <sql id="invitationJoins">
+    </sql>
+
+    <select id="getInvitationById" resultType="com.cn.xmf.model.wx.Invitation">
+        SELECT
+        <include refid="invitationColumns"/>
+        FROM t_wx_user_invitation a
+        <include refid="invitationJoins"/>
+        WHERE a.id = #{id} and flag=#{flag}
+    </select>
+
+    <select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        count(*) as count
+        FROM t_wx_user_invitation a
+        <include refid="invitationJoins"/>
+        <where>
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            AND flag=#{flag}
+        </where>
+    </select>
+
+    <select id="getList" resultType="com.cn.xmf.model.wx.Invitation" parameterType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        <include refid="invitationColumns"/>
+        FROM
+        (SELECT id from t_wx_user_invitation t
+        <where>
+
+            <if test="id != null and id != ''">
+                AND t.id = #{id}
+            </if>
+            AND flag=#{flag}
+        </where>
+        limit #{startIndex},#{pageSize}) b inner join
+        t_wx_user_invitation a on b.id=a.id
+        <choose>
+            <otherwise>
+                ORDER BY createtime desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getInvitationList" resultType="com.cn.xmf.model.wx.Invitation"
+            parameterType="com.cn.xmf.model.wx.Invitation">
+        SELECT
+        <include refid="invitationColumns"/>
+        FROM (SELECT id from t_wx_user_invitation t
+        <where>
+            <if test="id != null and id != ''">
+                AND t.id = #{id}
+            </if>
+            AND flag=#{flag}
+        </where>
+        ) b inner join t_wx_user_invitation a on b.id=a.id
+        <choose>
+            <otherwise>
+                ORDER BY createtime desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getSignleInvitation" resultType="com.cn.xmf.model.wx.Invitation"
+            parameterType="com.cn.xmf.model.wx.Invitation">
+        SELECT
+        <include refid="invitationColumns"/>
+        FROM
+        t_wx_user_invitation a
+        <where>
+            <if test="id != null and id != ''">
+                AND a.id = #{id}
+            </if>
+            AND flag=#{flag}
+        </where>
+        limit 1
+    </select>
+
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_wx_user_invitation(
+        <if test="id != null">
+            id,
+        </if>
+        <if test="oldTime != null">
+            old_time,
+        </if>
+        <if test="updatetime != null">
+            updatetime,
+        </if>
+        <if test="flag != null">
+            flag,
+        </if>
+        <if test="remark != null">
+            remark,
+        </if>
+        <if test="newTime != null">
+            new_time,
+        </if>
+        <if test="adress != null">
+            adress,
+        </if>
+        <if test="hostel != null">
+            hostel,
+        </if>
+        <if test="bridegRoom != null">
+            brideg_room,
+        </if>
+        <if test="bride != null">
+            bride,
+        </if>
+        createtime
+        ) VALUES (
+        <if test="id != null">
+            #{id},
+        </if>
+        <if test="oldTime != null">
+            #{oldTime},
+        </if>
+        <if test="updatetime != null">
+            #{updatetime},
+        </if>
+        <if test="flag != null">
+            #{flag},
+        </if>
+        <if test="remark != null">
+            #{remark},
+        </if>
+        <if test="newTime != null">
+            #{newTime},
+        </if>
+        <if test="adress != null">
+            #{adress},
+        </if>
+        <if test="hostel != null">
+            #{hostel},
+        </if>
+        <if test="bridegRoom != null">
+            #{bridegRoom},
+        </if>
+        <if test="bride != null">
+            #{bride},
+        </if>
+        #{createtime}
+        )
+    </insert>
+
+    <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_wx_user_invitation(
+        id,
+        old_time,
+        updatetime,
+        flag,
+        remark,
+        new_time,
+        adress,
+        hostel,
+        brideg_room,
+        bride,
+        createtime
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.oldTime},
+            #{item.updatetime},
+            #{item.flag},
+            #{item.remark},
+            #{item.newTime},
+            #{item.adress},
+            #{item.hostel},
+            #{item.bridegRoom},
+            #{item.bride},
+            #{item.createtime}
+            )
+        </foreach>
+    </insert>
+    <update id="updateById">
+        UPDATE t_wx_user_invitation SET
+        <if test="oldTime != null ">
+            old_time = #{oldTime},
+        </if>
+        <if test="flag != null ">
+            flag = #{flag},
+        </if>
+        <if test="remark != null ">
+            remark = #{remark},
+        </if>
+        <if test="newTime != null ">
+            new_time = #{newTime},
+        </if>
+        <if test="adress != null ">
+            adress = #{adress},
+        </if>
+        <if test="hostel != null ">
+            hostel = #{hostel},
+        </if>
+        <if test="bridegRoom != null ">
+            brideg_room = #{bridegRoom},
+        </if>
+        <if test="bride != null ">
+            bride = #{bride},
+        </if>
+        updatetime = #{updatetime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="delete">
+	UPDATE t_wx_user_invitation SET
+	flag = -1
+		WHERE id = #{id}
+	</update>
+</mapper>

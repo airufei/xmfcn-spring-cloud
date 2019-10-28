@@ -32,9 +32,9 @@ public class LikeHelperService {
 	 * @param map
 	 * @return
 	 */
-	public long getTotalCount(JSONObject map) {
-		long resCount = 0;
-		Long totalCount = likeDao.getTotalCount(map);
+	public int getTotalCount(JSONObject map) {
+		int resCount = 0;
+		Integer totalCount = likeDao.getTotalCount(map);
 		if (totalCount != null) {
 			resCount = totalCount;
 		}

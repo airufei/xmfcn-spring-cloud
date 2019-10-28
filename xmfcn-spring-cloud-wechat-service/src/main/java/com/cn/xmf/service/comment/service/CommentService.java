@@ -48,7 +48,7 @@ public class CommentService {
           {
              return null;
           }
-          long totalcount =commentHelperService.getTotalCount(json);
+          int totalcount =commentHelperService.getTotalCount(json);
           List<Comment> list= null;
           if(totalcount>0)
           {

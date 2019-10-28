@@ -68,6 +68,6 @@ public interface UserDao {
 	   * @param map
 	   * @return
 	   */
-	   public Long  getTotalCount(Map map);
+	   public Integer  getTotalCount(Map map);
 	   
 }

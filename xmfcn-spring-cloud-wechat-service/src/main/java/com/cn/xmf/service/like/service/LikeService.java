@@ -49,7 +49,7 @@ public class LikeService {
           {
              return null;
           }
-          long totalcount =likeHelperService.getTotalCount(json);
+          int totalcount =likeHelperService.getTotalCount(json);
           List<Like> list= null;
           if(totalcount>0)
           {

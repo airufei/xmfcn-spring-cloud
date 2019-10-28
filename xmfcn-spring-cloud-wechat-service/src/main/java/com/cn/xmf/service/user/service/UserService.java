@@ -76,7 +76,7 @@ public class UserService {
     @RequestMapping("getList")
     public Partion getList(@RequestBody Map map) {
         List<User> list = userDao.getList(map);
-        long totalcount = getTotalCount(map);
+        int totalcount = getTotalCount(map);
         Partion pt = new Partion(map, list, totalcount);
         return pt;
     }
@@ -109,7 +109,7 @@ public class UserService {
      * @param map
      * @return
      */
-    private long getTotalCount(Map map) {
+    private int getTotalCount(Map map) {
         return userDao.getTotalCount(map);
     }
     /**
