@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Service(数据字典表)
  *
- * @author 数据字典表
+ * @author rufei.cn
  * @version 2017-11-23
  */
 @RestController
