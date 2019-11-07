@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * MessageService(消息发送服务)
  *
- * @author 数据字典表
+ * @author rufei.cn
  * @version 2017-11-23
  */
 @RestController
