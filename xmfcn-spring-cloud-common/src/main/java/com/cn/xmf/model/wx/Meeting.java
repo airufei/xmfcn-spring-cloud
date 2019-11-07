@@ -25,7 +25,13 @@ public class Meeting extends BaseEntitys {
     /**
      * 人数
      */
-    private String num;
+    private Integer num;
+
+    /**
+     * 参与类型 1 男方 2 女方 3 都参与
+     */
+    private Integer type;
+
 
     /**
      * 用户唯一标识
@@ -66,11 +72,11 @@ public class Meeting extends BaseEntitys {
     }
 
 
-    public String getNum() {
+    public Integer getNum() {
         return num;
     }
 
-    public void setNum(String num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 
@@ -101,6 +107,13 @@ public class Meeting extends BaseEntitys {
         this.photoUrl = photoUrl;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     @Override
     public String toString() {
@@ -108,6 +121,7 @@ public class Meeting extends BaseEntitys {
                 .append("userName", userName)
                 .append("phone", phone)
                 .append("num", num)
+                .append("type", type)
                 .append("openId", openId)
                 .append("nickName", nickName)
                 .append("photoUrl", photoUrl)

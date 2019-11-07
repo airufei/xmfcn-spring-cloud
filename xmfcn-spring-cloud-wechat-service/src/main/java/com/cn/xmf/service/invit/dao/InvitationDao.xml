@@ -5,15 +5,20 @@
 
     <sql id="invitationColumns">
 		a.id AS "id",
-		a.old_time AS "oldTime",
+		a.man_old_time AS "manOldTime",
 		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
 		a.flag AS "flag",
 		a.remark AS "remark",
-		a.new_time AS "newTime",
-		a.adress AS "adress",
-		a.hostel AS "hostel",
+		a.man_new_time AS "manNewTime",
+		a.man_adress AS "manAdress",
+		a.man_hostel AS "manHostel",
 		a.brideg_room AS "bridegRoom",
-		a.bride AS "bride"
+		a.bride AS "bride",
+		a.woman_new_time AS "womanNewTime",
+		a.woman_adress AS "womanAdress",
+		a.woman_hostel AS "womanHostel",
+		a.woman_old_time AS "womanOldTime"
 	</sql>
 
     <sql id="invitationJoins">
@@ -33,10 +38,7 @@
         FROM t_wx_user_invitation a
         <include refid="invitationJoins"/>
         <where>
-            <if test="id != null and id != ''">
-                AND a.id = #{id}
-            </if>
-            AND flag=#{flag}
+            flag=#{flag}
         </where>
     </select>
 
@@ -46,17 +48,13 @@
         FROM
         (SELECT id from t_wx_user_invitation t
         <where>
-
-            <if test="id != null and id != ''">
-                AND t.id = #{id}
-            </if>
-            AND flag=#{flag}
+            flag=#{flag}
         </where>
         limit #{startIndex},#{pageSize}) b inner join
         t_wx_user_invitation a on b.id=a.id
         <choose>
             <otherwise>
-                ORDER BY createtime desc
+                ORDER BY updatetime desc
             </otherwise>
         </choose>
     </select>
@@ -67,15 +65,12 @@
         <include refid="invitationColumns"/>
         FROM (SELECT id from t_wx_user_invitation t
         <where>
-            <if test="id != null and id != ''">
-                AND t.id = #{id}
-            </if>
-            AND flag=#{flag}
+            flag=#{flag}
         </where>
         ) b inner join t_wx_user_invitation a on b.id=a.id
         <choose>
             <otherwise>
-                ORDER BY createtime desc
+                ORDER BY updatetime desc
             </otherwise>
         </choose>
     </select>
@@ -87,10 +82,7 @@
         FROM
         t_wx_user_invitation a
         <where>
-            <if test="id != null and id != ''">
-                AND a.id = #{id}
-            </if>
-            AND flag=#{flag}
+            flag=#{flag}
         </where>
         limit 1
     </select>
@@ -105,8 +97,8 @@
         <if test="id != null">
             id,
         </if>
-        <if test="oldTime != null">
-            old_time,
+        <if test="manOldTime != null">
+            man_old_time,
         </if>
         <if test="updatetime != null">
             updatetime,
@@ -117,14 +109,14 @@
         <if test="remark != null">
             remark,
         </if>
-        <if test="newTime != null">
-            new_time,
+        <if test="manNewTime != null">
+            man_new_time,
         </if>
-        <if test="adress != null">
-            adress,
+        <if test="manAdress != null">
+            man_adress,
         </if>
-        <if test="hostel != null">
-            hostel,
+        <if test="manHostel != null">
+            man_hostel,
         </if>
         <if test="bridegRoom != null">
             brideg_room,
@@ -132,13 +124,25 @@
         <if test="bride != null">
             bride,
         </if>
+        <if test="womanNewTime != null">
+            woman_new_time,
+        </if>
+        <if test="womanAdress != null">
+            woman_adress,
+        </if>
+        <if test="womanHostel != null">
+            woman_hostel,
+        </if>
+        <if test="womanOldTime != null">
+            woman_old_time,
+        </if>
         createtime
         ) VALUES (
         <if test="id != null">
             #{id},
         </if>
-        <if test="oldTime != null">
-            #{oldTime},
+        <if test="manOldTime != null">
+            #{manOldTime},
         </if>
         <if test="updatetime != null">
             #{updatetime},
@@ -149,20 +153,32 @@
         <if test="remark != null">
             #{remark},
         </if>
-        <if test="newTime != null">
-            #{newTime},
+        <if test="manNewTime != null">
+            #{manNewTime},
         </if>
-        <if test="adress != null">
-            #{adress},
+        <if test="manAdress != null">
+            #{manAdress},
         </if>
-        <if test="hostel != null">
-            #{hostel},
+        <if test="manHostel != null">
+            #{manHostel},
         </if>
         <if test="bridegRoom != null">
             #{bridegRoom},
         </if>
         <if test="bride != null">
             #{bride},
+        </if>
+        <if test="womanNewTime != null">
+            #{womanNewTime},
+        </if>
+        <if test="womanAdress != null">
+            #{womanAdress},
+        </if>
+        <if test="womanHostel != null">
+            #{womanHostel},
+        </if>
+        <if test="womanOldTime != null">
+            #{womanOldTime},
         </if>
         #{createtime}
         )
@@ -175,52 +191,57 @@
         </selectKey>
         INSERT INTO t_wx_user_invitation(
         id,
-        old_time,
+        man_old_time,
         updatetime,
         flag,
         remark,
-        new_time,
-        adress,
-        hostel,
+        man_new_time,
+        man_adress,
+        man_hostel,
         brideg_room,
         bride,
+        woman_new_time,
+        woman_adress,
+        woman_hostel,
+        woman_old_time,
         createtime
         ) VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             (
             #{item.id},
-            #{item.oldTime},
+            #{item.manOldTime},
             #{item.updatetime},
             #{item.flag},
             #{item.remark},
-            #{item.newTime},
-            #{item.adress},
-            #{item.hostel},
+            #{item.manNewTime},
+            #{item.manAdress},
+            #{item.manHostel},
             #{item.bridegRoom},
             #{item.bride},
+            #{item.womanNewTime},
+            #{item.womanAdress},
+            #{item.womanHostel},
+            #{item.womanOldTime},
             #{item.createtime}
             )
         </foreach>
     </insert>
     <update id="updateById">
         UPDATE t_wx_user_invitation SET
-        <if test="oldTime != null ">
-            old_time = #{oldTime},
-        </if>
-        <if test="flag != null ">
-            flag = #{flag},
+        <if test="manOldTime != null ">
+            man_old_time = #{manOldTime},
         </if>
         <if test="remark != null ">
             remark = #{remark},
         </if>
-        <if test="newTime != null ">
-            new_time = #{newTime},
+        <if test="manNewTime != null ">
+            man_new_time = #{manNewTime},
         </if>
-        <if test="adress != null ">
-            adress = #{adress},
+        <if test="manAdress != null ">
+            man_adress = #{manAdress},
         </if>
-        <if test="hostel != null ">
-            hostel = #{hostel},
+        <if test="manHostel != null ">
+            man_hostel = #{manHostel},
         </if>
         <if test="bridegRoom != null ">
             brideg_room = #{bridegRoom},
@@ -228,7 +249,19 @@
         <if test="bride != null ">
             bride = #{bride},
         </if>
-        updatetime = #{updatetime}
+        <if test="womanNewTime != null ">
+            woman_new_time = #{womanNewTime},
+        </if>
+        <if test="womanAdress != null ">
+            woman_adress = #{womanAdress},
+        </if>
+        <if test="womanHostel != null ">
+            woman_hostel = #{womanHostel},
+        </if>
+        <if test="womanOldTime != null ">
+            woman_old_time = #{womanOldTime},
+        </if>
+        updatetime = Now()
         WHERE id = #{id}
     </update>
 

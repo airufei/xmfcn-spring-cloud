@@ -7,30 +7,30 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * 邀请函Entity
  *
  * @author rufei.cn
- * @version 2019-10-26
+ * @version 2019-11-08
  */
 public class Invitation extends BaseEntitys {
 
     private static final long serialVersionUID = 1L;
     /**
-     * 农历
+     * 男方农历
      */
-    private String oldTime;
+    private String manOldTime;
 
     /**
-     * 新历
+     * 男方新历
      */
-    private String newTime;
+    private String manNewTime;
 
     /**
      * 地址
      */
-    private String adress;
+    private String manAdress;
 
     /**
      * 酒店
      */
-    private String hostel;
+    private String manHostel;
 
     /**
      * 新郎
@@ -42,45 +42,65 @@ public class Invitation extends BaseEntitys {
      */
     private String bride;
 
+    /**
+     * 女方新历时间
+     */
+    private String womanNewTime;
+
+    /**
+     * 女方婚礼地点
+     */
+    private String womanAdress;
+
+    /**
+     * woman_hostel
+     */
+    private String womanHostel;
+
+    /**
+     * 女方农历
+     */
+    private String womanOldTime;
+
 
     public Invitation() {
 
     }
 
 
-    public String getOldTime() {
-        return oldTime;
+    public String getManOldTime() {
+        return manOldTime;
     }
 
-    public void setOldTime(String oldTime) {
-        this.oldTime = oldTime;
-    }
-
-
-    public String getNewTime() {
-        return newTime;
-    }
-
-    public void setNewTime(String newTime) {
-        this.newTime = newTime;
+    public void setManOldTime(String manOldTime) {
+        this.manOldTime = manOldTime;
     }
 
 
-    public String getAdress() {
-        return adress;
+    public String getManNewTime() {
+        return manNewTime;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setManNewTime(String manNewTime) {
+        this.manNewTime = manNewTime;
     }
 
 
-    public String getHostel() {
-        return hostel;
+    public String getManAdress() {
+        return manAdress;
     }
 
-    public void setHostel(String hostel) {
-        this.hostel = hostel;
+    public void setManAdress(String manAdress) {
+        this.manAdress = manAdress;
+    }
+
+
+    public String getManHostel() {
+        return manHostel;
+    }
+
+    public void setManHostel(String manHostel) {
+        this.manHostel = manHostel;
     }
 
 
@@ -102,15 +122,55 @@ public class Invitation extends BaseEntitys {
     }
 
 
+    public String getWomanNewTime() {
+        return womanNewTime;
+    }
+
+    public void setWomanNewTime(String womanNewTime) {
+        this.womanNewTime = womanNewTime;
+    }
+
+
+    public String getWomanAdress() {
+        return womanAdress;
+    }
+
+    public void setWomanAdress(String womanAdress) {
+        this.womanAdress = womanAdress;
+    }
+
+
+    public String getWomanHostel() {
+        return womanHostel;
+    }
+
+    public void setWomanHostel(String womanHostel) {
+        this.womanHostel = womanHostel;
+    }
+
+
+    public String getWomanOldTime() {
+        return womanOldTime;
+    }
+
+    public void setWomanOldTime(String womanOldTime) {
+        this.womanOldTime = womanOldTime;
+    }
+
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("oldTime", oldTime)
-                .append("newTime", newTime)
-                .append("adress", adress)
-                .append("hostel", hostel)
+                .append("manOldTime", manOldTime)
+                .append("manNewTime", manNewTime)
+                .append("manAdress", manAdress)
+                .append("manHostel", manHostel)
                 .append("bridegRoom", bridegRoom)
                 .append("bride", bride)
+                .append("womanNewTime", womanNewTime)
+                .append("womanAdress", womanAdress)
+                .append("womanHostel", womanHostel)
+                .append("womanOldTime", womanOldTime)
                 .toString();
     }
 }

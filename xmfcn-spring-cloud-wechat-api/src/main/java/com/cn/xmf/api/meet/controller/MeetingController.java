@@ -98,10 +98,18 @@ public class MeetingController {
     public RetData getMeeting(HttpServletRequest request) {
         RetData retData = new RetData();
         Meeting meeting = new Meeting();
+        String openId = request.getParameter("openId");
+        if(StringUtil.isBlank(openId)||"undefined".equals(openId))
+        {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("未授权，请退出再试");
+            return retData;
+        }
         String userName = request.getParameter("userName");
         String phone = request.getParameter("phone");
         meeting.setUserName(userName);
         meeting.setPhone(phone);
+        meeting.setOpenId(openId);
         logger.info("getMeeting:(查询参会人员信息登记单条数据接口) 开始  meeting={}", meeting);
         Meeting retmeeting = meetingService.getMeeting(meeting);
         retData.setData(retmeeting);
@@ -127,18 +135,21 @@ public class MeetingController {
         String remark = request.getParameter("remark");
         String phone = request.getParameter("phone");
         String numStr = request.getParameter("num");
+        String typeStr = request.getParameter("type");
         String openId = request.getParameter("openId");
         String nickName = request.getParameter("nickName");
         String photoUrl = request.getParameter("photoUrl");
         int num=StringUtil.stringToInt(numStr);
+        int type=StringUtil.stringToInt(typeStr);
         meeting.setUserName(userName);
         meeting.setPhone(phone);
-        meeting.setNum(numStr);
+        meeting.setNum(num);
+        meeting.setType(type);
         meeting.setOpenId(openId);
         meeting.setNickName(nickName);
         meeting.setPhotoUrl(photoUrl);
         logger.info("save:(保存参会人员信息登记数据接口) 开始  meeting={}", meeting);
-        if(StringUtil.isBlank(openId))
+        if(StringUtil.isBlank(openId)||"undefined".equals(openId))
         {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("未授权，请退出再试");

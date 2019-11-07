@@ -177,7 +177,7 @@ public class CommentController {
             retData.setMessage("不好意思，留言信息不能为空");
             return retData;
         }
-        if (StringUtil.isBlank(openId)) {
+        if(StringUtil.isBlank(openId)||"undefined".equals(openId)){
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("不好意思，请先登录");
             return retData;

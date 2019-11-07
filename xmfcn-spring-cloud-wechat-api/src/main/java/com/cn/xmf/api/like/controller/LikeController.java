@@ -141,7 +141,7 @@ public class LikeController {
         {
             type="common_like";
         }
-        if(StringUtil.isBlank(openId))
+        if(StringUtil.isBlank(openId)||"undefined".equals(openId))
         {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("不好意思，请先登录");

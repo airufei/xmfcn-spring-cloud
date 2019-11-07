@@ -59,6 +59,13 @@ public class MeetingHelperService {
         if (meeting == null) {
             return ret;
         }
+        String openId = meeting.getOpenId();
+        Meeting met=new Meeting();
+        met.setOpenId(openId);
+        Meeting signle = getSignleMeeting(met);
+        if(signle!=null){
+            meeting.setId(signle.getId());
+        }
         if (meeting.getId() != null && meeting.getId() > 0) {
             updateById(meeting);
             ret = meeting;
