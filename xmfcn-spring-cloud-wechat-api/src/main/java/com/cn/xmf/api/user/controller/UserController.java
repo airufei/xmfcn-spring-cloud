@@ -95,26 +95,22 @@ public class UserController {
         String ivdata = request.getParameter("ivdata");
         String sessionkey = request.getParameter("sessionkey");
         logger.info("getUserPhone:(微信解密获取手机号信息接口)开始 sessionkey={}", sessionkey);
-        if(StringUtil.isBlank(sessionkey))
-        {
+        if (StringUtil.isBlank(sessionkey)) {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("sessionkey 错误，不能为空");
             return retData;
         }
-        if("undefined".equals(sessionkey))
-        {
+        if ("undefined".equals(sessionkey)) {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("sessionkey 错误，不能为空");
             return retData;
         }
-        if(StringUtil.isBlank(encrypdata))
-        {
+        if (StringUtil.isBlank(encrypdata)) {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("encrypdata 错误，不能为空");
             return retData;
         }
-        if("undefined".equals(encrypdata))
-        {
+        if ("undefined".equals(encrypdata)) {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("encrypdata 错误，不能为空");
             return retData;
@@ -174,15 +170,14 @@ public class UserController {
             return retData;
         }
         JSONObject userData = userHelperService.getUserData(code);
-        if (userData==null) {
+        if (userData == null) {
             retData.setMessage("获取用户openID失败");
             retData.setCode(ResultCodeMessage.FAILURE);
             return retData;
         }
         String openid = userData.getString("openid");
-        if(StringUtil.isNotBlank(openid))
-        {
-            openId=openid;
+        if (StringUtil.isNotBlank(openid)) {
+            openId = openid;
         }
         User wx = new User();
         wx.setOpenId(openId);
