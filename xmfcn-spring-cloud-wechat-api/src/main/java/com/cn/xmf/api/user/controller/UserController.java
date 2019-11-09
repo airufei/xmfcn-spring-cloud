@@ -3,6 +3,7 @@ package com.cn.xmf.api.user.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.api.common.SysCommonService;
 import com.cn.xmf.api.user.rpc.UserService;
+import com.cn.xmf.api.user.service.UserHelperService;
 import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
@@ -33,6 +34,8 @@ public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserHelperService userHelperService;
     @Autowired
     private SysCommonService sysCommonService; //如果不需要发钉钉消息可以注释了
 
@@ -90,9 +93,32 @@ public class UserController {
         RetData retData = new RetData();
         String encrypdata = request.getParameter("encrypdata");
         String ivdata = request.getParameter("ivdata");
-        String type = request.getParameter("type");
         String sessionkey = request.getParameter("sessionkey");
         logger.info("getUserPhone:(微信解密获取手机号信息接口)开始 sessionkey={}", sessionkey);
+        if(StringUtil.isBlank(sessionkey))
+        {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("sessionkey 错误，不能为空");
+            return retData;
+        }
+        if("undefined".equals(sessionkey))
+        {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("sessionkey 错误，不能为空");
+            return retData;
+        }
+        if(StringUtil.isBlank(encrypdata))
+        {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("encrypdata 错误，不能为空");
+            return retData;
+        }
+        if("undefined".equals(encrypdata))
+        {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("encrypdata 错误，不能为空");
+            return retData;
+        }
         byte[] encrypData = Base64.decode(encrypdata);
         byte[] ivData = Base64.decode(ivdata);
         byte[] sessionKey = Base64.decode(sessionkey);
@@ -121,8 +147,8 @@ public class UserController {
      * @author rufei.cn
      */
     @RequestMapping(value = "save")
-    public JSONObject save(HttpServletRequest request) {
-        JSONObject object = new JSONObject();
+    public RetData save(HttpServletRequest request) {
+        RetData retData = new RetData();
         String openId = request.getParameter("openId");
         String nickName = request.getParameter("nickName");
         String age = request.getParameter("age");
@@ -130,22 +156,33 @@ public class UserController {
         String province = request.getParameter("province");
         String city = request.getParameter("city");
         String photoUrl = request.getParameter("photoUrl");
+        String code = request.getParameter("code");
         logger.info("保存微信用户数据开始：openId={},nickName={}", openId, nickName);
         if (StringUtil.isBlank(nickName)) {
-            object.put("code", 501);
-            return object;
-        }
-        if (StringUtil.isBlank(openId)) {
-            object.put("code", 501);
-            return object;
+            retData.setMessage("昵称不能为空");
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            return retData;
         }
         if (StringUtil.isBlank(age)) {
-            object.put("code", 501);
-            return object;
+            retData.setMessage("年龄不能为空");
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            return retData;
         }
         if (age.contains("undefined")) {
-            object.put("code", 501);
-            return object;
+            retData.setMessage("年龄不能为空");
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            return retData;
+        }
+        JSONObject userData = userHelperService.getUserData(code);
+        if (userData==null) {
+            retData.setMessage("获取用户openID失败");
+            retData.setCode(ResultCodeMessage.FAILURE);
+            return retData;
+        }
+        String openid = userData.getString("openid");
+        if(StringUtil.isNotBlank(openid))
+        {
+            openId=openid;
         }
         User wx = new User();
         wx.setOpenId(openId);
@@ -156,8 +193,10 @@ public class UserController {
         wx.setNickname(nickName);
         wx.setPhotoUrl(photoUrl);
         userService.save(wx);
-        object.put("code", 200);
-        return object;
+        retData.setData(userData);
+        retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
+        retData.setCode(ResultCodeMessage.SUCCESS);
+        return retData;
     }
 
 }
