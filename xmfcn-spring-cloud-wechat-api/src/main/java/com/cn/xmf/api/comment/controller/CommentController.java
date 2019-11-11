@@ -165,7 +165,7 @@ public class CommentController {
             return retData;
         }
         content = StringUtil.stringFilter(content);
-        boolean checkContent = sysCommonService.checkContent(content);
+        boolean checkContent = sysCommonService.checkContent(content,openId);
         if (!checkContent) {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("评论内容含有违法违规内容");

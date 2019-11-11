@@ -109,8 +109,7 @@ public class MeetingController {
         String photoUrl = request.getParameter("photoUrl");
         String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + "meeting_limit" + openId;
         String cache = sysCommonService.getCache(key);
-        if(StringUtil.isNotBlank(cache))
-        {
+        if (StringUtil.isNotBlank(cache)) {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("提交过于频繁，请稍等再试");
             return retData;
@@ -150,10 +149,9 @@ public class MeetingController {
             retData.setMessage("备注信息输入不能超过200字，请检查");
             return retData;
         }
-
         remark = StringUtil.stringFilter(remark);
-        boolean checkContent = sysCommonService.checkContent(remark);
-        boolean checkUserName = sysCommonService.checkContent(userName);
+        boolean checkContent = sysCommonService.checkContent(remark, openId);
+        boolean checkUserName = sysCommonService.checkContent(userName, openId);
         if (!checkContent) {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("备注内容含有违法违规内容");
@@ -172,7 +170,7 @@ public class MeetingController {
         if (ret != null) {
             String delkey = ConstantUtil.CACHE_SYS_BASE_DATA_ + "meeting_" + openId;
             sysCommonService.delete(delkey);
-            sysCommonService.save(key,"has_save",30);
+            sysCommonService.save(key, "has_save", 30);
             retData.setCode(ResultCodeMessage.SUCCESS);
             retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
         }

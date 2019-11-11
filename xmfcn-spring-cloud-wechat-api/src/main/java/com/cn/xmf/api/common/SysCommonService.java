@@ -266,7 +266,7 @@ public class SysCommonService implements SysCommon {
      * @param conten
      * @return
      */
-    public boolean checkContent(String conten) {
+    public boolean checkContent(String conten,String openId) {
         boolean retData = false;
         if (StringUtil.isBlank(conten)) {
             return retData;
@@ -287,6 +287,7 @@ public class SysCommonService implements SysCommon {
             retData = true;
         } else {
             logger.error("内容含有违法违规内容：", errMsg);
+            this.sendDingTalkMessage("checkContent",conten,jsonObject,errMsg,this.getClass());
         }
         return retData;
     }
