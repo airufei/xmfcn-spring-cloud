@@ -1,6 +1,7 @@
 package com.cn.xmf.api.photo.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cn.xmf.api.common.SysCommonService;
 import com.cn.xmf.api.photo.service.PhotoService;
 import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.base.model.ResultCodeMessage;
@@ -33,6 +34,8 @@ public class PhotoController {
 
     @Autowired
     private PhotoService photoService;
+    @Autowired
+    private SysCommonService sysCommonService;
 
     /**
      * getList:(获取微信照片分页查询接口)
@@ -46,21 +49,25 @@ public class PhotoController {
     public RetData getList(HttpServletRequest request) {
         RetData retData = new RetData();
         String pageNoStr = request.getParameter("pageNo");
-        String length = request.getParameter("pageSize");
-        String id = request.getParameter("id");
-        String name = request.getParameter("name");
         String type = request.getParameter("type");
         int pageSize = 10;
         int pageNo = 1;
+        if (pageNo > 50) {
+            pageNo = 50;
+        }
         if (StringUtil.isNotBlank(pageNoStr)) {
             pageNo = StringUtil.stringToInt(pageNoStr);
         }
-        if (StringUtil.isNotBlank(length)) {
-            pageSize = StringUtil.stringToInt(length);
+        String key = "getPhotoList_" + type + pageNo + pageSize;
+        String cache = sysCommonService.getCache(key);
+        if (StringUtil.isNotBlank(cache)) {
+            JSONObject jsonObject = JSONObject.parseObject(cache);
+            retData.setData(jsonObject);
+            retData.setCode(ResultCodeMessage.SUCCESS);
+            retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
+            return retData;
         }
         JSONObject param = StringUtil.getPageJSONObject(pageNo, pageSize);
-        param.put("id", id);
-        param.put("name", name);
         param.put("type", type);
         logger.info("getList:(获取微信照片分页查询接口) 开始  param={}", param);
         Partion pt = photoService.getList(param);
@@ -73,8 +80,9 @@ public class PhotoController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("list", list);
         jsonObject.put("totalCount", totalCount);
+        sysCommonService.save(key, jsonObject.toString(), 10 * 60);
         retData.setData(jsonObject);
-        if (list == null||list.size()<=0) {
+        if (list == null || list.size() <= 0) {
             retData.setCode(ResultCodeMessage.NO_DATA);
             retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
             return retData;
@@ -100,7 +108,7 @@ public class PhotoController {
         String idStr = request.getParameter("id");
         String name = request.getParameter("name");
         String type = request.getParameter("type");
-        long id=StringUtil.stringToLong(idStr);
+        long id = StringUtil.stringToLong(idStr);
         photo.setId(id);
         photo.setName(name);
         photo.setType(type);
@@ -112,71 +120,4 @@ public class PhotoController {
         logger.info("getWxPhoto:(查询微信照片单条数据接口) 结束");
         return retData;
     }
-
-    /**
-     * save:(保存微信照片数据接口)
-     *
-     * @param request
-     * @param parms
-     * @return
-     * @Author rufei.cn
-     */
-    @RequestMapping(value = "save")
-    public RetData save(HttpServletRequest request) {
-        RetData retData = new RetData();
-        Photo photo = new Photo();
-        String name = request.getParameter("name");
-        String type = request.getParameter("type");
-        String url = request.getParameter("url");
-        String description = request.getParameter("description");
-        String remark = request.getParameter("remark");
-        String path = request.getParameter("path");
-        photo.setName(name);
-        photo.setType(type);
-        photo.setUrl(url);
-        photo.setDescription(description);
-        photo.setRemark(remark);
-        photo.setPath(path);
-        logger.info("save:(保存微信照片数据接口) 开始  photo={}", photo);
-        photo.setCreateTime(new Date());
-        photo.setUpdateTime(new Date());
-        // 保存数据库
-        Photo ret = photoService.save(photo);
-        if (ret != null) {
-            retData.setCode(ResultCodeMessage.SUCCESS);
-            retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
-        }
-        logger.info("save:(保存微信照片数据接口) 结束");
-        return retData;
-    }
-
-    /**
-     * delete:(逻辑删除微信照片数据接口)
-     *
-     * @param request
-     * @param parms
-     * @return
-     * @Author rufei.cn
-     */
-    @RequestMapping("delete")
-    public RetData delete(HttpServletRequest request) {
-        RetData retData = new RetData();
-        String idStr = request.getParameter("id");
-        logger.info("delete:(逻辑删除微信照片数据接口) 开始  idStr={}", idStr);
-        if (StringUtil.isBlank(idStr)) {
-            retData.setMessage("参数为空");
-            return retData;
-        }
-        Long id = StringUtil.stringToLong(idStr);
-        if (id != null && id > 0) {
-            photoService.delete(id);
-            retData.setCode(ResultCodeMessage.SUCCESS);
-            retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
-        } else {
-            retData.setMessage("请选择需要删除的数据");
-        }
-        logger.info("delete:(逻辑删除微信照片数据接口) 结束");
-        return retData;
-    }
-
 }

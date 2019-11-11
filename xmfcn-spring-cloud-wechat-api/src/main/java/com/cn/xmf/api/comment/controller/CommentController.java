@@ -11,7 +11,6 @@ import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.model.wx.Comment;
 import com.cn.xmf.model.wx.CommentDomm;
 import com.cn.xmf.util.ConstantUtil;
-import com.cn.xmf.util.LocalCacheUtil;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,17 +55,16 @@ public class CommentController {
     public RetData getList(HttpServletRequest request) {
         RetData retData = new RetData();
         String pageNoStr = request.getParameter("pageNo");
-        String length = request.getParameter("pageSize");
         String openId = request.getParameter("openId");
         String type = request.getParameter("type");
         String bizId = request.getParameter("bizId");
         int pageSize = 10;
         int pageNo = 1;
+        if (pageNo > 50) {
+            pageNo = 50;
+        }
         if (StringUtil.isNotBlank(pageNoStr)) {
             pageNo = StringUtil.stringToInt(pageNoStr);
-        }
-        if (StringUtil.isNotBlank(length)) {
-            pageSize = StringUtil.stringToInt(length);
         }
         JSONObject param = StringUtil.getPageJSONObject(pageNo, pageSize);
         param.put("openId", openId);
@@ -74,7 +72,7 @@ public class CommentController {
         param.put("bizId", bizId);
         logger.info("getList:(获取微信留言分页查询接口) 开始  param={}", param);
         String key = "getCommentDommList_" + bizId + pageNo + pageSize + type;
-        String cache = LocalCacheUtil.getCache(key);
+        String cache = sysCommonService.getCache(key);
         if (StringUtil.isNotBlank(cache)) {
             JSONObject jsonObject = JSONObject.parseObject(cache);
             retData.setData(jsonObject);
@@ -110,40 +108,12 @@ public class CommentController {
             jsonObject.put("list", list);
         }
         if (jsonObject.size() > 0) {
-            LocalCacheUtil.saveCache(key, jsonObject.toString());
+            sysCommonService.save(key, jsonObject.toString(), 60 * 5);
         }
         retData.setData(jsonObject);
         retData.setCode(ResultCodeMessage.SUCCESS);
         retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
         logger.info("getList:(获取微信留言分页查询接口) 结束");
-        return retData;
-    }
-
-
-    /**
-     * getWxUserMessage:(查询微信留言单条数据接口)
-     *
-     * @param request
-     * @param parms
-     * @return
-     * @Author rufei.cn
-     */
-    @RequestMapping("getWxUserMessage")
-    public RetData getWxUserMessage(HttpServletRequest request) {
-        RetData retData = new RetData();
-        Comment comment = new Comment();
-        String openId = request.getParameter("openId");
-        String type = request.getParameter("type");
-        String bizId = request.getParameter("bizId");
-        comment.setOpenId(openId);
-        comment.setType(type);
-        comment.setBizId(bizId);
-        logger.info("getWxUserMessage:(查询微信留言单条数据接口) 开始  comment={}", comment);
-        Comment retcomment = commentService.getWxUserMessage(comment);
-        retData.setData(retcomment);
-        retData.setCode(ResultCodeMessage.SUCCESS);
-        retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
-        logger.info("getWxUserMessage:(查询微信留言单条数据接口) 结束");
         return retData;
     }
 
@@ -166,6 +136,13 @@ public class CommentController {
         String remark = request.getParameter("remark");
         String nickName = request.getParameter("nickName");
         String bizId = request.getParameter("bizId");
+        String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + "comment_limit" + openId;
+        String cache = sysCommonService.getCache(key);
+        if (StringUtil.isNotBlank(cache)) {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("提交过于频繁，请稍等再试");
+            return retData;
+        }
         if (StringUtil.isBlank(bizId)) {
             bizId = StringUtil.getUuId();
         }
@@ -177,7 +154,7 @@ public class CommentController {
             retData.setMessage("不好意思，留言信息不能为空");
             return retData;
         }
-        if(StringUtil.isBlank(openId)||"undefined".equals(openId)){
+        if (StringUtil.isBlank(openId) || "undefined".equals(openId)) {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("不好意思，请先登录");
             return retData;
@@ -187,7 +164,13 @@ public class CommentController {
             retData.setMessage("太长了,可以简短一点，谢谢。");
             return retData;
         }
-        content=StringUtil.stringFilter(content);
+        content = StringUtil.stringFilter(content);
+        boolean checkContent = sysCommonService.checkContent(content);
+        if (!checkContent) {
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setMessage("评论内容含有违法违规内容");
+            return retData;
+        }
         comment.setOpenId(openId);
         comment.setType(type);
         comment.setContent(content);
@@ -201,40 +184,11 @@ public class CommentController {
         // 保存数据库
         Comment ret = commentService.save(comment);
         if (ret != null) {
+            sysCommonService.save(key, "has_save", 5);
             retData.setCode(ResultCodeMessage.SUCCESS);
             retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
         }
         logger.info("save:(保存微信留言数据接口) 结束");
         return retData;
     }
-
-    /**
-     * delete:(逻辑删除微信留言数据接口)
-     *
-     * @param request
-     * @param parms
-     * @return
-     * @Author rufei.cn
-     */
-    @RequestMapping("delete")
-    public RetData delete(HttpServletRequest request) {
-        RetData retData = new RetData();
-        String idStr = request.getParameter("id");
-        logger.info("delete:(逻辑删除微信留言数据接口) 开始  idStr={}", idStr);
-        if (StringUtil.isBlank(idStr)) {
-            retData.setMessage("参数为空");
-            return retData;
-        }
-        Long id = StringUtil.stringToLong(idStr);
-        if (id != null && id > 0) {
-            commentService.delete(id);
-            retData.setCode(ResultCodeMessage.SUCCESS);
-            retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
-        } else {
-            retData.setMessage("请选择需要删除的数据");
-        }
-        logger.info("delete:(逻辑删除微信留言数据接口) 结束");
-        return retData;
-    }
-
 }

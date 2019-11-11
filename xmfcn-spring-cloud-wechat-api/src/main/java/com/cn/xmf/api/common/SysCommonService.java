@@ -259,4 +259,70 @@ public class SysCommonService implements SysCommon {
         }
         return lock;
     }
+
+    /**
+     * 内容审核
+     *
+     * @param conten
+     * @return
+     */
+    public boolean checkContent(String conten) {
+        boolean retData = false;
+        if (StringUtil.isBlank(conten)) {
+            return retData;
+        }
+        String accessToken = getAccessToken();
+        if (StringUtil.isBlank(accessToken)) {
+            return retData;
+        }
+        String url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token=" + accessToken;
+        JSONObject jsonObject = HttpClientUtil.httpGet(url);
+
+        if (jsonObject == null || jsonObject.size() <= 0) {
+            return retData;
+        }
+        int errcode = jsonObject.getIntValue("errcode");
+        String errMsg = jsonObject.getString("errMsg");
+        if (errcode == 0) {
+            retData = true;
+        } else {
+            logger.error("内容含有违法违规内容：", errMsg);
+        }
+        return retData;
+    }
+
+    /**
+     * 获取用户AccessToken
+     *
+     * @param code
+     * @return
+     */
+    private String getAccessToken() {
+        logger.info("获取用户OpenID和sessionKey信息 开始");
+        String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + "access_token";
+        String accessToken = null;
+        accessToken = this.getCache(key);
+        if (StringUtil.isNotBlank(accessToken)) {
+            return accessToken;
+        }
+        String configStr = this.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "wechat_config");
+        JSONObject configJosn = JSONObject.parseObject(configStr);
+        if (configJosn == null) {
+            return accessToken;
+        }
+        String appid = configJosn.getString("appId");
+        String secret = configJosn.getString("secret");
+        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret;
+        JSONObject jsonObject = HttpClientUtil.httpGet(url);
+        int expiresIn = 0;
+        if (jsonObject != null) {
+            accessToken = jsonObject.getString("access_token");
+            expiresIn = jsonObject.getIntValue("expires_in");
+        }
+        if (StringUtil.isNotBlank(accessToken)) {
+            this.save(key, accessToken, expiresIn);
+        }
+        logger.info("获取用户OpenID和sessionKey信息 结束 jsonObject={}", jsonObject);
+        return accessToken;
+    }
 }
