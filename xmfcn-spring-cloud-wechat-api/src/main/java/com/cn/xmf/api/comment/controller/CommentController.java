@@ -43,6 +43,27 @@ public class CommentController {
     @Autowired
     private SysCommonService sysCommonService;
 
+
+    /**
+     * getList:(获取微信留言分页查询接口)
+     *
+     * @param request
+     * @param parms
+     * @return
+     * @Author rufei.cn
+     */
+    @RequestMapping("isShow")
+    public RetData isShow(HttpServletRequest request) {
+        RetData retData = new RetData();
+        String isShow = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "btn_comment_is_show");
+        boolean toBoolean = StringUtil.stringToBoolean(isShow);
+        if (toBoolean) {
+            retData.setCode(ResultCodeMessage.SUCCESS);
+            retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
+        }
+        return retData;
+    }
+
     /**
      * getList:(获取微信留言分页查询接口)
      *
@@ -165,7 +186,7 @@ public class CommentController {
             return retData;
         }
         content = StringUtil.stringFilter(content);
-        boolean checkContent = sysCommonService.checkContent(content,openId);
+        boolean checkContent = sysCommonService.checkContent(content, openId);
         if (!checkContent) {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
             retData.setMessage("评论内容含有违法违规内容");
