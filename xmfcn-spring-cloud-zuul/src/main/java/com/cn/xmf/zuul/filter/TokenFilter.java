@@ -88,7 +88,7 @@ public class TokenFilter extends ZuulFilter {
             requestContext.set("isSuccess", false);// 设值，让下一个Filter看到上一个Filter的状态
             // 构建返回信息
             RetData retData = new RetData();
-            retData.setCode(ResultCodeMessage.NO_DATA);
+            retData.setCode(ResultCodeMessage.UNAUTHORIZED);
             retData.setMessage(ResultCodeMessage.UNAUTHORIZED_MESSAGE);
             String jsonString = JSON.toJSONString(retData, SerializerFeature.WriteMapNullValue);
             requestContext.setResponseBody(jsonString);

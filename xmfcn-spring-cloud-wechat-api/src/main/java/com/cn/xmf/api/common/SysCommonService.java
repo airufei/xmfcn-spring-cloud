@@ -145,16 +145,16 @@ public class SysCommonService implements SysCommon {
         String dictValue = null;
         String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + dictType + dictKey;
         try {
-            dictValue = LocalCacheUtil.getCache(key);
+            dictValue = getCache(key);
             if (StringUtil.isNotBlank(dictValue)) {
                 dictValue = dictValue.replace("@0", "");
                 return dictValue;
             }
             dictValue = dictService.getDictValue(dictType, dictKey);
             if (StringUtil.isBlank(dictValue)) {
-                LocalCacheUtil.saveCache(key, "@0", 60);
+                save(key, "@0", 60);
             } else {
-                LocalCacheUtil.saveCache(key, dictValue, 60);
+                save(key, dictValue, 60);
             }
         } catch (Exception e) {
             logger.error("getDictValue(获取字典数据) 异常={}", StringUtil.getExceptionMsg(e));
