@@ -2,11 +2,13 @@ package com.cn.xmf.api.photo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.api.common.SysCommonService;
+import com.cn.xmf.api.like.rpc.LikeService;
 import com.cn.xmf.api.photo.service.PhotoService;
 import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.model.wx.Photo;
+import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,8 @@ public class PhotoController {
     private PhotoService photoService;
     @Autowired
     private SysCommonService sysCommonService;
+    @Autowired
+    private LikeService likeService;
 
     /**
      * getList:(获取微信照片分页查询接口)
@@ -114,6 +118,10 @@ public class PhotoController {
         photo.setType(type);
         logger.info("getWxPhoto:(查询微信照片单条数据接口) 开始  photo={}", photo);
         Photo retphoto = photoService.getWxPhoto(photo);
+        if (retphoto != null) {
+            long likeCount = likeService.getPhotoLikeCount(retphoto.getId().toString(), type);
+            retphoto.setLikeCount(likeCount);
+        }
         retData.setData(retphoto);
         retData.setCode(ResultCodeMessage.SUCCESS);
         retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
