@@ -61,5 +61,16 @@ public interface LikeService {
      */
     @RequestMapping(value = "delete", consumes = MediaType.APPLICATION_JSON_VALUE)
     boolean delete(@RequestParam("id") Long id);
+
+    /**
+     * 获取单条数据
+     *
+     * @param bizId
+     * @param type
+     * @return
+     * @author rufei.cn
+     */
+    @RequestMapping("getPhotoLikeCount")
+    public long getPhotoLikeCount(@RequestParam("bizId") String bizId, @RequestParam("type") String type);
 	
 }

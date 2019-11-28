@@ -2,11 +2,13 @@ package com.cn.xmf.api.like.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cn.xmf.api.common.SysCommonService;
+import com.cn.xmf.api.like.rpc.LikeHelperService;
 import com.cn.xmf.api.like.rpc.LikeService;
 import com.cn.xmf.base.model.Partion;
 import com.cn.xmf.base.model.ResultCodeMessage;
 import com.cn.xmf.base.model.RetData;
 import com.cn.xmf.model.wx.Like;
+import com.cn.xmf.util.ConstantUtil;
 import com.cn.xmf.util.LocalCacheUtil;
 import com.cn.xmf.util.StringUtil;
 import org.slf4j.Logger;
@@ -37,6 +39,8 @@ public class LikeController {
     private LikeService likeService;
     @Autowired
     private SysCommonService sysCommonService;
+    @Autowired
+    private LikeHelperService likeHelperService;
 
 
     /**
@@ -71,9 +75,11 @@ public class LikeController {
             return retData;
         }
         String key = "like_cache_" + openId + bizId;
+        long count = likeService.getPhotoLikeCount(bizId, type);
         String cache = sysCommonService.getCache(key);
         if (StringUtil.isNotBlank(cache)) {
             retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            retData.setData(count);
             retData.setMessage("这张已赞过，你可以点赞下一张，谢谢.");
             return retData;
         }
@@ -89,10 +95,14 @@ public class LikeController {
         like.setUpdateTime(new Date());
         // 保存数据库
         Like ret = likeService.save(like);
+        String countkey = ConstantUtil.CACHE_SYS_BASE_DATA_ + "getPhotoLikeCount" + bizId + type;
         if (ret != null) {
+            count=count+1;
             sysCommonService.save(key, "has_like", 60 * 30);
+            sysCommonService.save(countkey, String.valueOf(count), 60 * 10);
             retData.setCode(ResultCodeMessage.SUCCESS);
             retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
+            retData.setData(count);
         }
         logger.info("save:(保存微信点赞数据接口) 结束");
         return retData;

@@ -72,28 +72,6 @@ public class CommentController {
      * @return
      * @Author rufei.cn
      */
-    @RequestMapping("isShow")
-    public RetData isShow(HttpServletRequest request) {
-        RetData retData = new RetData();
-        retData.setCode(ResultCodeMessage.NO_DATA);
-        retData.setMessage(ResultCodeMessage.NO_DATA_MESSAGE);
-        String commentIsShow = sysCommonService.getDictValue(ConstantUtil.DICT_TYPE_BASE_CONFIG, "btn_comment_is_show");
-        boolean stringToBoolean = StringUtil.stringToBoolean(commentIsShow);
-        if (stringToBoolean) {
-            retData.setCode(ResultCodeMessage.SUCCESS);
-            retData.setMessage(ResultCodeMessage.SUCCESS_MESSAGE);
-        }
-        return retData;
-    }
-
-    /**
-     * getList:(获取微信留言分页查询接口)
-     *
-     * @param request
-     * @param parms
-     * @return
-     * @Author rufei.cn
-     */
     @RequestMapping("getList")
     public RetData getList(HttpServletRequest request) {
         RetData retData = new RetData();

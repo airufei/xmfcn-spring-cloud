@@ -47,9 +47,9 @@ spring:
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.105.175.50:3306/cooxin?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://localhost:3306/cooxin?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
-    password: FeiShuJia987&
+    password: abc123
     initialSize: 10 #连接池初始化大小
     minIdle: 5 #连接池最小值
     maxActive: 1000 #连接池最大值
