@@ -32,7 +32,6 @@ public class Meeting extends BaseEntitys {
      */
     private Integer type;
 
-
     /**
      * 用户唯一标识
      */
