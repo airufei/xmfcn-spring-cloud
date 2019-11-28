@@ -158,11 +158,11 @@
     $("#uploadImg").fileinput({
         uploadUrl: base_url + "/photo/save", // server upload action
         language: 'zh',
-        minFileCount: 0,
-        uploadAsync: true,
+        minFileCount: 1,
+        uploadAsync:false,
         maxFileCount: 200,
         enctype: 'multipart/form-data',
-        maxFileSize: 909600,//限制上传大小KB
+        maxFileSize: 9096000,//限制上传大小KB
         showBrowse: true,
         browseOnZoneClick: true,
         ajaxSettings: {

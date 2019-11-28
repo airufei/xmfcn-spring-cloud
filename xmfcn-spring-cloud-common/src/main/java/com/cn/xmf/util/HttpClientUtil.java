@@ -16,6 +16,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.Registry;
@@ -23,6 +24,7 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -65,6 +67,7 @@ public class HttpClientUtil {
     public static JSONObject httpPost(String url, JSONObject jsonParam) {
         return httpPost(url, jsonParam, false);
     }
+
 
     /**
      * post请求
@@ -202,29 +205,21 @@ public class HttpClientUtil {
      * @param url   请求地址
      * @return
      */
-    public static JSONObject HttpPost(List<NameValuePair> param, String url) {
+    public static JSONObject HttpPost(JSONObject param, String url) {
         String Str = null;
         JSONObject jsonResult = null;
         HttpEntity entity = null;
         try {
             if (url != null) {
                 HttpClient httpclient = HttpClientBuilder.create().build();
-                ;
                 HttpPost post = new HttpPost(url);
-                entity = new UrlEncodedFormEntity(param);
-                post.setEntity(entity);
+                post.addHeader("Content-Type", "application/json;charset=UTF-8");
+                post.setEntity(new StringEntity(JSONObject.toJSONString(param), ContentType.create("application/json", "utf-8")));
                 HttpResponse response = httpclient.execute(post);
                 if (response != null) {
-                    Str = EntityUtils.toString(response.getEntity());
-                    int resCode = response.getStatusLine().getStatusCode();
-                    if (resCode == 200) {
-                        if (Str != null) {
-                            jsonResult = JSONObject.parseObject(Str);
-                        }
-                    } else {
-                        throw new Exception(Str);
-                    }
-
+                    HttpEntity httpEntity = response.getEntity();
+                    String result = EntityUtils.toString(httpEntity, "UTF-8");// 转成string
+                    jsonResult = JSONObject.parseObject(result);
                 }
             }
         } catch (UnsupportedEncodingException e) {

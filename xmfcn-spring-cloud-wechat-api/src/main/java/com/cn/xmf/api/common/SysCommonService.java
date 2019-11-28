@@ -9,11 +9,14 @@ import com.cn.xmf.base.Interface.SysCommon;
 import com.cn.xmf.enums.MessageType;
 import com.cn.xmf.model.msg.Message;
 import com.cn.xmf.util.*;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -145,16 +148,16 @@ public class SysCommonService implements SysCommon {
         String dictValue = null;
         String key = ConstantUtil.CACHE_SYS_BASE_DATA_ + dictType + dictKey;
         try {
-            dictValue = LocalCacheUtil.getCache(key);
+            dictValue = getCache(key);
             if (StringUtil.isNotBlank(dictValue)) {
                 dictValue = dictValue.replace("@0", "");
                 return dictValue;
             }
             dictValue = dictService.getDictValue(dictType, dictKey);
             if (StringUtil.isBlank(dictValue)) {
-                LocalCacheUtil.saveCache(key, "@0", 60);
+                save(key, "@0", 60);
             } else {
-                LocalCacheUtil.saveCache(key, dictValue, 60);
+                save(key, dictValue, 60);
             }
         } catch (Exception e) {
             logger.error("getDictValue(获取字典数据) 异常={}", StringUtil.getExceptionMsg(e));
@@ -266,9 +269,9 @@ public class SysCommonService implements SysCommon {
      * @param conten
      * @return
      */
-    public boolean checkContent(String conten,String openId) {
+    public boolean checkContent(String content, String openId) {
         boolean retData = false;
-        if (StringUtil.isBlank(conten)) {
+        if (StringUtil.isBlank(content)) {
             return retData;
         }
         String accessToken = getAccessToken();
@@ -276,8 +279,9 @@ public class SysCommonService implements SysCommon {
             return retData;
         }
         String url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token=" + accessToken;
-        JSONObject jsonObject = HttpClientUtil.httpGet(url);
-
+        JSONObject param = new JSONObject();
+        param.put("content", content);
+        JSONObject jsonObject = HttpClientUtil.HttpPost(param, url);
         if (jsonObject == null || jsonObject.size() <= 0) {
             return retData;
         }
@@ -287,7 +291,7 @@ public class SysCommonService implements SysCommon {
             retData = true;
         } else {
             logger.error("内容含有违法违规内容：", errMsg);
-            this.sendDingTalkMessage("checkContent",conten,jsonObject,errMsg,this.getClass());
+            this.sendDingTalkMessage("checkContent", content, jsonObject, errMsg, this.getClass());
         }
         return retData;
     }

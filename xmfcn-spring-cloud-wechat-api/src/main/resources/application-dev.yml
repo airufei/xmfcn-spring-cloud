@@ -13,6 +13,7 @@ server:
   # 本服务需要调用的服务和授权信息-service层
 base-service:
   sys-base-service: sys-base-service
+  sys-redis-service: sys-redis-service
   wechat-service: wechat-service
   name: serviceadmin
   password: service987423Ds887

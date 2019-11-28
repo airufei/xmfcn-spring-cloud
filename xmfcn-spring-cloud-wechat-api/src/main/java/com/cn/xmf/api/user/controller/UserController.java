@@ -171,16 +171,18 @@ public class UserController {
         }
         JSONObject userData = userHelperService.getUserData(code);
         if (userData == null) {
-            retData.setMessage("获取用户openID失败");
+            retData.setMessage("获取授权失败，请再试");
             retData.setCode(ResultCodeMessage.FAILURE);
             return retData;
         }
         String openid = userData.getString("openid");
-        if (StringUtil.isNotBlank(openid)) {
-            openId = openid;
+        if (StringUtil.isBlank(openid)) {
+            retData.setMessage("获取授权失败，请再试");
+            retData.setCode(ResultCodeMessage.PARMS_ERROR);
+            return retData;
         }
         User wx = new User();
-        wx.setOpenId(openId);
+        wx.setOpenId(openid);
         wx.setAge(age);
         wx.setCountry(country);
         wx.setProvince(province);
