@@ -141,6 +141,6 @@ ribbon:
 xmf:
  job:
   login:
-    webRoot: http://localhost:8082
+    webRoot: https://rufei.cn
   accessToken: 123456
   i18n:
