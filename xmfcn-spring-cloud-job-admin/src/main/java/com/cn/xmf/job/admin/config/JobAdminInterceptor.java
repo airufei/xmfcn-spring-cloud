@@ -46,7 +46,7 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         if (strUrl != null && (strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api") || strUrl.contains("/logout"))) {
             return true;
         }
-        if (strUrl != null && (strUrl.endsWith(".css") || strUrl.endsWith(".js")|| strUrl.endsWith(".jpg")|| strUrl.endsWith(".gif"))) {
+        if (strUrl != null && (strUrl.contains("/plugins/")||strUrl.contains("/adminlte/")||strUrl.contains("/js/")||strUrl.contains("/treeview/")||strUrl.contains("/fonts/")||strUrl.endsWith(".css") || strUrl.endsWith(".js")|| strUrl.endsWith(".jpg")|| strUrl.endsWith(".gif"))) {
             return true;
         }
         //logger.info("登录地址============================" + loginUrl);
