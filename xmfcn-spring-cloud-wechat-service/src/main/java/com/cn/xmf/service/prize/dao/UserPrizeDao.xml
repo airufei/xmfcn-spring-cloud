@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.xmf.service.prize.dao.UserPrizeDao">
+
+
+	<sql id="userPrizeColumns">
+		a.id AS "id",
+		a.type AS "type",
+		a.name AS "name",
+		a.img_url AS "imgUrl",
+		a.createtime AS "createtime",
+		a.updatetime AS "updatetime",
+		a.flag AS "flag",
+		a.remark AS "remark"
+	</sql>
+
+	<sql id="userPrizeJoins">
+	</sql>
+
+	<select id="getUserPrizeById" resultType="com.cn.xmf.model.wx.UserPrize">
+		SELECT
+			<include refid="userPrizeColumns"/>
+		FROM t_wx_user_prize a
+		<include refid="userPrizeJoins"/>
+		WHERE a.id = #{id} and flag=#{flag}
+	</select>
+
+	<select id="getTotalCount" resultType="Integer" parameterType="com.alibaba.fastjson.JSONObject">
+		SELECT
+			count(*) as count
+		FROM t_wx_user_prize a
+		<!--关联表SQL-->
+		<include refid="userPrizeJoins"/>
+		<!--基础查询条件-->
+		<include refid="userPrizeWhere"/>
+		<!--分页列表扩展查询条件-->
+		<include refid="userPrizePageWhere"/>
+	</select>
+
+	<select id="getList" resultType="com.cn.xmf.model.wx.UserPrize" parameterType="com.alibaba.fastjson.JSONObject">
+		SELECT
+			<include refid="userPrizeColumns"/>
+		FROM
+		(SELECT id from  t_wx_user_prize t
+		<!--关联表SQL-->
+		<include refid="userPrizeJoins"/>
+		<!--基础查询条件-->
+		<include refid="userPrizeWhere"/>
+		<!--分页列表扩展查询条件-->
+		<include refid="userPrizePageWhere"/>
+		 <choose>
+			<otherwise>
+                 ORDER BY createtime desc
+			</otherwise>
+		</choose>
+		 limit #{startIndex},#{pageSize}) b inner join
+		t_wx_user_prize a  on b.id=a.id
+		 <choose>
+			<otherwise>
+                 ORDER BY createtime desc
+			</otherwise>
+		</choose>
+	</select>
+
+    <select id="getUserPrizeList" resultType="com.cn.xmf.model.wx.UserPrize" parameterType="com.cn.xmf.model.wx.UserPrize">
+		SELECT
+			<include refid="userPrizeColumns"/>
+		FROM (SELECT id from  t_wx_user_prize t
+		<!--关联表SQL-->
+		<include refid="userPrizeJoins"/>
+		<!--基础查询条件-->
+		<include refid="userPrizeWhere"/>
+		) b  inner join t_wx_user_prize a  on b.id=a.id
+		 <choose>
+			<otherwise>
+                 ORDER BY createtime desc
+			</otherwise>
+		</choose>
+	</select>
+
+       <select id="getSignleUserPrize" resultType="com.cn.xmf.model.wx.UserPrize" parameterType="com.cn.xmf.model.wx.UserPrize">
+		SELECT
+			<include refid="userPrizeColumns"/>
+		FROM (SELECT id from  t_wx_user_prize t
+		<!--关联表SQL-->
+		<include refid="userPrizeJoins"/>
+		<!--基础查询条件-->
+		<include refid="userPrizeWhere"/>
+		limit 1
+		) b  inner join t_wx_user_prize a  on b.id=a.id
+	</select>
+
+
+<insert id="add" useGeneratedKeys="true" keyProperty="id">
+ <selectKey resultType="long" keyProperty="id" order="AFTER">
+        SELECT
+        LAST_INSERT_ID()
+     </selectKey>
+		INSERT INTO t_wx_user_prize(
+		<if test="id != null">
+		 id,
+		</if>
+		<if test="type != null">
+		 type,
+		</if>
+		<if test="name != null">
+		 name,
+		</if>
+		<if test="imgUrl != null">
+		 img_url,
+		</if>
+		<if test="updatetime != null">
+		 updatetime,
+		</if>
+		<if test="flag != null">
+		 flag,
+		</if>
+		<if test="remark != null">
+		 remark,
+		</if>
+		 createtime
+		) VALUES (
+		 <if test="id != null">
+		  #{id},
+		   </if>
+		 <if test="type != null">
+		  #{type},
+		   </if>
+		 <if test="name != null">
+		  #{name},
+		   </if>
+		 <if test="imgUrl != null">
+		  #{imgUrl},
+		   </if>
+		 <if test="updatetime != null">
+		  #{updatetime},
+		   </if>
+		 <if test="flag != null">
+		  #{flag},
+		   </if>
+		 <if test="remark != null">
+		  #{remark},
+		   </if>
+		 #{createtime}
+		)
+	</insert>
+
+   <insert id="addTrainRecordBatch" useGeneratedKeys="true" parameterType="java.util.List">
+     <selectKey resultType="long" keyProperty="id" order="AFTER">
+        SELECT
+        LAST_INSERT_ID()
+     </selectKey>
+		INSERT INTO t_wx_user_prize(
+		 id,
+		 type,
+		 name,
+		 img_url,
+		 updatetime,
+		 flag,
+		 remark,
+		  createtime
+		 ) VALUES
+ <foreach collection="list" item="item" index="index" separator="," >
+		(
+		  #{item.id},
+		  #{item.type},
+		  #{item.name},
+		  #{item.imgUrl},
+		  #{item.updatetime},
+		  #{item.flag},
+		  #{item.remark},
+		  #{item.createtime}
+		)
+</foreach>
+	</insert>
+<update id="updateById">
+   UPDATE t_wx_user_prize SET
+            <if test="id != null ">
+            id = #{id},
+           </if>
+            <if test="type != null ">
+            type = #{type},
+           </if>
+            <if test="name != null ">
+            name = #{name},
+           </if>
+            <if test="imgUrl != null ">
+            img_url = #{imgUrl},
+           </if>
+            <if test="createtime != null ">
+            createtime = #{createtime},
+           </if>
+            <if test="flag != null ">
+            flag = #{flag},
+           </if>
+            <if test="remark != null ">
+            remark = #{remark},
+           </if>
+         updatetime = #{updatetime}
+	WHERE id = #{id}
+</update>
+
+	<update id="delete">
+	UPDATE t_wx_user_prize SET
+	flag = -1
+		WHERE id = #{id}
+	</update>
+
+	<!--基础查询条件-->
+    <sql id="userPrizeWhere">
+    		<where>
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
+			</if>
+			 AND flag=#{flag}
+		</where>
+    </sql>
+     <!--分页列表扩展查询条件-->
+    <sql id="userPrizePageWhere">
+
+     </sql>
+
+
+</mapper>
