@@ -19,6 +19,9 @@
         <module>xmfcn-spring-cloud-sys-redis-service</module>
         <module>xmfcn-spring-cloud-wechat-api</module>
         <module>xmfcn-spring-cloud-wechat-service</module>
+        <module>xmfcn-spring-cloud-wechat-api</module>
+        <module>xmfcn-spring-cloud-common</module>
+        <module>xmfcn-spring-cloud-job-core</module>
     </modules>
     <packaging>pom</packaging>
     <parent>
