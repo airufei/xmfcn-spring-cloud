@@ -6,7 +6,9 @@
 
 ## 2、欢迎留言讨论：https://github.com/airufei/xmfcn-spring-cloud/issues/1
 
-## 3、项目启动: ./start.sh  项目停止：./stop.sh
+## 3、项目jar包启动方式: ./start.sh  项目停止：./stop.sh
+
+## 4、项目docker启动方式: ./docker_run.sh
 
 # job-admin系统的部分功能截图
 1、登录界面
