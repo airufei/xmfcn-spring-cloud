@@ -33,4 +33,4 @@ spring:
         server-addr: 172.17.143.99:8848
         file-extension: yml
         shared-dataids: ${spring.application.name}.yml,common-ribbon-hystrix-logs.yml
-        namespace: 48a8c792-a6a3-4aa0-8d8f-6416f797325a
+        namespace: be84543a-2ced-4aa5-8248-5048c497b0f3
