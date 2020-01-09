@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: wechat-api
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+
+###nacos 注册中心
+---
+spring:
+  profiles: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.17.143.99:8848
+        namespace: be84543a-2ced-4aa5-8248-5048c497b0f3
+      config:
+        server-addr: 172.17.143.99:8848
+        file-extension: yml
+        shared-dataids: ${spring.application.name}.yml,common-ribbon-hystrix-logs.yml
+        namespace: be84543a-2ced-4aa5-8248-5048c497b0f3
+
+---
+spring:
+  profiles: prod
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.17.143.99:8848
+        namespace: 4c26c786-1f3e-4299-9585-f4b711e27c70
+      config:
+        server-addr: 172.17.143.99:8848
+        file-extension: yml
+        shared-dataids: ${spring.application.name}.yml,common-ribbon-hystrix-logs.yml
+        namespace: 48a8c792-a6a3-4aa0-8d8f-6416f797325a

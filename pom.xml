@@ -43,13 +43,30 @@
         <druid.springboot.version>1.1.18</druid.springboot.version>
         <javamail.version>1.6.2</javamail.version>
         <junit.version>4.12</junit.version>
+        <nacos.version>0.9.0.RELEASE</nacos.version>
     </properties>
 
     <dependencies>
-        <dependency>
+
+        <!-- eureka discovery -->
+       <!-- <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>-->
+
+        <!-- nacos discovery -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <version>${nacos.version}</version>
         </dependency>
+        <!-- nacos config -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <version>${nacos.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -89,6 +106,7 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
+
     </dependencies>
 
     <dependencyManagement>

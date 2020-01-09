@@ -17,7 +17,7 @@ base-service:
   sys-service: sys-service
   kafka-service: kafka-service
   redis-service: redis-service
-  kafka-service: elasticsearch-service
+  elasticsearch-service: elasticsearch-service
   name: serviceadmin
   password: service987423Ds887
 
