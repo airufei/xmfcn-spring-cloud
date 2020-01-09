@@ -14,12 +14,12 @@ spring:
     nacos:
       discovery:
         server-addr: 172.17.143.99:8848
-        namespace: be84543a-2ced-4aa5-8248-5048c497b0f3
+        namespace: d2b21e7b-b14a-4d03-8b95-c759b36de49e
       config:
         server-addr: 172.17.143.99:8848
         file-extension: yml
         shared-dataids: ${spring.application.name}.yml,common-ribbon-hystrix-logs.yml,common-db-cooxin.yml
-        namespace: be84543a-2ced-4aa5-8248-5048c497b0f3
+        namespace: d2b21e7b-b14a-4d03-8b95-c759b36de49e
 
 ---
 spring:
@@ -28,7 +28,7 @@ spring:
     nacos:
       discovery:
         server-addr: 172.17.143.99:8848
-        namespace: 4c26c786-1f3e-4299-9585-f4b711e27c70
+        namespace: be84543a-2ced-4aa5-8248-5048c497b0f3
       config:
         server-addr: 172.17.143.99:8848
         file-extension: yml
