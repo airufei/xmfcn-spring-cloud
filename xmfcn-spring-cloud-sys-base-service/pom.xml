@@ -10,11 +10,11 @@
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>xmfcn-spring-cloud-sys-base-service</artifactId>
+    <artifactId>xmfcn-spring-cloud-sys-service</artifactId>
     <version>1.1.1</version>
     <packaging>jar</packaging>
-    <name>xmfcn-spring-cloud-sys-base-service</name>
-    <description>xmfcn-spring-cloud-sys-base-service</description>
+    <name>xmfcn-spring-cloud-sys-service</name>
+    <description>xmfcn-spring-cloud-sys-service</description>
     <dependencies>
         <dependency>
             <groupId>xmf.cn.common</groupId>

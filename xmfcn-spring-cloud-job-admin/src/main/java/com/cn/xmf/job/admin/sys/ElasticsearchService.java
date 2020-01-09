@@ -17,7 +17,7 @@ import java.util.List;
  * @author rufei.cn
  * @version 2019-05-19
  */
-@FeignClient(value = "${base-service:sys-es-service}")// 配置远程服务名以及自定义权限验证配置
+@FeignClient(value = "${base-service:elasticsearch-service}")// 配置远程服务名以及自定义权限验证配置
 @RequestMapping("/server/es/")// 配置远程服务路径
 @SuppressWarnings("all")
 public interface ElasticsearchService {

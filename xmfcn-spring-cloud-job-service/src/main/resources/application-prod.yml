@@ -14,10 +14,10 @@ server:
 
 # 本服务需要调用的服务和授权信息-service层
 base-service:
-  sys-base-service: sys-base-service
-  sys-kafka-service: sys-kafka-service
-  sys-redis-service: sys-redis-service
-  sys-es-service: sys-es-service
+  sys-service: sys-service
+  kafka-service: kafka-service
+  redis-service: redis-service
+  elasticsearch-service: elasticsearch-service
   name: serviceadmin
   password: service987423Ds887
 
@@ -46,7 +46,7 @@ spring:
       retry:
         enabled: true
   main:
-    allow-bean-definition-overriding: true # 防止'${base-service: sys-base-service}.FeignClientSpecification', defined in null, could not be registered 多个接口请求服务名称相同
+    allow-bean-definition-overriding: true # 防止'${base-service: sys-service}.FeignClientSpecification', defined in null, could not be registered 多个接口请求服务名称相同
   sleuth:
     sampler:
       probability: 1 #收集日志比例 100%

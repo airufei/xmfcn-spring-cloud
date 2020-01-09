@@ -8,7 +8,7 @@ server:
     uri-encoding: UTF-8
     accesslog:
       enabled: true
-      directory: /opt/mnt_file/logs/sys-redis-service/
+      directory: /opt/mnt_file/logs/redis-service/
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" %D(ms)'
   max-http-header-size: 10000000 #扩展 tomcat header的长度 omcat限制了header的长度,如果你请求的数据量超过了默认的长度就会抛出越界，
 
@@ -29,7 +29,7 @@ eureka:
     leaseExpirationDurationInSeconds: 2  # 发呆时间，即服务续约到期时间（缺省为90s）
 spring:
   application:
-    name: sys-base-service
+    name: sys-service
   cloud:
     loadbalancer:
       retry:

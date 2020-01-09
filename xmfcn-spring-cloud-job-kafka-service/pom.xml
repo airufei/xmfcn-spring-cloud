@@ -10,12 +10,12 @@
 		<relativePath>../</relativePath>
 	</parent>
 
-    <artifactId>xmfcn-spring-cloud-job-kafka-service</artifactId>
+    <artifactId>xmfcn-spring-cloud-job-kafka</artifactId>
     <version>1.1.1</version>
     <packaging>jar</packaging>
 
-    <name>xmfcn-spring-cloud-job-kafka-service</name>
-    <description>xmfcn-spring-cloud-job-kafka-service</description>
+    <name>xmfcn-spring-cloud-job-kafka</name>
+    <description>xmfcn-spring-cloud-job-kafka</description>
 
     <dependencies>
          <dependency>

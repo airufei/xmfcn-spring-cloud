@@ -14,15 +14,15 @@
 
 	<!-- 自定义日志写入方式和格式 -->
 	<appender name="esLog" class="com.cn.xmf.config.XmfLogAppender">
-		<subSysName>sys-kafka-service</subSysName><!-- 系统名称 -->
+		<subSysName>kafka-service</subSysName><!-- 系统名称 -->
 	</appender>
 	<!-- 按照每天生成日志文件 -->
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>/opt/mnt_file/logs/sys-kafka-service.log</file><!--log4j.config.path-->
+		<file>/opt/mnt_file/logs/kafka-service.log</file><!--log4j.config.path-->
 		<append>true</append>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!--日志文件输出的文件名-->
-			<fileNamePattern>/opt/mnt_file/logs/sys-kafka-service-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<fileNamePattern>/opt/mnt_file/logs/kafka-service-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
 			<!--日志文件最大的大小 -->
 			<timeBasedFileNamingAndTriggeringPolicy
 					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">

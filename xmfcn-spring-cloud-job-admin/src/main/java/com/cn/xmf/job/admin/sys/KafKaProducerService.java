@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Author rufei.cn
  * @version 2019-05-09
  */
-@FeignClient(value = "${base-service:sys-kafka-service}")// 配置远程服务名以及自定义权限验证配置
+@FeignClient(value = "${base-service:kafka-service}")// 配置远程服务名以及自定义权限验证配置
 @RequestMapping("/server/kafka/")// 配置远程服务路径
 @SuppressWarnings("all")
 public interface KafKaProducerService {

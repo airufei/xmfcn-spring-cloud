@@ -10,11 +10,11 @@
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>xmfcn-spring-cloud-sys-redis-service</artifactId>
+    <artifactId>xmfcn-spring-cloud-redis-service</artifactId>
     <version>1.1.1</version>
     <packaging>jar</packaging>
-    <name>xmfcn-spring-cloud-sys-redis-servicee</name>
-    <description>xmfcn-spring-cloud-sys-redis-service</description>
+    <name>xmfcn-spring-cloud-redis-servicee</name>
+    <description>xmfcn-spring-cloud-redis-service</description>
 
     <dependencies>
         <dependency>
