@@ -23,7 +23,7 @@ spring:
 
 ---
 spring:
-  profiles: prod
+  profiles: prod #
   cloud:
     nacos:
       discovery:
