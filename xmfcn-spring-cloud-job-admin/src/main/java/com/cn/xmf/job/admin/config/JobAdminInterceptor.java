@@ -43,10 +43,11 @@ public class JobAdminInterceptor extends HandlerInterceptorAdapter {
         }
         String loginUrl = webRoot + "/job/toLogin";
         String strUrl = request.getRequestURI();
-        if (strUrl != null && (strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api") || strUrl.contains("/logout"))) {
+        logger.info("请求地址："+strUrl);
+        if ((strUrl.contains("/toLogin") || strUrl.contains("/login") || strUrl.contains("/api") || strUrl.contains("/logout"))) {
             return true;
         }
-        if (strUrl != null && (strUrl.contains("/plugins/")||strUrl.contains("/adminlte/")||strUrl.contains("/js/")||strUrl.contains("/treeview/")||strUrl.contains("/fonts/")||strUrl.endsWith(".css") || strUrl.endsWith(".js")|| strUrl.endsWith(".jpg")|| strUrl.endsWith(".gif"))) {
+        if ((strUrl.contains("/plugins/")||strUrl.contains("/adminlte/")||strUrl.contains("/js/")||strUrl.contains("/treeview/")||strUrl.contains("/fonts/")||strUrl.endsWith(".css") || strUrl.endsWith(".js")|| strUrl.endsWith(".jpg")|| strUrl.endsWith(".gif"))) {
             return true;
         }
         //logger.info("登录地址============================" + loginUrl);

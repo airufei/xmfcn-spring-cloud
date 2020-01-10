@@ -40,7 +40,7 @@
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
-		<!--<appender-ref ref="esLog" />-->
+		<appender-ref ref="esLog" />
 		<!--<appender-ref ref="com.ibatis" />-->
 	</root>
 </configuration>
