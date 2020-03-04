@@ -10,7 +10,7 @@
         <jsp-api.version>2.2</jsp-api.version>
         <spring.version>4.3.14.RELEASE</spring.version>
         <groovy-all.version>2.4.13</groovy-all.version>
-        <jackson.version>2.9.10.1</jackson.version>
+        <jackson.version>2.9.10.3</jackson.version>
         <jetty-server.version>9.4.17.v20190418</jetty-server.version>
         <hessian.version>4.0.51</hessian.version>
         <httpclient.version>4.5.5</httpclient.version>
