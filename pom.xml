@@ -8,9 +8,6 @@
     <artifactId>xmfcn-spring-cloud</artifactId>
     <version>1.1.1</version>
     <modules>
-        <module>xmfcn-spring-cloud-common</module>
-        <module>xmfcn-spring-cloud-job-core</module>
-        <module>xmfcn-spring-cloud-eureka</module>
         <module>xmfcn-spring-cloud-zuul</module>
         <module>xmfcn-spring-cloud-job-service</module>
         <module>xmfcn-spring-cloud-job-kafka-service</module>
