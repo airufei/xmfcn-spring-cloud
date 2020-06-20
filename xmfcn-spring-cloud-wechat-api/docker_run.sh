@@ -5,6 +5,10 @@ projectName=wechat-api
 version=1.1.1
 port=8085
 
+#$CONFIG_PROFILE 这个参数是指使用dev还是prod配置 这里的参数值是从jenkins里获取的，如果不用jenkins，可以直接写在上面的变量里面
+#$JAVA_OPTS_VALUE 指的jvm配置参数，这里的参数值是从jenkins里获取的，如果不用jenkins，可以直接写在上面的变量里面
+
+
 
 # 创建 Dockerfile
 echo '=====>>>当前路径'
