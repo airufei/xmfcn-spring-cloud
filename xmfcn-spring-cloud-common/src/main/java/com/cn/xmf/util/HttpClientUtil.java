@@ -143,7 +143,6 @@ public class HttpClientUtil {
         JSONObject jsonResult = null;
         try {
             HttpClient client = HttpClientBuilder.create().build();
-            ;
             // 发送get请求
             HttpGet request = new HttpGet(url);
             request.addHeader("", "");

@@ -33,6 +33,7 @@ public class UserHelperService {
         String appid = configJosn.getString("appId");
         String secret = configJosn.getString("secret");
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + code + "&grant_type=authorization_code";
+        logger.info("获取用户OpenID和sessionKey信息 url={}", url);
         jsonObject = HttpClientUtil.httpGet(url);
         logger.info("获取用户OpenID和sessionKey信息 结束 jsonObject={}", jsonObject);
         return jsonObject;
