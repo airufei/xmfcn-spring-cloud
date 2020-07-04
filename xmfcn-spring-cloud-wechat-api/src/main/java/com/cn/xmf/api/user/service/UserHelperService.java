@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserHelperService {
     private static Logger logger = LoggerFactory.getLogger(UserHelperService.class);
@@ -34,8 +37,9 @@ public class UserHelperService {
         String secret = configJosn.getString("secret");
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + code + "&grant_type=authorization_code";
         logger.info("获取用户OpenID和sessionKey信息 url={}", url);
-        //jsonObject = HttpClientUtil.httpGet(url);
-        //logger.info("获取用户OpenID和sessionKey信息 结束 jsonObject={}", jsonObject);
+        JSONObject mp=new  JSONObject();
+        jsonObject = HttpClientUtil.HttpsPost(url,mp);
+        logger.info("获取用户OpenID和sessionKey信息 结束 jsonObject={}", jsonObject);
         return jsonObject;
     }
 }

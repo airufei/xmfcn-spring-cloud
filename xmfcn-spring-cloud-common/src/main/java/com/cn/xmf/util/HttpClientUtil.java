@@ -80,7 +80,6 @@ public class HttpClientUtil {
     public static JSONObject httpPost(String url, JSONObject jsonParam, boolean noNeedResponse) {
         // post请求返回结果
         HttpClient httpClient = HttpClientBuilder.create().build();
-        ;
         JSONObject jsonResult = null;
         HttpPost method = new HttpPost(url);
         try {
@@ -165,37 +164,7 @@ public class HttpClientUtil {
     }
 
 
-    /**
-     * 发送get请求
-     *
-     * @param url 路径
-     * @return
-     */
-    public static String httpGet(String url, int p) {
-        // get请求返回结果
-        String strResult = null;
-        try {
-            HttpClient client = HttpClientBuilder.create().build();
-            ;
-            // 发送get请求
-            HttpGet request = new HttpGet(url);
-            HttpResponse response = client.execute(request);
 
-            /** 请求发送成功，并得到响应 **/
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                /** 读取服务器返回过来的json字符串数据 **/
-                strResult = EntityUtils.toString(response.getEntity());
-                /** 把json字符串转换成json对象 **/
-
-                url = URLDecoder.decode(url, "UTF-8");
-            } else {
-                logger.error("get请求提交失败:" + url);
-            }
-        } catch (IOException e) {
-            logger.error("get请求提交失败:" + url, e);
-        }
-        return strResult;
-    }
 
     /**
      * http请求
@@ -251,7 +220,7 @@ public class HttpClientUtil {
         JSONObject jsonResult = null;
         String charset = "utf-8";
         try {
-            if (map == null || map.isEmpty()) {
+            if (map == null) {
                 return jsonResult;
             }
             httpClient = SSLClient();

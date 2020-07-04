@@ -29,7 +29,7 @@ public class ThreadPoolUtil {
      * DiscardOldestPolicy：表示先丢弃任务队列中的第一个任务，然后把这个任务加进队列。】
      */
     private static ThreadPoolExecutor cachedThreadPool = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(maxQueueSize), new XmfThreadFactory(),
-            new ThreadPoolExecutor.DiscardPolicy());
+            new ThreadPoolExecutor.AbortPolicy());
 
 
     /**
