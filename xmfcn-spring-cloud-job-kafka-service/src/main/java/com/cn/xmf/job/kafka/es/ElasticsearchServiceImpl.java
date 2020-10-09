@@ -39,7 +39,7 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
      * @param partitionRecords 数据集
      * @param topic            主题
      * @return
-     * @Author airufei
+     * @author rufei
      */
     @Override
     public RetData executeList(List<ConsumerRecord<String, String>> partitionRecords, String topic) {
@@ -163,7 +163,7 @@ public class ElasticsearchServiceImpl implements IKafkaReader {
      *
      * @param jsonObject
      * @return
-     * @Author airufei
+     * @author rufei
      */
     @Override
     public RetData execute(JSONObject jsonObject) {

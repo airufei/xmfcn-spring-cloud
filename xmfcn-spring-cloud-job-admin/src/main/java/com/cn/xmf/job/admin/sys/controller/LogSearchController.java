@@ -51,7 +51,7 @@ public class LogSearchController {
      *
      * @param request
      * @return
-     * @Author airufei
+     * @author rufei
      */
     @RequestMapping("getLogDetailById")
     @ResponseBody

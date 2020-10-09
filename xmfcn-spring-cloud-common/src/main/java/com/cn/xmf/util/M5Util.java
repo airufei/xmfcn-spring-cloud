@@ -17,7 +17,7 @@ import java.security.MessageDigest;
 /**
  * ClassName:M5Util (MD5加密)
  * Date:     2017年2月13日 下午10:45:54
- * @Author airufei
+ * @author rufei
  * @Version 1.0
  * @see
  */

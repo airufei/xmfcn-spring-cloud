@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Service(微信照片)
  *
- * @author airufei
+ * @author rufei
  * @version 2019-10-11
  */
 @RestController
@@ -39,7 +39,7 @@ public class PhotoService {
      *
      * @param json
      * @return
-     * @author airufei
+     * @author rufei
      */
     @RequestMapping("getList")
     public Partion getList(@RequestBody JSONObject json) {
@@ -65,7 +65,7 @@ public class PhotoService {
      *
      * @param photo
      * @return
-     * @author airufei
+     * @author rufei
      */
     @RequestMapping("getWxPhotoList")
     public List<Photo> getWxPhotoList(@RequestBody Photo photo) {
@@ -85,7 +85,7 @@ public class PhotoService {
      *
      * @param photo
      * @return
-     * @author airufei
+     * @author rufei
      */
     @RequestMapping("save")
     public Photo save(@RequestBody Photo photo) {
@@ -109,7 +109,7 @@ public class PhotoService {
      *
      * @param photo
      * @return
-     * @author airufei
+     * @author rufei
      */
     @RequestMapping("getWxPhoto")
     public Photo getWxPhoto(@RequestBody Photo photo) {
@@ -130,7 +130,7 @@ public class PhotoService {
      *
      * @param id
      * @return
-     * @author airufei
+     * @author rufei
      */
     @RequestMapping("delete")
     public boolean delete(Long id) {

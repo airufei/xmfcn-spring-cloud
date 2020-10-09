@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * LogSearchController(系统日志)
  *
- * @author airufei
+ * @author rufei
  */
 @Controller
 @RequestMapping("/logcharts")
@@ -105,7 +105,7 @@ public class LogChartsController {
      *
      * @param request
      * @return
-     * @Author airufei
+     * @author rufei
      */
     @RequestMapping("getLogLevelCharts")
     @ResponseBody

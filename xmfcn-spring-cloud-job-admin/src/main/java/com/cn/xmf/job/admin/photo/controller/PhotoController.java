@@ -27,7 +27,7 @@ import java.util.*;
  * WxPhotoController(微信照片)
  * Controller 层的异常应该统一捕获进行处理，这样业务代码更加清晰
  *
- * @author airufei
+ * @author rufei
  * @version 2019-10-11
  */
 @Controller
@@ -52,7 +52,7 @@ public class PhotoController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei
      */
     @RequestMapping("/getList")
     @ResponseBody
@@ -85,7 +85,7 @@ public class PhotoController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei
      */
     @RequestMapping("/getWxPhoto")
     @ResponseBody
@@ -110,7 +110,7 @@ public class PhotoController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei
      */
     @RequestMapping("/delete")
     @ResponseBody
@@ -144,7 +144,7 @@ public class PhotoController {
      * @param request
      * @param parms
      * @return
-     * @Author airufei
+     * @author rufei
      */
     @RequestMapping("/save")
     public ReturnT<String> save(HttpServletRequest request) throws Exception {

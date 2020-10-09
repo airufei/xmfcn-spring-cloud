@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * KafKaProducerController(发送数据到kafka)
  *
- * @author airufei
+ * @author rufei
  * @version 2019-05-27
  */
 @Controller

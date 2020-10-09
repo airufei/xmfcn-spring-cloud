@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * 微信用户DAO接口
- * @author airufei
+ * @author rufei
  * @version 2018-07-09
  */
 @SuppressWarnings("all")

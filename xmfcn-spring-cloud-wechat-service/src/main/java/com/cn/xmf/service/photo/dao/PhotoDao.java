@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 /**
  * 微信照片DAO接口
- * @author airufei
+ * @author rufei
  * @version 2019-10-11
  */
 @SuppressWarnings("all")

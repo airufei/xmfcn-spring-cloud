@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Service(微信用户)
  *
- * @author airufei
+ * @author rufei
  * @version 2018-07-09
  */
 @RestController

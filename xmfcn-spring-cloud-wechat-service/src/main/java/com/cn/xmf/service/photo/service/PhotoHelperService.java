@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Service(微信照片)
  *
- * @author airufei
+ * @author rufei
  * @version 2019-10-11
  */
 @Service
@@ -76,7 +76,7 @@ public class PhotoHelperService {
     /*
      * save(保存微信照片)
      * @param photo
-     * @author airufei
+     * @author rufei
      * @date 2018/1/30 14:59
      */
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false, isolation = Isolation.REPEATABLE_READ, timeout = 30, rollbackFor = Exception.class)
@@ -111,7 +111,7 @@ public class PhotoHelperService {
      *
      * @param photo
      * @return
-     * @author airufei
+     * @author rufei
      */
     public Photo getSignleWxPhoto(Photo photo) {
         return photoDao.getSignleWxPhoto(photo);

@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Service(微信照片)
- * @author airufei
+ * @author rufei
  * @version 2019-10-11
  */
 @SuppressWarnings("all")
@@ -24,7 +24,7 @@ public interface PhotoService {
 
     /**
      * list:(查询微信照片 带分页数据)
-     * @Author airufei
+     * @author rufei
      * @return
      */
     @RequestMapping(value = "getList", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -32,7 +32,7 @@ public interface PhotoService {
 
     /**
      * getWxPhotoList:(查询微信照片 不带分页数据)
-     * @Author airufei
+     * @author rufei
      * @return
      */
     @RequestMapping(value = "getWxPhotoList", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -40,7 +40,7 @@ public interface PhotoService {
 
      /**
      * getWxPhoto:(查询微信照片单个实体数据)
-     * @Author airufei
+     * @author rufei
      * @return
      */
     @RequestMapping(value = "getWxPhoto", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +48,7 @@ public interface PhotoService {
 
     /**
      * save:(保存微信照片数据)
-     * @Author airufei
+     * @author rufei
      * @return
      */
     @RequestMapping(value = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +56,7 @@ public interface PhotoService {
 
     /**
      * delete:(删除微信照片数据)
-     * @Author airufei
+     * @author rufei
      * @return
      */
     @RequestMapping(value = "delete", consumes = MediaType.APPLICATION_JSON_VALUE)
