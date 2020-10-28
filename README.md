@@ -10,7 +10,10 @@
 
 ## 4、项目docker启动方式: ./docker_run.sh
 
-## 4、项目当前改用了nacos作为注册中心，去除了earuka。主要是nacos既有服务注册发现功能，也有配置中心功能，使用起来相对方便。
+## 5、项目当前改用了nacos作为注册中心，去除了earuka。主要是nacos既有服务注册发现功能，也有配置中心功能，使用起来相对方便。
+
+## 6、[新版代码生成工具（spring-boot-xcode）请点击](https://github.com/airufei/spring-boot-xcode)
+
 
 # job-admin系统的部分功能截图
 1、登录界面
