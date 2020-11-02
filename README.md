@@ -14,6 +14,9 @@
 
 ## 6、[新版代码生成工具（spring-boot-xcode）请点击](https://github.com/airufei/spring-boot-xcode)
 
+## 7、nacos注册中心改eureka注册中心
+
+ nacos版本改eureka 比较简单，只需要删除bootstrap.yml，把application.yml注释放开就行了
 
 # job-admin系统的部分功能截图
 1、登录界面
