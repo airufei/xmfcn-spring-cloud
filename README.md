@@ -18,7 +18,7 @@
 
  nacos版本改eureka 比较简单，只需要删除bootstrap.yml，把application.yml注释放开就行了
  
-## 8、QQ群：908936554
+## 8、微服务springcloud交流QQ群：908936554
 
 # job-admin系统的部分功能截图
 1、登录界面
