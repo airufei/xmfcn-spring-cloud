@@ -19,7 +19,7 @@ rm -rf ./Dockerfile
 touch Dockerfile
 
 tee Dockerfile <<-'EOF'
-FROM java:8-jre
+FROM java:8
 
 
 COPY ./xmfcn*.jar /ms_service/PROJECT_NAME.jar

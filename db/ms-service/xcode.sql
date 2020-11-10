@@ -59,7 +59,7 @@ CREATE TABLE `t_wx_user` (
   `photoUrl` varchar(500) DEFAULT NULL COMMENT '头像url',
   `openId` varchar(64) DEFAULT NULL COMMENT '微信用户id',
   PRIMARY KEY (`id`),
-  KEY KEY `idx_wx_user_openId` (`openId`) USING BTREE,
+  KEY `idx_wx_user_openId` (`openId`) USING BTREE,
   KEY `idx_wx_user_updatetime` (`updatetime`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='微信用户表';
 
